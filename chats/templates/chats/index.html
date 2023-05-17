@@ -1,0 +1,80 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<!--  -->
+
+<div class="p-2 flex justify-between h-screen">
+  <!-- ---------------------------threads and contacts sidebar--------------------------------->
+  <div
+    class="mx-auto p-6 bg-purple-100 border border-4 border-purple-700 rounded-2xl grid grid-cols-1 lg:grid-cols-2 gap-8 w-full overflow-auto"
+  >
+    <div class="flex flex-col">
+      <h1 class="mb-2 text-black text-md font-bold">Messages</h1>
+      <input
+        type="text"
+        name="query"
+        id="querybox"
+        required
+        class="mb-2 px-4 py-1 rounded-xl bg-white text-black w-full"
+        placeholder="Retrouver..."
+      />
+
+      {% for thread in threads %}
+      <a href="{% url 'chat_box' thread.id %}">
+        <li
+          class="contact-li p-2 flex flex-row items-center gap-2 mb-2 bg-white hover:bg-amber-300 sm:text-sm lg:text-md rounded-xl cursor-pointer"
+          chat-id="chat_{{thread.id}}"
+        >
+          <img
+            class="hidden lg:block w-10 h-10 rounded-full"
+            src="{% static 'imgs/rand.webp' %}"
+            alt="Rounded avatar"
+          />
+          {% if thread.first_person == user %}
+          <div class="w-full">
+            <p class="text-black font-bold">
+              @{{thread.second_person.first_name}}
+            </p>
+          </div>
+          {% else %}
+          <div class="w-full">
+            <p class="text-black font-bold">
+              @{{thread.first_person.first_name}}
+            </p>
+          </div>
+          {% endif %}
+        </li>
+      </a>
+      {% endfor %}
+    </div>
+    <!-- contacts -->
+    <div class="mt-4 bg-purple-900 p-4 rounded-xl">
+      <h1 class="mb-2 text-white text-md font-bold">Contacts</h1>
+      {% for i in contacts %}
+      <a href="{% url 'create_thread' i.id %}">
+        <li
+          class="p-2 {% if user.id == i.id %} hidden {% else %} flex flex-row items-center gap-2 mb-2 bg-purple-50 sm:text-sm lg:text-md rounded-xl cursor-pointer {% endif %}"
+          chat-id="chat_{thread.id}"
+        >
+          {% if not i.image %}
+          <img
+            class="h-10 w-10 rounded-lg object-cover"
+            src="{% static 'imgs/rand.webp' %}"
+            alt="welcome image"
+          />
+          {% else %}
+          <img
+            class="h-10 w-10 rounded-lg object-cover"
+            src="{{i.image.url}}"
+            alt="welcome image"
+          />
+          {% endif %}
+          <div class="w-full">
+            <p class="text-purple-900 font-bold">@{{i.get_short_name}}</p>
+            <p>{{i.email}}</p>
+          </div>
+        </li>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

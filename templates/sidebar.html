@@ -1,0 +1,183 @@
+{% load static %}
+<div
+
+  class="w-20 p-4 bg-purple-900 text-white lg:w-60 min-h-screen lg:fixed overflow-auto"
+>
+<a
+  class="lg: mb-4 flex items-end"
+  href="{% url 'home' %}"
+>
+<img class="h-6 lg:h-10 mx-auto lg:mx-0 lg:mr-2" src="{% static 'imgs/logo-w.png' %}" alt="logo" />
+<h1 class="hidden lg:inline text-xl font-black">Dermepro</h1>
+</a>
+  <ul class="flex flex-col mx-auto items-center lg:items-start ">
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{home_page}}"
+      href="{% url 'home' %}"
+    >
+      <i class="text-sm fa-solid fa-house lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Accueil
+      </span>
+    </a>
+
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{visits_page}}"
+      href="{% url 'visits' %}"
+    >
+      <i class="fa-sharp fa-solid fa-user-tie lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Visites
+      </span>
+    </a>
+    {% if user.is_superuser %}
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{rdvs_page}}"
+      href="{% url 'appointments' %}"
+    >
+      <i class="text-sm fa-solid fa-handshake lg:lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Réception
+      </span>
+    </a>
+    {% endif %}
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{users_page}}"
+      href="{% url 'users' %}"
+    >
+      <i class="text-sm fa-solid fa-users lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Hôtes
+      </span>
+    </a>
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{chats_page}}"
+      href="{% url 'chats' %}"
+    >
+      <i class="text-sm fa-solid fa-comments lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Messagerie
+      </span>
+    </a>
+    {% if user.is_superuser %}
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{params_page}}"
+      href="{% url 'parameters' %}"
+    >
+      <i class="fa-sharp fa-solid fa-sliders lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Paramètres
+      </span>
+    </a>
+    {% endif %}
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{about_page}}"
+      href="{% url 'about' %}"
+    >
+      <i class="text-sm fa-solid fa-circle-info lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        A propos
+      </span>
+    </a>
+
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{dash_page}}"
+      href="{% url 'dashboard' %}"
+    >
+      <i class="fa-sharp fa-solid fa-bars-progress lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Tableau de bord
+      </span>
+    </a>
+
+    {% if user.is_superuser %}
+    <a
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-purple-900 hover:text-white transition ease-in duration-200"
+      href="{% url 'admin:index' %}"
+      ><i class="text-sm fa-solid fa-lock lg:mr-2"></i> <span class="hidden lg:inline ">
+
+
+        Admin Dashboard</a
+        >
+      </span>
+    {% endif %}
+ <div
+      class="px-1 py-2 lg:p-2 flex flex-col lg:flex-row items-center gap-1 lg:gap-2 mb-2 lg:bg-white sm:text-sm lg:text-md rounded-lg cursor-pointer"
+    >
+    {% if not user.image %}
+    <img
+      class="hidden lg:inline h-10 w-10 rounded-lg object-cover"
+      src="{% static 'imgs/anon.png' %}"
+      alt="welcome image"
+    />
+    {% else %}
+    <img
+      class="hidden lg:block h-10 w-10 rounded-lg object-cover"
+      src="{{user.image.url}}"
+      alt="welcome image"
+    />
+    {% endif %}
+      <div class="hidden lg:block w-full">
+        <p class="text-purple-900 font-bold">{{user.get_short_name}}</p>
+        <p class="text-gray-500">@{{user.username}}</p>
+      </div>
+      <div class="relative">
+
+        <button
+          type="button"
+          class=""
+          name="dropdownBtn"
+          id="dropdownBtn"
+          aria-expanded="false"
+          aria-haspopup="true"
+          onclick="toggleDropdown(this)"
+        >
+          <i class="fa-sharp fa-solid fa-caret-down text-purple-900 bg-white hover:bg-amber-200 py-2 px-3 lg:p-4 rounded-lg"></i>
+      
+        </button>
+  
+        <div
+          class="mb-4  w-full lg:p-2 hidden absolute right-0 top-20 origin-top-left bg-white z-30 rounded-md lg:w-40 flex flex-col gap-2 items-center overflow-hidden"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="user-menu-button"
+          tabindex="-1"
+          id="dropdownMenu"
+        >
+          <a href="{% url 'user_profile' user.id  %}"
+            class="p-2 flex text-sm text-gray-700 hover:bg-amber-200 lg:rounded-md w-full text-center"
+            role="menuitem"
+            tabindex="-1"
+            id="user-menu-item-0"
+            >
+                  <i class="text-sm fa-solid fa-user lg:mr-2"></i> 
+            <span class="hidden lg:inline">Mon Profile</span>
+            </a
+          >
+          <a
+            href="#"
+            class="p-2 flex text-sm text-gray-700 hover:bg-amber-200 lg:rounded-md w-full text-center"
+            role="menuitem"
+            tabindex="-1"
+            id="user-menu-item-1"
+            >
+            <i class="text-sm fa-solid fa-gear lg:mr-2"></i>
+              <span class="hidden lg:inline">Parametres</span>
+            </a
+          >
+          <a
+            href="{% url 'logout' %}"
+            class="p-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white lg:rounded-md w-full text-center"
+            role="menuitem"
+            tabindex="-1"
+            id="user-menu-item-2"
+            >
+            <i class="text-sm fa-solid fa-right-from-bracket lg:mr-2"></i>
+            <span class="hidden lg:inline">Deconnexion </span>
+            </a
+          >
+        </div>
+      </div>
+    </div>
+  </ul>
+</div>

@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js" defer="true"></script> -->
+    <script
+      src="https://kit.fontawesome.com/f601cf3e61.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script src="{% static 'stats.js' %}" defer="true"></script> -->
+    <script src="{% static 'socket.js' %}" defer="true"></script>
+    <link href="{% static 'styles.css' %}" rel="stylesheet" />
+    <title>Dermepro</title>
+  </head>
+  <body class="flex flex-row bg-white text-gray-500 max-w-full mx-auto">
+    {% if user.is_authenticated %}
+    <input id="curr_user" type="hidden" value="{{user.id}}" />
+    {% endif %} {% include 'sidebar.html' %}
+    <div class="w-full sm:ml-20 lg:ml-60">
+      {% block content %} {% endblock %}
+    </div>
+  </body>
+</html>

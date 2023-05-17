@@ -1,0 +1,202 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<!--  -->
+
+<div class="p-0 flex justify-between h-screen">
+  <!-- active chat thread -->
+  <div
+    class="pl-2 lg:py-4 lg:px-8 h-full w-full max-w-4xl mx-auto flex flex-col justify-between"
+  >
+    <div
+      class="msg-box overflow-auto float"
+      chat-id="chat_{{ active_thread.id }}"
+      other-user-id="{% if active_thread.first_person == user %} {{ active_thread.second_person.id }} {% else %} {{ active_thread.first_person.id }} {% endif %}"
+    >
+      {% if not active_thread.chat_thread.all %}
+      <image
+        width="500"
+        class="mx-auto"
+        src="{% static 'imgs/chat.png' %}"
+        alt="no data"
+      />
+      <p
+        class="mb-8 w-40 bg-amber-100 p-4 rounded-xl text-center mx-auto animate-bounce"
+      >
+        Restons connecté
+      </p>
+      {% else %}
+      <!------------------ conversation box ------------------->
+      {% for chat in active_thread.chat_thread.all %}
+      <div
+        class="lg:pr-4 flex flex-col justify-between {% if chat.sender == user %} items-end {% else %} items-start {% endif %}"
+        id="convo"
+      >
+        {% if chat.sender == user %}
+        <div
+          class="group msg_out px-4 py-2 mb-4 bg-purple-100 text-black text-base rounded-xl flex flex-col text-right max-w-md"
+        >
+          <p>{{chat.text}}</p>
+          <span class="text-xs text-gray-400">{{chat.created_at}}</span>
+          <p class="group flex justify-end text-right gap-4">
+            <!-- <a
+              href="{% url 'delete_text' chat.id  %}"
+              class="inline p-2 text-sm text-gray-700 cursor-pointer"
+            >
+              <i
+                class="hidden group-hover:block fa-solid fa-pen-to-square hover:text-purple-700"
+              ></i>
+            </a> -->
+            <a
+              id="delete_btn"
+              onclick="return confirm('Voulez vous supprimer ce message?')"
+              href="{% url 'delete_text' chat.id  %}"
+              class="inline p-2 text-sm text-gray-700 cursor-pointer"
+            >
+              <i
+                class="hidden group-hover:block fa-solid fa-trash hover:text-red-700"
+              ></i>
+            </a>
+          </p>
+        </div>
+        {% else %}
+        <div
+          class="msg_in px-4 py-2 mb-4 bg-purple-900 text-white text-base rounded-xl flex flex-col text-left max-w-md"
+        >
+          <p>{{chat.text}}</p>
+          <span class="text-xs text-gray-400">{{chat.created_at}}</span>
+        </div>
+        {% endif %}
+        <!--  -->
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <!------------------ chat form ------------------->
+    <form
+      id="messenger"
+      class="w-full flex flex-row space-8 w-full gap-4 justify-between items-center m-0 p-0"
+    >
+      <!-- <a href="">
+        <i class="fa-solid fa-face-smile text-amber-300"></i>
+      </a>
+      <a href="">
+        <i class="fa-solid fa-paperclip"></i>
+      </a> -->
+      <input
+        type="text"
+        name="message"
+        id="texto"
+        required
+        class="px-4 py-3 rounded-xl bg-purple-100 text-black w-full"
+        placeholder="ecrivez votre message..."
+      />
+      <button
+        class="group px-4 py-4 text-sm bg-purple-100 bg-purple-900 hover:bg-amber-400 text-white rounded-xl"
+        type="submit"
+      >
+        <i class="px-2 fa-solid fa-paper-plane group-hover:text-black"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- ---------------------------threads and contacts sidebar--------------------------------->
+  <div
+    class="hidden md:block contacts my-4 bg-purple-100 border border-4 border-purple-700 p-4 rounded-xl flex flex-col sm:w-40 lg:w-2/6 overflow-auto"
+  >
+    <h1 class="mb-2 text-black text-md font-bold">Messages</h1>
+    <input
+      type="text"
+      name="query"
+      id="querybox"
+      required
+      class="mb-2 px-4 py-1 rounded-xl bg-white text-black w-full"
+      placeholder="Retrouver..."
+    />
+
+    {% for thread in threads %}
+    <a href="{% url 'chat_box' thread.id %}">
+      <li
+        class="contact-li p-2 flex flex-row items-center gap-2 mb-2 {% if thread.id == active_thread.id %} active {% else %} bg-white {% endif %} sm:text-sm lg:text-md rounded-xl cursor-pointer"
+      >
+        <img
+          class="hidden lg:block w-10 h-10 rounded-full"
+          src="{% static 'imgs/rand.webp' %}"
+          alt="Rounded avatar"
+        />
+        {% if thread.first_person == user %}
+        <div class="w-full">
+          <p class="text-black font-bold">
+            @{{thread.second_person.first_name}}
+          </p>
+        </div>
+        {% else %}
+        <div class="w-full">
+          <p class="text-black font-bold">
+            @{{thread.first_person.first_name}}
+          </p>
+        </div>
+        {% endif %}
+      </li>
+    </a>
+    {% endfor %}
+    <!-- contacts -->
+    <div class="hidden lg:block mt-4 bg-purple-900 p-4 rounded-xl">
+      <h1 class="mb-2 text-white text-md font-bold">Contacts</h1>
+      {% for i in contacts %}
+      <a href="{% url 'create_thread' i.id %}">
+        <li
+          class="p-2 {% if user.id == i.id %} hidden {% else %} flex flex-row items-center gap-2 mb-2 bg-purple-50 sm:text-sm lg:text-md rounded-xl cursor-pointer {% endif %}"
+          chat-id="chat_{active_thread.id}"
+        >
+          {% if not i.image %}
+          <img
+            class="h-10 w-10 rounded-lg object-cover"
+            src="{% static 'imgs/rand.webp' %}"
+            alt="welcome image"
+          />
+          {% else %}
+          <img
+            class="h-10 w-10 rounded-lg object-cover"
+            src="{{i.image.url}}"
+            alt="welcome image"
+          />
+          {% endif %}
+          <div class="w-full">
+            <p class="text-purple-900 font-bold">@{{i.get_short_name}}</p>
+            <p>{{i.email}}</p>
+          </div>
+        </li>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- <script>
+  let convo_box = $("#convo");
+  $(document).ready(function () {
+    setInterval(function () {
+      $.ajax({
+        type: "GET",
+        url: "{% url 'get_msgs' active_thread.id %}",
+        success: function (response) {
+          var realtime_chats = response.text_msgs;
+          console.log(realtime_chats);
+          // for (var chat in realtime_chats) {
+          //   if (chat.sender_id == userID) {
+          //     console.log("o novo mesagem");
+          //     convo.append(`<span>${chat.text}</span>`);
+          //   } else {
+          //     convo.append(`<span>${chat.text}</span>`);
+          //   }
+          // }
+          convo_box.empty();
+          convo_box.animate({ scrollTop: $("#convo").scrollTop() }, 1000);
+        },
+        error: function (response) {
+          alert("Error !!!");
+        },
+      });
+    }, 1000);
+  });
+</script> -->
+{% endblock %}

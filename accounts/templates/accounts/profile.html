@@ -1,0 +1,64 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="p-2">
+  <div
+    class="mb-4 flex flex-col md:flex-row border border-4 border-purple-700 p-4 rounded-xl"
+  >
+    {% if not profile.image %}
+    <img
+      class="h-40 w-40 rounded-xl md:rounded-l-xl object-cover"
+      src="{% static 'imgs/anon.png' %}"
+      alt="welcome image"
+    />
+    {% else %}
+    <img
+      class="h-40 w-40 rounded-xl md:rounded-l-xl object-cover"
+      src="{{profile.image.url}}"
+      alt="welcome image"
+    />
+    {% endif %}
+    <div
+      class="bg-purple-900 flex flex-col text justify-between text-gray-200 px-4 py-2 rounded-xl md:rounded-r-xl"
+    >
+      <p>
+        Nom :
+        <span class="font-bold text-white">{{profile.last_name|title}}</span>
+      </p>
+      <p>
+        Prenoms :
+        <span class="font-bold text-white">{{profile.first_name|title}}</span>
+      </p>
+      <p>
+        Telephone :
+        <span class="font-bold text-white">{{profile.tel|title}}</span>
+      </p>
+      <p>
+        Adresse :
+        <span class="font-bold text-white">{{profile.address|title}}</span>
+      </p>
+      <p>
+        Type d'utilisateur :
+        <span class="font-bold text-white">{{profile.role|title}}</span>
+      </p>
+    </div>
+  </div>
+  <form
+    class="p-4 w-full bg-gray-100 rounded-lg text-sm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    method="POST"
+    action=""
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %} {% for field in form %}
+    <div>
+      <h3 class="mb-1">{{field.label}}</h3>
+      {{field}}
+    </div>
+    {% endfor %}
+
+    <input
+      class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
+      type="submit"
+      value="Enregistrer"
+    />
+  </form>
+</div>
+{% endblock %}

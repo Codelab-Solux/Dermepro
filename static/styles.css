@@ -1,0 +1,71 @@
+/* scrollbar---------------------------------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 1em;
+  height: 1em;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3e8ff;
+  border-radius: 100vw;
+  margin-block: 2rem;
+}
+::-webkit-scrollbar-thumb {
+  background: #581c87;
+  border: 0.2em solid #f3e8ff;
+  border-radius: 100vw;
+  margin-block: 2rem;
+}
+
+/* ul and li ---------------------------------------------------------------------------------------------------- */
+ul {
+  list-style: none;
+}
+li {
+  text-decoration: none;
+  text-emphasis: none;
+}
+
+/* tables---------------------------------------------------------------------------------------------------- */
+.db-table {
+  border-collapse: collapse;
+}
+
+.db-table tbody tr:nth-of-type(even) {
+  background-color: #e0e7ff;
+}
+/* .db-table tbody:hover {
+  background-color: white;
+} */
+
+/* sibebar---------------------------------------------------------------------------------------------------- */
+.sidebar {
+  height: 100vh;
+  position: fixed;
+}
+
+.active {
+  background: rgb(255, 193, 79);
+  color: black;
+}
+
+.primary {
+  background: #581c87;
+}
+
+.secondary {
+  background: rgb(255, 193, 79);
+}
+
+.text-secondary {
+  color: rgb(255, 193, 79);
+}
+
+.msg_out {
+  background: #f3e8ff;
+  color: black;
+}
+
+.msg_in {
+  background: #581c87;
+  color: white;
+}

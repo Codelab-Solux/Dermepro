@@ -1,0 +1,195 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="p-2">
+  <div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
+    <div
+      class="mb-4 px-4 py-2 flex justify-between items-center bg-purple-100 rounded-lg text-center font-light mx-auto"
+    >
+      <h1 class="text-md lg:text-xl text-black font-bold">Rendez-vous V.I.P</h1>
+
+      <a
+        class="lg:inline active hover:bg-white p-2 rounded-lg"
+        href="{% url 'rdv_csv' %}"
+      >
+        <i class="block fa-solid fa-file-excel lg:mr-2"></i>
+        <span class="hidden lg:inline"> Extraire les Rendez-vous </span>
+      </a>
+    </div>
+
+    {% if not pending_vips %}
+    <div class="mx-auto max-w-4xl flex justify-around items-center">
+      <image
+        priority
+        src="{% static 'imgs/nodata.png' %}"
+        alt="no data"
+        width="500"
+        height="500"
+      />
+      <h1 class="bg-gray-100 p-4 rounded-xl text-center font-light mx-auto">
+        Aucune donnée disponible
+      </h1>
+    </div>
+    {% else %}
+
+    <div class="flex flex-col md:flex-row justify-between items-start">
+      <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {% for e in pending_vips %}
+        <a href="{% url 'appointment_detail' e.id  %}">
+          <div
+            class="p-4 text-gray-500 bg-purple-100 h-full rounded-md hover:shadow-md"
+          >
+            <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
+            <h3 class="text-sm">{{e.date}}</h3>
+            <h3 class="text-sm">{{e.time}}</h3>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <image
+        class="h-80"
+        src="{% static 'imgs/schedule.png' %}"
+        alt="reception image"
+      />
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mt-6 flex flex-col lg:flex-row justify-between gap-8">
+    <div class="flex flex-col w-full">
+      <h1 class="mb-2 text-black text-lg font-bold">Table des Rendez-vous</h1>
+      <div class="overflow-auto rounded-xl bg-gray-50">
+        <table class="w-full text-left db-table">
+          <thead class="bg-black text-white">
+            <tr>
+              <th class="p-4 text-sm">Invité</th>
+              <!-- <th class="p-4 text-sm">Hôte</th> -->
+              <th class="hidden md:block p-4 text-sm">Telephone</th>
+              <th class="p-4 text-sm">Date</th>
+              <th class="hidden md:block p-4 text-sm">Heure</th>
+              <th class="p-4 text-sm">Status</th>
+              <th class="hidden md:block p-4 text-sm">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in appointments %}
+            <tr
+              class="text-gray-500 text-sm hover:text-black hover:bg-white transition-all duration-50"
+            >
+              <td class="p-3">{{e.guest|truncatechars:10}}</td>
+              <!-- <td class="p-3">{{e.host.username}}</td> -->
+              <td class="hidden md:block p-3">{{e.tel}}</td>
+              <td class="p-3">{{e.date}}</td>
+              <td class="hidden md:block p-4 p-3">{{e.time}}</td>
+              <td class="">
+                {% if e.status == 'pending' %}
+                <span
+                  class="py-1 px-2 bg-sky-500 rounded-full text-xs text-white"
+                >
+                  En attente</span
+                >
+                {% elif e.status == 'open' %}
+                <span
+                  class="py-1 px-2 bg-amber-500 rounded-full text-xs text-white"
+                >
+                  En cours</span
+                >
+                {% elif e.status == 'closed' %}
+                <span
+                  class="py-1 px-2 bg-green-500 rounded-full text-xs text-white"
+                >
+                  Cloturée</span
+                >
+                {% elif e.status == 'ajourned' %}
+                <span
+                  class="py-1 px-2 bg-purple-700 rounded-full text-xs text-white"
+                >
+                  Ajournée</span
+                >
+                {% else %}
+                <span
+                  class="py-1 px-2 bg-red-500 rounded-full text-xs text-white"
+                >
+                  Annulée</span
+                >
+                {% endif %}
+              </td>
+
+              <td class="hidden md:block p-4 flex gap-2">
+                <a
+                  href="{% url 'appointment_detail' e.id  %}"
+                  class="inline p-2 text-sm text-gray-700 rounded-md"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-0"
+                >
+                  <i class="fa-solid fa-pen-to-square hover:text-amber-300"></i>
+                </a>
+                <a
+                  onclick="return confirm('Voulez vous supprimer ce Rendez-vous ?')"
+                  href="{% url 'delete_rdv' e.id  %}"
+                  class="inline px-2 lg:px-4 py-2 text-sm text-gray-700 rounded-md"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-1"
+                >
+                  <i class="fa-solid fa-trash lg:mr-2 hover:text-red-500"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- visit creation form -->
+    <div class="flex flex-col w-full lg:w-2/6">
+      <h3 class="mb-2 text-black text-lg font-bold">Ajouter un Rendez-vous</h3>
+      <form
+        class="p-4 bg-gray-100 rounded-lg text-sm"
+        method="POST"
+        action=""
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+
+        <!-- <div>
+          <h3 class="mb-1">Hote</h3>
+          {{form.host}}
+        </div> -->
+        <div>
+          <h3 class="mb-1">Nom et prénoms de l'invité</h3>
+          {{form.guest}}
+        </div>
+        <div class="flex gap-4">
+          <div>
+            <h3 class="mb-1">Sexe</h3>
+            {{form.gender}}
+          </div>
+          <div>
+            <h3 class="mb-1">Téléphone</h3>
+            {{form.tel}}
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div>
+            <h3 class="mb-1">Date</h3>
+            {{form.date}}
+          </div>
+          <div>
+            <h3 class="mb-1">Heure</h3>
+            {{form.time}}
+          </div>
+        </div>
+        <div>
+          <h3 class="mb-1">VIP</h3>
+          {{form.is_vip}}
+        </div>
+        <input
+          class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
+          type="submit"
+          value="Enregistrer"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

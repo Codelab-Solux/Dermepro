@@ -1,0 +1,37 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="p-2">
+  <div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
+    <h1
+      class="mb-2 text-black text-lg font-bold bg-purple-100 px-4 py-2 rounded-lg"
+    >
+      Rendez-vous de {{appointment.civility}} {{appointment.guest}}
+    </h1>
+    <div class="flex flex-col lg:flex-row justify-between items-start">
+      <form
+        class="p-4 w-full bg-gray-100 rounded-lg text-sm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        method="POST"
+        action=""
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %} {% for field in form %}
+        <div>
+          <h3 class="mb-1">{{field.label}}</h3>
+          {{field}}
+        </div>
+        {% endfor %}
+
+        <input
+          class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
+          type="submit"
+          value="Enregistrer"
+        />
+      </form>
+      <image
+        class="h-80"
+        src="{% static 'imgs/schedule.png' %}"
+        alt="reception image"
+      />
+    </div>
+  </div>
+</div>
+{% endblock %}
