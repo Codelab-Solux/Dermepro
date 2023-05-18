@@ -1,27 +1,25 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="p-2">
-  <div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
-    <article class="w-5/7">
-      <h1 class="text-black text-3xl lg:text-7xl font-bold">
-        Tableau de board
-      </h1>
-      <p class="mt-4">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem rem
-        molestias inventore placeat quod voluptate beatae repudiandae delectus
-        aperiam molestiae vero incidunt facere, voluptatem facilis porro harum
-        in eos voluptatibus laborum! Sint enim consequuntur totam quo obcaecati.
-        Dolor facilis deleniti sapiente ullam deserunt ut.
-      </p>
-    </article>
-    <img
-      class="h-80"
-      src="{% static 'imgs/dashboard.png' %}"
-      alt="welcome image"
-    />
-  </div>
 
-  <!-- dashborad graphs -->
-  <!-- <div class="flex flex-col w-full">
+<div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
+  <article class="w-5/7">
+    <h1 class="text-black text-3xl lg:text-7xl font-bold">Tableau de board</h1>
+    <p class="mt-4">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem rem
+      molestias inventore placeat quod voluptate beatae repudiandae delectus
+      aperiam molestiae vero incidunt facere, voluptatem facilis porro harum in
+      eos voluptatibus laborum! Sint enim consequuntur totam quo obcaecati.
+      Dolor facilis deleniti sapiente ullam deserunt ut.
+    </p>
+  </article>
+  <img
+    class="h-80"
+    src="{% static 'imgs/dashboard.png' %}"
+    alt="welcome image"
+  />
+</div>
+
+<!-- dashborad graphs -->
+<!-- <div class="flex flex-col w-full">
     <h1 class="text-black text-md font-bold">Statistiques de visites</h1>
     <div class="grid grid-cols-2 gap-8">
       <div>
@@ -32,7 +30,7 @@
       </div>
     </div>
   </div> -->
-</div>
+
 <!-- <script>
 var  gender_list = '{{gender_list}}'
 var  visit_figs = '{{visit_figs}}'

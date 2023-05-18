@@ -11,14 +11,14 @@
         {% for e in new_users %}
         <a href="{% url 'user_profile' e.id  %}">
           <div
-            class="p-4 text-gray-500 bg-purple-100 h-100 rounded-md hover:shadow-md"
+            class="p-4 text-gray-500 bg-purple-100 h-full rounded-md hover:shadow-md"
           >
             <h3 class="font-bold text-black text-md">
               {{e.last_name}} {{e.first_name}}
             </h3>
             <p class="font-bold text-purple-900 text-sm">@{{e.username}}</p>
             <!-- <p class="text-sm">{{e.email}}</p> -->
-            <p class="text-sm">{{e.tel}}</p>
+            <p class="text-sm">{{e.role}}</p>
           </div>
         </a>
         {% endfor %}
@@ -30,34 +30,37 @@
       />
     </div>
   </div>
+
+  <!-- hosts table -->
+
   <div class="mt-6 flex flex-col lg:flex-row justify-between gap-8">
     <div class="flex flex-col w-full">
       <h3 class="mb-2 text-black text-lg font-bold">Table des Hôtes</h3>
-      <div class="overflow-auto rounded-xl text-sm bg-gray-50">
+      <div class="overflow-auto rounded-lg bg-gray-100">
         <table class="w-full text-left db-table">
-          <thead class="bg-black text-white">
+          <thead class="bg-black text-white font-bold">
             <tr>
-              <th class="hidden md:inline p-4 text-sm">Pseudo</th>
+              <th class="hidden md:block p-4 text-sm">Pseudo</th>
               <th class="p-4 text-sm">Nom</th>
               <th class="p-4 text-sm">Prenoms</th>
-              <th class="hidden md:inline p-4 text-sm">Adresse mail</th>
-              <th class="hidden md:inline p-4 text-sm">Adresse</th>
-              <th class="hidden md:inline p-4 text-sm">Telephone</th>
+              <th class="hidden md:block p-4 text-sm">Email</th>
+              <th class="p-4 text-sm">Telephone</th>
               <th class="p-4 text-sm">Role</th>
             </tr>
           </thead>
           <tbody>
             {% for e in users %}
             <tr
-              class="text-gray-500 hover:text-black cursor-pointer transition-all duration-50"
+              class="text-gray-600 text-sm hover:bg-white hover:shadow-md hover:text-black transition-all duration-50"
             >
-              <td class="hidden md:inline p-3">{{e.username}}</td>
-              <td class="p-3">{{e.first_name}}</td>
-              <td class="p-3">{{e.last_name}}</td>
-              <td class="hidden md:inline p-3">{{e.email|truncatechars:20}}</td>
-              <td class="hidden md:inline p-3">{{e.address}}</td>
-              <td class="hidden md:inline p-3">{{e.tel}}</td>
-              <td class="p-3">{{e.role}}</td>
+              <a class="cursor-pointer" href="{% url 'user_profile' e.id  %}">
+                <td class="hidden md:block p-3">{{e.username}}</td>
+                <td class="p-3">{{e.first_name}}</td>
+                <td class="p-3">{{e.last_name}}</td>
+                <td class="hidden md:block p-3">{{e.email}}</td>
+                <td class="p-3">{{e.tel}}</td>
+                <td class="p-3">{{e.role}}</td>
+              </a>
             </tr>
             {% endfor %}
           </tbody>
@@ -65,7 +68,7 @@
       </div>
     </div>
     <!-- user creation form -->
-    {% if request.user.role == 'admin' %}
+    {% if form %}
     <div class="flex flex-col xs:w-full lg:w-2/6">
       <h3 class="mb-2 text-black text-lg font-bold">Ajouter un utilisateur</h3>
       <form

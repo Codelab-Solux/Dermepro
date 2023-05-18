@@ -12,7 +12,7 @@
 </a>
   <ul class="flex flex-col mx-auto items-center lg:items-start ">
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{home_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
       href="{% url 'home' %}"
     >
       <i class="text-sm fa-solid fa-house lg:mr-2"></i> 
@@ -22,7 +22,7 @@
     </a>
 
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{visits_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
       href="{% url 'visits' %}"
     >
       <i class="fa-sharp fa-solid fa-user-tie lg:mr-2"></i> 
@@ -32,7 +32,7 @@
     </a>
     {% if user.is_superuser %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{rdvs_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
       href="{% url 'appointments' %}"
     >
       <i class="text-sm fa-solid fa-handshake lg:lg:mr-2"></i> 
@@ -42,7 +42,7 @@
     </a>
     {% endif %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{users_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
       href="{% url 'users' %}"
     >
       <i class="text-sm fa-solid fa-users lg:mr-2"></i> 
@@ -51,7 +51,7 @@
       </span>
     </a>
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{chats_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'chats' %}"
     >
       <i class="text-sm fa-solid fa-comments lg:mr-2"></i> 
@@ -61,7 +61,7 @@
     </a>
     {% if user.is_superuser %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{params_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
       href="{% url 'parameters' %}"
     >
       <i class="fa-sharp fa-solid fa-sliders lg:mr-2"></i> 
@@ -71,7 +71,7 @@
     </a>
     {% endif %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{about_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
       href="{% url 'about' %}"
     >
       <i class="text-sm fa-solid fa-circle-info lg:mr-2"></i> 
@@ -81,7 +81,7 @@
     </a>
 
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 {{dash_page}}"
+      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
       href="{% url 'dashboard' %}"
     >
       <i class="fa-sharp fa-solid fa-bars-progress lg:mr-2"></i> 

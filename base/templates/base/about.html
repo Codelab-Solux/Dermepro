@@ -1,327 +1,315 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="p-2">
-  <div
-    class="p-6 text-gray-500 bg-purple-100 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
-  >
-    <article class="w-5/7">
-      <h1 class="text-black text-3xl lg:text-7xl font-bold">
-        A propos de Dermepro
-      </h1>
-      <p class="mt-4">
-        Notre application a été conçue pour simplifier et automatiser le
-        processus de gestion des visiteurs dans une entreprise. Elle permet aux
-        entreprises de créer des profils pour leurs visiteurs, de suivre leurs
-        mouvements et de faciliter leur accès aux zones autorisées.
-      </p>
-    </article>
-    <img
-      class="h-80 object-cover"
-      src="{% static 'imgs/present.png' %}"
-      alt="welcome image"
-    />
-  </div>
-  <!-- functionalities -->
-  <article
-    class="my-8 w-4/7 p-8 mx-auto border border-4 border-purple-700 rounded-lg"
-  >
-    <h2 class="text-black text-3xl font-bold">
-      Les fonctionnalités de l'application
-    </h2>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      1. Enregistrement des visiteurs
-    </h3>
-    <p class="mt-2">
-      Les entreprises peuvent enregistrer les visiteurs dans la base de données
-      de l'application en remplissant un formulaire. Les informations demandées
-      comprennent le nom, l'adresse e-mail, le numéro de téléphone, la société
-      et le motif de la visite.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      2. Gestion de la file d’attente
-    </h3>
-    <p class="mt-2">
-      Une fonction de la gestion de la file d’attente des visiteurs de la
-      direction générale contrôlée par une assistante de direction.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">3. Gestion des accès</h3>
-    <p class="mt-2">
-      Les entreprises peuvent accorder des autorisations d'accès aux visiteurs
-      pour les zones autorisées. Les visiteurs peuvent être enregistrés pour une
-      période de temps spécifique et peuvent recevoir des badges
-      d'identification pour faciliter leur accès.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">4. Suivi des mouvements</h3>
-    <p class="mt-2">
-      Les entreprises peuvent suivre les mouvements des visiteurs dans
-      l'entreprise. Les informations de suivi incluent l'heure d'arrivée et de
-      départ, ainsi que les zones visitées.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">5. Notifications</h3>
-    <p class="mt-2">
-      Les hôtes peuvent recevoir des notifications en temps réel lorsqu'un
-      visiteur arrive, ils peuvent accepter ou décliner la visite.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">6. Rapports</h3>
-    <p class="mt-2">
-      L'application peut générer des rapports personnalisés sur les mouvements
-      des visiteurs et par hôtes visités.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">7. Messagerie</h3>
-    <p class="mt-2">
-      Une fonctionnalité de messagerie groupée ou individuelle est disponible
-      pour les hôtes pour toutes discussion interne.
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">8. Signature électronique</h3>
-    <p class="mt-2">
-      Les visiteurs peuvent signer électroniquement des formulaires ou des
-      accords de non-divulgation à travers une tablette électronique
-    </p>
-    <h3 class="mt-4 text-black text-lg font-bold">9. Gestion des retours</h3>
-    <p class="mt-2">
-      Les entreprises peuvent enregistrer le départ des visiteurs, leurs
-      commentaires et leurs retours d'expérience pour améliorer leur expérience
-      future. Nous espérons que cette présentation vous a donné un aperçu de
-      toutes les fonctionnalités disponibles dans notre application Web de
-      gestion des visiteurs. N'hésitez pas à nous contacter pour toute question
-      ou pour planifier une démonstration en direc
+
+<div
+  class="p-6 text-gray-500 bg-purple-100 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
+>
+  <article class="w-5/7">
+    <h1 class="text-black text-3xl lg:text-7xl font-bold">
+      A propos de Dermepro
+    </h1>
+    <p class="mt-4">
+      Notre application a été conçue pour simplifier et automatiser le processus
+      de gestion des visiteurs dans une entreprise. Elle permet aux entreprises
+      de créer des profils pour leurs visiteurs, de suivre leurs mouvements et
+      de faciliter leur accès aux zones autorisées.
     </p>
   </article>
-  <!-- Support -->
-  <article
-    class="my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border border-4 border-purple-700 rounded-lg"
-  >
-    <div>
-      <h2 class="text-black text-3xl font-bold">Support</h2>
-      <p class="mt-2">
-        Bienvenue sur notre page de support. Nous sommes là pour vous aider à
-        résoudre tous les problèmes que vous pourriez rencontrer. Que vous ayez
-        des questions sur nos services ou sur notre application, ou que vous
-        ayez besoin d'une assistance technique, nous sommes là pour vous
-        accompagner. Merci de nous avoir contactés et nous sommes impatients de
-        vous aider. Il vous suffira de remplir le formulaire si dessous :
-      </p>
-      <ol>
-        <li>1 - Raison sociale : [Veuillez renseigner votre Raison sociale]</li>
-        <li>2 - Nom complet : [Veuillez renseigner votre nom complet]</li>
-        <li>3 - Adresse e-mail : [Veuillez renseigner votre adresse e-mail]</li>
-        <li>
-          4 - Numéro de téléphone : [Veuillez renseigner votre Numéro de
-          téléphone]
-        </li>
-        <li>
-          5 - Sujet : Description du problème : [Zone de texte pour décrire le
-          problème]
-        </li>
-        <li>
-          6 - Priorité : [Menu déroulant pour sélectionner la priorité : haute,
-          moyenne, faible]
-        </li>
-        <li>
-          7 - Captures d'écran : [Zone pour télécharger des captures d'écran du
-          problème]
-        </li>
-      </ol>
-      <p>
-        Informations supplémentaires : [Zone de texte pour fournir des
-        informations supplémentaires ou des commentaires] Une fois que vous avez
-        rempli le formulaire, cliquez sur "Envoyer" pour soumettre votre demande
-        de support. Nous ferons de notre mieux pour répondre à votre demande
-        dans les plus brefs délais.
-      </p>
-    </div>
-    <img
-      class="h-80 object-cover"
-      src="{% static 'imgs/support.png' %}"
-      alt="welcome image"
-    />
-  </article>
-  <!-- how it works section -->
-  <article
-    class="my-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto bg-purple-100 rounded-lg"
-  >
-    <img
-      class="h-80 object-cover"
-      src="{% static 'imgs/present.png' %}"
-      alt="welcome image"
-    />
-    <div>
-      <h2 class="mt-4 text-black text-3xl font-bold">
-        Comment ça marche (CCM)
-      </h2>
-
-      <p class="mt-2">
-        Derme Pro, votre application de gestion des visiteurs est un outil qui
-        permet de suivre et de contrôler les entrées et les sorties des
-        visiteurs dans un bâtiment ou dans une zone spécifique. Voici les étapes
-        générales de son fonctionnement :
-      </p>
-
-      <h3 class="mt-4 text-black text-lg font-bold">
-        1.Enregistrement des visiteurs
-      </h3>
-      <p class="mt-2">
-        A l'entrée de l'immeuble ou à l’accueil, le visiteur est enregistré par
-        une personne habilitée, qui leur demande leur nom, leur entreprise, leur
-        numéro de téléphone, leur adresse e-mail, leur identité et le but de
-        leur visite.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        2.Attribution d'un badge
-      </h3>
-      <p class="mt-2">
-        Une fois que les visiteurs sont enregistrés et identifiés, ils se voient
-        attribuer un badge d'identification ou un code QR qui leur permettra
-        d'accéder aux zones autorisées.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">3.Suivi des visiteurs</h3>
-      <p class="mt-2">
-        L’application enregistre le mouvement des visiteurs dans le bâtiment, en
-        enregistrant leur heure d'entrée et de sortie. A la sortie les visiteurs
-        signent via une tablette électronique.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        4.Notification des hôtes
-      </h3>
-      <p class="mt-2">
-        L’application peut automatiquement notifier les hôtes de la visite de
-        leur invité, par e-mail ou par SMS.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">5.Gestion des données</h3>
-      <p class="mt-2">
-        Toutes les informations relatives aux visiteurs sont stockées dans une
-        base de données, permettant ainsi aux gestionnaires de suivre les
-        visiteurs et de générer des rapports d'activité.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        7.Personnalisation des profils de visiteurs
-      </h3>
-      <p class="mt-2">
-        L’application peut permettre aux hôtes de personnaliser les profils des
-        visiteurs, en ajoutant des informations complémentaires telles que leur
-        photo, leur titre ou leur département, pour faciliter leur
-        identification.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        8.Gestion des autorisations
-      </h3>
-      <p class="mt-2">
-        Les administrateurs peuvent définir des autorisations d'accès
-        personnalisées pour chaque visiteur en fonction de leur statut, de leur
-        entreprise, de leur objectif de visite ou de leur position dans le
-        bâtiment.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">9.Analyse des données</h3>
-      <p class="mt-2">
-        Les données enregistrées par l'application peuvent être utilisées pour
-        générer des rapports d'activité et des analyses de l'utilisation des
-        zones, des statistiques de fréquentation, de la durée moyenne de visite
-        et d'autres informations utiles pour améliorer l'efficacité de la
-        gestion des visiteurs.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        10. Conformité réglementaire
-      </h3>
-      <p class="mt-2">
-        En gardant une trace précise des visiteurs qui entrent et sortent du
-        bâtiment, l'application peut aider à se conformer aux exigences
-        réglementaires en matière de sécurité et de protection des données.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        11. Gestion des urgences
-      </h3>
-      <p class="mt-2">
-        En cas d'urgence, les données enregistrées par l'application peuvent
-        aider à localiser rapidement les visiteurs présents dans le bâtiment et
-        à assurer leur sécurité.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">12. Flexibilité</h3>
-      <p class="mt-2">
-        Dermepro est un outil polyvalent qui offre de nombreux avantages pour
-        améliorer la sécurité, la gestion des visiteurs et l'expérience globale
-        des visiteurs dans le local de votre entreprise ou une zone spécifique.
-        L’application peut être configurées pour répondre aux besoins
-        spécifiques de votre organisation. Les administrateurs peuvent définir
-        des règles d'accès et des autorisations personnalisées pour chaque
-        visiteur en fonction de leur statut ou de leur objectif de visite.
-      </p>
-    </div>
-  </article>
-  <!-- FAQ section -->
-  <article
-    class="mt-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto border border-4 border-purple-700 rounded-lg"
-  >
-    <img class="h-80" src="{% static 'imgs/faq.png' %}" alt="welcome image" />
-    <div>
-      <h2 class="mt-4 text-black text-3xl font-bold">
-        Foire Aux Question (FAQ)
-      </h2>
-
-      <p class="mt-2">
-        Bienvenue dans la foire aux questions de Dermepro, votre application de
-        gestion des visiteurs ! Voici quelques réponses aux questions les plus
-        fréquemment posées :
-      </p>
-
-      <h3 class="mt-4 text-black text-lg font-bold">Qu'est-ce que Dermepro?</h3>
-      <p class="mt-2">
-        Dermepro, votre application de gestion des visiteurs est un logiciel qui
-        permet aux entreprises ou aux organisations de suivre et de gérer les
-        visites de leurs visiteurs. L'application peut aider à enregistrer les
-        informations des visiteurs, à imprimer des badges d'identification, à
-        suivre les horaires de visite, à envoyer des notifications aux hôtes et
-        à effectuer des vérifications de sécurité.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        Qui peut utiliser Dermepro?
-      </h3>
-      <p class="mt-2">
-        Dermepro est utile pour toutes les entreprises ou organisations qui ont
-        des visiteurs réguliers, notamment les entreprises, les écoles, les
-        hôpitaux, les centres de congrès, les musées, les galeries d'art, les
-        bibliothèques, les centres de formation, etc.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        Comment fonctionne DermePro ?
-      </h3>
-      <p class="mt-2">
-        Dermepro permet de créer un profil pour chaque visiteur, qui peut
-        inclure des informations telles que son nom, son adresse e-mail, sa
-        photo, son entreprise, son numéro de téléphone, etc. Lorsqu'un visiteur
-        arrive, il peut se présenter à la réception, où son identité peut être
-        vérifiée et un badge peut être imprimé. L'application peut également
-        envoyer une notification à l'hôte pour l'informer de l'arrivée du
-        visiteur.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        Comment garantir la sécurité des visiteurs ?
-      </h3>
-      <p class="mt-2">
-        Dermepro peut effectuer des vérifications de sécurité, telles que la
-        vérification de l'identité des visiteurs, la vérification des
-        antécédents criminels et la comparaison avec des listes de surveillance.
-        Elle peut également permettre aux visiteurs de signer des accords de
-        non-divulgation ou de confidentialité avant leur visite.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        Comment gérer les données des visiteurs ?
-      </h3>
-      <p class="mt-2">
-        Les données des visiteurs peuvent être stockées dans une base de données
-        sécurisée et accessible uniquement aux personnes autorisées. Les
-        entreprises et les organisations doivent respecter les lois sur la
-        protection des données personnelles et informer les visiteurs de la
-        façon dont leurs données sont collectées, stockées et utilisées.
-      </p>
-      <h3 class="mt-4 text-black text-lg font-bold">
-        Quelles sont les fonctionnalités les plus courantes de Dermepro?
-      </h3>
-      <p class="mt-2">
-        Les fonctionnalités les plus courantes incluent l'enregistrement des
-        visiteurs, l'impression de badges, la notification des hôtes, les
-        vérifications de sécurité, la gestion des horaires de visite, l'analyse
-        des données et la génération de rapports.
-      </p>
-    </div>
-  </article>
+  <img
+    class="h-80 object-cover"
+    src="{% static 'imgs/present.png' %}"
+    alt="welcome image"
+  />
 </div>
+<!-- functionalities -->
+<article
+  class="my-8 w-4/7 p-8 mx-auto border border-4 border-purple-700 rounded-lg"
+>
+  <h2 class="text-black text-3xl font-bold">
+    Les fonctionnalités de l'application
+  </h2>
+  <h3 class="mt-4 text-black text-lg font-bold">
+    1. Enregistrement des visiteurs
+  </h3>
+  <p class="mt-2">
+    Les entreprises peuvent enregistrer les visiteurs dans la base de données de
+    l'application en remplissant un formulaire. Les informations demandées
+    comprennent le nom, l'adresse e-mail, le numéro de téléphone, la société et
+    le motif de la visite.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">
+    2. Gestion de la file d’attente
+  </h3>
+  <p class="mt-2">
+    Une fonction de la gestion de la file d’attente des visiteurs de la
+    direction générale contrôlée par une assistante de direction.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">3. Gestion des accès</h3>
+  <p class="mt-2">
+    Les entreprises peuvent accorder des autorisations d'accès aux visiteurs
+    pour les zones autorisées. Les visiteurs peuvent être enregistrés pour une
+    période de temps spécifique et peuvent recevoir des badges d'identification
+    pour faciliter leur accès.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">4. Suivi des mouvements</h3>
+  <p class="mt-2">
+    Les entreprises peuvent suivre les mouvements des visiteurs dans
+    l'entreprise. Les informations de suivi incluent l'heure d'arrivée et de
+    départ, ainsi que les zones visitées.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">5. Notifications</h3>
+  <p class="mt-2">
+    Les hôtes peuvent recevoir des notifications en temps réel lorsqu'un
+    visiteur arrive, ils peuvent accepter ou décliner la visite.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">6. Rapports</h3>
+  <p class="mt-2">
+    L'application peut générer des rapports personnalisés sur les mouvements des
+    visiteurs et par hôtes visités.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">7. Messagerie</h3>
+  <p class="mt-2">
+    Une fonctionnalité de messagerie groupée ou individuelle est disponible pour
+    les hôtes pour toutes discussion interne.
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">8. Signature électronique</h3>
+  <p class="mt-2">
+    Les visiteurs peuvent signer électroniquement des formulaires ou des accords
+    de non-divulgation à travers une tablette électronique
+  </p>
+  <h3 class="mt-4 text-black text-lg font-bold">9. Gestion des retours</h3>
+  <p class="mt-2">
+    Les entreprises peuvent enregistrer le départ des visiteurs, leurs
+    commentaires et leurs retours d'expérience pour améliorer leur expérience
+    future. Nous espérons que cette présentation vous a donné un aperçu de
+    toutes les fonctionnalités disponibles dans notre application Web de gestion
+    des visiteurs. N'hésitez pas à nous contacter pour toute question ou pour
+    planifier une démonstration en direc
+  </p>
+</article>
+<!-- Support -->
+<article
+  class="my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border border-4 border-purple-700 rounded-lg"
+>
+  <div>
+    <h2 class="text-black text-3xl font-bold">Support</h2>
+    <p class="mt-2">
+      Bienvenue sur notre page de support. Nous sommes là pour vous aider à
+      résoudre tous les problèmes que vous pourriez rencontrer. Que vous ayez
+      des questions sur nos services ou sur notre application, ou que vous ayez
+      besoin d'une assistance technique, nous sommes là pour vous accompagner.
+      Merci de nous avoir contactés et nous sommes impatients de vous aider. Il
+      vous suffira de remplir le formulaire si dessous :
+    </p>
+    <ol>
+      <li>1 - Raison sociale : [Veuillez renseigner votre Raison sociale]</li>
+      <li>2 - Nom complet : [Veuillez renseigner votre nom complet]</li>
+      <li>3 - Adresse e-mail : [Veuillez renseigner votre adresse e-mail]</li>
+      <li>
+        4 - Numéro de téléphone : [Veuillez renseigner votre Numéro de
+        téléphone]
+      </li>
+      <li>
+        5 - Sujet : Description du problème : [Zone de texte pour décrire le
+        problème]
+      </li>
+      <li>
+        6 - Priorité : [Menu déroulant pour sélectionner la priorité : haute,
+        moyenne, faible]
+      </li>
+      <li>
+        7 - Captures d'écran : [Zone pour télécharger des captures d'écran du
+        problème]
+      </li>
+    </ol>
+    <p>
+      Informations supplémentaires : [Zone de texte pour fournir des
+      informations supplémentaires ou des commentaires] Une fois que vous avez
+      rempli le formulaire, cliquez sur "Envoyer" pour soumettre votre demande
+      de support. Nous ferons de notre mieux pour répondre à votre demande dans
+      les plus brefs délais.
+    </p>
+  </div>
+  <img
+    class="h-80 object-cover"
+    src="{% static 'imgs/support.png' %}"
+    alt="welcome image"
+  />
+</article>
+<!-- how it works section -->
+<article
+  class="my-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto bg-purple-100 rounded-lg"
+>
+  <img
+    class="h-80 object-cover"
+    src="{% static 'imgs/present.png' %}"
+    alt="welcome image"
+  />
+  <div>
+    <h2 class="mt-4 text-black text-3xl font-bold">Comment ça marche (CCM)</h2>
+
+    <p class="mt-2">
+      Derme Pro, votre application de gestion des visiteurs est un outil qui
+      permet de suivre et de contrôler les entrées et les sorties des visiteurs
+      dans un bâtiment ou dans une zone spécifique. Voici les étapes générales
+      de son fonctionnement :
+    </p>
+
+    <h3 class="mt-4 text-black text-lg font-bold">
+      1.Enregistrement des visiteurs
+    </h3>
+    <p class="mt-2">
+      A l'entrée de l'immeuble ou à l’accueil, le visiteur est enregistré par
+      une personne habilitée, qui leur demande leur nom, leur entreprise, leur
+      numéro de téléphone, leur adresse e-mail, leur identité et le but de leur
+      visite.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">2.Attribution d'un badge</h3>
+    <p class="mt-2">
+      Une fois que les visiteurs sont enregistrés et identifiés, ils se voient
+      attribuer un badge d'identification ou un code QR qui leur permettra
+      d'accéder aux zones autorisées.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">3.Suivi des visiteurs</h3>
+    <p class="mt-2">
+      L’application enregistre le mouvement des visiteurs dans le bâtiment, en
+      enregistrant leur heure d'entrée et de sortie. A la sortie les visiteurs
+      signent via une tablette électronique.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">4.Notification des hôtes</h3>
+    <p class="mt-2">
+      L’application peut automatiquement notifier les hôtes de la visite de leur
+      invité, par e-mail ou par SMS.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">5.Gestion des données</h3>
+    <p class="mt-2">
+      Toutes les informations relatives aux visiteurs sont stockées dans une
+      base de données, permettant ainsi aux gestionnaires de suivre les
+      visiteurs et de générer des rapports d'activité.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      7.Personnalisation des profils de visiteurs
+    </h3>
+    <p class="mt-2">
+      L’application peut permettre aux hôtes de personnaliser les profils des
+      visiteurs, en ajoutant des informations complémentaires telles que leur
+      photo, leur titre ou leur département, pour faciliter leur identification.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      8.Gestion des autorisations
+    </h3>
+    <p class="mt-2">
+      Les administrateurs peuvent définir des autorisations d'accès
+      personnalisées pour chaque visiteur en fonction de leur statut, de leur
+      entreprise, de leur objectif de visite ou de leur position dans le
+      bâtiment.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">9.Analyse des données</h3>
+    <p class="mt-2">
+      Les données enregistrées par l'application peuvent être utilisées pour
+      générer des rapports d'activité et des analyses de l'utilisation des
+      zones, des statistiques de fréquentation, de la durée moyenne de visite et
+      d'autres informations utiles pour améliorer l'efficacité de la gestion des
+      visiteurs.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      10. Conformité réglementaire
+    </h3>
+    <p class="mt-2">
+      En gardant une trace précise des visiteurs qui entrent et sortent du
+      bâtiment, l'application peut aider à se conformer aux exigences
+      réglementaires en matière de sécurité et de protection des données.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">11. Gestion des urgences</h3>
+    <p class="mt-2">
+      En cas d'urgence, les données enregistrées par l'application peuvent aider
+      à localiser rapidement les visiteurs présents dans le bâtiment et à
+      assurer leur sécurité.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">12. Flexibilité</h3>
+    <p class="mt-2">
+      Dermepro est un outil polyvalent qui offre de nombreux avantages pour
+      améliorer la sécurité, la gestion des visiteurs et l'expérience globale
+      des visiteurs dans le local de votre entreprise ou une zone spécifique.
+      L’application peut être configurées pour répondre aux besoins spécifiques
+      de votre organisation. Les administrateurs peuvent définir des règles
+      d'accès et des autorisations personnalisées pour chaque visiteur en
+      fonction de leur statut ou de leur objectif de visite.
+    </p>
+  </div>
+</article>
+<!-- FAQ section -->
+<article
+  class="mt-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto border border-4 border-purple-700 rounded-lg"
+>
+  <img class="h-80" src="{% static 'imgs/faq.png' %}" alt="welcome image" />
+  <div>
+    <h2 class="mt-4 text-black text-3xl font-bold">Foire Aux Question (FAQ)</h2>
+
+    <p class="mt-2">
+      Bienvenue dans la foire aux questions de Dermepro, votre application de
+      gestion des visiteurs ! Voici quelques réponses aux questions les plus
+      fréquemment posées :
+    </p>
+
+    <h3 class="mt-4 text-black text-lg font-bold">Qu'est-ce que Dermepro?</h3>
+    <p class="mt-2">
+      Dermepro, votre application de gestion des visiteurs est un logiciel qui
+      permet aux entreprises ou aux organisations de suivre et de gérer les
+      visites de leurs visiteurs. L'application peut aider à enregistrer les
+      informations des visiteurs, à imprimer des badges d'identification, à
+      suivre les horaires de visite, à envoyer des notifications aux hôtes et à
+      effectuer des vérifications de sécurité.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      Qui peut utiliser Dermepro?
+    </h3>
+    <p class="mt-2">
+      Dermepro est utile pour toutes les entreprises ou organisations qui ont
+      des visiteurs réguliers, notamment les entreprises, les écoles, les
+      hôpitaux, les centres de congrès, les musées, les galeries d'art, les
+      bibliothèques, les centres de formation, etc.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      Comment fonctionne DermePro ?
+    </h3>
+    <p class="mt-2">
+      Dermepro permet de créer un profil pour chaque visiteur, qui peut inclure
+      des informations telles que son nom, son adresse e-mail, sa photo, son
+      entreprise, son numéro de téléphone, etc. Lorsqu'un visiteur arrive, il
+      peut se présenter à la réception, où son identité peut être vérifiée et un
+      badge peut être imprimé. L'application peut également envoyer une
+      notification à l'hôte pour l'informer de l'arrivée du visiteur.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      Comment garantir la sécurité des visiteurs ?
+    </h3>
+    <p class="mt-2">
+      Dermepro peut effectuer des vérifications de sécurité, telles que la
+      vérification de l'identité des visiteurs, la vérification des antécédents
+      criminels et la comparaison avec des listes de surveillance. Elle peut
+      également permettre aux visiteurs de signer des accords de non-divulgation
+      ou de confidentialité avant leur visite.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      Comment gérer les données des visiteurs ?
+    </h3>
+    <p class="mt-2">
+      Les données des visiteurs peuvent être stockées dans une base de données
+      sécurisée et accessible uniquement aux personnes autorisées. Les
+      entreprises et les organisations doivent respecter les lois sur la
+      protection des données personnelles et informer les visiteurs de la façon
+      dont leurs données sont collectées, stockées et utilisées.
+    </p>
+    <h3 class="mt-4 text-black text-lg font-bold">
+      Quelles sont les fonctionnalités les plus courantes de Dermepro?
+    </h3>
+    <p class="mt-2">
+      Les fonctionnalités les plus courantes incluent l'enregistrement des
+      visiteurs, l'impression de badges, la notification des hôtes, les
+      vérifications de sécurité, la gestion des horaires de visite, l'analyse
+      des données et la génération de rapports.
+    </p>
+  </div>
+</article>
+
 {% endblock %}

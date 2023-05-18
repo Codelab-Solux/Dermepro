@@ -6,65 +6,44 @@ from django import forms
 class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["username"].help_text = ''
-        self.fields["email"].help_text = ''
-        self.fields["first_name"].help_text = ''
-        self.fields["last_name"].help_text = ''
-        self.fields["password1"].help_text = ''
-        self.fields["password2"].help_text = ''
-
-        self.fields["username"].label = 'Pseudonyme'
-        self.fields["email"].label = 'Adresse mail'
-        self.fields["last_name"].label = 'Nom'
-        self.fields["first_name"].label = 'Prenoms'
-        self.fields["password1"].label = 'Mot de passe'
-        self.fields["password2"].label = 'Confirmer le mot de passe'
+        super(SignupForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"
+        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"
+        self.fields['password1'].label = "Mot de pass"
+        self.fields['password2'].label = "Confirmez votre mot de pass"
 
     class Meta:
         model = CustomUser
         fields = (
             'username', 'email', 'first_name', 'last_name', 'password1', 'password2',
         )
+        labels = {'username': 'Pseudonyme', 'email': 'Email',
+                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', }
         widgets = {
-            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'password1': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'password2': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
+            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
+            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
+            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
+            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
+            'role': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-white w-full"}),
         }
 
 
 class CreateUserForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["username"].help_text = ''
-        self.fields["email"].help_text = ''
-        self.fields["first_name"].help_text = ''
-        self.fields["last_name"].help_text = ''
-        self.fields["password1"].help_text = ''
-        self.fields["password2"].help_text = ''
-        self.fields["tel"].help_text = ''
-        self.fields["address"].help_text = ''
-        self.fields["role"].help_text = ''
-
-        self.fields["username"].label = 'Pseudonyme'
-        self.fields["email"].label = 'Adresse mail'
-        self.fields["last_name"].label = 'Nom'
-        self.fields["first_name"].label = 'Prenoms'
-        self.fields["password1"].label = 'Mot de passe'
-        self.fields["password2"].label = 'Confirmer le mot de passe'
-        self.fields["tel"].label = 'Telephone'
-        self.fields["address"].label = 'Adresse'
-        self.fields["role"].label = 'Role'
+        super(CreateUserForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-white w-full"
+        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-white w-full"
+        self.fields['password1'].label = "Mot de pass"
+        self.fields['password2'].label = "Confirmez votre mot de pass"
 
     class Meta:
         model = CustomUser
         fields = (
-            'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role', 'tel', 'address'
+            'role', 'username', 'email', 'first_name', 'last_name', 'password1', 'password2',  'tel', 'address'
         )
+        labels = {'username': 'Pseudonyme', 'email': 'Email',
+                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'}
         widgets = {
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -82,8 +61,10 @@ class EditUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('__all__')
-        exclude = ('role', 'groups', 'user_permissions',
-                   'password', 'last_login', 'is_staff', 'is_superuser', 'is_active')
+        exclude = (
+            'role', 'groups', 'user_permissions', 'password', 'last_login', 'is_staff', 'is_superuser', 'is_active')
+        labels = {'username': 'Pseudonyme', 'email': 'Email',
+                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'}
         widgets = {
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -100,6 +81,8 @@ class AdminEditUserForm(forms.ModelForm):
         fields = ('__all__')
         exclude = ('groups', 'user_permissions', 'password',
                    'last_login', 'is_staff', 'is_superuser', 'is_active')
+        labels = {'username': 'Pseudonyme', 'email': 'Email',
+                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'}
         widgets = {
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -111,18 +94,18 @@ class AdminEditUserForm(forms.ModelForm):
         }
 
 
-class UserRoleForm(forms.ModelForm):
+class RoleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.fields["name"].label = 'Nom du role en Anglais'
-        self.fields["fr_name"].label = 'Nom du role en Français'
+        self.fields["name"].label = 'Nom du role'
+        self.fields["description"].label = 'Description du role'
         self.fields["sec_level"].label = 'Niveau de sécurité'
 
     class Meta:
-        model = UserRole
+        model = Role
         fields = ('__all__')
         widgets = {
             'name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
-            'fr_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
+            'description': forms.Textarea(attrs={"rows": "10", 'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'sec_level': forms.NumberInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
         }

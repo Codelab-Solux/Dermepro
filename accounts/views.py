@@ -66,15 +66,18 @@ def users(req):
     new_users = CustomUser.objects.all()[:18]
     users = CustomUser.objects.all()
 
-    form = CreateUserForm()
-    if req.method == 'POST':
-        form = CreateUserForm(req.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(req, "Le nouveau compte vien d'être créé.")
-            return redirect('users')
-    else:
+    if req.user.role.sec_level >= 6:
         form = CreateUserForm()
+        if req.method == 'POST':
+            form = CreateUserForm(req.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(req, "Le nouveau compte vien d'être créé.")
+                return redirect('users')
+        else:
+            form = CreateUserForm()
+    else:
+        form = None
 
     ordering = ['last_name']
     context = {
@@ -101,7 +104,7 @@ def user_profile(req, pk):
                 form.save()
                 return redirect('users')
 
-    if user.role == 'admin':
+    if user.role.sec_level >= 6:
         form = AdminEditUserForm(instance=profile)
         if req.method == 'POST':
             form = AdminEditUserForm(req.POST, req.FILES, instance=profile)
@@ -122,7 +125,7 @@ def user_profile(req, pk):
 
 
 class AjaxRolesView(ListView):
-    model = UserRole
+    model = Role
     template_name = 'ajax_params.html'
     context_object_name = 'user_roles'
 
@@ -133,7 +136,7 @@ class AjaxCreateRole(View):
         _fr_name = req.GET.get('fr_name', None)
         _sec_level = req.GET.get('sec_level', None)
 
-        obj = UserRole.objects.create(
+        obj = Role.objects.create(
             name=_name,
             fr_name=_fr_name,
             sec_level=_sec_level
@@ -160,7 +163,7 @@ class AjaxUpdateRole(View):
         _fr_name = req.GET.get('fr_name', None)
         _sec_level = req.GET.get('sec_level', None)
 
-        obj = UserRole.objects.get(id=_id)
+        obj = Role.objects.get(id=_id)
         obj.name = _name,
         obj.fr_name = _fr_name,
         obj.sec_level = _sec_level
@@ -183,7 +186,7 @@ class AjaxUpdateRole(View):
 class AjaxDeleteRole(View):
     def get(self, request):
         id1 = request.GET.get('id', None)
-        UserRole.objects.get(id=id1).delete()
+        Role.objects.get(id=id1).delete()
         data = {
             'deleted': True
         }

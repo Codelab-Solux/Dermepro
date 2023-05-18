@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.views.generic import ListView, View
 
-from accounts.forms import UserRoleForm
-from accounts.models import UserRole
+from accounts.forms import RoleForm
+from accounts.models import Role
 from .models import *
 from .forms import *
 import csv
@@ -15,7 +15,7 @@ import csv
 @login_required(login_url='login')
 def home(req):
     user = req.user
-    if user.role == 'admin':
+    if user.role.sec_level < 4:
         visits = Visit.objects.filter(status='pending')
         curr_visits = Visit.objects.filter(status='open')
         curr_rdvs = Appointment.objects.filter(status='open')
@@ -48,25 +48,37 @@ def home(req):
 @login_required(login_url='login')
 def visits(req):
     user = req.user
-    if user.role == 'admin':
-        visits = Visit.objects.all()
+    if user.role.sec_level > 2:
+        query = req.GET.get('query') if req.GET.get('query') != None else ''
+        visits = Visit.objects.filter(
+            Q(guest__icontains=query)
+            | Q(host__first_name__icontains=query)
+            | Q(tel__icontains=query)
+            | Q(gender__icontains=query)
+            | Q(date__icontains=query)
+            | Q(arrived_at__icontains=query)
+            | Q(departed_at__icontains=query)
+            | Q(nationality__icontains=query)
+            | Q(status__icontains=query)
+            | Q(context__icontains=query)
+            | Q(doc_num__icontains=query)
+        ).distinct()
+
         closed_visits = Visit.objects.filter(
             status='closed').order_by('date')[:18]
     else:
-        visits = Visit.objects.filter(host=user)
+        visits = Visit.objects.filter(
+            Q(guest__icontains=query)
+            | Q(tel__icontains=query)
+            | Q(host__first_name__icontains=query), host=user
+        ).distinct()
         closed_visits = Visit.objects.filter(
             host=user, status='closed').order_by('date')[:18]
-
-    # query = req.GET.get('query') if req.GET.get('query') != None else ''
-    # visits = Visit.objects.filter(
-    #     Q(guest__icontains=query)
-    #     | Q(tel__icontains=query)
-    #     | Q(host__first_name__icontains=query)
-    # ).distinct()
 
     form = VisitForm()
     if req.method == 'POST':
         form = VisitForm(req.POST)
+        form.instance.status = 'pending'
         if form.is_valid():
             form.save()
             return redirect('visits')
@@ -87,10 +99,8 @@ def visits(req):
 def visit_detail(req, pk):
     user = req.user
     visit = Visit.objects.get(id=pk)
-    if visit == None:
-        return redirect('visits')
 
-    if user.role != 'admin' and user != visit.host:
+    if user.role.sec_level < 4 and user != visit.host:
         return redirect('visits')
 
     form = EditVisitForm(instance=visit)
@@ -111,7 +121,7 @@ def visit_detail(req, pk):
 @login_required(login_url='login')
 def delete_visit(req, pk):
     visit = Visit.objects.get(id=pk)
-    if req.user.role != 'admin':
+    if req.user.role.sec_level < 4:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     visit.delete()
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
@@ -138,13 +148,13 @@ def visit_csv(req):
 @ login_required(login_url='login')
 def appointments(req):
     user = req.user
-    if user.role == 'admin':
+    if user.role.sec_level >= 3:
         appointments = Appointment.objects.all()
         pending_vips = Appointment.objects.filter(
             is_vip=True, status='pending').order_by('date')[:15]
 
     else:
-        return redirect('home')
+        return redirect(req.META.get('HTTP_REFERER', '/'))
 
     query = req.GET.get('query') if req.GET.get('query') != None else ''
     appointments = Appointment.objects.filter(
@@ -153,13 +163,16 @@ def appointments(req):
         | Q(host__first_name__icontains=query)
     ).distinct()
 
-    form = AppointmentForm()
-    if req.method == 'POST':
-        form = AppointmentForm(req.POST)
-        form.instance.host = user
-        if form.is_valid():
-            form.save()
-            return redirect('appointments')
+    if req.user.role.sec_level >= 4:
+        form = AppointmentForm()
+        if req.method == 'POST':
+            form = AppointmentForm(req.POST)
+            form.instance.host = user
+            if form.is_valid():
+                form.save()
+                return redirect('appointments')
+    else:
+        form = None
 
     ordering = ['date']
     context = {
@@ -177,15 +190,16 @@ def appointments(req):
 def appointment_detail(req, pk):
     user = req.user
     appointment = Appointment.objects.get(id=pk)
-    if user != appointment.host:
-        return redirect('home')
 
-    form = EditAppointmentForm(instance=appointment)
-    if req.method == 'POST':
-        form = EditAppointmentForm(req.POST, instance=appointment)
-        if form.is_valid():
-            form.save()
-            return redirect('appointments')
+    if user.role.sec_level > 6 or user == appointment.host:
+        form = EditAppointmentForm(instance=appointment)
+        if req.method == 'POST':
+            form = EditAppointmentForm(req.POST, instance=appointment)
+            if form.is_valid():
+                form.save()
+                return redirect('appointments')
+    else:
+        form = None
     context = {
         "rdv_page": "active",
         'title': 'appointment_detail',
@@ -197,8 +211,9 @@ def appointment_detail(req, pk):
 
 @login_required(login_url='login')
 def delete_rdv(req, pk):
+    user = req.user
     appointment = Appointment.objects.get(id=pk)
-    if req.user.role != 'admin':
+    if user.role.sec_level < 6 or user != appointment.host:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     appointment.delete()
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
@@ -207,8 +222,8 @@ def delete_rdv(req, pk):
 @login_required(login_url='login')
 def rdv_csv(req):
     user = req.user
-    if user.role != 'admin':
-        return redirect('home')
+    if user.role.sec_level < 4:
+        return redirect(req.META.get('HTTP_REFERER', '/'))
 
     res = HttpResponse(content_type='text/csv')
     res['Content-Disposition'] = 'attachement; filename=rendez_vous.csv'
@@ -229,14 +244,14 @@ def rdv_csv(req):
 @ login_required(login_url='login')
 def dashboard(req):
     user = req.user
-    if user.role == 'admin':
-        appointments = Appointment.objects.all()
-        visits = Visit.objects.all()
-        users = CustomUser.objects.all()
-    else:
+    if user.role.sec_level < 3:
         visits = Visit.objects.filter(host=user)
         users = CustomUser.objects.all()
         appointments = []
+    else:
+        appointments = Appointment.objects.all()
+        visits = Visit.objects.all()
+        users = CustomUser.objects.all()
 
     f_visits = int(Visit.objects.filter(gender='female').count())
     m_visits = int(Visit.objects.filter(gender='male').count())
@@ -266,17 +281,17 @@ def dashboard(req):
 @ login_required(login_url='login')
 def parameters(req):
     user = req.user
-    if user.role == 'admin':
+    if user.role.sec_level < 4:
+        return redirect(req.META.get('HTTP_REFERER', '/'))
+    else:
         appointments = Appointment.objects.all()
         visits = Visit.objects.all()
         users = CustomUser.objects.all()
-        user_roles = UserRole.objects.all()
-    else:
-        return redirect('home')
+        user_roles = Role.objects.all()
 
-    form = UserRoleForm()
+    form = RoleForm()
     if req.method == 'POST':
-        form = UserRoleForm(req.POST)
+        form = RoleForm(req.POST)
         if form.is_valid():
             form.save()
             return redirect('parameters')
@@ -295,13 +310,13 @@ def parameters(req):
 @ login_required(login_url='login')
 def role_detail(req, pk):
     user = req.user
-    curr_role = UserRole.objects.get(id=pk)
-    if user.role != 'admin':
-        return redirect('home')
+    curr_role = Role.objects.get(id=pk)
+    if user.role.sec_level < 4:
+        return redirect(req.META.get('HTTP_REFERER', '/'))
 
-    form = UserRoleForm(instance=curr_role)
+    form = RoleForm(instance=curr_role)
     if req.method == 'POST':
-        form = UserRoleForm(req.POST, instance=curr_role)
+        form = RoleForm(req.POST, instance=curr_role)
         if form.is_valid():
             form.save()
             return redirect('parameters')
@@ -316,8 +331,8 @@ def role_detail(req, pk):
 
 @login_required(login_url='login')
 def delete_role(req, pk):
-    user_role = UserRole.objects.get(id=pk)
-    if req.user.role != 'admin':
+    user_role = Role.objects.get(id=pk)
+    if req.user.role.sec_level < 4:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     user_role.delete()
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
