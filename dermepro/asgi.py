@@ -22,3 +22,5 @@ application = ProtocolTypeRouter({
         URLRouter(routing.websocket_urlpatterns)
     ))
 })
+
+app = get_asgi_application()

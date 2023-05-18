@@ -3,24 +3,24 @@
     "model": "admin.logentry",
     "pk": 1,
     "fields": {
-      "action_time": "2023-03-31T09:16:45.901Z",
+      "action_time": "2023-05-18T11:21:48.568Z",
       "user": 1,
-      "content_type": 7,
+      "content_type": 9,
       "object_id": "1",
-      "object_repr": "Mensanvi Agou",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
+      "object_repr": "admin@app.com",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Username\", \"First name\", \"Last name\", \"Role\"]}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 2,
     "fields": {
-      "action_time": "2023-03-31T09:24:09.411Z",
+      "action_time": "2023-05-18T11:23:23.905Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "2",
-      "object_repr": "Jean Baptist Kuam",
+      "content_type": 10,
+      "object_id": "1",
+      "object_repr": "Stagiaire",
       "action_flag": 1,
       "change_message": "[{\"added\": {}}]"
     }
@@ -29,11 +29,11 @@
     "model": "admin.logentry",
     "pk": 3,
     "fields": {
-      "action_time": "2023-03-31T10:00:49.062Z",
+      "action_time": "2023-05-18T11:23:43.604Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "3",
-      "object_repr": "Nicole Dubois",
+      "content_type": 10,
+      "object_id": "2",
+      "object_repr": "GΘnΘral",
       "action_flag": 1,
       "change_message": "[{\"added\": {}}]"
     }
@@ -42,11 +42,11 @@
     "model": "admin.logentry",
     "pk": 4,
     "fields": {
-      "action_time": "2023-04-01T12:03:46.037Z",
+      "action_time": "2023-05-18T11:24:03.017Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "4",
-      "object_repr": "Lauriane Agassa",
+      "content_type": 10,
+      "object_id": "3",
+      "object_repr": "SecrΘtaire",
       "action_flag": 1,
       "change_message": "[{\"added\": {}}]"
     }
@@ -55,11 +55,11 @@
     "model": "admin.logentry",
     "pk": 5,
     "fields": {
-      "action_time": "2023-04-01T20:22:24.513Z",
+      "action_time": "2023-05-18T11:25:10.098Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "5",
-      "object_repr": "Foli Vieux",
+      "content_type": 10,
+      "object_id": "4",
+      "object_repr": "SΘcuritΘ",
       "action_flag": 1,
       "change_message": "[{\"added\": {}}]"
     }
@@ -68,11 +68,11 @@
     "model": "admin.logentry",
     "pk": 6,
     "fields": {
-      "action_time": "2023-04-08T10:07:52.338Z",
+      "action_time": "2023-05-18T11:25:40.849Z",
       "user": 1,
-      "content_type": 6,
-      "object_id": "2",
-      "object_repr": "pacman@aol.com",
+      "content_type": 10,
+      "object_id": "5",
+      "object_repr": "Directeur",
       "action_flag": 1,
       "change_message": "[{\"added\": {}}]"
     }
@@ -81,1027 +81,78 @@
     "model": "admin.logentry",
     "pk": 7,
     "fields": {
-      "action_time": "2023-04-08T10:09:21.299Z",
+      "action_time": "2023-05-18T11:25:53.758Z",
       "user": 1,
-      "content_type": 6,
-      "object_id": "1",
-      "object_repr": "admin@app.com",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Address\", \"Tel\"]}}]"
+      "content_type": 10,
+      "object_id": "6",
+      "object_repr": "Admin",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 8,
     "fields": {
-      "action_time": "2023-04-08T10:13:02.673Z",
+      "action_time": "2023-05-18T11:26:13.969Z",
       "user": 1,
-      "content_type": 6,
-      "object_id": "2",
-      "object_repr": "pacman@aol.com",
+      "content_type": 10,
+      "object_id": "3",
+      "object_repr": "SecrΘtaire",
       "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\", \"Sec level\"]}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 9,
     "fields": {
-      "action_time": "2023-04-08T11:38:01.281Z",
+      "action_time": "2023-05-18T11:26:56.763Z",
       "user": 1,
-      "content_type": 6,
+      "content_type": 10,
       "object_id": "2",
-      "object_repr": "pacman@aol.com",
+      "object_repr": "GΘnΘral",
       "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Username\"]}}]"
+      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\", \"Sec level\"]}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 10,
     "fields": {
-      "action_time": "2023-04-08T11:38:11.222Z",
+      "action_time": "2023-05-18T11:27:06.192Z",
       "user": 1,
-      "content_type": 6,
+      "content_type": 10,
       "object_id": "1",
-      "object_repr": "admin@app.com",
+      "object_repr": "Stagiaire",
       "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Username\"]}}]"
+      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 11,
     "fields": {
-      "action_time": "2023-04-08T17:12:09.976Z",
+      "action_time": "2023-05-18T11:43:31.257Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "1",
-      "object_repr": "Lauriane Agassa",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
+      "content_type": 10,
+      "object_id": "6",
+      "object_repr": "Administrateur",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
     }
   },
   {
     "model": "admin.logentry",
     "pk": 12,
     "fields": {
-      "action_time": "2023-04-08T17:13:56.443Z",
+      "action_time": "2023-05-18T11:43:44.475Z",
       "user": 1,
-      "content_type": 7,
-      "object_id": "1",
-      "object_repr": "Lauriane Agassa",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Is vip\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 13,
-    "fields": {
-      "action_time": "2023-04-08T17:17:37.397Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "2",
-      "object_repr": "Foli Vieux",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 14,
-    "fields": {
-      "action_time": "2023-04-08T17:18:03.884Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "1",
-      "object_repr": "Lauriane Agassa",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Date\", \"Time\", \"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 15,
-    "fields": {
-      "action_time": "2023-04-08T17:19:38.938Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "2",
-      "object_repr": "Foli Vieux",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Is vip\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 16,
-    "fields": {
-      "action_time": "2023-04-08T17:21:40.038Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "4",
-      "object_repr": "Jean Baptist Kuam",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Guest\", \"Tel\", \"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 17,
-    "fields": {
-      "action_time": "2023-04-08T17:22:24.255Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "3",
-      "object_repr": "Akakpo Pierrot",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Host\", \"Guest\", \"Tel\", \"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 18,
-    "fields": {
-      "action_time": "2023-04-08T17:25:48.279Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "2",
-      "object_repr": "Nikada HΘlΦne",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Guest\", \"Tel\", \"Gender\", \"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 19,
-    "fields": {
-      "action_time": "2023-04-08T19:35:39.708Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "5",
-      "object_repr": "Jean Bertrand",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 20,
-    "fields": {
-      "action_time": "2023-04-11T12:29:44.176Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "3",
-      "object_repr": "Akakpo Pierrot",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 21,
-    "fields": {
-      "action_time": "2023-04-11T12:30:10.748Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "4",
-      "object_repr": "Jean B. Kuam",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Guest\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 22,
-    "fields": {
-      "action_time": "2023-04-11T18:23:05.562Z",
-      "user": 1,
-      "content_type": 6,
+      "content_type": 9,
       "object_id": "1",
       "object_repr": "admin@app.com",
       "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Role\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 23,
-    "fields": {
-      "action_time": "2023-04-12T08:32:46.377Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "1",
-      "object_repr": "Role object (1)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 24,
-    "fields": {
-      "action_time": "2023-04-12T08:32:58.932Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "2",
-      "object_repr": "Role object (2)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 25,
-    "fields": {
-      "action_time": "2023-04-12T08:33:09.065Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "3",
-      "object_repr": "Role object (3)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 26,
-    "fields": {
-      "action_time": "2023-04-12T08:33:20.910Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "4",
-      "object_repr": "Role object (4)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 27,
-    "fields": {
-      "action_time": "2023-04-12T08:33:44.710Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "5",
-      "object_repr": "Role object (5)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 28,
-    "fields": {
-      "action_time": "2023-04-12T08:48:32.560Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "5",
-      "object_repr": "General",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 29,
-    "fields": {
-      "action_time": "2023-04-12T08:48:42.011Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "4",
-      "object_repr": "Secretary",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 30,
-    "fields": {
-      "action_time": "2023-04-12T08:48:51.046Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "3",
-      "object_repr": "Manager",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 31,
-    "fields": {
-      "action_time": "2023-04-12T08:49:10.258Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "2",
-      "object_repr": "Security",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 32,
-    "fields": {
-      "action_time": "2023-04-12T08:49:14.162Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "4",
-      "object_repr": "Secretary",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 33,
-    "fields": {
-      "action_time": "2023-04-12T08:49:29.737Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "1",
-      "object_repr": "Admin",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Fr name\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 34,
-    "fields": {
-      "action_time": "2023-04-12T08:49:36.732Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "5",
-      "object_repr": "General",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 35,
-    "fields": {
-      "action_time": "2023-04-12T08:49:39.978Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "4",
-      "object_repr": "Secretary",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 36,
-    "fields": {
-      "action_time": "2023-04-12T08:49:43.387Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "3",
-      "object_repr": "Manager",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 37,
-    "fields": {
-      "action_time": "2023-04-12T08:49:46.996Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "2",
-      "object_repr": "Security",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 38,
-    "fields": {
-      "action_time": "2023-04-12T08:49:49.943Z",
-      "user": 1,
-      "content_type": 11,
-      "object_id": "1",
-      "object_repr": "Admin",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 39,
-    "fields": {
-      "action_time": "2023-04-12T13:25:40.351Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "2",
-      "object_repr": "Nikada HΘlΦne",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 40,
-    "fields": {
-      "action_time": "2023-04-13T17:51:36.899Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "test1",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 41,
-    "fields": {
-      "action_time": "2023-04-13T17:51:54.457Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "admin@app.com and pacman@aol.com",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Users\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 42,
-    "fields": {
-      "action_time": "2023-04-16T12:42:46.413Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "1",
-      "object_repr": "Lauriane Agassa",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 43,
-    "fields": {
-      "action_time": "2023-04-16T12:51:23.076Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "2",
-      "object_repr": "Foli Togbe",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Guest\", \"Is vip\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 44,
-    "fields": {
-      "action_time": "2023-04-16T13:44:01.582Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "3",
-      "object_repr": "Akakpo Pierrot",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 45,
-    "fields": {
-      "action_time": "2023-04-16T13:44:56.743Z",
-      "user": 1,
-      "content_type": 7,
-      "object_id": "3",
-      "object_repr": "Akakpo Pierrot",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 46,
-    "fields": {
-      "action_time": "2023-04-16T14:20:25.533Z",
-      "user": 1,
-      "content_type": 8,
-      "object_id": "6",
-      "object_repr": "Lauriane Agassi",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 47,
-    "fields": {
-      "action_time": "2023-04-21T09:01:25.871Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "2",
-      "object_repr": "Thread object (2)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 48,
-    "fields": {
-      "action_time": "2023-04-21T09:01:41.097Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "Thread object (1)",
-      "action_flag": 2,
-      "change_message": "[{\"changed\": {\"fields\": [\"First person\", \"Second person\"]}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 49,
-    "fields": {
-      "action_time": "2023-04-21T09:01:46.191Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "2",
-      "object_repr": "Thread object (2)",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 50,
-    "fields": {
-      "action_time": "2023-04-21T09:01:49.449Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "Thread object (1)",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 51,
-    "fields": {
-      "action_time": "2023-04-21T09:02:08.424Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "3",
-      "object_repr": "Thread object (3)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 52,
-    "fields": {
-      "action_time": "2023-04-21T10:26:09.999Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "Admin & funny_k8>",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 53,
-    "fields": {
-      "action_time": "2023-04-21T10:26:40.396Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "1",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 54,
-    "fields": {
-      "action_time": "2023-04-21T10:27:12.531Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "2",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 55,
-    "fields": {
-      "action_time": "2023-04-21T11:40:23.929Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "2",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 56,
-    "fields": {
-      "action_time": "2023-04-21T11:40:27.121Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "1",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 2,
-      "change_message": "[]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 57,
-    "fields": {
-      "action_time": "2023-04-22T14:55:20.902Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "9",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 58,
-    "fields": {
-      "action_time": "2023-04-22T14:55:24.781Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "8",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 59,
-    "fields": {
-      "action_time": "2023-04-26T16:12:50.372Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "5",
-      "object_repr": "Admin & Sonya_b>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 60,
-    "fields": {
-      "action_time": "2023-04-26T16:31:00.607Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "6",
-      "object_repr": "Admin & Sonya_b>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 61,
-    "fields": {
-      "action_time": "2023-04-26T16:32:59.252Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "4",
-      "object_repr": "Admin & k_kodom>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 62,
-    "fields": {
-      "action_time": "2023-04-26T16:36:32.613Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "7",
-      "object_repr": "Admin & Sonya_b>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 63,
-    "fields": {
-      "action_time": "2023-04-26T21:13:04.712Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "10",
-      "object_repr": "funny_k8 & Sonya_b>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 64,
-    "fields": {
-      "action_time": "2023-04-26T21:13:31.074Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "8",
-      "object_repr": "Admin & Sonya_b>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 65,
-    "fields": {
-      "action_time": "2023-04-27T00:11:55.470Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "3",
-      "object_repr": "funny_k8 & Pacman>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 66,
-    "fields": {
-      "action_time": "2023-04-27T00:12:07.144Z",
-      "user": 1,
-      "content_type": 10,
-      "object_id": "2",
-      "object_repr": "Admin & Pacman>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 67,
-    "fields": {
-      "action_time": "2023-04-27T00:29:18.143Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "70",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 68,
-    "fields": {
-      "action_time": "2023-04-27T00:29:18.151Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "69",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 69,
-    "fields": {
-      "action_time": "2023-04-27T00:29:18.160Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "68",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 70,
-    "fields": {
-      "action_time": "2023-04-27T00:29:18.192Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "67",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 71,
-    "fields": {
-      "action_time": "2023-04-27T00:29:18.199Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "66",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 72,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.586Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "79",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 73,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.600Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "78",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 74,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.608Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "77",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 75,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.616Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "76",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 76,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.624Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "75",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 77,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.631Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "74",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 78,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.641Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "73",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 79,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.649Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "72",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 80,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.656Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "71",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 81,
-    "fields": {
-      "action_time": "2023-04-27T00:36:24.664Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "65",
-      "object_repr": "From <Thread - Pacman & Admin>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 82,
-    "fields": {
-      "action_time": "2023-05-01T21:29:09.704Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "97",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 83,
-    "fields": {
-      "action_time": "2023-05-02T10:14:38.719Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "32",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 84,
-    "fields": {
-      "action_time": "2023-05-02T18:09:27.989Z",
-      "user": 1,
-      "content_type": 12,
-      "object_id": "7",
-      "object_repr": "Refrigeration",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 85,
-    "fields": {
-      "action_time": "2023-05-17T15:05:26.336Z",
-      "user": 1,
-      "content_type": 9,
-      "object_id": "33",
-      "object_repr": "From <Thread - Admin & funny_k8>>",
-      "action_flag": 3,
-      "change_message": ""
+      "change_message": "[{\"changed\": {\"fields\": [\"Role\"]}}]"
     }
   },
   {
@@ -1288,36 +339,36 @@
     "model": "auth.permission",
     "pk": 21,
     "fields": {
-      "name": "Can add custom user",
+      "name": "Can add visit",
       "content_type": 6,
-      "codename": "add_customuser"
+      "codename": "add_visit"
     }
   },
   {
     "model": "auth.permission",
     "pk": 22,
     "fields": {
-      "name": "Can change custom user",
+      "name": "Can change visit",
       "content_type": 6,
-      "codename": "change_customuser"
+      "codename": "change_visit"
     }
   },
   {
     "model": "auth.permission",
     "pk": 23,
     "fields": {
-      "name": "Can delete custom user",
+      "name": "Can delete visit",
       "content_type": 6,
-      "codename": "delete_customuser"
+      "codename": "delete_visit"
     }
   },
   {
     "model": "auth.permission",
     "pk": 24,
     "fields": {
-      "name": "Can view custom user",
+      "name": "Can view visit",
       "content_type": 6,
-      "codename": "view_customuser"
+      "codename": "view_visit"
     }
   },
   {
@@ -1360,216 +411,216 @@
     "model": "auth.permission",
     "pk": 29,
     "fields": {
-      "name": "Can add visit",
+      "name": "Can add visit_types",
       "content_type": 8,
-      "codename": "add_visit"
+      "codename": "add_visit_types"
     }
   },
   {
     "model": "auth.permission",
     "pk": 30,
     "fields": {
-      "name": "Can change visit",
+      "name": "Can change visit_types",
       "content_type": 8,
-      "codename": "change_visit"
+      "codename": "change_visit_types"
     }
   },
   {
     "model": "auth.permission",
     "pk": 31,
     "fields": {
-      "name": "Can delete visit",
+      "name": "Can delete visit_types",
       "content_type": 8,
-      "codename": "delete_visit"
+      "codename": "delete_visit_types"
     }
   },
   {
     "model": "auth.permission",
     "pk": 32,
     "fields": {
-      "name": "Can view visit",
+      "name": "Can view visit_types",
       "content_type": 8,
-      "codename": "view_visit"
+      "codename": "view_visit_types"
     }
   },
   {
     "model": "auth.permission",
     "pk": 33,
     "fields": {
-      "name": "Can add message",
+      "name": "Can add custom user",
       "content_type": 9,
-      "codename": "add_message"
+      "codename": "add_customuser"
     }
   },
   {
     "model": "auth.permission",
     "pk": 34,
     "fields": {
-      "name": "Can change message",
+      "name": "Can change custom user",
       "content_type": 9,
-      "codename": "change_message"
+      "codename": "change_customuser"
     }
   },
   {
     "model": "auth.permission",
     "pk": 35,
     "fields": {
-      "name": "Can delete message",
+      "name": "Can delete custom user",
       "content_type": 9,
-      "codename": "delete_message"
+      "codename": "delete_customuser"
     }
   },
   {
     "model": "auth.permission",
     "pk": 36,
     "fields": {
-      "name": "Can view message",
+      "name": "Can view custom user",
       "content_type": 9,
-      "codename": "view_message"
+      "codename": "view_customuser"
     }
   },
   {
     "model": "auth.permission",
     "pk": 37,
     "fields": {
-      "name": "Can add thread",
+      "name": "Can add user role",
       "content_type": 10,
-      "codename": "add_thread"
+      "codename": "add_userrole"
     }
   },
   {
     "model": "auth.permission",
     "pk": 38,
     "fields": {
-      "name": "Can change thread",
+      "name": "Can change user role",
       "content_type": 10,
-      "codename": "change_thread"
+      "codename": "change_userrole"
     }
   },
   {
     "model": "auth.permission",
     "pk": 39,
     "fields": {
-      "name": "Can delete thread",
+      "name": "Can delete user role",
       "content_type": 10,
-      "codename": "delete_thread"
+      "codename": "delete_userrole"
     }
   },
   {
     "model": "auth.permission",
     "pk": 40,
     "fields": {
-      "name": "Can view thread",
+      "name": "Can view user role",
       "content_type": 10,
-      "codename": "view_thread"
+      "codename": "view_userrole"
     }
   },
   {
     "model": "auth.permission",
     "pk": 41,
     "fields": {
-      "name": "Can add role",
+      "name": "Can add thread",
       "content_type": 11,
-      "codename": "add_role"
+      "codename": "add_thread"
     }
   },
   {
     "model": "auth.permission",
     "pk": 42,
     "fields": {
-      "name": "Can change role",
+      "name": "Can change thread",
       "content_type": 11,
-      "codename": "change_role"
+      "codename": "change_thread"
     }
   },
   {
     "model": "auth.permission",
     "pk": 43,
     "fields": {
-      "name": "Can delete role",
+      "name": "Can delete thread",
       "content_type": 11,
-      "codename": "delete_role"
+      "codename": "delete_thread"
     }
   },
   {
     "model": "auth.permission",
     "pk": 44,
     "fields": {
-      "name": "Can view role",
+      "name": "Can view thread",
       "content_type": 11,
-      "codename": "view_role"
+      "codename": "view_thread"
     }
   },
   {
     "model": "auth.permission",
     "pk": 45,
     "fields": {
-      "name": "Can add user role",
+      "name": "Can add message",
       "content_type": 12,
-      "codename": "add_userrole"
+      "codename": "add_message"
     }
   },
   {
     "model": "auth.permission",
     "pk": 46,
     "fields": {
-      "name": "Can change user role",
+      "name": "Can change message",
       "content_type": 12,
-      "codename": "change_userrole"
+      "codename": "change_message"
     }
   },
   {
     "model": "auth.permission",
     "pk": 47,
     "fields": {
-      "name": "Can delete user role",
+      "name": "Can delete message",
       "content_type": 12,
-      "codename": "delete_userrole"
+      "codename": "delete_message"
     }
   },
   {
     "model": "auth.permission",
     "pk": 48,
     "fields": {
-      "name": "Can view user role",
+      "name": "Can view message",
       "content_type": 12,
-      "codename": "view_userrole"
+      "codename": "view_message"
     }
   },
   {
     "model": "auth.permission",
     "pk": 49,
     "fields": {
-      "name": "Can add visit_types",
-      "content_type": 13,
-      "codename": "add_visit_types"
+      "name": "Can add role",
+      "content_type": 10,
+      "codename": "add_role"
     }
   },
   {
     "model": "auth.permission",
     "pk": 50,
     "fields": {
-      "name": "Can change visit_types",
-      "content_type": 13,
-      "codename": "change_visit_types"
+      "name": "Can change role",
+      "content_type": 10,
+      "codename": "change_role"
     }
   },
   {
     "model": "auth.permission",
     "pk": 51,
     "fields": {
-      "name": "Can delete visit_types",
-      "content_type": 13,
-      "codename": "delete_visit_types"
+      "name": "Can delete role",
+      "content_type": 10,
+      "codename": "delete_role"
     }
   },
   {
     "model": "auth.permission",
     "pk": 52,
     "fields": {
-      "name": "Can view visit_types",
-      "content_type": 13,
-      "codename": "view_visit_types"
+      "name": "Can view role",
+      "content_type": 10,
+      "codename": "view_role"
     }
   },
   {
@@ -1600,7 +651,7 @@
   {
     "model": "contenttypes.contenttype",
     "pk": 6,
-    "fields": { "app_label": "accounts", "model": "customuser" }
+    "fields": { "app_label": "base", "model": "visit" }
   },
   {
     "model": "contenttypes.contenttype",
@@ -1610,318 +661,52 @@
   {
     "model": "contenttypes.contenttype",
     "pk": 8,
-    "fields": { "app_label": "base", "model": "visit" }
+    "fields": { "app_label": "base", "model": "visit_types" }
   },
   {
     "model": "contenttypes.contenttype",
     "pk": 9,
-    "fields": { "app_label": "chats", "model": "message" }
+    "fields": { "app_label": "accounts", "model": "customuser" }
   },
   {
     "model": "contenttypes.contenttype",
     "pk": 10,
-    "fields": { "app_label": "chats", "model": "thread" }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 11,
     "fields": { "app_label": "accounts", "model": "role" }
   },
   {
     "model": "contenttypes.contenttype",
-    "pk": 12,
-    "fields": { "app_label": "accounts", "model": "userrole" }
+    "pk": 11,
+    "fields": { "app_label": "chats", "model": "thread" }
   },
   {
     "model": "contenttypes.contenttype",
-    "pk": 13,
-    "fields": { "app_label": "base", "model": "visit_types" }
+    "pk": 12,
+    "fields": { "app_label": "chats", "model": "message" }
   },
   {
     "model": "sessions.session",
-    "pk": "03c0f9u6b5zy6rcp53k786kdmgq0rtsv",
+    "pk": "t28w90k8jnygh3695v3gxeqev50008ta",
     "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1porqI:hPeZm4rNXJHBgu54l3jyBVITjHNX5VHQZ5rga904tnI",
-      "expire_date": "2023-05-02T20:22:22.739Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "0hyajd99ew6rhobd17uzeymlqyfzofur",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1psQ0R:HxG32p96lk2Wk4g0PeKKCei_Cm4fR7cEP3-NDOFvCdY",
-      "expire_date": "2023-05-12T15:27:31.235Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "3ixbbvanc8zcnuhbpgjfgqyrbwh8c69r",
-    "fields": {
-      "session_data": ".eJxVjEEOwiAQRe_C2hAoDAMu3fcMZIBRqoYmpV0Z765NutDtf-_9l4i0rTVunZc4FXEWWpx-t0T5wW0H5U7tNss8t3WZktwVedAux7nw83K4fweVev3WGTgABmfQXD0ygLXOOkrWkAJlVNGcjc0KNSZfgAZwHrUaXEYfSgLx_gC0RzaP:1puJ1N:uOLhGMSHpluqCHJQcVO5JjueY9FGt-d5WDPxxZdvw40",
-      "expire_date": "2023-05-17T20:24:17.403Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "5giaot20njjo8jytsay6z4orfqr4e83d",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1prclJ:pQf9QPR804JMN0YVbdvPagei7_UJ-CV1fi60FzQHP_c",
-      "expire_date": "2023-05-10T10:52:37.888Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "9xkjqqjlqq65p1m2jkaeud2g9hnvcpwo",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1po5sG:oK3ut1FhibYDzpRFbtLwReXezZN6-LBqvs6Swx6rg9s",
-      "expire_date": "2023-04-30T17:09:12.825Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "a8am7ryr5hwm712bgeda10z2fj1ylwbn",
-    "fields": {
-      "session_data": ".eJxVjEEOwiAQRe_C2hBoCwMu3XsGMjOAVA0kpV0Z765NutDtf-_9lwi4rSVsPS1hjuIsRnH63Qj5keoO4h3rrUludV1mkrsiD9rltcX0vBzu30HBXr41OENqQg_MNLKxenAeAcgrzBNn8EBkUwIDbsDslFZGjxjR2YgM0Yn3B-HwOBU:1ptoD3:RwOC-nVCRNcBz0Ne2KXciP6woQEQ4KE1HJ5VMO0aiLM",
-      "expire_date": "2023-05-16T11:30:17.637Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "a93ut1eb6olamb4mtiwi9y7u0pdby17g",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1prMRd:GHVkMZiHF9j3BNovdgeYu-QnXq59citCwECyI4QXDN8",
-      "expire_date": "2023-05-09T17:27:13.768Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "e1siruchguuth8hmrbhefxcs0fjgg3v3",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1posmx:bw5X6rzfAkA07jOMuSBqro3yGCX3sCt3HSrqVZvfoaA",
-      "expire_date": "2023-05-02T21:22:59.662Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "ebeb9xr314snv3yj42k1xn7lb9fgk5f5",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1ptb17:Z6R2X_P9eZ7AiTbLv0tgbLivzQbVBLX2gfTfaX1hVHA",
-      "expire_date": "2023-05-15T21:25:05.045Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "ehqhhu6s8h5ph6ij9co2lwvv4ek8b1gx",
-    "fields": {
-      "session_data": ".eJxVjMsOwiAQRf-FtSHlUTq4dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzUOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxr65jNaIchkQLmBKDIadA40uS9IcwKjSYCmLKNkEgDuOiZcjKsYxTvD-ktOKY:1pzEq0:wBq6_1OIAnvb6SfAn-uhEDwnUTOKy4iF1QX43UdxmcE",
-      "expire_date": "2023-05-31T10:56:56.322Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "g3hj2i1kzx6358se13m5qgnjz2ue0wzj",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1ptwIu:4_N_3B4cG2xBoao0KpqZU8Z-y6vKLcyrhYBk32F31t8",
-      "expire_date": "2023-05-16T20:08:52.437Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "ig0si6bv913688rme3mpxgfvm6bvvte5",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1ppsSj:NYipTJa8HcQZ-u5J1kCAwlxZ94hRFoZQTwHj4B5LYrU",
-      "expire_date": "2023-05-05T15:14:13.561Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "k7rq6rfzbxxs1nweajkq8omj1dlkk0h5",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1pk8yZ:5B6IztlDKKGyrfSvwdvInY3KjSMXb9Mwyuf6iT_ZeRE",
-      "expire_date": "2023-04-19T19:39:23.318Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "lvp56lqtkreuty4xin04q73wtbhib3ew",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1psTAT:qLstA3kV2F6oUJRVuJHPvJpbhEw8y-aqkYhAjBTn8Jk",
-      "expire_date": "2023-05-12T18:50:05.461Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "nt7iqjttesewvmpfhjj46383138v8y2e",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1proN4:n_73lC0tOAAH5ryvVDfwYz3-mujS7SpqzosKBg_ZSNg",
-      "expire_date": "2023-05-10T23:16:22.706Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "tfyhqjsoscgt5nnbdyz4tqu9i4s2ip6a",
-    "fields": {
-      "session_data": ".eJxVjMsOwiAQRf-FtSHlUTq4dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzUOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxr65jNaIchkQLmBKDIadA40uS9IcwKjSYCmLKNkEgDuOiZcjKsYxTvD-ktOKY:1pzI2u:zelon_VH-UKyXnJ-I73bm4eTYfsE_QyN5Rew_uhQFIg",
-      "expire_date": "2023-05-31T14:22:28.490Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "xo8wujnq3lyy8ui4x7fgb9471bypq5yx",
-    "fields": {
-      "session_data": ".eJxVjM0OwiAQhN-FsyH8iLAevfcZyLJLpWogKe3J-O62SQ96nPm-mbeIuC4lrj3PcWJxFVqcfruE9Mx1B_zAem-SWl3mKcldkQftcmicX7fD_Tso2Mu2DtlCYofoLQYgRO2M9wot6hQAR2u2cPEKKBPBaMk6BgNaKUjmzFp8vu0dN8c:1prljz:qPTFvofFqNOXqT16oS9doKOo1VneGWOT_U9Uqht6jUg",
-      "expire_date": "2023-05-10T20:27:51.188Z"
+      "session_data": ".eJxVjMsOwiAQRf-FtSFDKY-6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzUOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrQOXAanIA1sZMeYhoIA2sOWJGRdZB9pOOQCZNCkaPJqNHsIzW0yjeH-rwOEY:1pzbBJ:zrR9mDOJfsgETjS8dXh8YSaJFkD9XfvGzpZMONmQmmU",
+      "expire_date": "2023-06-01T10:48:25.559Z"
     }
   },
   {
     "model": "base.visit",
-    "pk": 4,
+    "pk": 1,
     "fields": {
       "host": 1,
-      "guest": "Jean  KouamΘ",
+      "guest": "Mensanvi Agou",
       "civility": "M.",
       "context": "professionelle",
-      "tel": 70711,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T18:27:36.733Z",
+      "tel": null,
+      "nationality": null,
+      "date": "2023-05-18T13:15:11.189Z",
       "arrived_at": null,
       "departed_at": null,
       "gender": "male",
-      "id_doc": "id_card",
-      "doc_num": null,
-      "status": "closed"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 5,
-    "fields": {
-      "host": 2,
-      "guest": "Jean Bertrand",
-      "civility": "",
-      "context": "professionelle",
-      "tel": 78859635,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T18:27:36.733Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": null,
-      "id_doc": null,
-      "doc_num": "",
-      "status": "cancelled"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 6,
-    "fields": {
-      "host": 2,
-      "guest": "Lauriane Agassi",
-      "civility": null,
-      "context": "professionelle",
-      "tel": 70711313,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T18:27:36.733Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "female",
       "id_doc": null,
       "doc_num": null,
-      "status": "pending"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 8,
-    "fields": {
-      "host": 3,
-      "guest": "Kodjo Tomegan",
-      "civility": "",
-      "context": "professionelle",
-      "tel": 70711313,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T18:27:36.733Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "male",
-      "id_doc": "id_card",
-      "doc_num": null,
-      "status": "pending"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 10,
-    "fields": {
-      "host": 3,
-      "guest": "Latevi Samuel",
-      "civility": null,
-      "context": "professionelle",
-      "tel": 70711313,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T18:52:21.611Z",
-      "arrived_at": "10:30:00",
-      "departed_at": "12:00:00",
-      "gender": "male",
-      "id_doc": "id_card",
-      "doc_num": 1263452,
-      "status": "closed"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 11,
-    "fields": {
-      "host": 3,
-      "guest": "Adjalo Akouvi",
-      "civility": "",
-      "context": "professionelle",
-      "tel": 92719262,
-      "nationality": "Togolaise",
-      "date": "2023-04-23T19:00:46.071Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "female",
-      "id_doc": "id_card",
-      "doc_num": 1263452,
-      "status": "ajourned"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 12,
-    "fields": {
-      "host": 3,
-      "guest": "Adache Sidney",
-      "civility": "M.",
-      "context": "professionelle",
-      "tel": 158933,
-      "nationality": "Nigeriane",
-      "date": "2023-04-24T22:35:38.230Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "male",
-      "id_doc": "drv_license",
-      "doc_num": 1263452,
-      "status": "open"
-    }
-  },
-  {
-    "model": "base.visit",
-    "pk": 13,
-    "fields": {
-      "host": 2,
-      "guest": "Raj Al Ghoul",
-      "civility": "M.",
-      "context": "professionelle",
-      "tel": 70711313,
-      "nationality": "Nigeriane",
-      "date": "2023-04-28T21:34:06.428Z",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "male",
-      "id_doc": "passport",
-      "doc_num": 968632,
       "status": "closed"
     }
   },
@@ -1930,92 +715,12 @@
     "pk": 1,
     "fields": {
       "host": 1,
-      "guest": "Lauriane Agassa",
-      "civility": "Mlle.",
-      "tel": "70711313",
-      "nationality": "Togolaise",
-      "date": "2023-04-08",
-      "time": "17:00:00",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": null,
-      "id_doc": null,
-      "doc_num": null,
-      "status": "pending",
-      "is_vip": true
-    }
-  },
-  {
-    "model": "base.appointment",
-    "pk": 2,
-    "fields": {
-      "host": 1,
-      "guest": "Foli Togbe",
-      "civility": "",
-      "tel": "8597852",
-      "nationality": "Togolaise",
-      "date": "2023-04-08",
-      "time": "18:00:00",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": null,
-      "id_doc": null,
-      "doc_num": null,
-      "status": "pending",
-      "is_vip": false
-    }
-  },
-  {
-    "model": "base.appointment",
-    "pk": 3,
-    "fields": {
-      "host": 1,
-      "guest": "Akakpo Pierrot",
+      "guest": "Mensanvi Agou",
       "civility": "",
       "tel": "70711313",
-      "nationality": "Togolaise",
-      "date": "2023-04-16",
-      "time": "16:00:00",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": null,
-      "id_doc": null,
-      "doc_num": null,
-      "status": "open",
-      "is_vip": false
-    }
-  },
-  {
-    "model": "base.appointment",
-    "pk": 4,
-    "fields": {
-      "host": 1,
-      "guest": "Nicole Dubois",
-      "civility": "",
-      "tel": "92719262",
-      "nationality": "Franτaise",
-      "date": "2023-04-16",
-      "time": "14:00:00",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "female",
-      "id_doc": null,
-      "doc_num": null,
-      "status": "cancelled",
-      "is_vip": true
-    }
-  },
-  {
-    "model": "base.appointment",
-    "pk": 5,
-    "fields": {
-      "host": 1,
-      "guest": "Alagnon Dosseh",
-      "civility": "",
-      "tel": "96969696",
       "nationality": "",
-      "date": "2023-03-31",
-      "time": "14:00:00",
+      "date": "2023-05-29",
+      "time": "18:30:00",
       "arrived_at": null,
       "departed_at": null,
       "gender": "male",
@@ -2026,77 +731,49 @@
     }
   },
   {
-    "model": "base.appointment",
-    "pk": 6,
-    "fields": {
-      "host": 1,
-      "guest": "To-Gbe Stephane",
-      "civility": "",
-      "tel": "23",
-      "nationality": null,
-      "date": "2023-04-05",
-      "time": "15:30:00",
-      "arrived_at": null,
-      "departed_at": null,
-      "gender": "male",
-      "id_doc": null,
-      "doc_num": null,
-      "status": "closed",
-      "is_vip": false
-    }
-  },
-  {
-    "model": "accounts.userrole",
+    "model": "accounts.role",
     "pk": 1,
-    "fields": { "name": "Admin", "fr_name": "Administrateur", "sec_level": 9 }
+    "fields": { "name": "Stagiaire", "description": "", "sec_level": 1 }
   },
   {
-    "model": "accounts.userrole",
+    "model": "accounts.role",
     "pk": 2,
-    "fields": {
-      "name": "Security",
-      "fr_name": "Agent de sΘcuritΘ",
-      "sec_level": 8
-    }
+    "fields": { "name": "GΘnΘral", "description": "", "sec_level": 2 }
   },
   {
-    "model": "accounts.userrole",
+    "model": "accounts.role",
     "pk": 3,
-    "fields": { "name": "Secretary", "fr_name": "SΘcrΘtaire", "sec_level": 7 }
+    "fields": { "name": "SecrΘtaire", "description": "", "sec_level": 3 }
   },
   {
-    "model": "accounts.userrole",
+    "model": "accounts.role",
     "pk": 4,
-    "fields": { "name": "Manager", "fr_name": "Directeur", "sec_level": 7 }
+    "fields": { "name": "SΘcuritΘ", "description": "", "sec_level": 4 }
   },
   {
-    "model": "accounts.userrole",
+    "model": "accounts.role",
+    "pk": 5,
+    "fields": { "name": "Directeur", "description": "", "sec_level": 5 }
+  },
+  {
+    "model": "accounts.role",
     "pk": 6,
-    "fields": { "name": "Intern", "fr_name": "Stagiaire", "sec_level": 1 }
-  },
-  {
-    "model": "accounts.userrole",
-    "pk": 8,
-    "fields": {
-      "name": "General",
-      "fr_name": "Utilisateur GΘnΘral",
-      "sec_level": 1
-    }
+    "fields": { "name": "Administrateur", "description": "", "sec_level": 6 }
   },
   {
     "model": "accounts.customuser",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$390000$2kzJO6mk6PysqMe7La3GN3$K1eQuFVmJBcAfujNCJWxeARQyiatn3PH16Fjceq2UqY=",
-      "last_login": "2023-05-17T14:22:28.479Z",
+      "password": "pbkdf2_sha256$600000$gEaMf9NvN3HScdm2BtE3SD$KWwWt+AjnTWi714F9kXDdd7Qe6oNsDPdk8xLMD6g5rE=",
+      "last_login": "2023-05-18T10:48:25Z",
       "email": "admin@app.com",
-      "username": "Admin",
+      "username": "C_Solux",
       "first_name": "Codelab",
       "last_name": "Solux",
-      "address": "quartier administratif",
-      "tel": "97998621",
+      "address": null,
+      "tel": null,
+      "role": 6,
       "image": "",
-      "role": "admin",
       "is_active": true,
       "is_staff": true,
       "is_superuser": true,
@@ -2108,134 +785,21 @@
     "model": "accounts.customuser",
     "pk": 2,
     "fields": {
-      "password": "pbkdf2_sha256$390000$p89OVe7SPdPhoBhQ3zDXyf$oYGmph5VL+HF3QA2m5vuWEjpDjkmQVqn9xP/cFF1qrw=",
-      "last_login": "2023-04-26T23:14:48.716Z",
-      "email": "pacman@aol.com",
-      "username": "Pacman",
-      "first_name": "Packard",
-      "last_name": "Manuel",
-      "address": "52 deathrow street",
-      "tel": "8597852",
-      "image": "",
-      "role": "general",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "accounts.customuser",
-    "pk": 3,
-    "fields": {
-      "password": "pbkdf2_sha256$390000$etOkuuTtxksV4IU0Nh4xHw$t56TYz0qNF7Ws3KVCJEmiU4retrTPeT/Pm29AN+Eqdg=",
-      "last_login": "2023-05-02T11:30:17.627Z",
-      "email": "kat_ana@aol.com",
-      "username": "funny_k8",
-      "first_name": "Katerina",
-      "last_name": "Anatoli",
+      "password": "pbkdf2_sha256$600000$n437zQaEHJdypZTilqSrjv$Oq28bh+Yn/I0tX4D3gY+H8x9FUgdEuZDat6hLBKv2R0=",
+      "last_login": null,
+      "email": "mensanvi@gmail.com",
+      "username": "M_Agou",
+      "first_name": "Mensanvi",
+      "last_name": "Agou",
       "address": null,
       "tel": null,
+      "role": 5,
       "image": "",
-      "role": "general",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "groups": [],
       "user_permissions": []
-    }
-  },
-  {
-    "model": "accounts.customuser",
-    "pk": 4,
-    "fields": {
-      "password": "pbkdf2_sha256$390000$4pyPTyKdPVo0WxTXtqbwQ5$bwCQhQzXbAnWpaxVQK3eJkJXmfpI9MvkdIJ3vAUjmik=",
-      "last_login": "2023-04-16T17:01:02.322Z",
-      "email": "dockodom@cik.com",
-      "username": "k_kodom",
-      "first_name": "Koffi",
-      "last_name": "Kodom",
-      "address": "85 rue Agbemadon",
-      "tel": "92719262",
-      "image": "",
-      "role": "manager",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "accounts.customuser",
-    "pk": 5,
-    "fields": {
-      "password": "pbkdf2_sha256$390000$KSTlyG3I3mf5Yj58V1Cx7d$kPwpHrNDjTx61e3LhRAgJZloKb7m+tvbCP0olJ9Ri48=",
-      "last_login": "2023-05-02T20:08:28.140Z",
-      "email": "sonya@aol.com",
-      "username": "Sonya_b",
-      "first_name": "Sonya",
-      "last_name": "Bloom",
-      "address": "102 rue Nectar",
-      "tel": "96969696",
-      "image": "users/pretty.webp",
-      "role": "Administrateur",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "chats.thread",
-    "pk": 1,
-    "fields": {
-      "first_person": 1,
-      "second_person": 3,
-      "created_at": "2023-04-13T17:51:36.886Z",
-      "updated_at": "2023-04-21T10:26:09.992Z"
-    }
-  },
-  {
-    "model": "chats.thread",
-    "pk": 9,
-    "fields": {
-      "first_person": 1,
-      "second_person": 4,
-      "created_at": "2023-04-26T16:47:43.618Z",
-      "updated_at": "2023-04-26T16:47:43.618Z"
-    }
-  },
-  {
-    "model": "chats.thread",
-    "pk": 11,
-    "fields": {
-      "first_person": 3,
-      "second_person": 4,
-      "created_at": "2023-04-26T18:08:44.824Z",
-      "updated_at": "2023-04-26T18:08:44.824Z"
-    }
-  },
-  {
-    "model": "chats.thread",
-    "pk": 12,
-    "fields": {
-      "first_person": 1,
-      "second_person": 5,
-      "created_at": "2023-04-26T21:13:56.406Z",
-      "updated_at": "2023-04-26T21:13:56.406Z"
-    }
-  },
-  {
-    "model": "chats.thread",
-    "pk": 13,
-    "fields": {
-      "first_person": 2,
-      "second_person": 1,
-      "created_at": "2023-04-27T00:12:26.347Z",
-      "updated_at": "2023-04-27T00:12:26.347Z"
     }
   }
 ]
