@@ -7,8 +7,8 @@ class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"
-        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"
+        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"
+        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"
         self.fields['password1'].label = "Mot de pass"
         self.fields['password2'].label = "Confirmez votre mot de pass"
 
@@ -20,11 +20,11 @@ class SignupForm(UserCreationForm):
         labels = {'username': 'Pseudonyme', 'email': 'Email',
                   'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', }
         widgets = {
-            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
-            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
-            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
-            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-gray-100 w-full"}),
-            'role': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-lg bg-white w-full"}),
+            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
+            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
+            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
+            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
+            'role': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
         }
 
 
@@ -32,8 +32,8 @@ class CreateUserForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(CreateUserForm, self).__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-white w-full"
-        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg bg-white w-full"
+        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-md bg-white w-full"
+        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-md bg-white w-full"
         self.fields['password1'].label = "Mot de pass"
         self.fields['password2'].label = "Confirmez votre mot de pass"
 

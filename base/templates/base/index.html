@@ -1,11 +1,10 @@
 {% extends 'main.html' %} {% load static %}
-<!--  -->
 
 <!--  -->
 {% block content %}
 
 <div
-  class="p-6 text-gray-500 bg-purple-100 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-5/7 max-w-[800px]">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">Dermepro</h1>
@@ -20,13 +19,13 @@
   <div>
     {% if not curr_rdvs %}
     <h3
-      class="mb-2 bg-purple-900 text-white p-4 rounded-xl text-center font-light mx-auto"
+      class="mb-2 bg-purple-900 text-white p-4 rounded-md text-center font-light mx-auto"
     >
       Aucun rendez-vous en cours
     </h3>
     {% else %}
     <h3
-      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-lg"
+      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-md"
     >
       Rendez-vous en cours <i class="fa-solid fa-bell"></i>
     </h3>
@@ -48,13 +47,13 @@
   <div>
     {% if not curr_visits %}
     <h3
-      class="mb-2 bg-purple-900 text-white p-4 rounded-xl text-center font-light mx-auto"
+      class="mb-2 bg-purple-900 text-white p-4 rounded-md text-center font-light mx-auto"
     >
       Aucune visite en cours
     </h3>
     {% else %}
     <h3
-      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-lg"
+      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-md"
     >
       Visite en cours <i class="fa-solid fa-bell"></i>
     </h3>
@@ -75,10 +74,8 @@
 </div>
 
 <!-- visits and appointments -->
-<div class="mt-8 border border-4 border-purple-700 p-4 rounded-xl">
-  <h3 class="text-black text-lg font-bold bg-purple-100 px-4 py-2 rounded-lg">
-    File d'attente
-  </h3>
+<div class="mt-8 border-2 p-4 rounded-md">
+  <h3 class="text-black text-lg font-bold">File d'attente</h3>
   <div class="my-4 flex justify-between gap-8">
     <div class="w-full">
       {% if not visits %} {% include 'components/empty.html'%} {% else %}
@@ -118,13 +115,13 @@
       <div>
         {% if not pending_vips %}
         <h3
-          class="mb-2 bg-gray-100 p-4 rounded-xl text-center font-light mx-auto"
+          class="mb-2 bg-gray-100 p-4 rounded-md text-center font-light mx-auto"
         >
           Aucun rendez-vous V.I.P en attente
         </h3>
         {% else %}
         <h3
-          class="mb-2 text-black text-lg font-bold bg-red-100 px-4 py-2 rounded-lg"
+          class="mb-2 text-black text-lg font-bold bg-red-100 px-4 py-2 rounded-md"
         >
           Rendez-vous V.I.P en attentes
         </h3>
@@ -147,13 +144,13 @@
       <div>
         {% if not pending_rdvs %}
         <h3
-          class="mb-2 bg-gray-100 p-4 rounded-xl text-center font-light mx-auto"
+          class="mb-2 bg-gray-100 p-4 rounded-md text-center font-light mx-auto"
         >
           Aucun autre rendez-vous en attente
         </h3>
         {% else %}
         <h3
-          class="mb-2 text-black text-lg font-bold bg-amber-100 px-4 py-2 rounded-lg"
+          class="mb-2 text-black text-lg font-bold bg-amber-100 px-4 py-2 rounded-md"
         >
           Autres Rendez-vous en attente
         </h3>

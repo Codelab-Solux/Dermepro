@@ -1,7 +1,7 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="p-2">
+
   <div
-    class="p-6 text-gray-500 bg-purple-100 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
   >
     <article class="w-5/7">
       <h1 class="text-black text-3xl lg:text-7xl font-bold">Parametrage</h1>
@@ -12,85 +12,43 @@
       </p>
     </article>
     <img
-      class="h-80"
+      class="h-60"
       src="{% static 'imgs/params.png' %}"
       alt="welcome image"
     />
   </div>
 
   <!-- user roles params -->
-  <div class="my-4 border border-4 border-purple-700 p-4 rounded-xl">
-    <div class="flex flex-col-reverse md:flex-row w-full gap-8">
-      <!-- user role form -->
-      <div class="w-full lg:w-80">
-        <h1 class="mb-2 text-black text-md font-bold">Formulaire des rôles</h1>
-        <form
-          class="p-4 w-full bg-gray-100 rounded-lg text-sm"
-          method="POST"
-          action=""
-          enctype="multipart/form-data"
-        >
-          {% csrf_token %} {% for field in form %}
-          <div>
-            <h3 class="mb-1">{{field.label}}</h3>
-            {{field}}
-          </div>
-          {% endfor %}
-
-          <input
-            class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
-            type="submit"
-            value="Enrégistrer"
-          />
-        </form>
-      </div>
+  <div class="my-8 border border-2  p-4 rounded-md">
 
       <!-- user roles quick view -->
       <div class="w-full">
         {% if not user_roles %}
         <h3
-          class="mb-2 bg-gray-100 p-4 rounded-xl text-center font-light mx-auto"
+          class="mb-2 bg-gray-100 p-4 rounded-md text-center font-light mx-auto"
         >
           Aucun rôle enregistré
         </h3>
         {% else %}
         <h3
-          class="mb-2 text-black text-lg font-bold bg-purple-100 px-4 py-2 rounded-lg"
+          class="mb-4 text-black text-lg font-bold"
         >
           Rôle des utilisateurs
         </h3>
         <div class="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {% for e in user_roles %}
+          {% for obj in user_roles %}
           <div
-            class="p-4 text-gray-500 bg-purple-100 h-100 rounded-md hover:shadow-md"
+        class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
           >
-            <div class="flex justify-between items-center">
-              <h3 class="font-bold text-black text-md">{{e.name}}</h3>
-              <div class="flex items-center">
-                <a
-                  href="{% url 'role_detail' e.id  %}"
-                  class="p-2 text-sm"
-                  id="user-menu-item-0"
-                >
-                  <i
-                    class="fa-solid fa-pen-to-square hover:text-amber-500 text-xs"
-                  ></i>
-                </a>
-                <!-- <a
-                  onclick="return confirm('Voulez vous supprimer ce Role ?')"
-                  href="{% url 'delete_role' e.id  %}"
-                  class="px-2 lg:px-4 py-2 text-gray-700 rounded-md"
-                  id="user-menu-item-1"
-                >
-                  <i class="fa-solid fa-trash hover:text-red-600 text-xs"></i>
-                </a> -->
-              </div>
-            </div>
+              <h3 class="font-bold text-black text-md">{{obj.name}}</h3>
             <p class="">
               Niveau de securité :
               <span class="text-amber-500 font-bold text-xl">
-                {{e.sec_level}}
+                {{obj.sec_level}}
               </span>
+            </p>
+            <p class="">
+                {{obj.description}}
             </p>
           </div>
           {% endfor %}
@@ -99,5 +57,4 @@
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

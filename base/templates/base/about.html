@@ -1,7 +1,7 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div
-  class="p-6 text-gray-500 bg-purple-100 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-5/7">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">
@@ -21,9 +21,7 @@
   />
 </div>
 <!-- functionalities -->
-<article
-  class="my-8 w-4/7 p-8 mx-auto border border-4 border-purple-700 rounded-lg"
->
+<article class="my-8 w-4/7 p-8 mx-auto border-2 rounded-lg">
   <h2 class="text-black text-3xl font-bold">
     Les fonctionnalités de l'application
   </h2>
@@ -88,7 +86,7 @@
 </article>
 <!-- Support -->
 <article
-  class="my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border border-4 border-purple-700 rounded-lg"
+  class="my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border-2 rounded-lg"
 >
   <div>
     <h2 class="text-black text-3xl font-bold">Support</h2>
@@ -137,7 +135,7 @@
 </article>
 <!-- how it works section -->
 <article
-  class="my-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto bg-purple-100 rounded-lg"
+  class="my-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto bg-gray-100 rounded-lg"
 >
   <img
     class="h-80 object-cover"
@@ -239,7 +237,7 @@
 </article>
 <!-- FAQ section -->
 <article
-  class="mt-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto border border-4 border-purple-700 rounded-lg"
+  class="mt-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto border-2 rounded-lg"
 >
   <img class="h-80" src="{% static 'imgs/faq.png' %}" alt="welcome image" />
   <div>

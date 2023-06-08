@@ -10,7 +10,7 @@
   margin-block: 2rem;
 }
 ::-webkit-scrollbar-thumb {
-  background: #581c87;
+  background: #3b0764;
   border: 0.2em solid #f3e8ff;
   border-radius: 100vw;
   margin-block: 2rem;
@@ -33,31 +33,22 @@ li {
 .db-table tbody tr:nth-of-type(even) {
   background-color: #e0e7ff;
 }
-/* .db-table tbody:hover {
-  background-color: white;
-} */
-
-/* sibebar---------------------------------------------------------------------------------------------------- */
-.sidebar {
-  height: 100vh;
-  position: fixed;
-}
 
 .active {
-  background: rgb(255, 193, 79);
+  background: #fde68a;
   color: black;
 }
 
 .primary {
-  background: #581c87;
+  background: #3b0764;
 }
 
 .secondary {
-  background: rgb(255, 193, 79);
+  background: #fde68a;
 }
 
 .text-secondary {
-  color: rgb(255, 193, 79);
+  color: #fde68a;
 }
 
 .msg_out {
@@ -66,6 +57,14 @@ li {
 }
 
 .msg_in {
-  background: #581c87;
+  background: #3b0764;
+  color: white;
+}
+
+/* tabs---------------------------------------------------------------------------------------------------- */
+
+.customtab button.active {
+  border-radius: 0.5em;
+  background-color: #3b0764;
   color: white;
 }

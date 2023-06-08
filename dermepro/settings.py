@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=zwobp%lk7av6v7qoxcy%ungxo(2mg16@i()-r4ditye17kv3b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -44,11 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base.apps.BaseConfig',
-    'accounts.apps.AccountsConfig',
+    'base',
+    'accounts',
     'chats',
     'dj_database_url',
-    # 'widget_tweaks',
 ]
 
 
@@ -88,19 +87,19 @@ WSGI_APPLICATION = 'dermepro.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://Codelab-Solux:CZRuAaG50cYp@ep-summer-surf-475106.us-east-2.aws.neon.tech/neondb')
-    # 'default': {
+    # 'default': dj_database_url.parse('postgres://Codelab-Solux:CZRuAaG50cYp@ep-summer-surf-475106.us-east-2.aws.neon.tech/neondb')
+    'default': {
 
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'dermepro',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dermepro',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
 
-    #     # 'ENGINE': 'django.db.backends.sqlite3',
-    #     # 'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 

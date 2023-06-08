@@ -1,7 +1,7 @@
 {% load static %}
 <div
 
-  class="w-20 p-4 bg-purple-900 text-white lg:w-60 min-h-screen lg:fixed overflow-auto"
+  class="w-20 p-4 bg-purple-950 text-white lg:w-[260px] min-h-screen fixed overflow-auto"
 >
 <a
   class="lg: mb-4 flex items-end"
@@ -12,7 +12,7 @@
 </a>
   <ul class="flex flex-col mx-auto items-center lg:items-start ">
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
       href="{% url 'home' %}"
     >
       <i class="text-sm fa-solid fa-house lg:mr-2"></i> 
@@ -22,7 +22,7 @@
     </a>
 
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
       href="{% url 'visits' %}"
     >
       <i class="fa-sharp fa-solid fa-user-tie lg:mr-2"></i> 
@@ -32,7 +32,7 @@
     </a>
     {% if user.is_superuser %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
       href="{% url 'appointments' %}"
     >
       <i class="text-sm fa-solid fa-handshake lg:lg:mr-2"></i> 
@@ -42,7 +42,7 @@
     </a>
     {% endif %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
       href="{% url 'users' %}"
     >
       <i class="text-sm fa-solid fa-users lg:mr-2"></i> 
@@ -51,8 +51,8 @@
       </span>
     </a>
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
-      href="{% url 'chats' %}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
+      href="{% url 'chat' %}"
     >
       <i class="text-sm fa-solid fa-comments lg:mr-2"></i> 
       <span class="hidden lg:inline">
@@ -61,7 +61,7 @@
     </a>
     {% if user.is_superuser %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
       href="{% url 'parameters' %}"
     >
       <i class="fa-sharp fa-solid fa-sliders lg:mr-2"></i> 
@@ -71,7 +71,7 @@
     </a>
     {% endif %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
       href="{% url 'about' %}"
     >
       <i class="text-sm fa-solid fa-circle-info lg:mr-2"></i> 
@@ -81,7 +81,7 @@
     </a>
 
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
       href="{% url 'dashboard' %}"
     >
       <i class="fa-sharp fa-solid fa-bars-progress lg:mr-2"></i> 
@@ -92,7 +92,7 @@
 
     {% if user.is_superuser %}
     <a
-      class="lg: mb-4 px-3 py-2 rounded-lg hover:bg-purple-900 hover:text-white transition ease-in duration-200"
+      class="mb-3 px-3 py-2 text-center lg:text-left rounded-md hover:bg-black hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
       ><i class="text-sm fa-solid fa-lock lg:mr-2"></i> <span class="hidden lg:inline ">
 
@@ -102,17 +102,17 @@
       </span>
     {% endif %}
  <div
-      class="px-1 py-2 lg:p-2 flex flex-col lg:flex-row items-center gap-1 lg:gap-2 mb-2 lg:bg-white sm:text-sm lg:text-md rounded-lg cursor-pointer"
+      class="w-full px-1 py-2 lg:p-2 flex flex-col lg:flex-row items-center gap-1 lg:gap-2 mb-2 lg:bg-white sm:text-sm lg:text-md rounded-md cursor-pointer"
     >
     {% if not user.image %}
     <img
-      class="hidden lg:inline h-10 w-10 rounded-lg object-cover"
+      class="hidden lg:inline h-10 w-10 rounded-md object-cover"
       src="{% static 'imgs/anon.png' %}"
       alt="welcome image"
     />
     {% else %}
     <img
-      class="hidden lg:block h-10 w-10 rounded-lg object-cover"
+      class="hidden lg:block h-10 w-10 rounded-md object-cover"
       src="{{user.image.url}}"
       alt="welcome image"
     />
@@ -132,12 +132,12 @@
           aria-haspopup="true"
           onclick="toggleDropdown(this)"
         >
-          <i class="fa-sharp fa-solid fa-caret-down text-purple-900 bg-white hover:bg-amber-200 py-2 px-3 lg:p-4 rounded-lg"></i>
+          <i class="fa-sharp fa-solid fa-caret-down text-purple-900 bg-white hover:bg-amber-200 py-2 px-3 lg:p-4 rounded-md"></i>
       
         </button>
   
         <div
-          class="mb-4  w-full lg:p-2 hidden absolute right-0 top-20 origin-top-left bg-white z-30 rounded-md lg:w-40 flex flex-col gap-2 items-center overflow-hidden"
+          class="mb-4 w-full lg:p-2 hidden absolute right-0 top-12 origin-top-left bg-white z-30 rounded-md lg:w-40 flex flex-col gap-2 items-center overflow-hidden"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"

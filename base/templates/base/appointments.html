@@ -1,14 +1,14 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
+<div class="mb-4 p-4 border-2 rounded-md">
   <div
-    class="mb-4 px-4 py-2 flex justify-between items-center bg-purple-100 rounded-lg text-center font-light mx-auto"
+    class="mb-4 flex justify-between items-center text-center font-light mx-auto"
   >
     <h1 class="text-md lg:text-lg text-black font-bold">Rendez-vous V.I.P</h1>
     {% if user.role.sec_level >= 5 %}
     <a
-      class="lg:inline active hover:bg-white p-2 rounded-lg"
-      href="{% url 'rdv_csv' %}"
+      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      href="{% url 'appointments_csv' %}"
     >
       <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
       <span class="hidden lg:inline font-base">
@@ -18,14 +18,18 @@
     {% endif %}
   </div>
 
-  {% if not pending_vips %} {% include 'components/empty.html'%} {% else %}
+  {% if not pending_vips %}
+  <!--  -->
+  {% include 'components/empty.html'%}
+  <!--  -->
+  {% else %}
 
   <div class="flex flex-col md:flex-row justify-between items-start">
     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {% for e in pending_vips %}
-      <a href="{% url 'appointment_detail' e.id  %}">
+      <a href="{% url 'appointment' e.id  %}">
         <div
-          class="p-4 text-gray-500 bg-purple-100 h-full rounded-md hover:shadow-md"
+          class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
         >
           <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
           <h3 class="text-sm">{{e.date}}</h3>
@@ -43,11 +47,26 @@
   {% endif %}
 </div>
 
-<div class="mt-6 flex flex-col lg:flex-row justify-between gap-8">
-  {% if not appointments %} {% include 'components/empty.html'%} {% else %}
-  <div class="flex flex-col w-full">
-    <h1 class="mb-2 text-black text-lg font-bold">Table des Rendez-vous</h1>
-    <div class="overflow-auto rounded-xl bg-gray-50">
+<div class="mt-6 w-full">
+  {% if not appointments %}
+  <!--  -->
+  {% include 'components/empty.html'%}
+  <!--  -->
+  {% else %}
+ <div class="mb-4 flex justify-between items-center">
+      <h1 class="mb-2 text-black text-lg font-bold">Table des Rendez-vous</h1>
+      <a
+        class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+        href="{% url 'create_appointment' %}"
+      >
+        <i class="inline fa-solid fa-plus lg:mr-2"></i>
+        <span class="hidden lg:inline font-base">
+          Ajouter un nouveau rendez-vous
+        </span>
+      </a>
+    </div>
+    <!-- table -->
+    <div class="overflow-auto rounded-md bg-gray-50">
       <table class="w-full text-left db-table">
         <thead class="bg-black text-white">
           <tr>
@@ -63,7 +82,7 @@
         <tbody>
           {% for e in appointments %}
           <tr
-            class="text-gray-500 text-sm hover:text-black hover:bg-white transition-all duration-50"
+            class="text-gray-600 border text-sm hover:bg-purple-50 hover:text-black transition-all duration-50"
           >
             <td class="p-3">{{e.guest|truncatechars:10}}</td>
             <!-- <td class="p-3">{{e.host.username}}</td> -->
@@ -104,27 +123,27 @@
               {% endif %}
             </td>
 
-            <td class="md:flex justify-around gap-2 text-center">
+            <td class="md:flex justify-around gap-2 max-w-[100px] mx-auto">
               <a
-                href="{% url 'appointment_detail' e.id  %}"
-                class="inline p-2 text-sm text-gray-700 rounded-md"
+                href="{% url 'appointment' e.id  %}"
+                class="inline p-2 text-sm text-gray-500 rounded-md"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-0"
               >
-                <i class="fa-solid fa-pen-to-square hover:text-amber-400"></i>
+                <i class="fa-solid fa-eye hover:text-purple-700"></i>
               </a>
               {% if user.role.sec_level == 6 %}
               <a
                 onclick="return confirm('Voulez vous supprimer ce Rendez-vous ?')"
-                href="{% url 'delete_rdv' e.id  %}"
-                class="inline px-2 lg:px-4 py-2 text-sm text-gray-700 rounded-md"
+                href="{% url 'delete_appointment' e.id  %}"
+                class="inline px-2 lg:px-4 py-2 text-sm text-gray-500 rounded-md"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-1"
               >
                 {% endif %}
-                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-500"></i>
+                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-700"></i>
               </a>
             </td>
           </tr>
@@ -134,56 +153,6 @@
     </div>
   </div>
   {% endif %}
-  <!-- visit creation form -->
-  <div class="flex flex-col w-full lg:w-2/6 max-w-[350px]">
-    <h3 class="mb-2 text-black text-lg font-bold">Ajouter un Rendez-vous</h3>
-    <form
-      class="p-4 bg-gray-100 rounded-lg text-sm"
-      method="POST"
-      action=""
-      enctype="multipart/form-data"
-    >
-      {% csrf_token %}
-
-      <!-- <div>
-          <h3 class="mb-1">Hote</h3>
-          {{form.host}}
-        </div> -->
-      <div>
-        <h3 class="mb-1">Nom et prénoms de l'invité</h3>
-        {{form.guest}}
-      </div>
-      <div class="flex gap-4">
-        <div>
-          <h3 class="mb-1">Genre</h3>
-          {{form.gender}}
-        </div>
-        <div>
-          <h3 class="mb-1">Téléphone</h3>
-          {{form.tel}}
-        </div>
-      </div>
-      <div class="flex gap-4 justify-between">
-        <div>
-          <h3 class="mb-1">Date</h3>
-          {{form.date}}
-        </div>
-        <div>
-          <h3 class="mb-1">Heure</h3>
-          {{form.time}}
-        </div>
-      </div>
-      <div>
-        <h3 class="mb-1">VIP</h3>
-        {{form.is_vip}}
-      </div>
-      <input
-        class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
-        type="submit"
-        value="Enregistrer"
-      />
-    </form>
-  </div>
 </div>
 
 {% endblock %}

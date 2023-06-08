@@ -82,9 +82,9 @@ class AppointmentForm(forms.ModelForm):
                   'date',
                   'time',
                   'is_vip',)
-        exclude = ('status', 'host',)
+        exclude = ('status', )
         widgets = {
-            # 'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
+            'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'guest': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'civility': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'gender': forms.Select(attrs={'class': "mb-2 px-6 py-2 rounded-md bg-white w-full"}),

@@ -62,9 +62,21 @@ def logoutUser(req):
 
 @login_required(login_url='login')
 def users(req):
-    # new_users = CustomUser.objects.all().order_by('date_joined')[:18]
     new_users = CustomUser.objects.all()[:18]
     users = CustomUser.objects.all()
+
+    ordering = ['last_name']
+    context = {
+        "users_page": "active",
+        'title': 'users',
+        'new_users': new_users,
+        'users': users,
+        'ordering': ordering,
+    }
+    return render(req, 'accounts/users.html', context)
+
+@login_required(login_url='login')
+def create_user(req):
 
     if req.user.role.sec_level >= 6:
         form = CreateUserForm()
@@ -81,14 +93,13 @@ def users(req):
 
     ordering = ['last_name']
     context = {
-        "users_page": "active",
-        'title': 'users',
-        'new_users': new_users,
+        "create_user_page": "active",
+        'title': 'create_user',
         'users': users,
         'form': form,
         'ordering': ordering,
     }
-    return render(req, 'accounts/users.html', context)
+    return render(req, 'accounts/user.html', context)
 
 
 @ login_required(login_url='login')
@@ -114,12 +125,21 @@ def user_profile(req, pk):
     else:
         form = None
     context = {
-        "rdv_page": "active",
-        'title': 'appointment_detail',
+        "user_profile_page": "active",
+        'title': 'user_detail',
         'profile': profile,
         'form': form,
     }
-    return render(req, 'accounts/profile.html', context)
+    return render(req, 'accounts/user.html', context)
+
+
+def delete_user(req, pk):
+    user = req.user
+    profile = user.objects.get(id=pk)
+    if user.role.sec_level < 6 :
+        return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+    profile.delete()
+    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
 # ajax views----------------------------------------------------------------------------------
 

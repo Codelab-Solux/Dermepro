@@ -1,41 +1,64 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="p-2">
-  <div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
-    <h1
-      class="mb-2 text-black text-lg font-bold bg-purple-100 px-4 py-2 rounded-lg"
+<div class="mb-4 p-4 border-2 rounded-md">
+  <div
+    class="mb-4 flex justify-between items-center text-center font-light mx-auto"
+  >
+    <h1 class="text-md lg:text-lg text-black font-bold">Nouveau Utilisateurs</h1>
+
+    {% if user.role.sec_level >= 5 %}
+    <a
+      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      href="{% url 'home' %}"
     >
-      Nouveau Utilisateurs
-    </h1>
-    <div class="flex flex-col md:flex-row justify-between items-start">
-      <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-        {% for e in new_users %}
-        <a href="{% url 'user_profile' e.id  %}">
-          <div
-            class="p-4 text-gray-500 bg-purple-100 h-full rounded-md hover:shadow-md"
-          >
-            <h3 class="font-bold text-black text-md">
-              {{e.last_name}} {{e.first_name}}
-            </h3>
-            <p class="font-bold text-purple-900 text-sm">@{{e.username}}</p>
-            <!-- <p class="text-sm">{{e.email}}</p> -->
-            <p class="text-sm">{{e.role}}</p>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
-      <img
-        class="h-80"
-        src="{% static 'imgs/office.png' %}"
-        alt="welcome image"
-      />
-    </div>
+      <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+      <span class="hidden lg:inline font-base">
+        Extraire les utilisateurs en fichier excel (CSV)
+      </span>
+    </a>
+    {% endif %}
   </div>
 
-  <!-- hosts table -->
+  <div class="flex flex-col md:flex-row justify-between items-start">
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      {% for e in new_users %}
+      <a href="{% url 'user_profile' e.id  %}">
+        <div
+        class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
+        >
+          <h3 class="font-bold text-black text-md">
+            {{e.last_name}} {{e.first_name}}
+          </h3>
+          <p class="font-bold text-purple-900 text-sm">@{{e.username}}</p>
+          <!-- <p class="text-sm">{{e.email}}</p> -->
+          <p class="text-sm">{{e.role}}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <img
+      class="h-80"
+      src="{% static 'imgs/office.png' %}"
+      alt="welcome image"
+    />
+  </div>
+  </div>
+
+  <!-- users table -->
 
   <div class="mt-6 flex flex-col lg:flex-row justify-between gap-8">
     <div class="flex flex-col w-full">
-      <h3 class="mb-2 text-black text-lg font-bold">Table des Hôtes</h3>
+      <div class="mb-4 flex justify-between items-center">
+         <h3 class="mb-2 text-black text-lg font-bold">Table des Hôtes</h3>
+       <a
+      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      href="{% url 'create_user' %}"
+    >
+      <i class="inline fa-solid fa-plus lg:mr-2"></i>
+      <span class="hidden lg:inline font-base">
+        Ajouter une nouveau utilisateur
+      </span>
+    </a>
+ </div>
       <div class="overflow-auto rounded-lg bg-gray-100">
         <table class="w-full text-left db-table">
           <thead class="bg-black text-white font-bold">
@@ -46,6 +69,7 @@
               <th class="hidden md:block p-4 text-sm">Email</th>
               <th class="p-4 text-sm">Telephone</th>
               <th class="p-4 text-sm">Role</th>
+              <th class="p-4 text-sm">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -53,14 +77,25 @@
             <tr
               class="text-gray-600 text-sm hover:bg-white hover:shadow-md hover:text-black transition-all duration-50"
             >
-              <a class="cursor-pointer" href="{% url 'user_profile' e.id  %}">
-                <td class="hidden md:block p-3">{{e.username}}</td>
-                <td class="p-3">{{e.first_name}}</td>
-                <td class="p-3">{{e.last_name}}</td>
-                <td class="hidden md:block p-3">{{e.email}}</td>
-                <td class="p-3">{{e.tel}}</td>
-                <td class="p-3">{{e.role}}</td>
-              </a>
+              <td class="hidden md:block p-3">{{e.username}}</td>
+              <td class="p-3">{{e.first_name}}</td>
+              <td class="p-3">{{e.last_name}}</td>
+              <td class="hidden md:block p-3">{{e.email}}</td>
+              <td class="p-3">{{e.tel}}</td>
+              <td class="p-3">{{e.role}}</td>
+              <td class="flex justify-around p-3">
+                <a href="{% url 'user_profile' e.id  %}"
+                  ><i class="fa-solid fa-eye"></i
+                ></a>
+                {% if user.role.sec_level >= 6 %}
+                <a
+                  id="delete_btn"
+                  onclick="return confirm('Voulez vous supprimer le compte de cet utilisateur?')"
+                  href="{% url 'delete_user' e.id  %}"
+                  ><i class="fa-solid fa-trash hover:text-red-700"></i
+                ></a>
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>

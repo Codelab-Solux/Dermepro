@@ -94,9 +94,8 @@ def visits(req):
     }
     return render(req, 'base/visits.html', context)
 
-
 @login_required(login_url='login')
-def visit_detail(req, pk):
+def visit(req, pk):
     user = req.user
     visit = Visit.objects.get(id=pk)
 
@@ -111,11 +110,34 @@ def visit_detail(req, pk):
             return redirect('visits')
     context = {
         "visit_page": "active",
-        'title': 'visit_detail',
+        'title': 'visit',
         'visit': visit,
         'form': form,
     }
-    return render(req, 'base/visit_detail.html', context)
+    return render(req, 'base/visit.html', context)
+
+
+@login_required(login_url='login')
+def create_visit(req):
+    user = req.user
+
+    if user.role.sec_level < 4 :
+        return redirect('visits')
+
+    form = VisitForm()
+    if req.method == 'POST':
+        form = VisitForm(req.POST)
+        form.instance.status = 'pending'
+        if form.is_valid():
+            form.save()
+            return redirect('visits')
+        
+    context = {
+        "create_visit_page": "active",
+        'title': 'create_visit',
+        'form': form,
+    }
+    return render(req, 'base/visit.html', context)
 
 
 @login_required(login_url='login')
@@ -163,31 +185,19 @@ def appointments(req):
         | Q(host__first_name__icontains=query)
     ).distinct()
 
-    if req.user.role.sec_level >= 4:
-        form = AppointmentForm()
-        if req.method == 'POST':
-            form = AppointmentForm(req.POST)
-            form.instance.host = user
-            if form.is_valid():
-                form.save()
-                return redirect('appointments')
-    else:
-        form = None
-
     ordering = ['date']
     context = {
         "rdvs_page": "active",
         'title': 'appointments',
         'appointments': appointments,
         'pending_vips': pending_vips,
-        'form': form,
         'ordering': ordering,
     }
     return render(req, 'base/appointments.html', context)
 
 
 @ login_required(login_url='login')
-def appointment_detail(req, pk):
+def appointment(req, pk):
     user = req.user
     appointment = Appointment.objects.get(id=pk)
 
@@ -202,15 +212,36 @@ def appointment_detail(req, pk):
         form = None
     context = {
         "rdv_page": "active",
-        'title': 'appointment_detail',
+        'title': 'appointment',
         'appointment': appointment,
         'form': form,
     }
-    return render(req, 'base/appointment_detail.html', context)
-
+    return render(req, 'base/appointment.html', context)
 
 @login_required(login_url='login')
-def delete_rdv(req, pk):
+def create_appointment(req):
+    user = req.user
+
+    if user.role.sec_level < 4 :
+        return redirect('appointments')
+
+    form = AppointmentForm()
+    if req.method == 'POST':
+        form = AppointmentForm(req.POST)
+        form.instance.status = 'pending'
+        if form.is_valid():
+            form.save()
+            return redirect('appointments')
+        
+    context = {
+        "create_visit_page": "active",
+        'title': 'create_visit',
+        'form': form,
+    }
+    return render(req, 'base/appointment.html', context)
+
+@login_required(login_url='login')
+def delete_appointment(req, pk):
     user = req.user
     appointment = Appointment.objects.get(id=pk)
     if user.role.sec_level < 6 or user != appointment.host:
@@ -220,7 +251,7 @@ def delete_rdv(req, pk):
 
 
 @login_required(login_url='login')
-def rdv_csv(req):
+def appointments_csv(req):
     user = req.user
     if user.role.sec_level < 4:
         return redirect(req.META.get('HTTP_REFERER', '/'))
@@ -308,7 +339,7 @@ def parameters(req):
 
 
 @ login_required(login_url='login')
-def role_detail(req, pk):
+def role(req, pk):
     user = req.user
     curr_role = Role.objects.get(id=pk)
     if user.role.sec_level < 4:
@@ -322,11 +353,11 @@ def role_detail(req, pk):
             return redirect('parameters')
     context = {
         "user_role_page": "active",
-        'title': 'user_role_detail',
+        'title': 'user_role',
         'user_role': curr_role,
         'form': form,
     }
-    return render(req, 'base/role_detail.html', context)
+    return render(req, 'base/role.html', context)
 
 
 @login_required(login_url='login')

@@ -12,13 +12,13 @@
     <div class="mx-auto flex flex-row items-center justify-center h-80">
       <img
         class="h-full"
-        src="{% static 'imgs/signup.png' %}"
+        src="{% static 'imgs/timer.png' %}"
         alt="welcome image"
       />
       <div class="flex flex-col w-100">
-        <h1 class="mb-4 text-black text-3xl font-bold">Inscription</h1>
+        <h1 class="mb-4 text-black text-3xl font-bold">Inscrivez-vous ici</h1>
         <form
-          class="p-4 w-full bg-gray-100 rounded-lg text-sm"
+          class="p-4 w-full border-2 border-gray-100 rounded-md text-sm"
           method="POST"
           action=""
           enctype="multipart/form-data"
@@ -31,7 +31,7 @@
           {% endfor %}
 
           <input
-            class="mt-4 px-4 py-2 bg-black hover:bg-amber-500 text-white rounded-md cursor-pointer"
+            class="mt-4 px-4 py-2 bg-black hover:bg-amber-400 text-white hover:text-black rounded-md cursor-pointer"
             type="submit"
             value="Inscription"
           />

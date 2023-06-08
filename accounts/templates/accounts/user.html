@@ -1,0 +1,88 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+
+<div
+  class="flex flex-col md:flex-row justify-between gap-4 border border-2 p-4 rounded-md"
+>
+  {% if profile %}
+  <div class="flex flex-col h-full rounded-md overflow-hidden">
+    {% if not profile.image %}
+    <img
+      class="h-full w-full object-cover"
+      src="{% static 'imgs/anon.png' %}"
+      alt="profile"
+    />
+    {% else %}
+    <img
+      class="h-full w-full object-cover"
+      src="{{profile.image.url}}"
+      alt="profile"
+    />
+    {% endif %}
+    <div
+      class="bg-purple-950 h-full font-bold text-white flex flex-col text justify-between px-4 py-2"
+    >
+      <p>
+        <span>{{profile.last_name|title}} {{profile.first_name|title}} </span>
+      </p>
+      <p>
+        <span>{{profile.email}}</span>
+      </p>
+      <p>
+        <span>{{profile.phone}}</span>
+      </p>
+      <p>
+        <span>{{profile.role|title}}</span>
+      </p>
+    </div>
+  </div>
+  {% else %}
+  <img
+    class="h-[400px] w-full object-contain"
+    src="{% static 'imgs/add-user.png' %}"
+    alt="profile"
+  />
+  {% endif %} {% if form %}
+  <form
+    class="p-4 w-full bg-gray-100 rounded-md text-sm"
+    method="POST"
+    action=""
+    enctype="multipart/form-data"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 lg: grid-cols-3 gap-4">
+      {% csrf_token %} {% for field in form %}
+      <div>
+        <h3 class="mb-1">{{field.label}}</h3>
+        {{field}}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="mt-4 flex gap-4 items-center">
+      <input
+        class="px-4 py-2 bg-purple-950 hover:bg-amber-400 text-white hover:text-black rounded-md cursor-pointer"
+        type="submit"
+        value="Enregistrer"
+      />
+      <a
+        class="bg-white px-4 py-2 rounded-md hover:bg-gray-700 hover:text-white"
+        href="{{request.META.HTTP_REFERER}}"
+      >
+        Cancel
+      </a>
+      {% if user.is_superuser and profile %}
+      <a
+        class="px-4 py-2 rounded-md bg-red-600 text-white hover:animate-pulse"
+        id="delete_btn"
+        onclick="return confirm('Voulez vous supprimer le compte de cet utilisateur?')"
+        href="{% url 'delete_user' profile.id  %}"
+        >Supprimer ce compte<i
+          class="ml-2 fa-solid fa-trash hover:text-red-700"
+        ></i
+      ></a>
+      {% endif %}
+    </div>
+  </form>
+  {% endif %}
+</div>
+
+{% endblock %}

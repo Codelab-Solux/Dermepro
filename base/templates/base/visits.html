@@ -1,46 +1,37 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="mb-4 p-4 border border-4 border-purple-700 rounded-lg">
+<div class="mb-4 p-4 border-2 rounded-md">
   <div
-    class="mb-4 px-4 py-2 flex justify-between items-center bg-purple-100 rounded-lg text-center font-light mx-auto"
+    class="mb-4 flex justify-between items-center text-center font-light mx-auto"
   >
     <h1 class="text-md lg:text-lg text-black font-bold">Visites récentes</h1>
 
     {% if user.role.sec_level >= 5 %}
     <a
-      class="lg:inline active hover:bg-white p-2 rounded-lg"
+      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
       href="{% url 'visit_csv' %}"
     >
       <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
       <span class="hidden lg:inline font-base">
-        Extraire les Visites en fichier excel (CSV)
+        Extraire les visites en fichier excel (CSV)
       </span>
     </a>
     {% endif %}
   </div>
 
   {% if not closed_visits %}
-  <div class="mx-auto max-w-4xl flex justify-around items-center">
-    <image
-      priority
-      src="{% static 'imgs/nodata.png' %}"
-      alt="no data"
-      width="300"
-      height="300"
-    />
-    <p class="bg-amber-50 px-4 py-2 rounded-lg text-center mx-auto">
-      Aucune donnée disponible
-    </p>
-  </div>
+<!--  -->
+{% include 'components/empty.html'%}
+<!--  -->
 
   {% else %}
 
   <div class="flex flex-col md:flex-row justify-between items-start">
     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {% for e in closed_visits %}
-      <a href="{% url 'visit_detail' e.id  %}">
+      <a href="{% url 'visit' e.id  %}">
         <div
-          class="p-4 text-gray-500 bg-purple-100 h-100 rounded-md hover:shadow-md"
+          class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
         >
           <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
           <h3 class="text-sm">{{e.date.date}}</h3>
@@ -62,12 +53,29 @@
 
 <!-- vists table -->
 
-<div class="mt-6 flex flex-col lg:flex-row justify-between gap-8">
-  {% if not visits %} {% include 'components/empty.html'%} {% else %}
-  <div class="flex flex-col w-full">
-    <h1 class="mb-2 text-black text-lg font-bold">Table des Visites</h1>
-    <div class="overflow-auto rounded-lg bg-gray-100">
-      <table class="w-full text-left db-table">
+<div class="mt-6 w-full">
+  {% if not visits %} 
+  <!--  -->
+{% include 'components/empty.html'%}
+<!--  -->
+ {% else %}
+ <div class="mb-4 flex justify-between items-center">
+
+   <h1 class="mb-2 text-black text-lg font-bold">Table des Visites</h1>
+       <a
+      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      href="{% url 'create_visit' %}"
+    >
+      <i class="inline fa-solid fa-plus lg:mr-2"></i>
+      <span class="hidden lg:inline font-base">
+        Ajouter une nouvelle visite
+      </span>
+    </a>
+ </div>
+    <div class="rounded-md bg-gray-100 overflow-hidden">
+      <table
+        class="w-full h-full text-left db-table border border-black overflow-hidden"
+      >
         <thead class="bg-black text-white font-bold">
           <tr>
             <th class="p-4 text-sm">Invité</th>
@@ -78,10 +86,10 @@
             <th class="p-4 text-sm">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="overflow-hidden">
           {% for e in visits %}
           <tr
-            class="text-gray-600 text-sm hover:bg-white hover:shadow-md hover:text-black transition-all duration-50"
+            class="text-gray-600 border text-sm hover:bg-purple-50 hover:text-black transition-all duration-50"
           >
             <td class="p-3">{{e.guest}}</td>
             <td class="p-3">{{e.host.username}}</td>
@@ -121,97 +129,38 @@
               </h4>
               {% endif %}
             </td>
-            <td class="md:flex justify-around gap-2 text-center">
+            </td>
+
+            <td class="md:flex justify-around gap-2 max-w-[100px] mx-auto">
               <a
-                href="{% url 'visit_detail' e.id  %}"
-                class="inline p-2 text-sm text-gray-700 cursor-pointer"
+                href="{% url 'visit' e.id  %}"
+                class="inline p-2 text-sm text-gray-500 rounded-md"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-0"
               >
-                <i class="fa-solid fa-pen-to-square hover:text-amber-400"></i>
+                <i class="fa-solid fa-eye hover:text-purple-700"></i>
               </a>
               {% if user.role.sec_level == 6 %}
               <a
-                onclick="return confirm('Voulez vous supprimer cette visite ?')"
+                onclick="return confirm('Voulez vous supprimer ce Rendez-vous ?')"
                 href="{% url 'delete_visit' e.id  %}"
-                class="inline px-2 lg:px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                class="inline px-2 lg:px-4 py-2 text-sm text-gray-500 rounded-md"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-1"
               >
-                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-500"></i>
+                {% endif %}
+                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-700"></i>
               </a>
-              {% endif %}
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-  </div>
   {% endif %}
-  <!-- visit creation form -->
-  {% if form %}
-  <div class="flex flex-col w-full lg:w-2/6 max-w-[350px]">
-    <h3 class="mb-2 text-black text-lg font-bold">Ajouter une visite</h3>
-    <form
-      class="p-4 w-full bg-gray-100 rounded-lg text-sm"
-      method="POST"
-      action=""
-      enctype="multipart/form-data"
-    >
-      {% csrf_token %}
-      <div>
-        <h3 class="mb-1">Hôte</h3>
-        {{form.host}}
-      </div>
-      <div>
-        <h3 class="mb-1">Nom et prénoms du visiteur</h3>
-        {{form.guest}}
-      </div>
-      <div class="flex gap-4 w-full justify-between">
-        <div>
-          <h3 class="mb-1">Sexe</h3>
-          {{form.gender}}
-        </div>
-        <div>
-          <h3 class="mb-1">Civilité</h3>
-          {{form.civility}}
-        </div>
-      </div>
-      <div class="flex gap-4">
-        <div>
-          <h3 class="mb-1">Téléphone</h3>
-          {{form.tel}}
-        </div>
-        <div>
-          <h3 class="mb-1">Type de visite</h3>
-          {{form.context}}
-        </div>
-      </div>
-      <div class="flex gap-4">
-        <div>
-          <h3 class="mb-1">Nationalité</h3>
-          {{form.nationality}}
-        </div>
-        <div>
-          <h3 class="mb-1">Pièce d'identité</h3>
-          {{form.id_doc}}
-        </div>
-      </div>
-      <div>
-        <h3 class="mb-1">N° de la pièce d'identité</h3>
-        {{form.doc_num}}
-      </div>
-      <input
-        class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
-        type="submit"
-        value="Enregistrer"
-      />
-    </form>
-  </div>
-  {% endif %}
+
 </div>
 
 {% endblock %}
