@@ -1,4 +1,7 @@
-// const nested = require("json-server/lib/server/router/nested");
+const sender_id = JSON.parse(document.getElementById("sender-id").textContent);
+const receiver_id = JSON.parse(
+  document.getElementById("receiver-id").textContent
+);
 
 let loc = window.location;
 
@@ -12,113 +15,63 @@ let endpoint = wsStart + loc.host + loc.pathname;
 
 var socket = new WebSocket(endpoint);
 
-let input_message = $("#texto");
-let message_body = $("#convo");
-let messenger = $("#messenger");
-const userID = $("#curr_user").val();
+let chat_form = $("#chat-form");
+let chat_input = $("#chat-input");
+let chat_body = $("#chat-body");
 
-socket.onopen = async function (e) {
-  console.log("Connection opened by user: ", userID, e);
-  messenger.on("submit", function (e) {
-    e.preventDefault();
-    let text_message = input_message.val();
-    let send_to = get_active_other_user_id();
-    let thread_id = get_active_thread_id();
-
-    let data = {
-      message: text_message,
-      sent_by: userID,
-      send_to: send_to,
-      thread_id: thread_id,
-    };
-    data = JSON.stringify(data);
-    socket.send(data);
-    $(this)[0].reset();
-  });
+socket.onopen = function (e) {
+  console.log(
+    `Connection to user-${receiver_id} opened by user-${sender_id}`,
+    e
+  );
 };
 
-socket.onmessage = async function (e) {
-  console.log("Connection message", e);
-  let data = JSON.parse(e.data);
-  let message = data["message"];
-  let sent_by_id = data["sent_by"];
-  let thread_id = data["thread_id"];
-  newMessage(message, sent_by_id, thread_id);
+socket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  if (data.receiver == receiver_id) {
+    chat_body.innerHTML += `
+    <tr class="px-4 py-2 mb-4 bg-purple-950 text-white text-left rounded-md flex flex-col max-w-md float-left">
+      <td>
+        <p>${data.message}</p>
+        <span class="text-xs text-gray-400">${data.timestamp}, today</span>
+      </td>
+    </tr>
+    `;
+  } else {
+    chat_body.innerHTML += `
+    <tr class="px-4 py-2 mb-4 bg-amber-100 text-black text-right rounded-md flex flex-col max-w-md float-right">    
+      <td>
+        <p>${data.message}</p>
+        <span class="text-xs text-gray-400">${data.timestamp}, today</span>
+      </td>
+    </tr>
+    `;
+  }
+  console.log(data);
 };
 
-socket.onerror = async function (e) {
+socket.onerror = function (e) {
   console.log("Connection error", e);
 };
 
-socket.onclose = async function (e) {
+socket.onclose = function (e) {
   console.log("Connection closed", e);
 };
 
-function newMessage(message, sent_by_id, thread_id) {
-  // if ($.trim(message) === "") {
-  //   console.log("no  message");
-  //   // return false;
-  // }
-  let message_element;
-  let chat_id = "chat_" + thread_id;
-  var currentdate = new Date();
-  let time = currentdate.getHours() + ":" + currentdate.getMinutes();
-  message_element = `
-          <p>${message}</p>
-    `;
+chat_form.on("submit", function (e) {
+  e.preventDefault();
+  let chat_message = chat_input.val();
+  let data = JSON.stringify({
+    message: chat_message,
+    receiver: receiver_id,
+  });
 
-  // if (sent_by_id === userID) {
-  //   message_element = `
-  //       <div class="msg_out px-4 py-2 mb-4 text-black text-right rounded-xl flex flex-col max-w-md">
-  //         <p>${message}</p>
-  //         <span class="text-xs text-gray-400">${time}, today</span>
-  //       </div>
-  //   `;
-  // } else {
-  //   message_element = `
-  //       <div class="msg_in px-4 py-2 mb-4 text-white text-left rounded-xl flex flex-col max-w-md">
-  //         <p>${message}</p>
-  //         <span class="text-xs text-gray-400">${time}, today</span>
-  //       </div>
-  //   `;
-  // }
-
-  message_body.append($(message_element));
-  message_body.animate(
-    {
-      scrollTop: $(message_body).height(),
-    },
-    100
-  );
-  // input_message.val(null);
-}
+  socket.send(data);
+  $(this)[0].reset();
+});
 
 function toggleDropdown(e) {
   e.name === "dropdownBtn"
     ? ((e.name = "close"), dropdownMenu.classList.remove("hidden"))
     : ((e.name = "dropdownBtn"), dropdownMenu.classList.add("hidden"));
-}
-
-// $(".contact-li").on("click", function () {
-//   $(".contacts .active").removeClass("active");
-//   $(".contacts .active").addClass("bg-white");
-//   $(this).addClass("active");
-
-//   let chat_id = $(this).attr("chat-id");
-//   $(".msg-box.visible").removeClass("visible");
-//   $(`.msg-box[chat-id=${chat_id}]`).addClass("visible");
-// });
-
-function get_active_other_user_id() {
-  let other_user_id = $(".msg-box").attr("other-user-id");
-  other_user_id = $.trim(other_user_id);
-  console.log("converser : ", other_user_id);
-  return other_user_id;
-}
-
-function get_active_thread_id() {
-  let chat_id = $(".msg-box").attr("chat-id");
-  let thread_id = chat_id.replace("chat_", "");
-  console.log("chat_id : ", thread_id);
-  return thread_id;
 }

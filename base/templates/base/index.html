@@ -31,7 +31,7 @@
     </h3>
     <div class="mb-4 flex flex-col md:flex-row gap-4">
       {% for e in curr_rdvs %}
-      <a href="{% url 'appointment_detail' e.id  %}">
+      <a href="{% url 'appointment' e.id  %}">
         <div class="p-4 text-black secondary h-100 rounded-md hover:shadow-md">
           <h3 class="font-bold text-md">{{e.guest}}</h3>
           <h3 class="">{{e.date}}</h3>
@@ -44,23 +44,25 @@
   </div>
   {% else %}
   <!-- ongoing visits -->
-  <div>
+  <div class="w-full max-w-xs">
     {% if not curr_visits %}
     <h3
-      class="mb-2 bg-purple-900 text-white p-4 rounded-md text-center font-light mx-auto"
+      class="mb-2 p-4 bg-purple-900 text-white text-center rounded-md font-light mx-auto"
     >
       Aucune visite en cours
     </h3>
     {% else %}
     <h3
-      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-md"
+      class="mb-2 p-4 bg-purple-900 text-white p-4 rounded-md font-light mx-auto"
     >
       Visite en cours <i class="fa-solid fa-bell"></i>
     </h3>
-    <div class="mb-4 grid grid-cols-2 gap-4">
+    <div
+      class="mb-2 p-4 bg-purple-900 text-white rounded-md font-light mx-auto"
+    >
       {% for e in curr_visits %}
-      <a href="{% url 'visit_detail' e.id  %}">
-        <div class="p-4 text-black secondary h-100 rounded-md hover:shadow-md">
+      <a href="{% url 'visit' e.id  %}">
+        <div class="text-white h-100 w-md rounded-md hover:shadow-md">
           <h3 class="font-bold text-md">{{e.guest}}</h3>
           <h3 class="">{{e.date}}</h3>
           <h3 class="">{{e.time}}</h3>

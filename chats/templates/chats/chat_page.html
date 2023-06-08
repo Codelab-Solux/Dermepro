@@ -3,7 +3,9 @@
 
 <div class="flex justify-between gap-4 xl:gap-8 h-full">
   <!-- active chat thread -->
-  <div class="h-full w-full max-w-4xl mx-auto flex flex-col justify-between">
+  <div
+    class="h-full w-full max-w-4xl mx-auto flex flex-col justify-between sticky"
+  >
     <div
       class="px-4 py-2 flex justify-between items-center bg-purple-950 text-white rounded-md"
     >
@@ -44,75 +46,58 @@
         </button>
       </div>
     </div>
-    <div
-      class="msg-box overflow-auto float"
-      chat-id="chat_{{ active_thread.id }}"
-      other-user-id="{% if active_thread.first_person == user %} {{ active_thread.second_person.id }} {% else %} {{ active_thread.first_person.id }} {% endif %}"
-    >
-      {% if not active_thread.chat_thread.all %}
+
+    <!-- active chat thread -->
+
+    <!-- <div class="mx-auto max-w-4xl items-center">
       <image
-        width="500"
-        class="mx-auto"
+        priority
         src="{% static 'imgs/chat.png' %}"
         alt="no data"
+        width="500"
+        height="500"
       />
       <p
-        class="mb-8 w-40 bg-amber-100 p-4 rounded-md text-center mx-auto animate-bounce"
+        class="mb-8 bg-amber-100 p-4 rounded-xl text-center mx-auto animate-bounce"
       >
-        Restons connecté
+        Commencer une conversation avec vos collegues
       </p>
-      {% else %}
-      <!------------------ conversation box ------------------->
-      {% for chat in active_thread.chat_thread.all %}
-      <div
-        class="lg:pr-4 flex flex-col justify-between {% if chat.sender == user %} items-end {% else %} items-start {% endif %}"
-        id="convo"
-      >
-        {% if chat.sender == user %}
-        <div
-          class="group msg_out px-4 py-2 mb-4 bg-gray-100 text-black text-base rounded-md flex flex-col text-right max-w-md"
+    </div> -->
+
+    <table class="table h-full min-h-[460px]">
+      <tbody class="overflow-auto" id="chat-body">
+        {% for obj in messages %}
+        <!--  -->
+        {% if obj.receiver != request.user.id %}
+
+        <tr
+          class="px-4 py-2 mb-4 bg-purple-950 text-white text-left rounded-md flex flex-col max-w-md float-left"
         >
-          <p>{{chat.text}}</p>
-          <span class="text-xs text-gray-400">{{chat.created_at}}</span>
-          <p class="group flex justify-end text-right gap-4">
-            <!-- <a
-              href="{% url 'delete_text' chat.id  %}"
-              class="inline p-2 text-sm text-gray-700 cursor-pointer"
-            >
-              <i
-                class="hidden group-hover:block fa-solid fa-pen-to-square hover:text-purple-700"
-              ></i>
-            </a> -->
-            <a
-              id="delete_btn"
-              onclick="return confirm('Voulez vous supprimer ce message?')"
-              href="{% url 'delete_text' chat.id  %}"
-              class="inline p-2 text-sm text-gray-700 cursor-pointer"
-            >
-              <i
-                class="hidden group-hover:block fa-solid fa-trash hover:text-red-700"
-              ></i>
-            </a>
-          </p>
-        </div>
+          <td>
+            <p>${obj.message}</p>
+            <span class="text-xs text-gray-400">${obj.timestamp}, today</span>
+          </td>
+        </tr>
+
         {% else %}
-        <div
-          class="msg_in px-4 py-2 mb-4 bg-purple-900 text-white text-base rounded-md flex flex-col text-left max-w-md"
+
+        <tr
+          class="px-4 py-2 mb-4 bg-amber-100 text-black text-right rounded-md flex flex-col max-w-md float-right"
         >
-          <p>{{chat.text}}</p>
-          <span class="text-xs text-gray-400">{{chat.created_at}}</span>
-        </div>
+          <td>
+            <p>${obj.message}</p>
+            <span class="text-xs text-gray-400">${obj.timestamp}, today</span>
+          </td>
+        </tr>
+
         {% endif %}
         <!--  -->
-      </div>
-      {% endfor %} {% endif %}
-    </div>
+        {% endfor %}
+      </tbody>
+    </table>
 
     <!------------------ chat form ------------------->
-    <form
-      id="messenger"
-      class="w-full flex flex-row space-8 w-full gap-4 justify-between items-center m-0 p-0"
-    >
+    <form id="chat-form" class="w-full mx-auto flex flex-row justify-between">
       <!-- <a href="">
         <i class="fa-solid fa-face-smile text-amber-300"></i>
       </a>
@@ -122,13 +107,13 @@
       <input
         type="text"
         name="message"
-        id="texto"
+        id="chat-input"
         required
-        class="px-4 py-3 rounded-md bg-gray-100 text-black w-full"
+        class="px-4 py-3 rounded-l-md bg-gray-100 text-black w-full outline-none"
         placeholder="ecrivez votre message..."
       />
       <button
-        class="group px-4 py-4 text-sm bg-purple-950 hover:bg-amber-200 text-white rounded-md"
+        class="group px-4 py-4 text-sm bg-purple-950 hover:bg-amber-200 text-white rounded-r-md"
         type="submit"
       >
         <i class="px-2 fa-solid fa-paper-plane group-hover:text-black"></i>
@@ -160,27 +145,27 @@
 
     <div class="customtab py-3 flex justify-between gap-2 w-full text-xs">
       <button
-        class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md"
+        class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'messages')"
         id="defaultOpen"
       >
-        <i class="fa-solid fa-comments"></i>
+        <i class="fa-solid fa-comments md:text-lg"></i>
         <span class="hidden xl:block"> Messages </span>
       </button>
       <button
-        class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md"
+        class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'contacts')"
       >
-        <i class="fa-solid fa-address-book"></i>
+        <i class="fa-solid fa-address-book md:text-lg"></i>
         <span class="hidden xl:block"> Contacts </span>
       </button>
-      <button
+      <!-- <button
         class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md"
         onclick="openTab(event, 'groups')"
       >
         <i class="fa-solid fa-people-group"></i>
         <span class="hidden xl:block"> Groupes </span>
-      </button>
+      </button> -->
     </div>
 
     <!-- ---------------------------tab contents--------------------------------->
@@ -257,16 +242,16 @@
 
       <!-- groups  -->
 
-      <div id="groups" class="tabcontent">
+      <!-- <div id="groups" class="tabcontent">
         <h3>Groupes</h3>
         <p>Auncun groupe disponible.</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
 
-{{other_user.id|json_script:"receiver-username"}}
-{{user.username|json_script:"sender-username"}}
+{{other_user.id|json_script:"receiver-id"}}
+{{request.user.id|json_script:"sender-id"}}
 
 <script>
   function openTab(evt, cityName) {
