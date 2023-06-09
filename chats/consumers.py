@@ -2,6 +2,7 @@
 import json
 from channels.generic.websocket  import AsyncWebsocketConsumer
 from channels.db import DatabaseSyncToAsync
+from . models import *
 
 
 class PrivateChatConsumer(AsyncWebsocketConsumer):
@@ -32,15 +33,16 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         message = data['message']
         receiver = data['receiver']
-        # sender  = data['sender'] 
+        sender  = data['sender'] 
 
+        await self.save_message(sender, message, self.room_group_name)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type':'chat_message',
                 'message':message,
                 'receiver':receiver,
-                # 'sender ':sender,
+                'sender ':sender,
 
             }
         )
@@ -56,4 +58,29 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                 # 'sender ':sender,
 
             }))
+        
+    @DatabaseSyncToAsync
+    def save_message(self, sender, message, thread_name):
+        ChatMessage.objects.create(
+            sender=sender, 
+            message=message,
+            thread_name=thread_name, 
+        )
 
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        my_id = self.scope['user'].id
+        self.room_group_name = f'{my_id}'
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        await self.accept()
+
+    async def disconnect(self):
+        self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )

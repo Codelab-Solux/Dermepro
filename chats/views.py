@@ -24,6 +24,7 @@ def chats(req):
 
 @login_required(login_url='login')
 def chat_page(req, pk):
+    user = req.user
     query = req.GET.get('query') if req.GET.get('query') != None else ''
     contacts = CustomUser.objects.filter(
         Q(first_name__icontains=query)
@@ -33,10 +34,18 @@ def chat_page(req, pk):
 
     other_user = CustomUser.objects.get(id=pk)
 
+    if user.id > other_user.id:
+        thread_name = f'chat_{user.id}-{other_user.id}'
+    else:
+        thread_name = f'chat_{other_user.id}-{user.id}'
+
+    messages = ChatMessage.objects.filter(thread_name=thread_name)
+
     context = {
         'chat_page': 'active',
         'contacts': contacts,
         'other_user': other_user,
+        'messages': messages,
 
     }
 

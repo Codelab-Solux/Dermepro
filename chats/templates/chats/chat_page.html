@@ -4,7 +4,7 @@
 <div class="flex justify-between gap-4 xl:gap-8 h-full">
   <!-- active chat thread -->
   <div
-    class="h-full w-full max-w-4xl mx-auto flex flex-col justify-between sticky"
+    class="h-full w-full max-w-4xl mx-auto flex flex-col gap-4 justify-between sticky"
   >
     <div
       class="px-4 py-2 flex justify-between items-center bg-purple-950 text-white rounded-md"
@@ -12,13 +12,13 @@
       <div class="flex items-center">
         {% if not other_user.image %}
         <img
-          class="h-5 w-5 lg:h-10 lg:w-10 rounded-full object-cover"
+          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
           src="{% static 'imgs/rand.webp' %}"
           alt="welcome image"
         />
         {% else %}
         <img
-          class="h-5 w-5 lg:h-10 lg:w-10 rounded-full object-cover"
+          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
           src="{{other_user.image.url}}"
           alt="welcome image"
         />
@@ -64,29 +64,32 @@
       </p>
     </div> -->
 
-    <table class="table h-full min-h-[460px]">
-      <tbody class="overflow-auto" id="chat-body">
+    <table class="h-full min-h-[460px] max-h-screen">
+      <tbody id="chat-box" class="flex flex-col gap-4 overflow-auto">
         {% for obj in messages %}
         <!--  -->
-        {% if obj.receiver != request.user.id %}
+        {% if obj.sender == other_user.id %}
 
-        <tr
-          class="px-4 py-2 mb-4 bg-purple-950 text-white text-left rounded-md flex flex-col max-w-md float-left"
-        >
-          <td>
-            <p>${obj.message}</p>
-            <span class="text-xs text-gray-400">${obj.timestamp}, today</span>
+        <tr>
+          <td
+            class="px-4 py-2 bg-amber-100 text-black text-right rounded-md flex flex-col max-w-md float-left"
+          >
+            <p>{{obj.message}}</p>
+            <span class="text-xs text-gray-500 text-left"
+              >{{obj.timestamp.time}}</span
+            >
           </td>
         </tr>
 
         {% else %}
-
-        <tr
-          class="px-4 py-2 mb-4 bg-amber-100 text-black text-right rounded-md flex flex-col max-w-md float-right"
-        >
-          <td>
-            <p>${obj.message}</p>
-            <span class="text-xs text-gray-400">${obj.timestamp}, today</span>
+        <tr>
+          <td
+            class="px-4 py-2 bg-purple-950 text-white text-left rounded-md flex flex-col max-w-md float-right"
+          >
+            <p>{{obj.message}}</p>
+            <span class="text-xs text-gray-300 text-right"
+              >{{obj.timestamp.time}}</span
+            >
           </td>
         </tr>
 
@@ -123,7 +126,7 @@
 
   <!-- ---------------------------threads and contacts sidebar--------------------------------->
   <div
-    class="hidden md:block contacts bg-gray-100 border border-2 p-4 rounded-md flex flex-col md:w-60 lg:w-2/6 overflow-auto"
+    class="hidden md:block contacts bg-gray-100 border border-2 p-4 flex flex-col md:w-60 lg:w-2/6 overflow-auto"
   >
     <form id="search_box" class="w-full max-w-xl flex flex-row justify-between">
       <input
@@ -213,13 +216,13 @@
           >
             {% if not obj.image %}
             <img
-              class="h-5 w-5 lg:h-10 lg:w-10 rounded-full object-cover"
+              class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
               src="{% static 'imgs/rand.webp' %}"
               alt="welcome image"
             />
             {% else %}
             <img
-              class="h-5 w-5 lg:h-10 lg:w-10 rounded-full object-cover"
+              class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
               src="{{obj.image.url}}"
               alt="welcome image"
             />
