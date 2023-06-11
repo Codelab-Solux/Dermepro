@@ -39,18 +39,18 @@ socket.onmessage = function (e) {
   if (data.receiver != receiver_id) {
     chat_div = `
     <tr class="max-h-20">    
-      <td class="px-4 py-2 bg-amber-100 text-black text-right rounded-md flex flex-col max-w-md float-left">
+      <td class="px-4 py-2 bg-amber-100 text-black text-left rounded-md flex flex-col max-w-md float-left">
         <p>${data.message}</p>
-        <span class="text-xs text-gray-400">${time}, today</span>
+        <span class="text-xs text-gray-500 text-left">${time}, today</span>
       </td>
     </tr>
     `;
   } else {
     chat_div = `
     <tr class="max-h-20">
-      <td  class="px-4 py-2 bg-purple-950 text-white text-left rounded-md flex flex-col max-w-md float-right">
+      <td  class="px-4 py-2 bg-purple-950 text-white text-right rounded-md flex flex-col max-w-md float-right">
         <p>${data.message}</p>
-        <span class="text-xs text-gray-400">${time}, today</span>
+        <span class="text-xs text-gray-300 text-right">${time}, today</span>
       </td>
     </tr>
     `;

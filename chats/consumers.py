@@ -35,7 +35,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         receiver = data['receiver']
         sender  = data['sender'] 
 
-        await self.save_message(sender, message, self.room_group_name)
+        await self.save_message(sender,receiver, message, self.room_group_name)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -60,9 +60,10 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             }))
         
     @DatabaseSyncToAsync
-    def save_message(self, sender, message, thread_name):
+    def save_message(self, sender, receiver, message, thread_name):
         ChatMessage.objects.create(
             sender=sender, 
+            receiver=receiver, 
             message=message,
             thread_name=thread_name, 
         )

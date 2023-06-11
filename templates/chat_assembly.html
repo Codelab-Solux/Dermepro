@@ -17,14 +17,14 @@
     <link href="{% static 'styles.css' %}" rel="stylesheet" />
     <title>Dermepro</title>
   </head>
-  <body class="flex flex-row bg-white text-gray-700 max-w-full mx-auto">
-    {% if user.is_authenticated %}
-    <input id="curr_user" type="hidden" value="{{user.id}}" />
-    {% endif %} {% include 'sidebar.html' %}
-    <div class="w-full ml-20 lg:ml-[260px] xl:ml-[300px] bg-white">
-      <div class="p-8 w-full max-w-[1350px] mx-auto min-h-screen">
-        {% block content %} {% endblock %}
-      </div>
-    </div>
+  <body
+    class="flex flex-row justify-between bg-white text-gray-700 max-w-full mx-auto"
+  >
+    <!--  -->
+    {% include 'sidebar.html' %}
+    <!--  -->
+    {% include 'convo.html' %}
+    <!--  -->
+    {% include 'user_list.html' %}
   </body>
 </html>

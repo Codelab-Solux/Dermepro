@@ -4,6 +4,7 @@ from accounts.models import CustomUser
 
 class ChatMessage(models.Model):
     sender = models.IntegerField(default=None)
+    receiver = models.IntegerField(default=None, null=True, blank=True)
     message = models.TextField(blank=False, null=False)
     thread_name = models.CharField(max_length=50, default=None, blank=True, null=True)
     timestamp =  models.DateTimeField(auto_now_add=True)

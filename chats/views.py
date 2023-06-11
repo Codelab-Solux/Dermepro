@@ -25,12 +25,21 @@ def chats(req):
 @login_required(login_url='login')
 def chat_page(req, pk):
     user = req.user
+    users =CustomUser.objects.all()
     query = req.GET.get('query') if req.GET.get('query') != None else ''
     contacts = CustomUser.objects.filter(
         Q(first_name__icontains=query)
         | Q(last_name__icontains=query)
         | Q(role__name__icontains=query)
     ).exclude(id=req.user.id)
+
+    # threads = ChatMessage.objects.filter(
+    #     Q(sender = user.id) | Q(receiver = user.id)
+    # ).order_by('-timestamp')
+
+    threads = ChatMessage.objects.filter(
+        Q(sender = user.id) | Q(receiver = user.id)
+    ).order_by('thread_name','-timestamp').distinct('thread_name')
 
     other_user = CustomUser.objects.get(id=pk)
 
@@ -41,11 +50,16 @@ def chat_page(req, pk):
 
     messages = ChatMessage.objects.filter(thread_name=thread_name)
 
+
+    # thread_other_user = CustomUser.objects.get()
+
     context = {
         'chat_page': 'active',
         'contacts': contacts,
         'other_user': other_user,
         'messages': messages,
+        'threads': threads,
+        'users': users,
 
     }
 
