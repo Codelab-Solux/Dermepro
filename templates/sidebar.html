@@ -52,6 +52,20 @@
       </span>
     </a>
     <a
+      class="relative mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
+      href="{% url 'notifications' %}"
+    >
+      <i class="text-sm fa-solid fa-bell lg:mr-2"></i> 
+      <span class="hidden lg:inline">
+        Notifications
+      </span>
+{% if notifications %}
+        <span id="notifier" class="absolute top-2 right-2 h-2 w-2 rounded-full bg-amber-500 animate-pulse">
+          <tt id="count_badge"></tt>
+        </span>
+        {% endif %}
+    </a>
+    <a
       class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'chat' %}"
     >

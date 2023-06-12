@@ -61,12 +61,16 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         
     @DatabaseSyncToAsync
     def save_message(self, sender, receiver, message, thread_name):
-        ChatMessage.objects.create(
+        chat_obj = ChatMessage.objects.create(
             sender=sender, 
             receiver=receiver, 
             message=message,
             thread_name=thread_name, 
         )
+        other_user_id = int(self.scope['url_route']['kwargs']['id'])
+        get_other_user = CustomUser.objects.get(id=other_user_id)
+        if receiver == get_other_user.id:
+            ChatNotification.objects.create(chat= chat_obj, user=get_other_user)
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -85,3 +89,12 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
+    async def send_notification(self, event):
+        data = json.loads(event.get('value'))
+        notifications = data['notifications']
+        nottification_count = data['nottification_count']
+        await self.send(text_data = json.dumps({
+            'notifications':notifications,
+            'nottification_count':nottification_count
+        }))

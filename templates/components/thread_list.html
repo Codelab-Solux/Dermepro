@@ -21,7 +21,7 @@
       <p class="text-black font-bold">@{{obj.first_name}}</p>
       <div class="flex justify-between text-xs">
         <p>{{thread.message|truncatechars:40}}</p>
-        <p>{{thread.timestamp}}</p>
+        <p class="hidden xl:inline">{{thread.timestamp}}</p>
       </div>
     </div>
   </a>
@@ -47,7 +47,7 @@
       <p class="text-black font-bold">@{{obj.first_name}}</p>
       <div class="flex justify-between text-xs">
         <p>{{thread.message|truncatechars:40}}</p>
-        <p>{{thread.timestamp}}</p>
+        <p class="hidden xl:inline">{{thread.timestamp}}</p>
       </div>
     </div>
   </a>

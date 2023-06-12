@@ -3,6 +3,9 @@ from django.db import models
 from accounts.models import CustomUser
 
 class ChatMessage(models.Model):
+    class Meta:
+        ordering = ['timestamp']
+
     sender = models.IntegerField(default=None)
     receiver = models.IntegerField(default=None, null=True, blank=True)
     message = models.TextField(blank=False, null=False)

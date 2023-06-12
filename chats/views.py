@@ -33,13 +33,17 @@ def chat_page(req, pk):
         | Q(role__name__icontains=query)
     ).exclude(id=req.user.id)
 
-    # threads = ChatMessage.objects.filter(
-    #     Q(sender = user.id) | Q(receiver = user.id)
-    # ).order_by('-timestamp')
+    # threads = ChatMessage.objects.raw(f'''
 
+    #     SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id} ORDER BY timestamp DESC
+    # ''')
+        # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id} AND ( SELECT DISTINCT (chats_chatmessage.thread_name) FROM chats_chatmessage) ORDER BY chatmessage.timestamp DESC;
+        # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id}  
+        #           ORDER BY timestamp DESC;
+        
     threads = ChatMessage.objects.filter(
         Q(sender = user.id) | Q(receiver = user.id)
-    ).order_by('thread_name','-timestamp').distinct('thread_name')
+    ).values().distinct('thread_name').order_by('thread_name','-timestamp')
 
     other_user = CustomUser.objects.get(id=pk)
 

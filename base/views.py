@@ -6,6 +6,7 @@ from django.views.generic import ListView, View
 
 from accounts.forms import RoleForm
 from accounts.models import Role
+from chats.models import ChatNotification
 from .models import *
 from .forms import *
 import csv
@@ -377,3 +378,16 @@ def about(req):
     return render(req, 'base/about.html', context)
 
 # ajax views------------------------------------------------------------------------------------------------------
+
+@login_required(login_url='login')
+def notifications(req):
+    notifications = ChatNotification.objects.filter(user = req.user, is_seen = False)
+    users =CustomUser.objects.all()
+
+
+    context = {
+        'notifications': 'active',
+        'notifications': notifications,
+        'users': users,
+    }
+    return render(req, 'base/notifications.html', context)
