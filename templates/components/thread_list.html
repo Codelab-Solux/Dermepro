@@ -1,6 +1,15 @@
 <!--  -->
 {% load static %}
 <!--  -->
+{% if not threads %}
+<!--------------------------------------- No data placeholder --------------------------------------->
+<div class="p-8 my-20 w-full mx-auto rounded-md flex-col text-center">
+  <i class="fa-regular fa-folder-open text-5xl"></i>
+  <p class="mt-4">Aucun conversation disponible pour le moment</p>
+</div>
+
+{% else %}
+<!--  -->
 {% for thread in threads %}
 <!--  -->
 {% if thread.sender == user.id %}
@@ -58,3 +67,6 @@
 {% endif %}
 <!--  -->
 {% endfor %}
+
+<!--  -->
+{% endif %}

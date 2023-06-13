@@ -21,18 +21,18 @@
   <div class="flex flex-col md:flex-row justify-between items-start">
     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {% for e in new_users %}
+      <div
+      class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
+      >
       <a href="{% url 'user_profile' e.id  %}">
-        <div
-        class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
-        >
           <h3 class="font-bold text-black text-md">
             {{e.last_name}} {{e.first_name}}
           </h3>
           <p class="font-bold text-purple-900 text-sm">@{{e.username}}</p>
           <!-- <p class="text-sm">{{e.email}}</p> -->
           <p class="text-sm">{{e.role}}</p>
+        </a>
         </div>
-      </a>
       {% endfor %}
     </div>
     <img

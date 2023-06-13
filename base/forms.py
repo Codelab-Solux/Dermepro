@@ -24,6 +24,19 @@ class VisitForm(forms.ModelForm):
                   'id_doc',
                   'doc_num',)
         exclude = ('status', 'date',)
+        labels = {
+            'guest': 'Nom et prénoms du visiteur',
+            'civility': 'Civilité',
+            'context': 'Context de la visite',
+            'gender': 'Genre',
+            'tel': 'Téléphone',
+            'nationality': 'Nationalité',
+            'arrived_at': "Heure d'arrivée",
+            'departed_at': 'Heure de départ',
+            'id_doc': "Pièce d'identité",
+            'doc_num': "N° de la pièce d'identité",
+            'status': 'Status de la visite',
+        }
         widgets = {
             'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'guest': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -38,24 +51,23 @@ class VisitForm(forms.ModelForm):
 
 
 class EditVisitForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["guest"].label = 'Nom et prénoms du visiteur'
-        self.fields["civility"].label = 'Civilité'
-        self.fields["context"].label = 'Context de la visite'
-        self.fields["tel"].label = 'Téléphone'
-        self.fields["nationality"].label = 'Nationalité'
-        self.fields["arrived_at"].label = "Heure d'arrivée"
-        self.fields["departed_at"].label = 'Heure de départ'
-        self.fields["gender"].label = 'Sexe'
-        self.fields["id_doc"].label = "Pièce d'identité"
-        self.fields["doc_num"].label = "N° de la pièce d'identité"
-        self.fields["status"].label = 'Status de la visite'
 
     class Meta:
         model = Visit
         fields = ('__all__')
         exclude = ('host', 'date',)
+        labels = {
+            'guest': 'Nom et prénoms du visiteur',
+            'civility': 'Civilité',
+            'context': 'Context de la visite',
+            'tel': 'Téléphone',
+            'nationality': 'Nationalité',
+            'arrived_at': "Heure d'arrivée",
+            'departed_at': 'Heure de départ',
+            'id_doc': "Pièce d'identité",
+            'doc_num': "N° de la pièce d'identité",
+            'status': 'Status de la visite',
+        }
         widgets = {
             'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'civility': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -83,6 +95,21 @@ class AppointmentForm(forms.ModelForm):
                   'time',
                   'is_vip',)
         exclude = ('status', )
+        
+        labels = {
+            'guest': 'Nom et prénoms du visiteur',
+            'civility': 'Civilité',
+            'gender': 'Genre',
+            'nationality': 'Nationalité',
+            'tel': 'Téléphone',
+            'time': "Heure du Rendez-vous",
+            'arrived_at': "Heure d'arrivée",
+            'departed_at': 'Heure de départ',
+            'id_doc': "Pièce d'identité",
+            'doc_num': "N° de la pièce d'identité",
+            'status': 'Status de la visite',
+            'is_vip': 'Rendez-vous V.I.P',
+        }
         widgets = {
             'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'guest': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
@@ -98,25 +125,25 @@ class AppointmentForm(forms.ModelForm):
 
 
 class EditAppointmentForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields["guest"].label = 'Nom et prénoms du visiteur'
-        self.fields["civility"].label = 'Civilité'
-        self.fields["gender"].label = 'Sexe'
-        self.fields["nationality"].label = 'Nationalité'
-        self.fields["tel"].label = 'Téléphone'
-        self.fields["time"].label = 'Heure du Rendez-vous'
-        self.fields["arrived_at"].label = "Heure d'arrivée"
-        self.fields["departed_at"].label = 'Heure de départ'
-        self.fields["id_doc"].label = "Pièce d'identité"
-        self.fields["doc_num"].label = "N° de la pièce d'identité"
-        self.fields["status"].label = 'Status du Rendez-vous'
-        self.fields["is_vip"].label = 'Rendez-vous V.I.P'
 
     class Meta:
         model = Appointment
         fields = ('__all__')
         exclude = ('host',)
+        labels = {
+            'guest': 'Nom et prénoms du visiteur',
+            'civility': 'Civilité',
+            'gender': 'Genre',
+            'nationality': 'Nationalité',
+            'tel': 'Téléphone',
+            'time': "Heure du Rendez-vous",
+            'arrived_at': "Heure d'arrivée",
+            'departed_at': 'Heure de départ',
+            'id_doc': "Pièce d'identité",
+            'doc_num': "N° de la pièce d'identité",
+            'status': 'Status de la visite',
+            'is_vip': 'Rendez-vous V.I.P',
+        }
         widgets = {
             'guest': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'gender': forms.Select(attrs={'class': "mb-2 px-6 py-2 rounded-md bg-white w-full"}),
