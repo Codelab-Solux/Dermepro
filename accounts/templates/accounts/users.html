@@ -24,7 +24,7 @@
       <div
       class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
       >
-      <a href="{% url 'user_profile' e.id  %}">
+      <a href="{% url 'user_profile' e.id  %}" >
           <h3 class="font-bold text-black text-md">
             {{e.last_name}} {{e.first_name}}
           </h3>
@@ -32,7 +32,7 @@
           <!-- <p class="text-sm">{{e.email}}</p> -->
           <p class="text-sm">{{e.role}}</p>
         </a>
-        </div>
+      </div>
       {% endfor %}
     </div>
     <img

@@ -196,3 +196,11 @@
     </div>
   </ul>
 </div>
+
+<script>
+  function toggleDropdown(e) {
+  e.name === "dropdownBtn"
+    ? ((e.name = "close"), dropdownMenu.classList.remove("hidden"))
+    : ((e.name = "dropdownBtn"), dropdownMenu.classList.add("hidden"));
+}
+</script>

@@ -4,7 +4,7 @@
   <div
     class="mb-4 flex justify-between items-center text-center font-light mx-auto"
   >
-    <h1 class="text-md lg:text-lg text-black font-bold">Rendez-vous  récemment cloturés</h1>
+    <h1 class="text-md lg:text-lg text-black font-bold">Rendez-vous récemment cloturés</h1>
     {% if user.role.sec_level >= 5 %}
     <a
       class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
@@ -18,7 +18,7 @@
     {% endif %}
   </div>
 
-  {% if not pending_vips %}
+  {% if not closed_appointments %}
   <!--  -->
   {% include 'components/empty.html'%}
   <!--  -->
@@ -26,16 +26,16 @@
 
   <div class="flex flex-col md:flex-row justify-between items-start">
     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-      {% for e in pending_vips %}
+      {% for e in closed_appointments %}
+      <div
+        class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
+      >
       <a href="{% url 'appointment' e.id  %}">
-        <div
-          class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
-        >
           <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
           <h3 class="text-sm">{{e.date}}</h3>
           <h3 class="text-sm">{{e.time}}</h3>
-        </div>
-      </a>
+        </a>
+      </div>
       {% endfor %}
     </div>
     <image

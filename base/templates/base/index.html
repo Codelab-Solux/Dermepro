@@ -90,9 +90,9 @@
         />
         <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {% for e in visits %}
-          <a href="{% url 'visit_detail' e.id  %}">
+          <a href="{% url 'visit' e.id  %}">
             <div
-              class="p-4 text-gray-500 bg-purple-100 h-100 rounded-md hover:shadow-md"
+              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
             >
               <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
               <h3 class="text-sm">{{e.date}}</h3>
@@ -110,7 +110,7 @@
   </div>
 
   <!-- Appointments -->
-  {% if user.role == 'admin' %}
+  {% if user.role.sec_level >= 4 %}
   <div class="w-full flex flex-col md:flex-row justify-between items-center">
     <div class="flex flex-col justify-between p-4">
       <!-- pending VIP rdvs -->
@@ -129,9 +129,9 @@
         </h3>
         <div class="mb-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {% for e in pending_vips %}
-          <a href="{% url 'appointment_detail' e.id  %}">
+          <a href="{% url 'appointment' e.id  %}">
             <div
-              class="p-4 text-gray-500 bg-red-100 h-100 rounded-md hover:shadow-md w-full"
+              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
             >
               <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
               <h3 class="text-sm">{{e.date}}</h3>
@@ -158,9 +158,9 @@
         </h3>
         <div class="mb-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {% for e in pending_rdvs %}
-          <a href="{% url 'appointment_detail' e.id  %}">
+          <a href="{% url 'appointment' e.id  %}">
             <div
-              class="p-4 text-gray-500 bg-amber-100 h-100 rounded-md hover:shadow-md"
+              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
             >
               <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
               <h3 class="">{{e.date}}</h3>

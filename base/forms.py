@@ -25,6 +25,7 @@ class VisitForm(forms.ModelForm):
                   'doc_num',)
         exclude = ('status', 'date',)
         labels = {
+            'host': 'Hôte',
             'guest': 'Nom et prénoms du visiteur',
             'civility': 'Civilité',
             'context': 'Context de la visite',
@@ -55,11 +56,13 @@ class EditVisitForm(forms.ModelForm):
     class Meta:
         model = Visit
         fields = ('__all__')
-        exclude = ('host', 'date',)
+        exclude = ('date',)
         labels = {
+            'host': 'Hôte',
             'guest': 'Nom et prénoms du visiteur',
             'civility': 'Civilité',
             'context': 'Context de la visite',
+            'gender': 'Genre',
             'tel': 'Téléphone',
             'nationality': 'Nationalité',
             'arrived_at': "Heure d'arrivée",
@@ -87,7 +90,8 @@ class EditVisitForm(forms.ModelForm):
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ('guest',
+        fields = ('host',
+                  'guest',
                   'civility',
                   'gender',
                   'tel',
@@ -97,6 +101,7 @@ class AppointmentForm(forms.ModelForm):
         exclude = ('status', )
         
         labels = {
+            'host': 'Hôte',
             'guest': 'Nom et prénoms du visiteur',
             'civility': 'Civilité',
             'gender': 'Genre',
@@ -129,8 +134,8 @@ class EditAppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ('__all__')
-        exclude = ('host',)
         labels = {
+            'host': 'Hôte',
             'guest': 'Nom et prénoms du visiteur',
             'civility': 'Civilité',
             'gender': 'Genre',
@@ -145,6 +150,7 @@ class EditAppointmentForm(forms.ModelForm):
             'is_vip': 'Rendez-vous V.I.P',
         }
         widgets = {
+            'host': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'guest': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),
             'gender': forms.Select(attrs={'class': "mb-2 px-6 py-2 rounded-md bg-white w-full"}),
             'civility': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-white w-full"}),

@@ -16,7 +16,7 @@ import csv
 @login_required(login_url='login')
 def home(req):
     user = req.user
-    if user.role.sec_level < 4:
+    if user.role.sec_level >= 4:
         visits = Visit.objects.filter(status='pending')
         curr_visits = Visit.objects.filter(status='open')
         curr_rdvs = Appointment.objects.filter(status='open')
@@ -173,8 +173,7 @@ def appointments(req):
     user = req.user
     if user.role.sec_level >= 3:
         appointments = Appointment.objects.all()
-        pending_vips = Appointment.objects.filter(
-            is_vip=True, status='pending').order_by('date')[:15]
+        closed_appointments = Appointment.objects.filter(status='closed').order_by('date')[:15]
 
     else:
         return redirect(req.META.get('HTTP_REFERER', '/'))
@@ -191,7 +190,7 @@ def appointments(req):
         "rdvs_page": "active",
         'title': 'appointments',
         'appointments': appointments,
-        'pending_vips': pending_vips,
+        'closed_appointments': closed_appointments,
         'ordering': ordering,
     }
     return render(req, 'base/appointments.html', context)
