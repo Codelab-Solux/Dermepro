@@ -2,11 +2,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.views.generic import ListView, View
-
 from accounts.forms import RoleForm
 from accounts.models import Role
-from chats.models import ChatNotification
 from .models import *
 from .forms import *
 import csv
@@ -95,6 +92,7 @@ def visits(req):
     }
     return render(req, 'base/visits.html', context)
 
+
 @login_required(login_url='login')
 def visit(req, pk):
     user = req.user
@@ -122,7 +120,7 @@ def visit(req, pk):
 def create_visit(req):
     user = req.user
 
-    if user.role.sec_level < 4 :
+    if user.role.sec_level < 4:
         return redirect('visits')
 
     form = VisitForm()
@@ -132,7 +130,7 @@ def create_visit(req):
         if form.is_valid():
             form.save()
             return redirect('visits')
-        
+
     context = {
         "create_visit_page": "active",
         'title': 'create_visit',
@@ -173,7 +171,8 @@ def appointments(req):
     user = req.user
     if user.role.sec_level >= 3:
         appointments = Appointment.objects.all()
-        closed_appointments = Appointment.objects.filter(status='closed').order_by('date')[:15]
+        closed_appointments = Appointment.objects.filter(
+            status='closed').order_by('date')[:15]
 
     else:
         return redirect(req.META.get('HTTP_REFERER', '/'))
@@ -218,11 +217,12 @@ def appointment(req, pk):
     }
     return render(req, 'base/appointment.html', context)
 
+
 @login_required(login_url='login')
 def create_appointment(req):
     user = req.user
 
-    if user.role.sec_level < 4 :
+    if user.role.sec_level < 4:
         return redirect('appointments')
 
     form = AppointmentForm()
@@ -232,13 +232,14 @@ def create_appointment(req):
         if form.is_valid():
             form.save()
             return redirect('appointments')
-        
+
     context = {
         "create_visit_page": "active",
         'title': 'create_visit',
         'form': form,
     }
     return render(req, 'base/appointment.html', context)
+
 
 @login_required(login_url='login')
 def delete_appointment(req, pk):
@@ -376,13 +377,14 @@ def about(req):
     }
     return render(req, 'base/about.html', context)
 
-# ajax views------------------------------------------------------------------------------------------------------
+
+# notifications------------------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def notifications(req):
-    notifications = ChatNotification.objects.filter(user = req.user, is_seen = False)
-    users =CustomUser.objects.all()
-
+    notifications = ChatNotification.objects.filter(
+        user=req.user, is_seen=False)
+    users = CustomUser.objects.all()
 
     context = {
         'notifications': 'active',
@@ -390,3 +392,18 @@ def notifications(req):
         'users': users,
     }
     return render(req, 'base/notifications.html', context)
+
+
+@login_required(login_url='login')
+def read_notification(req, pk):
+    user = req.user
+    obj = ChatNotification.objects.get(id=pk)
+    if user != obj.user:
+        return redirect(req.META.get('HTTP_REFERER', '/'))
+
+    if req.method == 'POST':
+        if obj.is_seen == False:
+            ChatNotification.objects.filter(id=pk).update(is_seen=True)
+            return redirect('chat_page', obj.chat.sender)
+        else:
+            return redirect(req.META.get('HTTP_REFERER', '/'))

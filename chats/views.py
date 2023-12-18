@@ -25,7 +25,7 @@ def chats(req):
 @login_required(login_url='login')
 def chat_page(req, pk):
     user = req.user
-    users =CustomUser.objects.all()
+    users = CustomUser.objects.all()
     query = req.GET.get('query') if req.GET.get('query') != None else ''
     contacts = CustomUser.objects.filter(
         Q(first_name__icontains=query)
@@ -37,13 +37,13 @@ def chat_page(req, pk):
 
     #     SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id} ORDER BY timestamp DESC
     # ''')
-        # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id} AND ( SELECT DISTINCT (chats_chatmessage.thread_name) FROM chats_chatmessage) ORDER BY chatmessage.timestamp DESC;
-        # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id}  
-        #           ORDER BY timestamp DESC;
-        
+    # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id} AND ( SELECT DISTINCT (chats_chatmessage.thread_name) FROM chats_chatmessage) ORDER BY chatmessage.timestamp DESC;
+    # SELECT * FROM chats_chatmessage WHERE sender={user.id} OR receiver={user.id}
+    #           ORDER BY timestamp DESC;
+
     threads = ChatMessage.objects.filter(
-        Q(sender = user.id) | Q(receiver = user.id)
-    ).values().distinct('thread_name').order_by('thread_name','-timestamp')
+        Q(sender=user.id) | Q(receiver=user.id)
+    ).distinct('thread_name').order_by('thread_name', '-timestamp')
 
     other_user = CustomUser.objects.get(id=pk)
 
@@ -53,7 +53,6 @@ def chat_page(req, pk):
         thread_name = f'chat_{other_user.id}-{user.id}'
 
     messages = ChatMessage.objects.filter(thread_name=thread_name)
-
 
     # thread_other_user = CustomUser.objects.get()
 

@@ -7,7 +7,7 @@
     <h1 class="text-md lg:text-lg text-black font-bold">Rendez-vous récemment cloturés</h1>
     {% if user.role.sec_level >= 5 %}
     <a
-      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
       href="{% url 'appointments_csv' %}"
     >
       <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
@@ -25,7 +25,7 @@
   {% else %}
 
   <div class="flex flex-col md:flex-row justify-between items-start">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for e in closed_appointments %}
       <div
         class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
@@ -56,7 +56,7 @@
  <div class="mb-4 flex justify-between items-center">
       <h1 class="mb-2 text-black text-lg font-bold">Table des Rendez-vous</h1>
       <a
-        class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+        class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
         href="{% url 'create_appointment' %}"
       >
         <i class="inline fa-solid fa-plus lg:mr-2"></i>

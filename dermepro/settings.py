@@ -87,19 +87,19 @@ WSGI_APPLICATION = 'dermepro.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://Codelab-Solux:CZRuAaG50cYp@ep-summer-surf-475106.us-east-2.aws.neon.tech/neondb')
-    # 'default': {
+    # 'default': dj_database_url.parse('postgres://Codelab-Solux:CZRuAaG50cYp@ep-summer-surf-475106.us-east-2.aws.neon.tech/neondb')
+    'default': {
 
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'dermepro',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dermepro',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
 
-    #     # 'ENGINE': 'django.db.backends.sqlite3',
-    #     # 'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -153,18 +153,17 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "asgi_redis.RedisChannelLayer",
-#         "ROUTING": "???",
-#         "CONFIG": {
-#             "hosts": [("redis-channel-1", 6379), ("redis-channel-2", 6379)],
-#         },
-#     },
-# }
-
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+        "CONFIG": {
+            "hosts": [('localhost', '6379')],
+        },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+    },
 }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }

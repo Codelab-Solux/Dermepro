@@ -1,6 +1,6 @@
 
 import json
-from channels.generic.websocket  import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import DatabaseSyncToAsync
 from . models import *
 
@@ -33,16 +33,16 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         message = data['message']
         receiver = data['receiver']
-        sender  = data['sender'] 
+        sender = data['sender']
 
-        await self.save_message(sender,receiver, message, self.room_group_name)
+        await self.save_message(sender, receiver, message, self.room_group_name)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type':'chat_message',
-                'message':message,
-                'receiver':receiver,
-                'sender ':sender,
+                'type': 'chat_message',
+                'message': message,
+                'receiver': receiver,
+                'sender ': sender,
 
             }
         )
@@ -52,25 +52,25 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         receiver = event['receiver']
         # sender = event['sender']
 
-        await self.send(text_data= json.dumps({
-                'message':message,
-                'receiver':receiver,
-                # 'sender ':sender,
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'receiver': receiver,
+            # 'sender ':sender,
 
-            }))
-        
+        }))
+
     @DatabaseSyncToAsync
     def save_message(self, sender, receiver, message, thread_name):
         chat_obj = ChatMessage.objects.create(
-            sender=sender, 
-            receiver=receiver, 
+            sender=sender,
+            receiver=receiver,
             message=message,
-            thread_name=thread_name, 
+            thread_name=thread_name,
         )
         other_user_id = int(self.scope['url_route']['kwargs']['id'])
         get_other_user = CustomUser.objects.get(id=other_user_id)
         if receiver == get_other_user.id:
-            ChatNotification.objects.create(chat= chat_obj, user=get_other_user)
+            ChatNotification.objects.create(chat=chat_obj, user=get_other_user)
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -94,7 +94,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         data = json.loads(event.get('value'))
         notifications = data['notifications']
         nottification_count = data['nottification_count']
-        await self.send(text_data = json.dumps({
-            'notifications':notifications,
-            'nottification_count':nottification_count
+        await self.send(text_data=json.dumps({
+            'notifications': notifications,
+            'nottification_count': nottification_count
         }))

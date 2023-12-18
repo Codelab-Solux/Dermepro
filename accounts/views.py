@@ -75,6 +75,7 @@ def users(req):
     }
     return render(req, 'accounts/users.html', context)
 
+
 @login_required(login_url='login')
 def create_user(req):
 
@@ -91,13 +92,10 @@ def create_user(req):
     else:
         form = None
 
-    ordering = ['last_name']
     context = {
         "create_user_page": "active",
         'title': 'create_user',
-        'users': users,
         'form': form,
-        'ordering': ordering,
     }
     return render(req, 'accounts/user.html', context)
 
@@ -133,10 +131,11 @@ def user_profile(req, pk):
     return render(req, 'accounts/user.html', context)
 
 
+@ login_required(login_url='login')
 def delete_user(req, pk):
     user = req.user
     profile = user.objects.get(id=pk)
-    if user.role.sec_level < 6 :
+    if user.role.sec_level < 6:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     profile.delete()
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))

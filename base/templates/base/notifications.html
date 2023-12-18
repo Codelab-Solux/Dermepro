@@ -25,18 +25,31 @@
       <div
         class="contact-li p-6 border hover:border-purple-700 h-full w-60 flex flex-col items-center text-center gap-2 bg-white hover:shadow-md rounded-md"
       >
-        <a href="{% url 'chat_page' obj.chat.sender %}" class="mx-auto w-full">
+        <form action="{% url 'read_notification' obj.id %}" method="POST">
+          {% csrf_token %}
+          <input
+            type="submit"
+            value="lire"
+            class="px-4 py-1 bg-black text-white hover:bg-purple-950 rounded-md flex justify-between items-center transition duration-300 ease-in-out cursor-pointer mx-auto w-full"
+          />
           <img
             class="lg:block w-20 h-20 rounded-full mx-auto"
             src="{% static 'imgs/rand.webp' %}"
             alt="Rounded avatar"
           />
           <p class="text-purple-950 font-bold">
-            {% for user_obj in users %} {% if user_obj.id == obj.chat.sender %}
-            @{{user_obj.username}} {% endif %} {% endfor %}
+            {% for user_obj in users %}
+            <!--  -->
+            {% if user_obj.id == obj.chat.sender %}
+            <!--  -->
+            @{{user_obj.username}}
+            <!--  -->
+            {% endif %}
+            <!--  -->
+            {% endfor %}
           </p>
           <p>{{obj.chat.message|truncatechars:20}}</p>
-        </a>
+        </form>
       </div>
       {% endfor %}
       <!--  -->

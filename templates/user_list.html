@@ -2,7 +2,7 @@
 
 <!-- ---------------------------threads and contacts sidebar--------------------------------->
 <section
-  class="hidden md:block contacts bg-gray-100 p-4 flex flex-col md:w-[200px] lg:w-[300px] xl:w-[400px] overflow-auto h-screen fixed right-0"
+  class="hidden md:inline contacts bg-gray-100 p-4 flex flex-col md:w-[200px] lg:w-[300px] xl:w-[400px] overflow-auto h-screen fixed right-0"
 >
   <form id="search_box" class="w-full max-w-xl flex flex-row justify-between">
     <input
@@ -22,28 +22,30 @@
   </form>
   <!-- ---------------------------tab navs--------------------------------->
 
-  <div class="customtab py-3 flex justify-between gap-2 w-full text-xs">
+  <div
+    class="customtab text-black mx-auto mt-2 mb-4 p-1 bg-purple-950 rounded-md flex justify-between gap-1 w-full text-xs"
+  >
     <button
       class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
       onclick="openTab(event, 'messages')"
       id="defaultOpen"
     >
-      <i class="fa-solid fa-comments md:text-lg"></i>
-      <span class="hidden xl:block"> Messages </span>
+      <i class="fa-solid fa-comments"></i>
+      <span class="hidden lg:inline lg:ml-2">Messages </span>
     </button>
     <button
       class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
       onclick="openTab(event, 'contacts')"
     >
-      <i class="fa-solid fa-address-book md:text-lg"></i>
-      <span class="hidden xl:block"> Contacts </span>
+      <i class="fa-solid fa-address-book"></i>
+      <span class="hidden lg:inline lg:ml-2">Contacts </span>
     </button>
     <!-- <button
-        class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md"
+      class="tablinks px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'groups')"
       >
         <i class="fa-solid fa-people-group"></i>
-        <span class="hidden xl:block"> Groupes </span>
+        <span class="hidden lg:inline lg:ml-2"> Groupes </span>
       </button> -->
   </div>
 
@@ -114,7 +116,7 @@
     for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(cityName).style.display = "inline";
     evt.currentTarget.className += " active";
   }
 

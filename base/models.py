@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from accounts.models import CustomUser
+from chats.models import ChatMessage
 
 # Create your models here.
 civility_types = (('M.', 'Monsieur'),
@@ -89,5 +90,10 @@ class Appointment(models.Model):
         return reverse('appointment', kwargs={'pk': self.pk})
 
 
-class visit_types(models.Model):
-    name = models.CharField(max_length=255)
+class ChatNotification(models.Model):
+    chat = models.ForeignKey(to=ChatMessage, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
+    is_seen = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f'Notification for < user: {self.user.username}>'

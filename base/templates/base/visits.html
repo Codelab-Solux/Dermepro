@@ -8,7 +8,7 @@
 
     {% if user.role.sec_level >= 5 %}
     <a
-      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
       href="{% url 'visit_csv' %}"
     >
       <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
@@ -27,7 +27,7 @@
   {% else %}
 
   <div class="flex flex-col md:flex-row justify-between items-start">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for e in closed_visits %}
       <a href="{% url 'visit' e.id  %}">
         <div
@@ -63,7 +63,7 @@
 
    <h1 class="mb-2 text-black text-lg font-bold">Table des Visites</h1>
        <a
-      class="lg:inline active hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
+      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
       href="{% url 'create_visit' %}"
     >
       <i class="inline fa-solid fa-plus lg:mr-2"></i>
