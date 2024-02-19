@@ -1,0 +1,28 @@
+{% if not user_profiles %}
+<div
+  class="bg-gray-50 p-4 rounded-lg flex justify-center items-center gap-2 text-center m-auto"
+>
+  <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+  <p class="text-sm">Aucun</p>
+</div>
+{% else %}
+<div class="mb-4 grid lg:grid-cols-2 gap-4">
+  {% for obj in user_profiles %}
+  <div
+    class="relative p-4 h-full border hover:border-amber-400 hover:shadow-md rounded-md group"
+  >
+    <i
+      class="absolute top-2 right-2 fa-solid fa-hourglass-half text-xs text-gray-400 group-hover:text-amber-400 group-hover:rotate-180"
+    ></i>
+    <h3 class="font-bold text-black text-md">
+      {{obj.user.last_name}} {{obj.user.first_name}}
+    </h3>
+    <h3 class="text-sm">
+      Je suis en reunion en ce moment. Veuillez patienter ou revenir plus tard,
+      merci.
+    </h3>
+    <p class="italic text-amber-600 text-sm">@{{obj.user.username}}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

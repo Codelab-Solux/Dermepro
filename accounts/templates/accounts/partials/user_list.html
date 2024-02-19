@@ -1,0 +1,27 @@
+{% if not users %}
+<div
+  class="p-4 flex-col justify-center items-center text-center text-black m-auto"
+>
+  <i class="fa-solid fa-folder text-purple-950 text-7xl"></i>
+  <p
+    class="mt-2 px-4 py-2 w-fit bg-purple-100 rounded-xl text-sm text-center mx-auto"
+  >
+    Aucune utilisateur disponible
+  </p>
+</div>
+{% else %}
+<div class="hidden w-full md:grid grid grid-cols-1 gap-2">
+  {% for obj in users %}
+  <!--  -->
+  {% include 'accounts/components/user_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+<div class="md:hidden w-full grid grid-cols-1 gap-2">
+  {% for obj in users %}
+  <!--  -->
+  {% include 'accounts/components/user_card_alt.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

@@ -1,158 +1,126 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="mb-4 p-4 border-2 rounded-md">
-  <div
-    class="mb-4 flex justify-between items-center text-center font-light mx-auto"
+<div class="pb-4 flex flex-col md:flex-row gap-4">
+  {% if user.role.sec_level >= 4 %}
+  <button
+    hx-target="#basic_dialog"
+    hx-get="{% url 'create_appointment' %}"
+    class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
   >
-    <h1 class="text-md lg:text-lg text-black font-bold">Rendez-vous récemment cloturés</h1>
-    {% if user.role.sec_level >= 5 %}
-    <a
-      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
-      href="{% url 'appointments_csv' %}"
-    >
-      <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-      <span class="hidden lg:inline font-base">
-        Extraire les Rendez-vous en fichier excel (CSV)
-      </span>
-    </a>
+    <span class="hidden md:inline mr-2">Nouveau rendez-vous</span>
+    <i class="fa-solid fa-handshake"></i>
+  </button>
+  {% endif %}
+  <!--------------------------------------- filter form --------------------------------------->
+  <!-- hx-post="{% url 'filter_appointments' %}"
+    hx-target="#appointment_list" -->
+  <form
+    action=""
+    class="p-1 w-full mt-10 sm:mt-0 sm:max-w-[80%] md:w-fi md:max-w-80 bg-purple-950 rounded-lg flex items-center gap-1 text-sm xl:text-sm"
+  >
+    {% csrf_token %}
+    <!--  -->
+    {% if user.role.sec_level >= 4 %}
+    <!-- <select
+        name="query"
+        class="hidden lg:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected>Hôte</option>
+        {% for obj in hosts %}
+        <option value="{{obj.username}}">@{{obj.username}}</option>
+        {% endfor %}
+      </select> -->
     {% endif %}
-  </div>
-
-  {% if not closed_appointments %}
-  <!--  -->
-  {% include 'components/empty.html'%}
-  <!--  -->
-  {% else %}
-
-  <div class="flex flex-col md:flex-row justify-between items-start">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {% for e in closed_appointments %}
-      <div
-        class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
-      >
-      <a href="{% url 'appointment' e.id  %}">
-          <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
-          <h3 class="text-sm">{{e.date}}</h3>
-          <h3 class="text-sm">{{e.time}}</h3>
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-    <image
-      class="h-80"
-      src="{% static 'imgs/schedule.png' %}"
-      alt="reception image"
+    <input
+      hx-post="{% url 'filter_appointments' %}"
+      hx-target=".filtered_appointments"
+      hx-trigger="keyup changed delay:500ms"
+      placeholder="Nom/prenoms du visiteur"
+      name="query"
+      type="text"
+      class="px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-full md:w-fi md:max-w-80"
     />
-  </div>
-  {% endif %}
-</div>
-
-<div class="mt-6 w-full">
-  {% if not appointments %}
-  <!--  -->
-  {% include 'components/empty.html'%}
-  <!--  -->
-  {% else %}
- <div class="mb-4 flex justify-between items-center">
-      <h1 class="mb-2 text-black text-lg font-bold">Table des Rendez-vous</h1>
-      <a
-        class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
-        href="{% url 'create_appointment' %}"
+    <!-- statuses -->
+    <!-- <select
+        name="query"
+        class="px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
-        <i class="inline fa-solid fa-plus lg:mr-2"></i>
-        <span class="hidden lg:inline font-base">
-          Ajouter un nouveau rendez-vous
-        </span>
-      </a>
-    </div>
-    <!-- table -->
-    <div class="overflow-auto rounded-md bg-gray-50">
-      <table class="w-full text-left db-table">
-        <thead class="bg-black text-white">
-          <tr>
-            <th class="p-4 text-sm">Invité</th>
-            <!-- <th class="p-4 text-sm">Hôte</th> -->
-            <th class="hidden md:block p-4 text-sm">Telephone</th>
-            <th class="p-4 text-sm">Date</th>
-            <th class="hidden md:block p-4 text-sm">Heure</th>
-            <th class="p-4 text-sm">Status</th>
-            <th class="p-4 text-sm">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for e in appointments %}
-          <tr
-            class="text-gray-600 border text-sm hover:bg-purple-50 hover:text-black transition-all duration-50"
-          >
-            <td class="p-3">{{e.guest|truncatechars:10}}</td>
-            <!-- <td class="p-3">{{e.host.username}}</td> -->
-            <td class="hidden md:block p-3">{{e.tel}}</td>
-            <td class="p-3">{{e.date}}</td>
-            <td class="hidden md:block p-4 p-3">{{e.time}}</td>
-            <td class="">
-              {% if e.status == 'pending' %}
-              <h4
-                class="py-1 bg-sky-500 rounded-md text-xs text-white w-full text-center"
-              >
-                En attente
-              </h4>
-              {% elif e.status == 'open' %}
-              <h4
-                class="py-1 bg-amber-500 rounded-md text-xs text-white w-full text-center"
-              >
-                En cours
-              </h4>
-              {% elif e.status == 'closed' %}
-              <h4
-                class="py-1 bg-green-500 rounded-md text-xs text-white w-full text-center"
-              >
-                Cloturée
-              </h4>
-              {% elif e.status == 'ajourned' %}
-              <h4
-                class="py-1 bg-purple-700 rounded-md text-xs text-white w-full text-center"
-              >
-                Ajournée
-              </h4>
-              {% else %}
-              <h4
-                class="py-1 bg-red-500 rounded-md text-xs text-white w-full text-center"
-              >
-                Annulée
-              </h4>
-              {% endif %}
-            </td>
+        <option value="" selected>Status de appointment</option>
+        {% for obj in statuses %}
+        <option value="{{obj.title}}">{{obj.title}}</option>
+        {% endfor %}
+      </select> -->
+    <!-- appointment types -->
+    <!-- <select
+        name="query"
+        class="hidden xl:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-full md:w-fit"
+      >
+        <option value="" selected>Type de appointmente</option>
+        <option value="familial">Amicale</option>
+        <option value="friendly">Familiale</option>
+        <option value="professional">Professionelle</option>
+      </select> -->
+    <!-- sex -->
+    <!-- <select
+        name="query"
+        class="hidden md:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected>Sexe</option>
+        <option value="female">Feminin</option>
+        <option value="male">Masculin</option>
+      </select> -->
+    <!-- 
+      <button
+        class="px-3 py-1 bg-purple-950 text-white hover:text-amber-200 rounded-md transition duration-200 ease-in"
+        type="submit"
+      >
+        <i class="fa-solid fa-filter"></i>
+      </button> -->
+  </form>
 
-            <td class="md:flex justify-around gap-2 max-w-[100px] mx-auto">
-              <a
-                href="{% url 'appointment' e.id  %}"
-                class="inline p-2 text-sm text-gray-500 rounded-md"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-0"
-              >
-                <i class="fa-solid fa-eye hover:text-purple-700"></i>
-              </a>
-              {% if user.role.sec_level == 6 %}
-              <a
-                onclick="return confirm('Voulez vous supprimer ce Rendez-vous ?')"
-                href="{% url 'delete_appointment' e.id  %}"
-                class="inline px-2 lg:px-4 py-2 text-sm text-gray-500 rounded-md"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-1"
-              >
-                {% endif %}
-                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-700"></i>
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-  {% endif %}
+  <!-- {% if user.role.sec_level >= 4 %}
+  <button
+    hx-get="{% url 'create_appointment' %}"
+    hx-swap="outerHTML"
+    class="w-fit px-3 py-2 md:mr-24 bg-purple-950 text-xs text-white hover:text-amber-200 flex items-center rounded-lg cursor-pointer transition duration-200 ease-in"
+  >
+    <span class="hidden md:inline mr-2">Nouveau rendez-vous </span>
+    <i class="fa-solid fa-plus"></i>
+  </button>
+  {% endif %} -->
 </div>
+
+<!--------------------------------------- appointments --------------------------------------->
+<section
+  id="appointments"
+  class="h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full flex gap-2"
+>
+  <!--------------------------------------- appointment list --------------------------------------->
+  <div
+    class="filtered_appointments p-2 bg-amber-50 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+  >
+    <div
+      class="appointment_list"
+      hx-get="{% url 'appointment_list' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
+  </div>
+
+  <!--------------------------------------- appointment details --------------------------------------->
+
+  <div
+    class="appointment_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+  >
+    <img
+      class="h-60 lg:h-80 bg-gray-100 rounded-full"
+      src="{% static 'imgs/appointment.png' %}"
+      alt="welcome image"
+    />
+    <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
+      Cliquez sur un rendez-vous pour voir ses detail ici
+    </p>
+  </div>
+</section>
 
 {% endblock %}

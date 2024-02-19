@@ -1,45 +1,84 @@
-{% extends 'main.html' %} {% load static %} {% block content %}
-
-<div class="mb-4 p-4 border-2 rounded-md">
-  {% if visit %}
-  <h1 class="mb-2 text-black text-lg font-bold">
-    Rendez-vous de {{appointment.civility}} {{appointment.guest}}
-  </h1>
-  {% else %}
-  <h1 class="mb-2 text-black text-lg font-bold">
-    Ajouter un nouveau rendez-vous
-  </h1>
-  {% endif %}
-  <!--  -->
-  {% if form %}
-  <div class="flex flex-col lg:flex-row justify-between items-start">
-    <form
-      class="p-4 w-full bg-gray-100 rounded-md text-sm"
-      method="POST"
-      action=""
-      enctype="multipart/form-data"
-    >
-      <div class="grid grid-cols-1 md:grid-cols-2 lg: grid-cols-3 gap-4">
-        {% csrf_token %} {% for field in form %}
-        <div>
-          <h3 class="mb-1">{{field.label}}</h3>
-          {{field}}
-        </div>
-        {% endfor %}
-      </div>
-
-      <input
-        class="mt-4 px-4 py-2 bg-black hover:bg-purple-900 text-white rounded-md cursor-pointer"
-        type="submit"
-        value="Enregistrer"
-      />
-    </form>
-    <image
-      class="h-80"
-      src="{% static 'imgs/schedule.png' %}"
-      alt="reception image"
-    />
+{% load static %}
+<!--  -->
+<div class="relative h-fit md:h-full md:w-full">
+  <div class="absolute top-0 right-0 flex items-center gap-1">
+    {% with obj=curr_obj %}
+    <!--  -->
+    <div hx-swap-oob="true"></div>
+    <div class="hidden sm:inline">
+      {% include 'base/components/status_badge.html' %}
+    </div>
+    <div class="sm:hidden">
+      {% include 'base/components/status_badge_alt.html' %}
+    </div>
+    <!--  -->
+    {% if curr_obj.host == user%}
+    <!--  -->
+    {% include 'base/components/status_changer_alt.html' %}
+    <!--  -->
+    {% endif %}
+    <!--  -->
+    {% endwith %}
   </div>
+
+  <h2
+    class="md:pt-10 xl:pt-0 font-bold text-lg md:text-xl lg:text-2xl text-black"
+  >
+    {{curr_obj.civility}} {{curr_obj.guest}}
+  </h2>
+  {% if visit_details_page %}
+  <a
+    href="{% url 'user_profile' curr_obj.host.id %}"
+    class="cursor-pointer italic text-purple-700 hover:underline"
+  >
+    <span>@{{curr_obj.host.username}}</span>
+    <i
+      class="fa-solid fa-arrow-up-right-from-square text-sm text-gray-400 mr-3"
+    ></i>
+  </a>
   {% endif %}
+  <div class="mt-4 flex flex-col gap-2 text-gray-500">
+    <p>
+      <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Context de la
+      visite :
+      <span class="text-black"> {{curr_obj.context|title}} </span>
+    </p>
+    <p>
+      <span class="text-black">
+        <i class="fa-solid fa-flag text-gray-400 mr-3"></i> Nationalité :
+        {{curr_obj.nationality}}
+      </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-venus-mars text-gray-400 mr-3"></i> Sexe :
+      <span class="text-black"> {{curr_obj.get_gender_display|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i> Date :
+      {{curr_obj.date}}
+    </p>
+    <p>
+      <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Arrivée à :
+      <span class="text-black"> {{curr_obj.arrived_at}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i> Accepté(e)
+      à :
+      <span class="text-black"> {{curr_obj.accepted_at}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-id-card text-gray-400 mr-3"></i> Type de piece
+      d'identite :
+      <span class="text-black"> {{curr_obj.id_doc|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> Numero de la piece
+      d'identite :
+      <span class="text-black"> {{curr_obj.doc_num|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-phone text-gray-400 mr-3"></i> Numero de telephone :
+      <span class="text-black"> {{curr_obj.tel|title}} </span>
+    </p>
+  </div>
 </div>
-{% endblock %}

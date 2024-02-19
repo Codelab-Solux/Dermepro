@@ -1,0 +1,13 @@
+<div class="obj_status{{obj.id}} text-black text:xs lg:text-sm z-10">
+  {% if obj.status.id == 1 %}
+  <span class="px-3 py-1 bg-purple-200 rounded-md"> En attente </span>
+  {% elif obj.status.id == 2 %}
+  <span class="px-3 py-1 bg-amber-200 rounded-md"> En cours </span>
+  {% elif obj.status.id == 3 %}
+  <span class="px-3 py-1 bg-green-200 rounded-md"> Terminé(e) </span>
+  {% elif obj.status.id == 4 %}
+  <span class="px-3 py-1 bg-sky-200 rounded-md"> Reporté(e) </span>
+  {% else %}
+  <span class="px-3 py-1 bg-red-200 rounded-md"> Annulé(e) </span>
+  {% endif %}
+</div>

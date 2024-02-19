@@ -48,10 +48,10 @@
     >
       <i class="text-sm fa-solid fa-users lg:mr-2"></i> 
       <span class="hidden lg:inline">
-        Hôtes
+        Utilisateurs
       </span>
     </a>
-    <a
+    <!-- <a
       class="relative mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'notifications' %}"
     >
@@ -64,7 +64,7 @@
           <tt id="count_badge"></tt>
         </span>
         {% endif %}
-    </a>
+    </a> -->
     <a
       class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'chat' %}"
@@ -107,11 +107,10 @@
 
     {% if user.is_superuser %}
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-black hover:text-white transition ease-in duration-200 w-full"
+     target="_blank"
+      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-red-900 hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
       ><i class="text-sm fa-solid fa-lock lg:mr-2"></i> <span class="hidden lg:inline ">
-
-
         Admin Dashboard</a
         >
       </span>
@@ -133,21 +132,21 @@
     />
     {% endif %}
       <div class="hidden lg:block w-full">
-        <p class="text-purple-900 font-bold">{{user.get_short_name}}</p>
+        <p class="text-black font-bold">{{user.last_name|title}} {{user.first_name|title}}</p>
         <p class="text-gray-500">@{{user.username}}</p>
       </div>
       <div class="relative">
 
         <button
           type="button"
-          class=""
+          class="bg:purple-50 hover:bg-purple-100 hover:text-black px-4 py-2 rounded-lg"
           name="dropdownBtn"
           id="dropdownBtn"
           aria-expanded="false"
           aria-haspopup="true"
           onclick="toggleDropdown(this)"
         >
-          <i class="fa-sharp fa-solid fa-caret-down text-purple-900 bg-white hover:bg-amber-200 py-2 px-3 lg:p-4 rounded-md"></i>
+          <i class="fa-sharp fa-solid fa-caret-down text-gray-700"></i>
       
         </button>
   
@@ -159,8 +158,8 @@
           tabindex="-1"
           id="dropdownMenu"
         >
-          <a href="{% url 'user_profile' user.id  %}"
-            class="p-2 flex text-sm text-gray-700 hover:bg-amber-200 lg:rounded-md w-full text-center"
+          <a href="{% url 'user' user.id  %}"
+            class="p-2 flex text-sm text-gray-700 hover:bg-purple-200 lg:rounded-md w-full text-center"
             role="menuitem"
             tabindex="-1"
             id="user-menu-item-0"
@@ -171,7 +170,7 @@
           >
           <a
             href="#"
-            class="p-2 flex text-sm text-gray-700 hover:bg-amber-200 lg:rounded-md w-full text-center"
+            class="p-2 flex text-sm text-gray-700 hover:bg-purple-200 lg:rounded-md w-full text-center"
             role="menuitem"
             tabindex="-1"
             id="user-menu-item-1"
@@ -203,4 +202,8 @@
     ? ((e.name = "close"), dropdownMenu.classList.remove("hidden"))
     : ((e.name = "dropdownBtn"), dropdownMenu.classList.add("hidden"));
 }
+
+  window.addEventListener("mouseup", function (event) {
+    dropdownMenu.classList.add("hidden");
+  });
 </script>

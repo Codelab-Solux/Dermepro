@@ -1,0 +1,18 @@
+{% if not visits %}
+<div
+  class="p-20 bg-white w-full h-full rounded-xl flex-col text-center text-black m-auto"
+>
+  <i class="fa-solid fa-briefcase text-purple-950 text-7xl"></i>
+  <p class="mt-2 p-2 rounded-md text-md text-center">
+    Aucune visite disponible
+  </p>
+</div>
+{% else %}
+<div class="mb-4 w-full grid grid-cols-1 gap-2">
+  {% for obj in visits %}
+  <!--  -->
+  {% include 'base/components/visit_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

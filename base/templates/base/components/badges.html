@@ -1,0 +1,10 @@
+{% if user.is_authenticated %}
+<input id="active_user_id" type="hidden" value="{{user.id}}" />
+{% endif %}
+<div
+  class="absolute top-4 right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 p-1 border border-purple-300 bg-purple-200 rounded-lg flex gap-2"
+>
+  {% include 'base/components/notification_badge.html' %}
+  <!--  -->
+  {% include 'base/components/user_status_changer.html' %}
+</div>

@@ -1,4 +1,3 @@
-
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import DatabaseSyncToAsync
@@ -71,30 +70,3 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         get_other_user = CustomUser.objects.get(id=other_user_id)
         if receiver == get_other_user.id:
             ChatNotification.objects.create(chat=chat_obj, user=get_other_user)
-
-
-class NotificationConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        my_id = self.scope['user'].id
-        self.room_group_name = f'{my_id}'
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
-
-    async def disconnect(self, code):
-        self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
-    async def send_notification(self, event):
-        data = json.loads(event.get('value'))
-        notifications = data['notifications']
-        nottification_count = data['nottification_count']
-        await self.send(text_data=json.dumps({
-            'notifications': notifications,
-            'nottification_count': nottification_count
-        }))

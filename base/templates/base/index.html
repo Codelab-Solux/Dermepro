@@ -4,7 +4,7 @@
 {% block content %}
 
 <div
-  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-purple-50 border border-purple-300 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-5/7 max-w-[800px]">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">Dermepro</h1>
@@ -14,172 +14,139 @@
       dans un bâtiment ou dans une zone spécifique.
     </p>
   </article>
-  {% if user.role == 'admin' %}
-  <!-- ongoing rdvs -->
-  <div>
-    {% if not curr_rdvs %}
-    <h3
-      class="mb-2 bg-purple-900 text-white p-4 rounded-md text-center font-light mx-auto"
-    >
-      Aucun rendez-vous en cours
-    </h3>
-    {% else %}
-    <h3
-      class="mb-2 text-black text-lg font-bold secondary px-4 py-2 rounded-md"
-    >
-      Rendez-vous en cours <i class="fa-solid fa-bell"></i>
-    </h3>
-    <div class="mb-4 flex flex-col md:flex-row gap-4">
-      {% for e in curr_rdvs %}
-      <a href="{% url 'appointment' e.id  %}">
-        <div class="p-4 text-black secondary h-100 rounded-md hover:shadow-md">
-          <h3 class="font-bold text-md">{{e.guest}}</h3>
-          <h3 class="">{{e.date}}</h3>
-          <h3 class="">{{e.time}}</h3>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-    {% endif %}
-  </div>
-  {% else %}
-  <!-- ongoing visits -->
-  <div class="w-full max-w-xs">
-    {% if not curr_visits %}
-    <h3
-      class="mb-2 p-4 bg-purple-900 text-white text-center rounded-md font-light mx-auto"
-    >
-      Aucune visite en cours
-    </h3>
-    {% else %}
-    <h3
-      class="mb-2 p-4 bg-purple-900 text-white p-4 rounded-md font-light mx-auto"
-    >
-      Visite en cours <i class="fa-solid fa-bell"></i>
-    </h3>
-    <div
-      class="mb-2 p-4 bg-purple-900 text-white rounded-md font-light mx-auto"
-    >
-      {% for e in curr_visits %}
-      <a href="{% url 'visit' e.id  %}">
-        <div class="text-white h-100 w-md rounded-md hover:shadow-md">
-          <h3 class="font-bold text-md">{{e.guest}}</h3>
-          <h3 class="">{{e.date}}</h3>
-          <h3 class="">{{e.time}}</h3>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-    {% endif %}
-  </div>
-  {% endif %}
 </div>
 
-<!-- visits and appointments -->
-<div class="mt-8 border-2 p-4 rounded-md">
-  <h3 class="text-black text-lg font-bold">File d'attente</h3>
-  <div class="my-4 flex justify-between gap-8">
-    <div class="w-full">
-      {% if not visits %} {% include 'components/empty.html'%} {% else %}
-      <!-- pending visits list -->
-      <div class="flex flex-col md:flex-row justify-between items-start">
-        <img
-          class="h-60 lg:h-80"
-          src="{% static 'imgs/waiting.png' %}"
-          alt="welcome image"
-        />
-        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {% for e in visits %}
-          <a href="{% url 'visit' e.id  %}">
-            <div
-              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
-            >
-              <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
-              <h3 class="text-sm">{{e.date}}</h3>
-              <h3 class="text-sm">{{e.time}}</h3>
-              <h3 class="font-bold text-purple-900 text-md">
-                @{{e.host.username}}
-              </h3>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
+<!----------------------------------------- status quo ----------------------------------------->
+
+<div class="mt-8 p-4 border rounded-lg">
+  {% if user.role.sec_level >= 4 %}
+  <h3 class="mb-4 text-black text-lg font-bold">Status Quo</h3>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="grid">
+      <h3>Hôtes non disponibles</h3>
+      <div
+        class="mt-2 w-full"
+        hx-get="{% url 'unavailable_users' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
     </div>
+    <div class="grid">
+      <h3>Hôtes en réunion</h3>
+      <div
+        class="mt-2 w-full"
+        hx-get="{% url 'occupied_users' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+  </div>
+  <!-------------------- ongoing appointments -------------------->
+  <div
+    class="w-full mt-4 ongoing_appointments"
+    hx-get="{% url 'ongoing_appointments' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
+  {% endif %}
+  <div
+    class="w-full mt-4 ongoing_visits"
+    hx-get="{% url 'ongoing_visits' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
+</div>
+
+<!----------------------------------------- visits ----------------------------------------->
+
+<div class="mt-8 p-4 border rounded-lg">
+  <!-- visits -->
+  <div class="flex justify-between items-center">
+    <h3 class="text-black text-xl font-bold">File d'attente des visites</h3>
+    {% if user.role.sec_level >= 4 %}
+    <button
+      hx-target="#basic_dialog"
+      hx-get="{% url 'create_visit' %}"
+      class="w-fit px-3 py-2 bg-purple-200 text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+    >
+      <span class="hidden md:inline mr-2">Nouvelle visite</span>
+      <i class="fa-solid fa-plus"></i>
+    </button>
+    <!-- <a
+      href="{#% url 'add_visit' %#}"
+      class="w-fit px-3 py-2 bg-purple-100 text-sm hover:bg-purple-200 flex items-center rounded-lg cursor-pointer transition duration-200 ease-in"
+    >
+      <span class="hidden md:inline mr-2">Nouvelle visite</span>
+      <i class="fa-solid fa-plus"></i>
+    </a> -->
+    {% endif %}
+  </div>
+
+  <!-- pending visits list -->
+  <div
+    class="my-4 flex flex-col md:flex-row justify-between md:items-center gap-8"
+  >
+    <img
+      class="h-80 object-contain"
+      src="{% static 'imgs/waiting.png' %}"
+      alt="welcome image"
+    />
+
+    <div
+      class="w-full pending_visits"
+      hx-get="{% url 'pending_visits' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
+  </div>
+</div>
+
+<!----------------------------------------- appointments ----------------------------------------->
+
+{% if user.role.sec_level >= 4 %}
+<div class="mt-8 p-4 border rounded-lg">
+  <div class="flex justify-between items-center">
+    <h3 class="text-black text-xl font-bold">File d'attente des rendez-vous</h3>
+    <button
+      hx-target="#basic_dialog"
+      hx-get="{% url 'create_appointment' %}"
+      class="w-fit px-3 py-2 bg-purple-200 text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+    >
+      <span class="hidden md:inline mr-2">Nouveau rendez-vous</span>
+      <i class="fa-solid fa-plus"></i>
+    </button>
   </div>
 
   <!-- Appointments -->
-  {% if user.role.sec_level >= 4 %}
-  <div class="w-full flex flex-col md:flex-row justify-between items-center">
-    <div class="flex flex-col justify-between p-4">
-      <!-- pending VIP rdvs -->
-      <div>
-        {% if not pending_vips %}
-        <h3
-          class="mb-2 bg-gray-100 p-4 rounded-md text-center font-light mx-auto"
-        >
-          Aucun rendez-vous V.I.P en attente
-        </h3>
-        {% else %}
-        <h3
-          class="mb-2 text-black text-lg font-bold bg-purple-100 px-4 py-2 rounded-md"
-        >
-          Rendez-vous V.I.P en attentes
-        </h3>
-        <div class="mb-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {% for e in pending_vips %}
-          <a href="{% url 'appointment' e.id  %}">
-            <div
-              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
-            >
-              <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
-              <h3 class="text-sm">{{e.date}}</h3>
-              <h3 class="text-sm">{{e.time}}</h3>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-        {% endif %}
-      </div>
-      <!-- other pending rdvs -->
-      <div>
-        {% if not pending_rdvs %}
-        <h3
-          class="mb-2 bg-gray-100 p-4 rounded-md text-center font-light mx-auto"
-        >
-          Aucun autre rendez-vous en attente
-        </h3>
-        {% else %}
-        <h3
-          class="mb-2 text-black text-lg font-bold bg-gray-100 px-4 py-2 rounded-md"
-        >
-          Autres Rendez-vous en attente
-        </h3>
-        <div class="mb-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {% for e in pending_rdvs %}
-          <a href="{% url 'appointment' e.id  %}">
-            <div
-              class="p-4 h-100 border hover:border-purple-700 hover:shadow-md rounded-md"
-            >
-              <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
-              <h3 class="">{{e.date}}</h3>
-              <h3 class="">{{e.time}}</h3>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-        {% endif %}
-      </div>
-    </div>
+  <div
+    class="mt-4 w-full flex flex-col md:flex-row-reverse justify-between md:items-center"
+  >
     <img
-      class="h-80"
-      src="{% static 'imgs/meeting.png' %}"
+      class="h-80 object-cover"
+      src="{% static 'imgs/schedule.png' %}"
       alt="welcome image"
     />
+    <div class="w-full flex flex-col justify-between gap-4">
+      <!-------------------- pending VIP appointments -------------------->
+      <div
+        class="w-full pending_vips"
+        hx-get="{% url 'pending_vips' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+      <!-------------------- other pending appointments -------------------->
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <div
+          class="w-full pending_appointments"
+          hx-get="{% url 'pending_appointments' %}"
+          hx-trigger="load, db_changed from:body"
+          hx-target="this"
+        ></div>
+      </div>
+    </div>
   </div>
-
-  {% endif %}
 </div>
-
+{% endif %}
+<!--  -->
 {% endblock %}

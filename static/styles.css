@@ -68,3 +68,11 @@ li {
   background-color: #3b0764;
   color: white;
 }
+
+.underlay {
+  z-index: -1;
+}
+
+.overlay {
+  z-index: 100;
+}

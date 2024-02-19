@@ -1,0 +1,25 @@
+{% load static %}
+
+<!-- tablet/ PC view -->
+
+<div
+  hx-get="{% url 'user' obj.id %}"
+  hx-target=".user_details"
+  hx-swap="innerHTML"
+  class="cursor-pointer hidden relative md:flex flex-col border bg-white focus:border-purple-950 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
+>
+  <!-- user status indicator -->
+  <div class="absolute bottom-2 right-1 text-xs">
+    {% include 'accounts/components/user_status_badge.html' %}
+  </div>
+
+  <!-- card info -->
+
+  <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
+    <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
+    <span class="italic font-light">@{{obj.username}}</span>
+    <small class="mb-4 lg:mb-0 text:xs lg:text-sm text-gray-400"
+      >en ligne</small
+    >
+  </article>
+</div>

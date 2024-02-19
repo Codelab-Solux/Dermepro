@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.contrib import messages
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, View
+from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from .forms import *
@@ -78,135 +80,112 @@ def users(req):
 
 @login_required(login_url='login')
 def create_user(req):
-
-    if req.user.role.sec_level >= 6:
-        form = CreateUserForm()
-        if req.method == 'POST':
-            form = CreateUserForm(req.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(req, "Le nouveau compte vien d'être créé.")
-                return redirect('users')
-        else:
-            form = CreateUserForm()
-    else:
-        form = None
-
-    context = {
-        "create_user_page": "active",
-        'title': 'create_user',
-        'form': form,
-    }
-    return render(req, 'accounts/user.html', context)
-
-
-@ login_required(login_url='login')
-def user_profile(req, pk):
     user = req.user
-    profile = CustomUser.objects.get(id=pk)
 
-    if user == profile:
-        form = EditUserForm(instance=profile)
-        if req.method == 'POST':
-            form = EditUserForm(req.POST, req.FILES, instance=profile)
-            if form.is_valid():
-                form.save()
-                return redirect('users')
+    if user.role.sec_level < 4:
+        return redirect('visits')
 
-    if user.role.sec_level >= 6:
-        form = AdminEditUserForm(instance=profile)
-        if req.method == 'POST':
-            form = AdminEditUserForm(req.POST, req.FILES, instance=profile)
-            if form.is_valid():
-                form.save()
-                return redirect('users')
+
+    form = CreateUserForm()
+    if req.method == 'POST':
+        form = CreateUserForm(req.POST)
+        if form.is_valid():
+            form.save()
+        messages.success = "Nouveau compte créé!"
+        return redirect('users')
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        form = None
-    context = {
-        "user_profile_page": "active",
-        'title': 'user_detail',
-        'profile': profile,
-        'form': form,
-    }
-    return render(req, 'accounts/user.html', context)
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Utilisateur'})
+
+
+
+@login_required(login_url='login')
+def edit_user(req, pk):
+    user = req.user
+    curr_obj = get_object_or_404(CustomUser, id=pk)
+
+    if user != curr_obj and user.role.sec_level < 6:
+        return redirect('visits')
+
+    form = EditUserForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = EditUserForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Données modifiée avec success'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous', 'curr_obj': curr_obj})
 
 
 @ login_required(login_url='login')
+@require_http_methods(['DELETE']) #secures the delete route and makes it only accessible by the DELETE method
 def delete_user(req, pk):
-    user = req.user
-    profile = user.objects.get(id=pk)
-    if user.role.sec_level < 6:
+    curr_obj = get_object_or_404(CustomUser, id=pk)
+    if req.user.role.sec_level < 6:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
-    profile.delete()
-    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
-
-# ajax views----------------------------------------------------------------------------------
-
-
-class AjaxRolesView(ListView):
-    model = Role
-    template_name = 'ajax_params.html'
-    context_object_name = 'user_roles'
+    curr_obj.delete()
+    success = 'Deleted successfully'
+    return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
-class AjaxCreateRole(View):
-    def get(self, req):
-        _name = req.GET.get('name', None)
-        _fr_name = req.GET.get('fr_name', None)
-        _sec_level = req.GET.get('sec_level', None)
-
-        obj = Role.objects.create(
-            name=_name,
-            fr_name=_fr_name,
-            sec_level=_sec_level
-        )
-
-        user_role = {
-            'id': obj.id,
-            'name': obj.name,
-            'fr_name': obj.fr_name,
-            'sec_level': obj.sec_level,
-        }
-
-        data = {
-            'user_role': user_role
-        }
-
-        return JsonResponse(data)
+@login_required(login_url='login')
+def unavailable_users(req):
+    user_profiles = Profile.objects.filter(status=3)
+    context = {"user_profiles" : user_profiles}
+    return render(req, 'accounts/partials/unavailable_users.html', context)
 
 
-class AjaxUpdateRole(View):
-    def get(self, req):
-        _id = req.GET.get('id', None)
-        _name = req.GET.get('name', None)
-        _fr_name = req.GET.get('fr_name', None)
-        _sec_level = req.GET.get('sec_level', None)
-
-        obj = Role.objects.get(id=_id)
-        obj.name = _name,
-        obj.fr_name = _fr_name,
-        obj.sec_level = _sec_level
-        obj.save()
-
-        user_role = {
-            'id': obj.id,
-            'name': obj.name,
-            'fr_name': obj.fr_name,
-            'sec_level': obj.sec_level,
-        }
-
-        data = {
-            'user_role': user_role
-        }
-
-        return JsonResponse(data)
+@login_required(login_url='login')
+def occupied_users(req):
+    user_profiles = Profile.objects.filter(status=2)
+    context = {"user_profiles" : user_profiles}
+    return render(req, 'accounts/partials/occupied_users.html', context)
 
 
-class AjaxDeleteRole(View):
-    def get(self, request):
-        id1 = request.GET.get('id', None)
-        Role.objects.get(id=id1).delete()
-        data = {
-            'deleted': True
-        }
-        return JsonResponse(data)
+@login_required(login_url='login')
+def change_user_status(req, pk):
+    user = req.user
+    curr_profile = get_object_or_404(Profile, user=user)
+    new_status = get_object_or_404(UserStatus, id=pk)
+
+    curr_profile.status = new_status
+    curr_profile.save()
+    messages.success = 'User Status changed'
+    return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    
+
+def filter_users(req):
+    user = req.user
+    query = req.POST.get('query')
+    if query != "":
+        query_res = CustomUser.objects.filter(last_name__icontains=query) | CustomUser.objects.filter(first_name__icontains=query)
+        users= query_res.order_by('last_name')
+    else:    
+        users = CustomUser.objects.all().order_by('last_name')
+
+    context = {"users" : users}
+    print(query)
+    return render(req, 'accounts/partials/user_list.html', context)
+    
+
+@login_required(login_url='login')
+def user_list(req):
+    user = req.user
+    users = CustomUser.objects.all().order_by('last_name')
+    context = {"users" : users}
+    return render(req, 'accounts/partials/user_list.html', context)
+
+
+@ login_required(login_url='login')
+def user(req, pk):
+    user = req.user
+    curr_obj = get_object_or_404(CustomUser, id=pk)
+
+    context = {
+        "user_detail_page": "active",
+        'title': 'User Details',
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'accounts/user.html', context)
+    

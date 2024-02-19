@@ -1,0 +1,32 @@
+<h3 class="mb-2 py-1 px-4 rounded-md text-sm bg-amber-100">
+  Rendez-vous en cours
+</h3>
+{% if not appointments %}
+<div
+  class="bg-amber-50 p-10 rounded-lg flex flex-col justify-center items-center text-center m-auto"
+>
+  <i class="fa-solid fa-folder-open text-3xl text-amber-200"></i>
+  <p class="mt-2 px-4 py-2 rounded-md bg-amber-100 text-sm text-center">
+    Aucun rendez-vous en cours
+  </p>
+</div>
+{% else %}
+<div class="mb-4 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+  {% for obj in appointments %}
+  <div
+    hx-get="{% url 'appointment' obj.id %}"
+    hx-target="#appointment_dialog"
+    class="relative p-4 h-full border hover:border-amber-300 hover:shadow-md rounded-md group cursor-pointer"
+  >
+    {% if obj.is_vip == True %}
+    <i
+      class="absolute top-2 right-2 fa-solid fa-star text-xs text-gray-300 group-hover:text-amber-300"
+    ></i>
+    {% endif %}
+    <h3 class="font-bold text-black text-md">{{obj.guest}}</h3>
+    <small class="text-sm">{{obj.date}}</small>
+    <h3 class="text-sm">{{obj.time}}</h3>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

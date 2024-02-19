@@ -1,166 +1,178 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="mb-4 p-4 border-2 rounded-md">
-  <div
-    class="mb-4 flex justify-between items-center text-center font-light mx-auto"
+<div class="pb-4 flex flex-col md:flex-row gap-4">
+  <!--------------------------------------- filter form --------------------------------------->
+  <!-- hx-post="{% url 'filter_visits' %}"
+    hx-target="#visit_list" -->
+  {% if user.role.sec_level >= 4 %}
+  <button
+    hx-target="#basic_dialog"
+    hx-get="{% url 'create_visit' %}"
+    class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
   >
-    <h1 class="text-md lg:text-lg text-black font-bold">Visites récemment cloturées</h1>
-
-    {% if user.role.sec_level >= 5 %}
-    <a
-      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
-      href="{% url 'visit_csv' %}"
-    >
-      <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-      <span class="hidden lg:inline font-base">
-        Extraire les visites en fichier excel (CSV)
-      </span>
-    </a>
-    {% endif %}
-  </div>
-
-  {% if not closed_visits %}
-<!--  -->
-{% include 'components/empty.html'%}
-<!--  -->
-
-  {% else %}
-
-  <div class="flex flex-col md:flex-row justify-between items-start">
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {% for e in closed_visits %}
-      <a href="{% url 'visit' e.id  %}">
-        <div
-          class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
-        >
-          <h3 class="font-bold text-black text-md">{{e.guest}}</h3>
-          <h3 class="text-sm">{{e.date.date}}</h3>
-          <h3 class="font-bold text-purple-900 text-sm">
-            @{{e.host.username}}
-          </h3>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-    <image
-      class="h-80"
-      src="{% static 'imgs/visit.png' %}"
-      alt="reception image"
-    />
-  </div>
+    <span class="hidden md:inline mr-2">Nouvelle visite</span>
+    <i class="fa-solid fa-user-tie"></i>
+  </button>
   {% endif %}
-</div>
-
-<!-- vists table -->
-
-<div class="mt-6 w-full">
-  {% if not visits %} 
-  <!--  -->
-{% include 'components/empty.html'%}
-<!--  -->
- {% else %}
- <div class="mb-4 flex justify-between items-center">
-
-   <h1 class="mb-2 text-black text-lg font-bold">Table des Visites</h1>
-       <a
-      class="lg:inline bg-gray-200 hover:bg-purple-950 hover:text-white p-2 rounded-md font-light"
-      href="{% url 'create_visit' %}"
-    >
-      <i class="inline fa-solid fa-plus lg:mr-2"></i>
-      <span class="hidden lg:inline font-base">
-        Ajouter une nouvelle visite
-      </span>
-    </a>
- </div>
-    <div class="rounded-md bg-gray-100 overflow-hidden">
-      <table
-        class="w-full h-full text-left db-table border border-black overflow-hidden"
+  <form
+    action=""
+    class="p-1 w-full mt-10 sm:mt-0 sm:max-w-[80%] md:w-fi md:max-w-80 bg-purple-950 rounded-lg flex items-center gap-1 text-sm xl:text-sm"
+  >
+    {% csrf_token %}
+    <!--  -->
+    {% if user.role.sec_level >= 4 %}
+    <!-- <select
+        name="query"
+        class="hidden lg:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
-        <thead class="bg-black text-white font-bold">
-          <tr>
-            <th class="p-4 text-sm">Invité</th>
-            <th class="p-4 text-sm">Hôte</th>
-            <th class="hidden md:block p-4 text-sm">Telephone</th>
-            <th class="p-4 text-sm">Date</th>
-            <th class="p-4 text-sm">Status</th>
-            <th class="p-4 text-sm">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="overflow-hidden">
-          {% for e in visits %}
-          <tr
-            class="text-gray-600 border text-sm hover:bg-purple-50 hover:text-black transition-all duration-50"
-          >
-            <td class="p-3">{{e.guest}}</td>
-            <td class="p-3">{{e.host.username}}</td>
-            <td class="hidden md:block p-3">{{e.tel}}</td>
-            <td class="p-3">{{e.date.date}}</td>
-            <!-- <td class="p-3">{{e.time}}</td> -->
-            <td class="">
-              {% if e.status == 'pending' %}
-              <h4
-                class="py-1 bg-sky-500 rounded-md text-xs text-white w-full text-center"
-              >
-                En attente
-              </h4>
-              {% elif e.status == 'open' %}
-              <h4
-                class="py-1 bg-amber-500 rounded-md text-xs text-white w-full text-center"
-              >
-                En cours
-              </h4>
-              {% elif e.status == 'closed' %}
-              <h4
-                class="py-1 bg-green-500 rounded-md text-xs text-white w-full text-center"
-              >
-                Cloturée
-              </h4>
-              {% elif e.status == 'ajourned' %}
-              <h4
-                class="py-1 bg-purple-700 rounded-md text-xs text-white w-full text-center"
-              >
-                Ajournée
-              </h4>
-              {% else %}
-              <h4
-                class="py-1 bg-red-500 rounded-md text-xs text-white w-full text-center"
-              >
-                Annulée
-              </h4>
-              {% endif %}
-            </td>
-            </td>
+        <option value="" selected>Hôte</option>
+        {% for obj in hosts %}
+        <option value="{{obj.username}}">@{{obj.username}}</option>
+        {% endfor %}
+      </select> -->
+    {% endif %}
+    <input
+      hx-post="{% url 'filter_visits' %}"
+      hx-target=".filtered_visits"
+      hx-trigger="keyup changed delay:500ms"
+      placeholder="Nom/prenoms du visiteur"
+      name="query"
+      type="text"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full md:w-fi md:max-w-80"
+    />
+    <!-- statuses -->
+    <!-- <select
+        name="query"
+        class="px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected>Status de visit</option>
+        {% for obj in statuses %}
+        <option value="{{obj.title}}">{{obj.title}}</option>
+        {% endfor %}
+      </select> -->
+    <!-- visit types -->
+    <!-- <select
+        name="query"
+        class="hidden xl:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-full md:w-fit"
+      >
+        <option value="" selected>Type de visite</option>
+        <option value="familial">Amicale</option>
+        <option value="friendly">Familiale</option>
+        <option value="professional">Professionelle</option>
+      </select> -->
+    <!-- sex -->
+    <!-- <select
+        name="query"
+        class="hidden md:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected>Sexe</option>
+        <option value="female">Feminin</option>
+        <option value="male">Masculin</option>
+      </select> -->
+    <!-- 
+      <button
+        class="px-3 py-1 bg-purple-950 text-white hover:text-amber-200 rounded-md transition duration-200 ease-in"
+        type="submit"
+      >
+        <i class="fa-solid fa-filter"></i>
+      </button> -->
+  </form>
 
-            <td class="md:flex justify-around gap-2 max-w-[100px] mx-auto">
-              <a
-                href="{% url 'visit' e.id  %}"
-                class="inline p-2 text-sm text-gray-500 rounded-md"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-0"
-              >
-                <i class="fa-solid fa-eye hover:text-purple-700"></i>
-              </a>
-              {% if user.role.sec_level == 6 %}
-              <a
-                onclick="return confirm('Voulez vous supprimer ce Rendez-vous ?')"
-                href="{% url 'delete_visit' e.id  %}"
-                class="inline px-2 lg:px-4 py-2 text-sm text-gray-500 rounded-md"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-1"
-              >
-                {% endif %}
-                <i class="fa-solid fa-trash lg:mr-2 hover:text-red-700"></i>
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% endif %}
-
+  <!-- {% if user.role.sec_level >= 4 %}
+  <button
+    hx-get="{% url 'create_visit' %}"
+    hx-swap="outerHTML"
+    class="w-fit px-3 py-3 md:mr-28 bg-purple-950 text-xs text-white hover:text-amber-200 flex items-center rounded-lg cursor-pointer transition duration-200 ease-in"
+  >
+    <span class="hidden md:inline mr-2">Nouvelle visite </span>
+    <i class="fa-solid fa-plus"></i>
+  </button>
+  {% endif %} -->
 </div>
+<!--------------------------------------- filter tabs buttons --------------------------------------->
+<!-- <div
+  class="tabbar mb-2 w-fit text-gray-500 text-sm rounded-lg flex justify- gap-2 flex-wrap overflow-hidden"
+>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-gray-200 rounded-lg"
+    onclick="openMiniTab(event, 'all')"
+    id="defaultMiniTab"
+  >
+    Tout
+  </button>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-purple-200 rounded-lg"
+    onclick="openMiniTab(event, 'pending')"
+  >
+    <i class="mr-1 fa-solid fa-spinner"></i>
+
+    En attente
+  </button>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-amber-200 rounded-lg"
+    onclick="openMiniTab(event, 'ongoing')"
+  >
+    <i class="mr-1 fa-solid fa-hourglass-middle"></i>
+
+    En Cours
+  </button>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-green-200 rounded-lg"
+    onclick="openMiniTab(event, 'completed')"
+  >
+    <i class="mr-1 fa-solid fa-square-check"></i>
+
+    Terminé
+  </button>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-sky-200 rounded-lg"
+    onclick="openMiniTab(event, 'postponed')"
+  >
+    <i class="mr-1 fa-solid fa-rotate-right"></i>
+
+    Reporté
+  </button>
+  <button
+    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-red-200 rounded-lg"
+    onclick="openMiniTab(event, 'cancelled')"
+  >
+    <i class="mr-1 fa-solid fa-ban"></i>
+
+    Annulé
+  </button>
+</div> -->
+<!--------------------------------------- visits --------------------------------------->
+<section
+  id="visits"
+  class="h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full flex gap-2"
+>
+  <!--------------------------------------- visit list --------------------------------------->
+  <div
+    class="filtered_visits p-2 bg-purple-50 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+  >
+    <div
+      class="visit_list"
+      hx-get="{% url 'visit_list' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
+    <!-- <div id="vis_list">{#% include 'base/partials/visit_list.html' %#}</div> -->
+  </div>
+
+  <!--------------------------------------- visit details --------------------------------------->
+
+  <div
+    class="visit_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+  >
+    <img
+      class="h-60 lg:h-80 bg-gray-100 rounded-full"
+      src="{% static 'imgs/visit.png' %}"
+      alt="welcome image"
+    />
+    <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
+      Cliquez sur une visite pour voir ses detail ici
+    </p>
+  </div>
+</section>
 
 {% endblock %}

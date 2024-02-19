@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'dj_database_url',
 ]
 
+HASHIDS_SALT = 'SOLASCRIPTORA'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

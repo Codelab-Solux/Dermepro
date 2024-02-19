@@ -1,0 +1,24 @@
+<h3 class="mb-2 py-1 px-4 rounded-md text-sm bg-gray-100">Visites en cours</h3>
+{% if not visits %}
+<div class="p-20 bg-white w-fit h-full rounded-xl flex-col text-center m-auto">
+  <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+  <p class="mt-2 px-4 py-2 rounded-md bg-gray-100 text-sm text-center">
+    Aucune visite en cours
+  </p>
+</div>
+{% else %}
+
+<div class="mb-4 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+  {% for obj in visits %}
+  <div
+    hx-target="#visit_dialog"
+    hx-get="{% url 'visit' obj.id %}"
+    class="p-3 h-full border hover:shadow-md rounded-md cursor-pointer"
+  >
+    <h3 class="font-bold text-black text-md">{{obj.guest}}</h3>
+    <small class="text-xs">{{obj.arrived_at}}</small>
+    <p class="italic text-purple-900 text-sm">@{{obj.host.username}}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

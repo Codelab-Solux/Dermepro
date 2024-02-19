@@ -5,28 +5,75 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js" defer="true"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer="true"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.8"
+      integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
     <script
       src="https://kit.fontawesome.com/f601cf3e61.js"
       crossorigin="anonymous"
     ></script>
-    <script src="{% static 'notify.js' %}" defer="true"></script>
     <script src="{% static 'chat.js' %}" defer="true"></script>
+    <!-- <script src="{% static 'notifications.js' %}" defer="true"></script> -->
     <link href="{% static 'styles.css' %}" rel="stylesheet" />
-    <title>Dermepro</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+    <title>{{title}}</title>
   </head>
-  <body class="flex flex-row bg-white text-gray-700 max-w-full mx-auto">
+  <body
+    hx-ext="ws"
+    ws-connect="/ws/notifications/"
+    hx-boost="true"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    class="flex flex-row bg-white text-gray-700 max-w-full mx-auto"
+  >
     {% if user.is_authenticated %}
     <input id="curr_user" type="hidden" value="{{user.id}}" />
-    {% endif %} {% include 'sidebar.html' %}
+    {% endif %}
+    <!--  -->
+    {% include 'sidebar.html' %}
     <div
       class="w-full ml-[60px] md:ml-[80px] lg:ml-[200px] xl:ml-[300px] bg-white"
     >
-      <div class="p-4 md:p-6 lg:p-8 w-full max-w-[1350px] mx-auto min-h-screen">
+      <div
+        class="relative p-4 md:p-6 lg:p-8 w-full max-w-[1350px] mx-auto min-h-screen"
+      >
+        {% include 'base/components/badges.html' %}
+        <!--  -->
         {% block content %} {% endblock %}
       </div>
     </div>
+    <!--  -->
+    {% include 'modal.html' %}
+    <!--  -->
   </body>
+  <script>
+    htmx.onLoad(function (content) {
+      scripts.init(content);
+    });
+  </script>
 </html>

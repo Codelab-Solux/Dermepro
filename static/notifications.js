@@ -1,17 +1,24 @@
-const notify_socket = new WebSocket(`ws://${window.location.host}/notify/`);
+const active_user_id = JSON.parse(
+  document.getElementById("active_user_id").textContent
+);
+const notification_socket = new WebSocket(
+  `ws://${window.location.host}/notifications/`
+);
+
+console.log(active_user_id);
 
 var notifier = $("#notifier");
 var has_notification;
 
-notify_socket.onopen = function (e) {
+notification_socket.onopen = function (e) {
   console.log("Notifying now - - -");
 };
 
-notify_socket.onerror = function (e) {
+notification_socket.onerror = function (e) {
   console.log("Notification error !!!");
 };
 
-notify_socket.onmessage = function (e) {
+notification_socket.onmessage = function (e) {
   console.log("Notification received -/-");
   const data = JSON.parse(e.data);
   if (data.notification_count > 0) {
@@ -25,6 +32,6 @@ notify_socket.onmessage = function (e) {
   }
 };
 
-notify_socket.onclose = function (e) {
+notification_socket.onclose = function (e) {
   console.log("Notification closed -/-");
 };

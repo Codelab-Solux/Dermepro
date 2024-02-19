@@ -1,0 +1,28 @@
+<h3 class="mb-2 py-1 px-4 rounded-md text-sm bg-purple-100">
+  V.I.P en attentes
+</h3>
+{% if not appointments %}
+<div
+  class="bg-purple-50 p-10 rounded-lg flex justify-center items-center gap-2 text-center m-auto"
+>
+  <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+  <p class="text-sm">Aucun rendez-vous V.I.P en attente</p>
+</div>
+{% else %}
+<div class="mb-4 grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+  {% for obj in appointments %}
+  <div
+    hx-get="{% url 'appointment' obj.id %}"
+    hx-target="#appointment_dialog"
+    class="relative p-4 h-full border hover:border-purple-400 hover:shadow-md rounded-md group cursor-pointer"
+  >
+    <i
+      class="absolute top-2 right-2 fa-solid fa-star text-xs text-gray-300 group-hover:text-purple-400"
+    ></i>
+    <h3 class="font-bold text-black text-md">{{obj.guest}}</h3>
+    <small class="text-sm">{{obj.date}}</small>
+    <h3 class="text-sm">{{obj.time}}</h3>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

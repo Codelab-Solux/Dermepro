@@ -1,9 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.db.models import Q
 from accounts.forms import RoleForm
-from accounts.models import Role
+from accounts.models import *
 from .models import *
 from .forms import *
 import csv
@@ -14,17 +17,16 @@ import csv
 def home(req):
     user = req.user
     if user.role.sec_level >= 4:
-        visits = Visit.objects.filter(status='pending')
-        curr_visits = Visit.objects.filter(status='open')
-        curr_rdvs = Appointment.objects.filter(status='open')
+        curr_visits = Visit.objects.filter(status=2)
+        # pending_visits = Visit.objects.filter(status=1)
+        curr_rdvs = Appointment.objects.filter(status=2)
         pending_rdvs = Appointment.objects.filter(
-            is_vip=False, status='pending')
+            is_vip=False, status=1)
         pending_vips = Appointment.objects.filter(
-            is_vip=True, status='pending')
+            is_vip=True, status=1)
 
     else:
-        visits = Visit.objects.filter(host=user, status='pending')
-        curr_visits = Visit.objects.filter(host=user, status='open')
+        curr_visits = Visit.objects.filter(host=user, status=2)
         curr_rdvs = []
         pending_rdvs = []
         pending_vips = []
@@ -32,8 +34,8 @@ def home(req):
     ordering = ['date']
     context = {
         "home_page": "active",
-        'title': 'home',
-        'visits': visits,
+        'title': 'Home',
+        # 'pending_visits': pending_visits,
         'curr_visits': curr_visits,
         'pending_rdvs': pending_rdvs,
         'pending_vips': pending_vips,
@@ -42,79 +44,35 @@ def home(req):
     }
     return render(req, 'base/index.html', context)
 
-
 @login_required(login_url='login')
 def visits(req):
     user = req.user
-    if user.role.sec_level > 2:
-        query = req.GET.get('query') if req.GET.get('query') != None else ''
-        visits = Visit.objects.filter(
-            Q(guest__icontains=query)
-            | Q(host__first_name__icontains=query)
-            | Q(tel__icontains=query)
-            | Q(gender__icontains=query)
-            | Q(date__icontains=query)
-            | Q(arrived_at__icontains=query)
-            | Q(departed_at__icontains=query)
-            | Q(nationality__icontains=query)
-            | Q(status__icontains=query)
-            | Q(context__icontains=query)
-            | Q(doc_num__icontains=query)
-        ).distinct()
-
-        closed_visits = Visit.objects.filter(
-            status='closed').order_by('date')[:18]
+    statuses = Status.objects.all()
+    hosts = CustomUser.objects.all()
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.all().order_by('-date','-arrived_at')
     else:
-        visits = Visit.objects.filter(
-            Q(guest__icontains=query)
-            | Q(tel__icontains=query)
-            | Q(host__first_name__icontains=query), host=user
-        ).distinct()
-        closed_visits = Visit.objects.filter(
-            host=user, status='closed').order_by('date')[:18]
-
-    form = VisitForm()
-    if req.method == 'POST':
-        form = VisitForm(req.POST)
-        form.instance.status = 'pending'
-        if form.is_valid():
-            form.save()
-            return redirect('visits')
-
-    ordering = ['date']
+        visits = Visit.objects.filter(host=user).order_by('-date','-arrived_at')
     context = {
         "visits_page": "active",
-        'title': 'visits',
-        'visits': visits,
-        'closed_visits': closed_visits,
-        'form': form,
-        'ordering': ordering,
+        'title': 'Visits',
+        'visits': visits,                           
+        'statuses': statuses,
+        "hosts" : hosts,
     }
     return render(req, 'base/visits.html', context)
-
 
 @login_required(login_url='login')
 def visit(req, pk):
     user = req.user
-    visit = Visit.objects.get(id=pk)
+    curr_obj = get_object_or_404(Visit, id=pk)
 
-    if user.role.sec_level < 4 and user != visit.host:
-        return redirect('visits')
-
-    form = EditVisitForm(instance=visit)
-    if req.method == 'POST':
-        form = EditVisitForm(req.POST, instance=visit)
-        if form.is_valid():
-            form.save()
-            return redirect('visits')
     context = {
-        "visit_page": "active",
-        'title': 'visit',
-        'visit': visit,
-        'form': form,
+        "visit_details_page": "active",
+        'title': 'Visit Details',
+        'curr_obj': curr_obj,
     }
     return render(req, 'base/visit.html', context)
-
 
 @login_required(login_url='login')
 def create_visit(req):
@@ -126,26 +84,58 @@ def create_visit(req):
     form = VisitForm()
     if req.method == 'POST':
         form = VisitForm(req.POST)
-        form.instance.status = 'pending'
         if form.is_valid():
             form.save()
-            return redirect('visits')
+        messages.success = 'Nouvelle visit ajoutée!'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Visite'})
 
-    context = {
-        "create_visit_page": "active",
-        'title': 'create_visit',
-        'form': form,
-    }
-    return render(req, 'base/visit.html', context)
+@login_required(login_url='login')
+def edit_visit(req, pk):
+    user = req.user
+    # if user.role.sec_level < 4:
+    #     return redirect('visits')
+
+    curr_obj = get_object_or_404(Visit, id=pk)
+
+    form = VisitForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = VisitForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Données modifiée avec success'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Visite', 'curr_obj': curr_obj})
+
+
+
+# @login_required(login_url='login')
+# def add_visit(req):
+#     user = req.user
+
+#     form = VisitForm()
+#     if req.method == 'POST':
+#         form = VisitForm(req.POST)
+#         if form.is_valid():
+#             form.save()
+#         messages.success = 'Nouvelle visite ajoutée'
+#         visits = Visit.objects.all()
+#         return render(req, 'base/partials/visit_list.html', context={'visits': visits})
+#     else:
+#         return render(req, 'base/components/basic_form_alt.html', context={'form': form, 'target':'visit_list'})
 
 
 @login_required(login_url='login')
+@require_http_methods(['DELETE']) #secures the delete route and makes it only accessible by the DELETE method
 def delete_visit(req, pk):
-    visit = Visit.objects.get(id=pk)
+    curr_obj = get_object_or_404(Visit, id=pk)
     if req.user.role.sec_level < 4:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
-    visit.delete()
-    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+    curr_obj.delete()
+    success = 'Deleted successfully'
+    return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
 @login_required(login_url='login')
@@ -172,7 +162,7 @@ def appointments(req):
     if user.role.sec_level >= 3:
         appointments = Appointment.objects.all()
         closed_appointments = Appointment.objects.filter(
-            status='closed').order_by('date')[:15]
+            status=3).order_by('date')[:15]
 
     else:
         return redirect(req.META.get('HTTP_REFERER', '/'))
@@ -182,7 +172,7 @@ def appointments(req):
         Q(guest__icontains=query)
         | Q(tel__icontains=query)
         | Q(host__first_name__icontains=query)
-    ).distinct()
+    ).order_by('-date','-arrived_at')
 
     ordering = ['date']
     context = {
@@ -198,22 +188,13 @@ def appointments(req):
 @ login_required(login_url='login')
 def appointment(req, pk):
     user = req.user
-    appointment = Appointment.objects.get(id=pk)
+    curr_obj = Appointment.objects.get(id=pk)
 
-    if user.role.sec_level > 6 or user == appointment.host:
-        form = EditAppointmentForm(instance=appointment)
-        if req.method == 'POST':
-            form = EditAppointmentForm(req.POST, instance=appointment)
-            if form.is_valid():
-                form.save()
-                return redirect('appointments')
-    else:
-        form = None
     context = {
         "rdv_page": "active",
-        'title': 'appointment',
-        'appointment': appointment,
-        'form': form,
+        'title': 'Appointment Details',
+        'curr_obj': curr_obj,
+
     }
     return render(req, 'base/appointment.html', context)
 
@@ -228,7 +209,7 @@ def create_appointment(req):
     form = AppointmentForm()
     if req.method == 'POST':
         form = AppointmentForm(req.POST)
-        form.instance.status = 'pending'
+        form.instance.status = 1
         if form.is_valid():
             form.save()
             return redirect('appointments')
@@ -242,13 +223,33 @@ def create_appointment(req):
 
 
 @login_required(login_url='login')
-def delete_appointment(req, pk):
+def edit_appointment(req, pk):
     user = req.user
-    appointment = Appointment.objects.get(id=pk)
-    if user.role.sec_level < 6 or user != appointment.host:
+    # if user.role.sec_level < 4:
+    #     return redirect('visits')
+
+    curr_obj = get_object_or_404(Appointment, id=pk)
+
+    form = AppointmentForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = AppointmentForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Données modifiée avec success'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous', 'curr_obj': curr_obj})
+
+        
+@login_required(login_url='login')
+@require_http_methods(['DELETE']) #secures the delete route and makes it only accessible by the DELETE method
+def delete_appointment(req, pk):
+    curr_obj = get_object_or_404(Appointment, id=pk)
+    if req.user.role.sec_level < 5:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
-    appointment.delete()
-    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+    curr_obj.delete()
+    success = 'Deleted successfully'
+    return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
 @login_required(login_url='login')
@@ -407,3 +408,185 @@ def read_notification(req, pk):
             return redirect('chat_page', obj.chat.sender)
         else:
             return redirect(req.META.get('HTTP_REFERER', '/'))
+
+
+# htmx partials ---------------------------------------------------------------------
+@login_required(login_url='login')
+def appointment_list(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        appointments = Appointment.objects.all().order_by('-date','-time')
+    else:
+        appointments = Appointment.objects.filter(host=user).order_by('-date','-time')
+    context = {"appointments" : appointments}
+    return render(req, 'base/partials/appointment_list.html', context)
+
+@login_required(login_url='login')
+def pending_vips(req):
+    appointments = Appointment.objects.filter(is_vip=True, status=1)
+    context = {"appointments" : appointments}
+    return render(req, 'base/partials/pending_vips.html', context)
+
+@login_required(login_url='login')
+def pending_appointments(req):
+    appointments = Appointment.objects.filter(status=1).exclude(is_vip=True)
+    context = {"appointments" : appointments}
+    return render(req, 'base/partials/pending_appointments.html', context)
+
+@login_required(login_url='login')
+def ongoing_appointments(req):
+    appointments = Appointment.objects.filter(status=2)
+    context = {"appointments" : appointments}
+    return render(req, 'base/partials/ongoing_appointments.html', context)
+
+def filter_appointments(req):
+    user = req.user
+    appointments = Appointment.objects.all().order_by('-date','-time')
+    query = req.POST.get('query')
+    if query != "":
+        appointments = Appointment.objects.filter(guest__icontains=query).order_by('-date','-time')
+
+    context = {"appointments" : appointments}
+    print(query)
+    return render(req, 'base/partials/appointment_list.html', context)
+
+@login_required(login_url='login')
+def create_appointment(req):
+    user = req.user
+    if user.role.sec_level < 4:
+        return redirect('home')
+
+    form = AppointmentForm()
+    if req.method == 'POST':
+        form = AppointmentForm(req.POST)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Nouveau rendez-vous ajouté'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous'})
+
+
+@login_required(login_url='login')
+def edit_appointment_status(req, pk, kp):
+    user = req.user
+    curr_profile = get_object_or_404(Profile, user=user)
+    curr_obj = get_object_or_404(Appointment, id=pk)
+    new_status = get_object_or_404(Status, id=kp)
+    curr_obj.status = new_status
+    curr_obj.save()
+    
+    if kp==2:
+        new_user_status = get_object_or_404(UserStatus, id=kp)
+        curr_profile.status = new_user_status
+        curr_profile.save()
+    
+    else:
+        new_user_status = get_object_or_404(UserStatus, id=1)
+        curr_profile.status = new_user_status
+        curr_profile.save()
+        print(curr_profile.status)
+
+    context={'obj':curr_obj}
+    return render(req, 'base/components/status_badge.html', context)
+
+# visit ---------------------------------------------------------------------
+
+@login_required(login_url='login')
+def visit_list(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.all().order_by('-date','-arrived_at')
+    else:
+        visits = Visit.objects.filter(host=user).order_by('-date','-arrived_at')
+    context = {"visits" : visits}
+    return render(req, 'base/partials/visit_list.html', context)
+
+
+@login_required(login_url='login')
+def ongoing_visits(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.filter(status=2).order_by('-date','-arrived_at')
+    else:
+        visits = Visit.objects.filter(status=2, host=user).order_by('-date','-arrived_at')
+    context = {"visits" : visits}
+    return render(req, 'base/partials/ongoing_visits.html', context)
+
+
+@login_required(login_url='login')
+def pending_visits(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.filter(status=1).order_by('-date','-arrived_at')
+    else:
+        visits = Visit.objects.filter(status=1, host=user).order_by('-date','-arrived_at')
+    context = {"visits" : visits}
+    return render(req, 'base/partials/pending_visits.html', context)
+
+
+def filter_visits(req):
+    user = req.user
+    query = req.POST.get('query')
+    if user.role.sec_level >= 4:
+        if query != "":
+            # if user.role.sec_level >= 4:
+            #     visits = Visit.objects.filter(
+            #         Q(host__username__icontains=query)
+            #         |Q(guest__icontains=query)
+            #         | Q(gender__icontains=query)
+            #         # | Q(date__icontains=query)
+            #         # | Q(arrived_at__icontains=query)
+            #         # | Q(departed_at__icontains=query)
+            #         # | Q(nationality__icontains=query)
+            #         | Q(context__icontains=query)
+            #         | Q(status__title__icontains=query)
+            #     ).order_by('-date','-arrived_at')
+            # else:
+            #     visits = Visit.objects.filter(
+            #         Q(guest__icontains=query)
+            #         | Q(gender__icontains=query)
+            #         | Q(context__icontains=query)
+            #         | Q(status__title__icontains=query), 
+            #         host=user,
+            #     ).order_by('-date','-arrived_at')
+            visits = Visit.objects.filter(guest__icontains=query).order_by('-date','-arrived_at')
+        else:    
+            visits = Visit.objects.all().order_by('-date','-arrived_at')
+    else :
+        if query != "":
+            visits = Visit.objects.filter(guest__icontains=query, host=user).order_by('-date','-arrived_at')
+        else:    
+            visits = Visit.objects.filter(host=user).order_by('-date','-arrived_at')
+
+    context = {"visits" : visits}
+    print(query)
+    return render(req, 'base/partials/visit_list.html', context)
+    
+
+@login_required(login_url='login')
+def edit_visit_status(req, pk, kp):
+    user = req.user
+    curr_profile = get_object_or_404(Profile, user=user)
+    curr_obj = get_object_or_404(Visit, id=pk)
+    new_status = get_object_or_404(Status, id=kp)
+    if user != curr_obj.host:
+        return redirect('visits')
+
+    curr_obj.status = new_status
+    curr_obj.save()
+    
+    if kp==2:
+        curr_obj.accepted_at = timezone.now()
+        curr_obj.save()
+        new_user_status = get_object_or_404(UserStatus, id=kp)
+        curr_profile.status = new_user_status
+        curr_profile.save()
+
+    else:
+        new_user_status = get_object_or_404(UserStatus, id=1)
+        curr_profile.status = new_user_status
+        curr_profile.save()
+
+    context={'obj':curr_obj}
+    return render(req, 'base/components/status_badge.html', context)
