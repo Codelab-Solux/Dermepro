@@ -1,105 +1,329 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+
 {% load static %} {% with obj=curr_obj %}
 <!--  -->
-<div class="relative h-fit md:h-full md:w-full">
-  <div class="absolute top-0 right-0 flex items-center gap-1">
-    <!--  -->
-    <div hx-swap-oob="true"></div>
-    <div class="hidden sm:inline">
-      {% include 'base/components/status_badge.html' %}
+{% if visit_details_page %}
+<!--  -->
+<div class="relative grid gap-4 h-full md:h-full md:w-full">
+  <div class="grid md:pt-10 xl:pt-0">
+    <div class="absolute top-0 right-0 flex items-center gap-1">
+      <!--  -->
+      <div hx-swap-oob="true"></div>
+      <div class="hidden sm:inline">
+        {% include 'base/components/status_badge.html' %}
+      </div>
+      <div class="sm:hidden">
+        {% include 'base/components/status_badge_alt.html' %}
+      </div>
+      <!--  -->
+      {% if curr_obj.host == user%}
+      <!--  -->
+      {% include 'base/components/status_changer.html' %}
+      <!--  -->
+      {% endif %}
+      <!-- admin actions -->
+      {% if user.role.sec_level >= 4 %}
+      <div
+        class="flex border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
+      >
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'edit_visit' obj.id %}"
+          class="px-2 py-1 hover:bg-purple-300 hover:text-black"
+        >
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button
+          hx-confirm="Voulez vous vraiment supprimer ceci?"
+          class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
+          hx-delete="{% url 'delete_visit' obj.id %}"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      {% endif %}
     </div>
-    <div class="sm:hidden">
-      {% include 'base/components/status_badge_alt.html' %}
+    <!-- visit details -->
+    <div id="details" class="mt-10 grid xl:grid-cols-2 gap-4">
+      <!-- visit info -->
+      <div class="w-full flex flex-col gap-2 text-gray-500">
+        <h2 class="font-bold text-lg md:text-xl lg:text-2xl text-black">
+          {{curr_obj.civility}} {{curr_obj.guest}}
+        </h2>
+        <a
+          href="{% url 'user' obj.host.id %}"
+          class="cursor-pointer italic text-purple-700 hover:underline"
+        >
+          <span>@{{curr_obj.host.username}}</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+        </a>
+        <p>
+          <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Cadre de la
+          visite :
+          <span class="text-black">
+            {{curr_obj.get_context_display|title}}
+          </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-flag text-gray-400 mr-3"></i> Nationalité :
+          <span class="text-black"> {{curr_obj.nationality}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-venus-mars text-gray-400 mr-3"></i> Sexe :
+          <span class="text-black">
+            {{curr_obj.get_gender_display|title}}
+          </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i> Date :
+          <span class="text-black"> {{curr_obj.date}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Arrivée à :
+          <span class="text-black"> {{curr_obj.arrived_at}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i>
+          Accepté(e) à :
+          <span class="text-black"> {{curr_obj.accepted_at}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-id-card text-gray-400 mr-3"></i> Type de piece
+          d'identite :
+          <span class="text-black">{{curr_obj.get_id_doc_display|title}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> Numero de la
+          piece d'identite :
+          <span class="text-black"> {{curr_obj.doc_num|title}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-phone text-gray-400 mr-3"></i> Numero de
+          telephone :
+          <span class="text-black"> {{curr_obj.tel|title}} </span>
+        </p>
+      </div>
+      <!-- signature pad -->
+      {% if not curr_obj.signature %}
+      <form
+        id="signature_form"
+        class="flex flex-col items-center gap-3"
+        action="{% url 'sign_visit' curr_obj.id %}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <p
+          class="px-4 py-2 bg-purple-100 rounded-lg text-sm text-black text-center"
+        >
+          Veuillez signer ici
+          <i class="fa-solid fa-arrow-down text-xs"></i>
+        </p>
+        <!-- signature canvas -->
+        <canvas
+          id="signature_canvas"
+          width="350"
+          height="250"
+          class="w-fit rounded-lg bg-gray-50 hover:bg-white text-black border hover:border-purple-700 cursor-crosshair overflow-hidden"
+        ></canvas>
+
+        <!--  -->
+        <div class="mb-4 w-full max-w-[350px] mx-auto flex items-center gap-2">
+          <a
+            onclick="clearCanvas()"
+            class="px-4 py-2 bg-red-200 hover:bg-red-400 text-sm text-black rounded-md transition duration-200 ease-in cursor-pointer"
+            >Effacer</a
+          >
+          <button
+            type="button"
+            onclick="saveSignature()"
+            class="px-4 py-2 w-full bg-purple-800 hover:bg-purple-950 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
+          >
+            Valider
+          </button>
+        </div>
+      </form>
+      <!--  -->
+      <div
+        id="signature_viewer"
+        class="hidden w-full h-fit p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+      >
+        <div
+          class="badge_generator flex flex-col justify-center items-center gap-3"
+        >
+          <img id="new_signature" src="" alt="Signature" />
+          <a
+            hx-get="{% url 'generate_visit_badge' obj.id %}"
+            hx-swap="outerHTML"
+            hx-target=".badge_generator"
+            class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
+            >Generer un badge</a
+          >
+        </div>
+      </div>
+      {% else %}
+      <!-- badge generator -->
+      <div
+        class="w-full h-fit p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+      >
+        <div
+          class="badge_generator flex flex-col justify-center items-center gap-3"
+        >
+          <img
+            class="h-80 w-fit"
+            src="{{ curr_obj.signature.url }}"
+            alt="signature"
+          />
+          <a
+            hx-get="{% url 'generate_visit_badge' obj.id %}"
+            hx-swap="outerHTML"
+            hx-target=".badge_generator"
+            class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
+            >Generer un badge</a
+          >
+        </div>
+      </div>
+      {% endif %}
     </div>
-    <!--  -->
-    {% if curr_obj.host == user%}
-    <!--  -->
-    {% include 'base/components/status_changer.html' %}
-    <!--  -->
-    {% endif %}
   </div>
-
-  <h2
-    class="md:pt-10 xl:pt-0 font-bold text-lg md:text-xl lg:text-2xl text-black"
-  >
-    {{curr_obj.civility}} {{curr_obj.guest}}
-  </h2>
-
-  {% if visit_details_page %}
-  <a
-    href="{% url 'user' obj.host.id %}"
-    class="cursor-pointer italic text-purple-700 hover:underline"
-  >
-    <span>@{{curr_obj.host.username}}</span>
-    <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
-  </a>
-
-  <div class="mt-4 flex flex-col gap-2 text-gray-500">
-    <p>
-      <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Cadre de la
-      visite :
-      <span class="text-black"> {{curr_obj.context|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-flag text-gray-400 mr-3"></i> Nationalité :
-      <span class="text-black"> {{curr_obj.nationality}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-venus-mars text-gray-400 mr-3"></i> Sexe :
-      <span class="text-black"> {{curr_obj.get_gender_display|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i> Date :
-      <span class="text-black"> {{curr_obj.date}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Arrivée à :
-      <span class="text-black"> {{curr_obj.arrived_at}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i> Accepté(e)
-      à :
-      <span class="text-black"> {{curr_obj.accepted_at}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-id-card text-gray-400 mr-3"></i> Type de piece
-      d'identite :
-      <span class="text-black">{{curr_obj.get_id_doc_display|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> Numero de la piece
-      d'identite :
-      <span class="text-black"> {{curr_obj.doc_num|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-phone text-gray-400 mr-3"></i> Numero de telephone :
-      <span class="text-black"> {{curr_obj.tel|title}} </span>
-    </p>
-  </div>
-
-  {% if user.role.sec_level >= 4 %}
-  <div
-    class="flex absolute top-10 border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
-  >
-    <button
-      onclick="hide_dialogs()"
-      hx-target="#basic_dialog"
-      hx-get="{% url 'edit_visit' obj.id %}"
-      class="px-2 py-1 hover:bg-purple-300 hover:text-black"
-    >
-      <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-    <button
-      hx-confirm="Voulez vous vraiment supprimer ceci?"
-      class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
-      hx-delete="{% url 'delete_visit' obj.id %}"
-    >
-      <i class="fa-solid fa-trash"></i>
-    </button>
-  </div>
-  {% endif %}
-  <!--  -->
-  {% endif %}
 </div>
 
+<script>
+  // Get the CSRF token from the cookie
+  function getCSRFToken() {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Extract the CSRF token
+        if (cookie.substring(0, 10) === "csrftoken=") {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  var form = document.getElementById("signature_form");
+  var canvas = document.getElementById("signature_canvas");
+  var signature_viewer = document.getElementById("signature_viewer");
+  var signaturePad = new SignaturePad(canvas);
+
+  // JavaScript code to save signature
+  function saveSignature() {
+    // Check if the signature pad is empty
+    if (signaturePad.isEmpty()) {
+      alert("Veuillez signer avant de valider.");
+      return; // Exit function if signature pad is empty
+    }
+
+    // Get the CSRF token
+    var csrftoken = getCSRFToken();
+
+    // from base 64 to blob
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || "";
+      sliceSize = sliceSize || 512;
+
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+
+      for (
+        var offset = 0;
+        offset < byteCharacters.length;
+        offset += sliceSize
+      ) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      var blob = new Blob(byteArrays, { type: contentType });
+      return blob;
+    }
+
+    // form data handling
+    var image_data = signaturePad.toDataURL("image/png"); // Convert canvas content to data URL
+    console.log("Data URL:", image_data);
+    var block = image_data.split(";");
+    var contentType = block[0].split(":")[1];
+    var realData = block[1].split(",")[1];
+
+    var blob = b64toBlob(realData, contentType);
+    var formData = new FormData();
+    formData.append("image", blob, "signature.png");
+
+    // form submission handling with  ajax
+    $.ajax({
+      url: form.action,
+      type: form.method,
+      processData: false,
+      contentType: false,
+      data: formData,
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      success: function (data) {
+        console.log("Screenshot saved successfully!");
+        // Hide signature pad and display signature image
+        document.getElementById("new_signature").src = image_data; // Replace with the actual URL of the saved signature image
+        signature_form.classList.add("hidden");
+        signature_viewer.classList.remove("hidden");
+      },
+      error: function (e) {
+        console.log(e);
+      },
+    }).done(function (o) {});
+  }
+
+  // ----------------------------------------------------------------------------------------
+  // // Save signature function with CSRF token
+  // function saveSignature() {
+  //   // Get the CSRF token
+  //   var csrftoken = getCSRFToken();
+
+  //   // Create FormData object with signature data
+  //   var formData = new FormData();
+  //   formData.append("image", blob, "signature.png");
+
+  //   // Send AJAX request with CSRF token
+  //   $.ajax({
+  //     url: "{% url 'sign_visit' curr_obj.id %}",
+  //     type: "POST",
+  //     processData: false,
+  //     contentType: false,
+  //     headers: {
+  //       "X-CSRFToken": csrftoken,
+  //     },
+  //     data: formData,
+  //     success: function (data) {
+  //       console.log("Signature saved successfully!");
+  //     },
+  //     error: function (xhr, status, error) {
+  //       console.error(xhr.responseText);
+  //     },
+  //   });
+  // }
+  // ----------------------------------------------------------------------------------------
+
+  // JavaScript code to clear canvas
+  function clearCanvas() {
+    signaturePad.clear();
+  }
+
+  function refreshDiv() {
+    $("#details").load(location.href + " #details");
+  }
+</script>
+<!--  -->
+{% endif %}
 <!--  -->
 {% endwith %}

@@ -18,8 +18,10 @@ visit_types = (('friendly', 'Amicale'),
                ('familial', 'Familiale'),
                ('professional', "Professionelle"),)
 
-gender_types = (('male', 'Masculin'),
-                ('female', "Feminin"),)
+genders = (
+        ('female', "Feminin"),
+    ('male', 'Masculin'),
+        )
 id_types = (
     ('id_card', "Carte d'identité"),
     ('vote_card', "Carte d'électeur"),
@@ -41,7 +43,6 @@ class Status(models.Model):
         return reverse('status', kwargs={'pk': self.pk})
 
 
-
 class Visit(models.Model):
     host = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     guest = models.CharField(max_length=255)
@@ -56,14 +57,22 @@ class Visit(models.Model):
     arrived_at = models.TimeField(blank=True, null=True)
     accepted_at = models.TimeField(blank=True, null=True)
     departed_at = models.TimeField(null=True, blank=True)
-    gender = models.CharField(max_length=50, blank=True,
-                              null=True, choices=gender_types, default='')
+    sex = models.CharField(max_length=50, blank=True,
+                              null=True, choices=genders, default='')
     id_doc = models.CharField(max_length=50, blank=True,
                               null=True, choices=id_types, default='')
     doc_num = models.IntegerField(blank=True, null=True, default='')
-    status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE) 
-    # signature = models.CharField(max_length=255, default='', blank=True)
+    status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
+    qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
+    signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
+    # signature = models.TextField(null=True, blank=True)
 
+    # def set_signature(self, data):
+    #     self.signature = json.dumps(data)
+
+    # def get_signature(self):
+    #     return json.loads(self.signature) if self.signature else None
+    
     def __str__(self):
         return self.guest
 
@@ -86,15 +95,25 @@ class Appointment(models.Model):
     time = models.TimeField(null=True, blank=True)
     arrived_at = models.TimeField(null=True, blank=True)
     departed_at = models.TimeField(null=True, blank=True)
-    gender = models.CharField(max_length=50, blank=True,
-                              null=True, choices=gender_types, default='')
+    sex = models.CharField(max_length=50, blank=True,
+                              null=True, choices=genders, default='')
     id_doc = models.CharField(max_length=50, blank=True,
                               null=True, choices=id_types, default='')
     doc_num = models.CharField(
         max_length=50, blank=True, null=True, default='')
-    status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE) 
-    # signature = models.CharField(max_length=255, default='', blank=True)
+    status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
     is_vip = models.BooleanField(default=False, blank=True, null=True)
+    qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
+    signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
+    # signature = models.TextField(null=True, blank=True)
+
+    # def set_signature(self, data):
+    #     self.signature = json.dumps(data)
+
+    # def get_signature(self):
+    #     return json.loads(self.signature) if self.signature else None
+    # def __str__(self):
+    #     return self.guest
 
     def __str__(self):
         return self.guest

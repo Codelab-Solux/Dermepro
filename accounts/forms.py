@@ -40,11 +40,13 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = (
-            'role', 'username', 'email', 'first_name', 'last_name', 'password1', 'password2',  'tel',
+            'role', 'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 
+             'phone',
             #  'address'
         )
         labels = {'username': 'Pseudonyme', 'email': 'Email',
-                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 
+                  'first_name': 'Prenoms', 'last_name': 'Nom',
+                   'phone': 'Telephone', 
                 #   'address': 'Adresse'
                   }
         widgets = {
@@ -54,7 +56,7 @@ class CreateUserForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'password1': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'password2': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'tel': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'role': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
@@ -67,13 +69,15 @@ class EditUserForm(forms.ModelForm):
         exclude = (
             'role', 'groups', 'user_permissions', 'password', 'last_login', 'is_staff', 'is_superuser', 'is_active')
         labels = {'username': 'Pseudonyme', 'email': 'Email',
-                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'}
+                  'first_name': 'Prenoms', 'last_name': 'Nom',
+                   'phone': 'Telephone', 'address': 'Adresse'
+                   }
         widgets = {
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'tel': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
 
@@ -85,13 +89,15 @@ class AdminEditUserForm(forms.ModelForm):
         exclude = ('groups', 'user_permissions', 'password',
                    'last_login', 'is_staff', 'is_superuser', 'is_active')
         labels = {'username': 'Pseudonyme', 'email': 'Email',
-                  'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'}
+                  'first_name': 'Prenoms', 'last_name': 'Nom', 
+                  'phone': 'Telephone', 'address': 'Adresse'
+                  }
         widgets = {
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'tel': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'role': forms.Select(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }

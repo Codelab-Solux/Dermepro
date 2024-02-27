@@ -1,15 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from base.utils import h_encode, h_decode
-# Create your models here.
-
-# role_types = (
-#     ('Administrateur', "Administrateur"),
-#     ('Agent de sécurité', "Agent de sécurité"),
-#     ('Directeur', "Directeur"),
-#     ('Sécrétaire', "Sécrétaire"),
-#     ('Utilisateur Général', "Utilisateur Général"),
-# )
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Role(models.Model):
@@ -56,7 +48,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, blank=True, null=True)
-    tel = models.CharField(max_length=255, blank=True, null=True)
+    phone = PhoneNumberField(unique=True, blank=True, null=True)
     role = models.ForeignKey(
         Role, on_delete=models.CASCADE, blank=True, null=True,)
     image = models.ImageField(blank=True, null=True, upload_to='users')
@@ -107,7 +99,9 @@ class Profile(models.Model):
         max_length=10, choices=gender_list, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     bio = models.CharField(max_length=1000, null=True, blank=True)
-    status = models.ForeignKey(UserStatus, default=1, on_delete=models.CASCADE) 
+    status_message = models.CharField(max_length=200, default='Je suis disponible.', null=True, blank=True)
+    status = models.ForeignKey(UserStatus, default=1, on_delete=models.CASCADE)
+    phone_alt = PhoneNumberField(unique=True, blank=True, null=True)
     image = models.ImageField(
         upload_to='media/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
 

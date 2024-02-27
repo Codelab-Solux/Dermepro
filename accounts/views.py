@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, View
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-
+from django.db.models import Q
 from .forms import *
 # Create your views here.
 
@@ -66,6 +66,8 @@ def logoutUser(req):
 def users(req):
     new_users = CustomUser.objects.all()[:18]
     users = CustomUser.objects.all()
+    user_roles = Role.objects.all()
+    user_statuses = UserStatus.objects.all()
 
     ordering = ['last_name']
     context = {
@@ -73,6 +75,8 @@ def users(req):
         'title': 'users',
         'new_users': new_users,
         'users': users,
+        'user_roles': user_roles,
+        'user_statuses': user_statuses,
         'ordering': ordering,
     }
     return render(req, 'accounts/users.html', context)
@@ -153,21 +157,7 @@ def change_user_status(req, pk):
     curr_profile.save()
     messages.success = 'User Status changed'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
-    
 
-def filter_users(req):
-    user = req.user
-    query = req.POST.get('query')
-    if query != "":
-        query_res = CustomUser.objects.filter(last_name__icontains=query) | CustomUser.objects.filter(first_name__icontains=query)
-        users= query_res.order_by('last_name')
-    else:    
-        users = CustomUser.objects.all().order_by('last_name')
-
-    context = {"users" : users}
-    print(query)
-    return render(req, 'accounts/partials/user_list.html', context)
-    
 
 @login_required(login_url='login')
 def user_list(req):
@@ -189,3 +179,31 @@ def user(req, pk):
     }
     return render(req, 'accounts/user.html', context)
     
+
+def filter_users(req):
+    user = req.user
+    user_type = req.POST.get('user_type')
+    user_phone = req.POST.get('user_phone')
+    name_or_email = req.POST.get('name_or_email')
+    user_status = req.POST.get('user_status')
+    user_sex = req.POST.get('user_sex')
+    
+    # Construct the base query
+    base_query = CustomUser.objects.all().order_by('-last_name')
+
+    # Apply filters based on parameters
+    if user_type:
+        base_query = base_query.filter(role_id=user_type)
+    if user_phone:
+        base_query = base_query.filter(phone=user_phone)
+    if name_or_email:
+        base_query = base_query.filter(Q(last_name__icontains=name_or_email)|Q(first_name__icontains=name_or_email)|Q(email__icontains=name_or_email))
+    if user_status:
+        base_query = base_query.filter(profile__status__id=user_status)
+    if user_sex:
+        base_query = base_query.filter(profile__sex=user_sex)
+
+    users = base_query
+    context = {"users" : users}
+    print(users)
+    return render(req, 'accounts/partials/user_list.html', context)

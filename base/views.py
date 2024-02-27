@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,9 +10,19 @@ from accounts.forms import RoleForm
 from accounts.models import *
 from .models import *
 from .forms import *
-import csv
-# Create your views here.
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from io import BytesIO
+import csv, qrcode, base64
+from datetime import datetime
 
+# Create your views here.
+def paginate_objects(req, obj_list, obj_count=10):
+    paginator = Paginator(obj_list, obj_count)
+    page_number = req.GET.get('page',1)
+    objects = paginator.get_page(page_number)
+    return objects
 
 @login_required(login_url='login')
 def home(req):
@@ -44,6 +55,7 @@ def home(req):
     }
     return render(req, 'base/index.html', context)
 
+# visits --------------------------------------------------------------------------
 @login_required(login_url='login')
 def visits(req):
     user = req.user
@@ -109,24 +121,6 @@ def edit_visit(req, pk):
     else:
         return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Visite', 'curr_obj': curr_obj})
 
-
-
-# @login_required(login_url='login')
-# def add_visit(req):
-#     user = req.user
-
-#     form = VisitForm()
-#     if req.method == 'POST':
-#         form = VisitForm(req.POST)
-#         if form.is_valid():
-#             form.save()
-#         messages.success = 'Nouvelle visite ajoutée'
-#         visits = Visit.objects.all()
-#         return render(req, 'base/partials/visit_list.html', context={'visits': visits})
-#     else:
-#         return render(req, 'base/components/basic_form_alt.html', context={'form': form, 'target':'visit_list'})
-
-
 @login_required(login_url='login')
 @require_http_methods(['DELETE']) #secures the delete route and makes it only accessible by the DELETE method
 def delete_visit(req, pk):
@@ -136,7 +130,6 @@ def delete_visit(req, pk):
     curr_obj.delete()
     success = 'Deleted successfully'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
-
 
 @login_required(login_url='login')
 def visit_csv(req):
@@ -151,14 +144,16 @@ def visit_csv(req):
                     'Nationalité', 'Date', 'Arrivée', 'Départ', 'Sexe', 'Document', 'N° Document', 'Status'])
     for v in visits:
         writer.writerow([v.host.username, v.guest, v.tel, v.nationality, v.date,
-                        v.arrived_at, v.departed_at, v.gender, v.id_doc, v.doc_num, v.status])
+                        v.arrived_at, v.departed_at, v.sex, v.id_doc, v.doc_num, v.status])
 
     return res
 
-
+# appointments ---------------------------------------------------------------------
 @ login_required(login_url='login')
 def appointments(req):
     user = req.user
+    hosts = CustomUser.objects.all()
+    statuses = Status.objects.all()
     if user.role.sec_level >= 3:
         appointments = Appointment.objects.all()
         closed_appointments = Appointment.objects.filter(
@@ -180,10 +175,11 @@ def appointments(req):
         'title': 'appointments',
         'appointments': appointments,
         'closed_appointments': closed_appointments,
+        'statuses': statuses,
+        'hosts': hosts,
         'ordering': ordering,
     }
     return render(req, 'base/appointments.html', context)
-
 
 @ login_required(login_url='login')
 def appointment(req, pk):
@@ -191,13 +187,12 @@ def appointment(req, pk):
     curr_obj = Appointment.objects.get(id=pk)
 
     context = {
-        "rdv_page": "active",
+        "appointment_details_page": "active",
         'title': 'Appointment Details',
         'curr_obj': curr_obj,
 
     }
     return render(req, 'base/appointment.html', context)
-
 
 @login_required(login_url='login')
 def create_appointment(req):
@@ -221,7 +216,6 @@ def create_appointment(req):
     }
     return render(req, 'base/appointment.html', context)
 
-
 @login_required(login_url='login')
 def edit_appointment(req, pk):
     user = req.user
@@ -239,8 +233,7 @@ def edit_appointment(req, pk):
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous', 'curr_obj': curr_obj})
-
-        
+ 
 @login_required(login_url='login')
 @require_http_methods(['DELETE']) #secures the delete route and makes it only accessible by the DELETE method
 def delete_appointment(req, pk):
@@ -250,7 +243,6 @@ def delete_appointment(req, pk):
     curr_obj.delete()
     success = 'Deleted successfully'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
-
 
 @login_required(login_url='login')
 def appointments_csv(req):
@@ -269,11 +261,11 @@ def appointments_csv(req):
                     'Nationalité', 'Date', 'Arrivée', 'Départ', 'Sexe', 'Document', 'N° Document', 'Status'])
     for v in visits:
         writer.writerow([v.host.username, v.guest, v.tel, v.nationality, v.date,
-                        v.arrived_at, v.departed_at, v.gender, v.id_doc, v.doc_num, v.status])
+                        v.arrived_at, v.departed_at, v.sex, v.id_doc, v.doc_num, v.status])
 
     return res
 
-
+# dashboard ------------------------------------------------------------------------
 @ login_required(login_url='login')
 def dashboard(req):
     user = req.user
@@ -286,12 +278,12 @@ def dashboard(req):
         visits = Visit.objects.all()
         users = CustomUser.objects.all()
 
-    f_visits = int(Visit.objects.filter(gender='female').count())
-    m_visits = int(Visit.objects.filter(gender='male').count())
-    f_rdvs = int(Visit.objects.filter(gender='female').count())
-    m_rdvs = int(Visit.objects.filter(gender='male').count())
+    f_visits = int(Visit.objects.filter(sex='female').count())
+    m_visits = int(Visit.objects.filter(sex='male').count())
+    f_rdvs = int(Visit.objects.filter(sex='female').count())
+    m_rdvs = int(Visit.objects.filter(sex='male').count())
     # most_visited= Visit.objects.filter(host='male')
-    gender_list = ['Masculin', 'Feminin']
+    sex_list = ['Masculin', 'Feminin']
     visit_figs = [f_visits, m_visits]
     rdvs_stats = [f_rdvs, m_rdvs]
 
@@ -304,12 +296,11 @@ def dashboard(req):
         'appointments': appointments,
         'visits': visits,
         'users': users,
-        'gender_list': gender_list,
+        'sex_list': sex_list,
         'visit_figs': visit_figs,
         'rdvs_stats': rdvs_stats,
     }
     return render(req, 'base/dashboard.html', context)
-
 
 @ login_required(login_url='login')
 def parameters(req):
@@ -339,7 +330,6 @@ def parameters(req):
     }
     return render(req, 'base/parameters.html', context)
 
-
 @ login_required(login_url='login')
 def role(req, pk):
     user = req.user
@@ -361,7 +351,6 @@ def role(req, pk):
     }
     return render(req, 'base/role.html', context)
 
-
 @login_required(login_url='login')
 def delete_role(req, pk):
     user_role = Role.objects.get(id=pk)
@@ -370,7 +359,6 @@ def delete_role(req, pk):
     user_role.delete()
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
-
 @ login_required(login_url='login')
 def about(req):
     context = {
@@ -378,9 +366,7 @@ def about(req):
     }
     return render(req, 'base/about.html', context)
 
-
-# notifications------------------------------------------------------------------------------------------------------
-
+# notifications----------------------------------------------------------------------
 @login_required(login_url='login')
 def notifications(req):
     notifications = ChatNotification.objects.filter(
@@ -393,7 +379,6 @@ def notifications(req):
         'users': users,
     }
     return render(req, 'base/notifications.html', context)
-
 
 @login_required(login_url='login')
 def read_notification(req, pk):
@@ -408,7 +393,6 @@ def read_notification(req, pk):
             return redirect('chat_page', obj.chat.sender)
         else:
             return redirect(req.META.get('HTTP_REFERER', '/'))
-
 
 # htmx partials ---------------------------------------------------------------------
 @login_required(login_url='login')
@@ -441,13 +425,31 @@ def ongoing_appointments(req):
 
 def filter_appointments(req):
     user = req.user
-    appointments = Appointment.objects.all().order_by('-date','-time')
-    query = req.POST.get('query')
-    if query != "":
-        appointments = Appointment.objects.filter(guest__icontains=query).order_by('-date','-time')
+    host_query = req.POST.get('host')
+    name_query = req.POST.get('name')
+    status_query = req.POST.get('status')
+    sex_query = req.POST.get('sex')
+    
+    # Construct the base query
+    base_query = Appointment.objects.all().order_by('-date', '-time')
 
+    # Apply filters based on parameters
+    if user.role.sec_level >= 4:
+        if host_query:
+            base_query = base_query.filter(host__username__icontains=host_query)
+    else:
+        base_query = base_query.filter(host=user)
+
+    if name_query:
+        base_query = base_query.filter(guest__icontains=name_query)
+    if status_query:
+        base_query = base_query.filter(status__id=status_query)
+    if sex_query:
+        base_query = base_query.filter(sex=sex_query)
+
+    appointments = base_query
     context = {"appointments" : appointments}
-    print(query)
+    print(appointments)
     return render(req, 'base/partials/appointment_list.html', context)
 
 @login_required(login_url='login')
@@ -465,7 +467,6 @@ def create_appointment(req):
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous'})
-
 
 @login_required(login_url='login')
 def edit_appointment_status(req, pk, kp):
@@ -491,7 +492,6 @@ def edit_appointment_status(req, pk, kp):
     return render(req, 'base/components/status_badge.html', context)
 
 # visit ---------------------------------------------------------------------
-
 @login_required(login_url='login')
 def visit_list(req):
     user = req.user
@@ -501,7 +501,6 @@ def visit_list(req):
         visits = Visit.objects.filter(host=user).order_by('-date','-arrived_at')
     context = {"visits" : visits}
     return render(req, 'base/partials/visit_list.html', context)
-
 
 @login_required(login_url='login')
 def ongoing_visits(req):
@@ -513,7 +512,6 @@ def ongoing_visits(req):
     context = {"visits" : visits}
     return render(req, 'base/partials/ongoing_visits.html', context)
 
-
 @login_required(login_url='login')
 def pending_visits(req):
     user = req.user
@@ -524,45 +522,37 @@ def pending_visits(req):
     context = {"visits" : visits}
     return render(req, 'base/partials/pending_visits.html', context)
 
-
 def filter_visits(req):
     user = req.user
-    query = req.POST.get('query')
-    if user.role.sec_level >= 4:
-        if query != "":
-            # if user.role.sec_level >= 4:
-            #     visits = Visit.objects.filter(
-            #         Q(host__username__icontains=query)
-            #         |Q(guest__icontains=query)
-            #         | Q(gender__icontains=query)
-            #         # | Q(date__icontains=query)
-            #         # | Q(arrived_at__icontains=query)
-            #         # | Q(departed_at__icontains=query)
-            #         # | Q(nationality__icontains=query)
-            #         | Q(context__icontains=query)
-            #         | Q(status__title__icontains=query)
-            #     ).order_by('-date','-arrived_at')
-            # else:
-            #     visits = Visit.objects.filter(
-            #         Q(guest__icontains=query)
-            #         | Q(gender__icontains=query)
-            #         | Q(context__icontains=query)
-            #         | Q(status__title__icontains=query), 
-            #         host=user,
-            #     ).order_by('-date','-arrived_at')
-            visits = Visit.objects.filter(guest__icontains=query).order_by('-date','-arrived_at')
-        else:    
-            visits = Visit.objects.all().order_by('-date','-arrived_at')
-    else :
-        if query != "":
-            visits = Visit.objects.filter(guest__icontains=query, host=user).order_by('-date','-arrived_at')
-        else:    
-            visits = Visit.objects.filter(host=user).order_by('-date','-arrived_at')
-
-    context = {"visits" : visits}
-    print(query)
-    return render(req, 'base/partials/visit_list.html', context)
+    host_query = req.POST.get('host')
+    name_query = req.POST.get('name')
+    status_query = req.POST.get('status')
+    type_query = req.POST.get('type')
+    sex_query = req.POST.get('sex')
     
+    # Construct the base query
+    base_query = Visit.objects.all().order_by('-date', '-arrived_at')
+
+    # Apply filters based on parameters
+    if user.role.sec_level >= 4:
+        if host_query:
+            base_query = base_query.filter(host__username__icontains=host_query)
+    else:
+        base_query = base_query.filter(host=user)
+
+    if name_query:
+        base_query = base_query.filter(guest__icontains=name_query)
+    if status_query:
+        base_query = base_query.filter(status__id=status_query)
+    if type_query:
+        base_query = base_query.filter(context=type_query)
+    if sex_query:
+        base_query = base_query.filter(sex=sex_query)
+
+    visits = base_query
+
+    context = {"visits": visits}
+    return render(req, 'base/partials/visit_list.html', context)
 
 @login_required(login_url='login')
 def edit_visit_status(req, pk, kp):
@@ -590,3 +580,249 @@ def edit_visit_status(req, pk, kp):
 
     context={'obj':curr_obj}
     return render(req, 'base/components/status_badge.html', context)
+
+# reports ---------------------------------------------------------------------
+@login_required(login_url='login')
+def reports(req):
+    user = req.user
+    roles = Role.objects.all()
+    hosts = CustomUser.objects.all()
+    user_statuses = UserStatus.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        "report_page": "active",
+        'title': 'Reports',
+        'roles': roles,
+        'hosts': hosts,
+        'user_statuses': user_statuses,
+        'statuses': statuses,
+    }
+    return render(req, 'base/reports.html', context)
+
+def users_table(req):
+    user = req.user
+    users = CustomUser.objects.all()
+    objects = paginate_objects(req, users)
+    context = {'objects': objects}
+    return render(req, 'base/partials/users_table.html', context)
+    # return render(req, 'base/reports.html', context)
+
+def filter_users_table(req):
+    user = req.user
+    role_query = req.POST.get('role')
+    status_query = req.POST.get('status')
+    last_name_query = req.POST.get('last_name')
+    first_name_query = req.POST.get('first_name')
+    sex_query = req.POST.get('sex')
+    last_login_query = req.POST.get('last_login')
+    
+    # Construct the base query
+    base_query = CustomUser.objects.all().order_by('-last_name', '-first_name')
+
+    # Apply filters based on parameters
+    if user.role.sec_level >= 4:
+        if role_query:
+            base_query = base_query.filter(role__id=role_query)
+
+    if status_query:
+        base_query = base_query.filter(profile__status__id=status_query)
+    if last_name_query:
+        base_query = base_query.filter(last_name__icontains=last_name_query)
+    if first_name_query:
+        base_query = base_query.filter(first_name__icontains=first_name_query)
+    if sex_query:
+        base_query = base_query.filter(profile__sex=sex_query)
+    if last_login_query:
+        base_query = base_query.filter(last_login__lte=last_login_query)
+
+    users = base_query
+    objects = paginate_objects(req, users)
+    context = {'objects': objects}
+    return render(req, 'base/partials/users_table.html', context)
+
+def visits_table(req):
+    user = req.user
+    visits = Visit.objects.all().order_by('-date', '-arrived_at')
+    objects = paginate_objects(req, visits)
+    context = {'objects': objects}
+    return render(req, 'base/partials/visits_table.html', context)
+    # return render(req, 'base/reports.html', context)
+
+def filter_visits_table(req):
+    user = req.user
+    # Get filter parameters from request
+    min_date_query = req.POST.get('min_date')
+    max_date_query = req.POST.get('max_date')
+    host_query = req.POST.get('host')
+    type_query = req.POST.get('type')
+    sex_query = req.POST.get('sex')
+    status_query = req.POST.get('status')
+    
+    # Construct the base query
+    base_query = Visit.objects.all().order_by('-date', '-arrived_at')
+
+    # Apply filters based on parameters
+    if user.role.sec_level >= 4:
+        if host_query:
+            base_query = base_query.filter(host__username__icontains=host_query)
+    else:
+        base_query = base_query.filter(host=user)
+
+    # Apply filters based on parameters
+    if min_date_query:
+        base_query = base_query.filter(date__gte=min_date_query)
+    if max_date_query:
+        base_query = base_query.filter(date__lte=max_date_query)
+    if type_query:
+        base_query = base_query.filter(context=type_query)
+    if sex_query:
+        base_query = base_query.filter(sex=sex_query)
+    if status_query:
+        base_query = base_query.filter(status__id=status_query)
+
+    visits = base_query
+
+    # If the request is for CSV export, generate and return CSV response
+    if req.GET.get('export') == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="visites.csv"'
+        writer = csv.writer(response)
+        
+        # Write header row
+        writer.writerow(['Date', 'Hôte', 'Visiteur','Telephone', 'Sexe', 'Cadre', "Heure d'arrivée","Heure de debut","Heure de départ", "Status"])
+        
+        # Write data rows
+        for visit in visits:
+            writer.writerow([visit.date, visit.host.username, visit.guest, visit.tel, visit.sex, visit.context, visit.arrived_at, visit.accepted_at, visit.departed_at, visit.status])
+        
+        return response
+
+    # For regular view rendering, paginate and return context
+    objects = paginate_objects(req, visits)
+    context = {'objects': objects}
+    return render(req, 'base/partials/visits_table.html', context)
+
+def appointments_table(req):
+    user = req.user
+    appointments = Appointment.objects.all().order_by('-date', '-time')
+    objects = paginate_objects(req, appointments)
+    context = {'objects': objects}
+    return render(req, 'base/partials/appointments_table.html', context)
+    # return render(req, 'base/reports.html', context)
+
+def filter_appointments_table(req):
+    user = req.user
+    host_query = req.POST.get('host')
+    status_query = req.POST.get('status')
+    sex_query = req.POST.get('sex')
+    min_date_query = req.POST.get('min_date')
+    max_date_query = req.POST.get('max_date')
+    
+    # Construct the base query
+    base_query = Appointment.objects.all().order_by('-date', '-time')
+
+    # Apply filters based on parameters
+    if user.role.sec_level >= 4:
+        if host_query:
+            base_query = base_query.filter(host__username__icontains=host_query)
+    else:
+        base_query = base_query.filter(host=user)
+
+    if status_query:
+        base_query = base_query.filter(status__id=status_query)
+    if sex_query:
+        base_query = base_query.filter(sex=sex_query)
+    if min_date_query:
+        base_query = base_query.filter(date__gte=min_date_query)
+    if max_date_query:
+        base_query = base_query.filter(date__lte=max_date_query)
+
+    appointments = base_query
+    objects = paginate_objects(req, appointments)
+    context = {'objects': objects}
+    return render(req, 'base/partials/appointments_table.html', context)
+
+def generate_visit_badge(req, pk):
+    curr_obj = get_object_or_404(Visit, id=pk)
+    # Create QR code as before
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f'{curr_obj.guest}#{curr_obj.host}@{datetime.now()}')
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # Convert image to base64 encoding
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+    context= {
+        'qr_code_base64': qr_code_base64,
+        'curr_obj':curr_obj
+        }
+    
+    return render(req, 'base/partials/visit_badge.html',context)
+
+def sign_visit(req, pk):
+    if req.method == 'POST':
+        print("Received POST request to sign_visit")
+        print("Request FILES:", req.FILES)  # Print request.FILES to inspect its contents
+        if 'image' in req.FILES:
+            curr_obj = Visit.objects.get(id=pk)  # Assuming you have a Visit model
+            image_file = req.FILES['image']
+            print("Received image file:", image_file.name)  # Print the name of the received file
+            curr_obj.signature = image_file  # Assuming you have a signature field in your Visit model
+            curr_obj.save()
+            return JsonResponse({'success': True})
+        else:
+            print("No 'image' field found in request.FILES")
+            return JsonResponse({'success': False, 'error': 'Missing image data'})
+    else:
+        print("Invalid request method")
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+ 
+def generate_appointment_badge(req, pk):
+    curr_obj = get_object_or_404(Appointment, id=pk)
+    # Create QR code as before
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f'{curr_obj.guest}#{curr_obj.host}@{datetime.now()}')
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # Convert image to base64 encoding
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+    context= {
+        'qr_code_base64': qr_code_base64,
+        'curr_obj':curr_obj
+        }
+    
+    return render(req, 'base/partials/appointment_badge.html',context)
+
+def sign_appointment(req, pk):
+    if req.method == 'POST':
+        print("Received POST request to sign_visit")
+        print("Request FILES:", req.FILES)  # Print request.FILES to inspect its contents
+        if 'image' in req.FILES:
+            curr_obj = Appointment.objects.get(id=pk)  # Assuming you have a Visit model
+            image_file = req.FILES['image']
+            print("Received image file:", image_file.name)  # Print the name of the received file
+            curr_obj.signature = image_file  # Assuming you have a signature field in your Visit model
+            curr_obj.save()
+            return JsonResponse({'success': True})
+        else:
+            print("No 'image' field found in request.FILES")
+            return JsonResponse({'success': False, 'error': 'Missing image data'})
+    else:
+        print("Invalid request method")
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})

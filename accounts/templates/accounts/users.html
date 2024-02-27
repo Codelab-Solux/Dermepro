@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="pb-4 flex flex-col md:flex-row gap-2">
+<div class="pb-4 flex flex-col gap-3">
   {% if user.role.sec_level >= 4 %}
   <button
     hx-target="#basic_dialog"
@@ -12,64 +12,70 @@
   </button>
   {% endif %}
   <!--------------------------------------- filter form --------------------------------------->
-  <!-- hx-post="{% url 'filter_users' %}"
-    hx-target="#user_list" -->
   <form
-    action=""
-    class="p-1 w-full mt-10 sm:mt-0 sm:max-w-[80%] md:w-fi md:max-w-80 bg-purple-950 rounded-lg flex items-center gap-1 text-sm xl:text-sm"
+    hx-post="{% url 'filter_users' %}"
+    hx-target=".filtered_users"
+    class="p-1 w-full bg-purple-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
   >
     {% csrf_token %}
     <!--  -->
-    {% if user.role.sec_level >= 4 %}
-    <!-- <select
-        name="query"
-        class="hidden lg:inline px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+    <div class="w-full flex justify-between items-center gap-1">
+      {% if user.role.sec_level >= 5 %}
+      <!-- user types -->
+      <select
+        name="user_type"
+        class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Hôte</option>
-        {% for obj in hosts %}
-        <option value="{{obj.username}}">@{{obj.username}}</option>
+        <option value="" selected>Type d'utilisateur</option>
+        {% for obj in user_roles %}
+        <option value="{{obj.id}}">{{obj.name}}</option>
         {% endfor %}
-      </select> -->
-    {% endif %}
-    <input
-      hx-post="{% url 'filter_users' %}"
-      hx-target=".filtered_users"
-      hx-trigger="keyup changed delay:500ms"
-      placeholder="Nom/prenoms de l'utilisateur"
-      name="query"
-      type="text"
-      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full md:w-fi md:max-w-80"
-    />
-    <!-- statuses -->
-    <!-- <select
-        name="query"
-        class="px-3 py-1 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      </select>
+      {% endif %}
+      <input
+        hx-post="{% url 'filter_users' %}"
+        hx-target=".filtered_users"
+        hx-trigger="keyup changed delay:500ms"
+        placeholder="Nom/prenoms de l'utilisateur"
+        name="name_or_email"
+        type="text"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+      />
+      <!-- phaone -->
+      <!-- <input
+        placeholder="Telephone de l'utilisateur"
+        name="user_phone"
+        type="text"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit max-w-[200px] border"
+      /> -->
+      <!-- sex -->
+      <select
+        name="user_sex"
+        class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
-        <option value="" selected>Status de user</option>
-        {% for obj in statuses %}
-        <option value="{{obj.title}}">{{obj.title}}</option>
+        <option value="" selected>Sexe de l'utilisateur</option>
+        <option value="female">Feminin</option>
+        <option value="male">Masculin</option>
+      </select>
+      <!-- user statuses -->
+      <select
+        name="user_status"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      >
+        <option value="" selected>Status de l'utilisateur</option>
+        {% for obj in user_statuses %}
+        <option value="{{obj.id}}">{{obj.title}}</option>
         {% endfor %}
-      </select> -->
-    <!-- user types -->
+      </select>
+    </div>
 
-    <!-- <button
-        class="px-3 py-1 bg-purple-950 text-white hover:text-amber-200 rounded-md transition duration-200 ease-in"
-        type="submit"
-      >
-        <i class="fa-solid fa-filter"></i>
-      </button> -->
+    <button
+      class="px-3 py-2 bg-purple-200 hover:bg-purple-300 hover:text-black rounded-md transition duration-200 ease-in"
+      type="submit"
+    >
+      <i class="fa-solid fa-filter"></i>
+    </button>
   </form>
-
-  <!-- {% if user.role.sec_level >= 4 %}
-  <button
-    hx-get="{% url 'create_user' %}"
-    hx-swap="outerHTML"
-    class="w-fit px-3 py-3 md:mr-28 bg-purple-950 text-xs text-white hover:text-amber-200 flex items-center rounded-lg cursor-pointer transition duration-200 ease-in"
-  >
-    <span class="hidden md:inline mr-2">Nouvel utilisateur </span>
-    <i class="fa-solid fa-plus"></i>
-  </button>
-  {% endif %} -->
 </div>
 <!--------------------------------------- filter tabs buttons --------------------------------------->
 

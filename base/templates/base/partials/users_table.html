@@ -1,0 +1,46 @@
+{% if not objects %}
+<tr
+  class="p-4 flex-col justify-center items-center text-center text-black mx-auto"
+>
+  <td colspan="8" class="text-center">
+    <i class="mt-4 fa-solid fa-folder-open text-gray-300 text-7xl"></i>
+    <p
+      class="mt-2 mb-4 px-4 py-2 w-fit bg-gray-200 rounded-lg text-sm text-center mx-auto"
+    >
+      Aucun utilisateur disponible
+    </p>
+  </td>
+</tr>
+{% else %}
+<!--  -->
+{% for obj in objects %}
+<tr
+  class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
+>
+  <td class="p-3">@{{obj.username}}</td>
+  <td class="p-3">{{obj.last_name}}</td>
+  <td class="p-3">{{obj.first_name}}</td>
+  <td class="p-3">{{obj.email}}</td>
+  <td class="p-3">{{obj.phone}}</td>
+  <td class="p-3 font-bold">{{obj.role}}</td>
+  <td class="">{% include 'accounts/components/user_status_badge.html' %}</td>
+</tr>
+{% endfor %}
+
+<!-- htmx load-more button ------------------------------------------------------------->
+{% if objects.has_next %}
+<tr id="more_users" class="load_more_visits bg-white">
+  <td colspan="8" class="text-center">
+    <button
+      hx-get="{% url 'visits_table' %}?page={{objects.next_page_number}}"
+      hx-target=".load_more_visits"
+      hx-swap="outerHTML"
+      class="w-fit mt-4 px-4 py-2 text-white bg-purple-800 hover:bg-purple-950 rounded-md transition duration-200 ease-in"
+    >
+      Voir plus
+    </button>
+  </td>
+</tr>
+{% endif %}
+<!--  -->
+{% endif %}

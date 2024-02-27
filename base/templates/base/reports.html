@@ -1,0 +1,142 @@
+{% extends 'main.html' %} {% load static %}
+
+<!--  -->
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+<div class="mt-14 grid gap-8">
+  <!----------------------------------------- users ----------------------------------------->
+  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-700 rounded-xl">
+    <div class="flex justify-between items-center">
+      <h3 class="text-black text-xl font-bold">Rapport des utilisateurs</h3>
+      {% if user.role.sec_level >= 5 %}
+      <button
+        id="export_users"
+        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
+      >
+        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+        <span class="hidden lg:inline font-base">
+          Extraire en fichier excel (XLSX)
+        </span>
+      </button>
+      {% endif %}
+    </div>
+
+    <!-- users table ------------------------------------------------------------->
+    {% include 'base/partials/users_report.html' %}
+  </div>
+
+  <!----------------------------------------- visits ----------------------------------------->
+  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-700 rounded-xl">
+    <div class="flex justify-between items-center">
+      <h3 class="text-black text-xl font-bold">Rapport des visites</h3>
+      {% if user.role.sec_level >= 5 %}
+      <button
+        id="export_visits"
+        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
+      >
+        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+        <span class="hidden lg:inline font-base">
+          Extraire en fichier excel (XLSX)
+        </span>
+      </button>
+      {% endif %}
+    </div>
+    <!-- visits table ------------------------------------------------------------->
+    {% include 'base/partials/visits_report.html' %}
+  </div>
+
+  <!----------------------------------------- appointments ----------------------------------------->
+  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-300 rounded-lg">
+    <div class="flex justify-between items-center">
+      <h3 class="text-black text-xl font-bold">Rapport des rendez-vous</h3>
+      {% if user.role.sec_level >= 5 %}
+      <button
+        id="export_appointments"
+        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
+      >
+        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+        <span class="hidden lg:inline font-base">
+          Extraire en fichier excel (XLSX)
+        </span>
+      </button>
+      {% endif %}
+    </div>
+    <!-- appointments table ------------------------------------------------------------->
+    {% include 'base/partials/appointments_report.html' %}
+  </div>
+</div>
+
+<script>
+  // ----------------------------appointments exporter-------------------------------
+  document
+    .getElementById("export_visits")
+    .addEventListener("click", function () {
+      // Hide the "more_visits" row
+      const moreUsers = document.getElementById("more_visits");
+      if (moreUsers) {
+        moreUsers.style.display = "none";
+      }
+      // Create a new Excel workbook
+      const wb = XLSX.utils.book_new();
+
+      // Create a new worksheet
+      const ws = XLSX.utils.table_to_sheet(
+        document.getElementById("visits_table")
+      );
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Filtered Visits");
+
+      // Save the workbook as an Excel file
+      XLSX.writeFile(wb, "filtered_visits.xlsx");
+    });
+
+  // ----------------------------appointments exporter-------------------------------
+
+  document
+    .getElementById("export_appointments")
+    .addEventListener("click", function () {
+      // Hide the "more_visits" row
+      const moreAppointments = document.getElementById("more_appointments");
+      if (moreAppointments) {
+        moreAppointments.style.display = "none";
+      }
+      // Create a new Excel workbook
+      const wb = XLSX.utils.book_new();
+
+      // Create a new worksheet
+      const ws = XLSX.utils.table_to_sheet(
+        document.getElementById("appointments_table")
+      );
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Filtered Appointment");
+
+      // Save the workbook as an Excel file
+      XLSX.writeFile(wb, "filtered_appointments.xlsx");
+    });
+
+  // ----------------------------users exporter-------------------------------
+  document
+    .getElementById("export_users")
+    .addEventListener("click", function () {
+      // Hide the "more_visits" row
+      const moreUsers = document.getElementById("more_users");
+      if (moreUsers) {
+        moreUsers.style.display = "none";
+      }
+      // Create a new Excel workbook
+      const wb = XLSX.utils.book_new();
+
+      // Create a new worksheet
+      const ws = XLSX.utils.table_to_sheet(
+        document.getElementById("users_table")
+      );
+
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Filtered Users");
+
+      // Save the workbook as an Excel file
+      XLSX.writeFile(wb, "filtered_users.xlsx");
+    });
+</script>
+{% endblock %}
