@@ -14,7 +14,7 @@
       name="role"
       class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
     >
-      <option value="" selected>Rôle d'utilisateur</option>
+      <option value="" selected disabled>Rôle d'utilisateur</option>
       {% for obj in roles %}
       <option value="{{obj.id}}">{{obj.name}}</option>
       {% endfor %}
@@ -39,7 +39,7 @@
       name="status"
       class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
     >
-      <option value="" selected>Status</option>
+      <option value="" selected disabled>Status</option>
       {% for obj in user_statuses %}
       <option value="{{obj.id}}">{{obj.title}}</option>
       {% endfor %}
@@ -49,7 +49,7 @@
       name="sex"
       class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
     >
-      <option value="" selected>Sexe</option>
+      <option value="" selected disabled>Sexe</option>
       <option value="female">Feminin</option>
       <option value="male">Masculin</option>
     </select>

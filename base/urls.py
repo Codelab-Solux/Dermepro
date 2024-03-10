@@ -7,7 +7,7 @@ register_converter(HashIdConverter, "hashid")
 urlpatterns = [
     path('', home, name='home'),
     path('notifications/', notifications, name='notifications'),
-    path('notifications/<hashid:pk>/read',
+    path('notifications/<hashid:pk>/read/',
          read_notification, name='read_notification'),
     # -------------------------------------------------------------------------------
     path('visits/', visits, name='visits'),
@@ -15,30 +15,37 @@ urlpatterns = [
     path('visits/list/', visit_list, name='visit_list'),
     path('visits/filter/', filter_visits, name='filter_visits'),
     path('visits/<hashid:pk>/', visit, name='visit'),
-    path('visits/<hashid:pk>/edit', edit_visit, name='edit_visit'),
-    path('visits/<hashid:pk>/delete', delete_visit, name='delete_visit'),
-    path('visits/<hashid:pk>/<hashid:kp>/edit_status', edit_visit_status, name='edit_visit_status'),
-    path('visit_csv', visit_csv, name='visit_csv'),
+    path('visits/<hashid:pk>/alt/', visit_alt, name='visit_alt'),
+    path('visits/<hashid:pk>/edit/', edit_visit, name='edit_visit'),
+    path('visits/<hashid:pk>/delete/', delete_visit, name='delete_visit'),
+    path('visits/<hashid:pk>/status/', visit_status, name='visit_status'),
+    path('visits/<hashid:pk>/<hashid:kp>/edit_status/', edit_visit_status, name='edit_visit_status'),
+    path('visits/<hashid:pk>/<int:kp>/moderate/', moderate_visit, name='moderate_visit'),
     # -------------------------------------------------------------------------------
     path('appointments/', appointments, name='appointments'),
     path('appointments/new/', create_appointment, name='create_appointment'),
     path('appointments/<hashid:pk>/', appointment, name='appointment'),
-    path('appointments/<hashid:pk>/edit', edit_appointment, name='edit_appointment'),
-    path('appointments_csv', appointments_csv, name='appointments_csv'),
-    path('delete_appointments/<hashid:pk>/',
+    path('appointments/<hashid:pk>/status/', appointment_status, name='appointment_status'),
+    path('appointment/<hashid:pk>/alt/', appointment_alt, name='appointment_alt'),
+    path('appointments/<hashid:pk>/edit/', edit_appointment, name='edit_appointment'),
+    path('appointments/<hashid:pk>/delete/',
          delete_appointment, name='delete_appointment'),
+    path('appointments/<hashid:pk>/<int:kp>/moderate/', moderate_appointment, name='moderate_appointment'),
+    # -------------------------------------------------------------------------------
     path('dashboard/', dashboard, name='dashboard'),
-    path('parameters/', parameters, name='parameters'),
-    path('parameters/roles/<hashid:pk>/', role, name='role'),
-    path('parameters/delete_role/<hashid:pk>/', delete_role, name='delete_role'),
+    path('settings/', settings, name='settings'),
+    path('settings/roles/<hashid:pk>/', role, name='role'),
+    path('settings/delete_role/<hashid:pk>/', delete_role, name='delete_role'),
     path('about/', about, name='about'),
     path('reports/', reports, name='reports'),
+    path('settings/companies/<hashid:pk>/edit/', edit_company, name='edit_company'),
 ]
 
 
 htmx_urls =[
     # appointments -----------------------------------------------------------
     path('appointments/list/', appointment_list, name='appointment_list'),
+    path('appointments/grid/', appointment_grid, name='appointment_grid'),
     path('appointments/table/', appointments_table, name='appointments_table'),
     path('appointments/table/filter/', filter_appointments_table, name='filter_appointments_table'),
     path('appointments/filter/', filter_appointments, name='filter_appointments'),
@@ -46,10 +53,10 @@ htmx_urls =[
     path('appointments/pending/', pending_appointments, name='pending_appointments'),
     path('appointments/pending/vip/', pending_vips, name='pending_vips'),
     path('appointments/pending/new/', create_appointment, name='create_appointment'),
-    path('appointments/<hashid:pk>/<hashid:kp>/edit_status', edit_appointment_status, name='edit_appointment_status'),
+    path('appointments/<hashid:pk>/<hashid:kp>/edit_status/', edit_appointment_status, name='edit_appointment_status'),
     path('appointments/<hashid:pk>/badge/', generate_appointment_badge, name='generate_appointment_badge'),
     path('appointments/<hashid:pk>/signature/', sign_appointment, name='sign_appointment'),
-    
+    path('weekly_calendar/week/<int:week>/', weekly_calendar, name='weekly_calendar'),
     # visits -----------------------------------------------------------
     # path('visits/add/', add_visit, name='add_visit'),
     path('visits/table/', visits_table, name='visits_table'),

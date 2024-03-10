@@ -6,7 +6,7 @@
     id="statusChanger"
     aria-expanded="false"
     aria-haspopup="true"
-    onclick="toggleVisitStatusDropdown(this,'{{obj.id}}')"
+    onclick="toggleVisitStatusDropdown(this,'{{curr_obj.id}}')"
   >
     <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
   </button>
@@ -17,11 +17,11 @@
     aria-orientation="vertical"
     aria-labelledby="status-menu-button"
     tabindex="-1"
-    id="statusMenu{{obj.id}}"
+    id="statusMenu{{curr_obj.id}}"
   >
     <button
-      hx-post="{% url 'edit_visit_status' obj.id 1  %}"
-      hx-target=".obj_status{{obj.id}}, .visit_details"
+      hx-post="{% url 'edit_visit_status' curr_obj.id 1  %}"
+      hx-target=".obj_status{{curr_obj.id}}"
       hx-swapp="innerHTML"
       class="p-2 flex items-center hover:text-black hover:bg-purple-200 rounded-md w-full text-center"
     >
@@ -29,8 +29,8 @@
       Mettre en attente
     </button>
     <button
-      hx-post="{% url 'edit_visit_status' obj.id 2 %}"
-      hx-target=".obj_status{{obj.id}}, .visit_details"
+      hx-post="{% url 'edit_visit_status' curr_obj.id 2 %}"
+      hx-target=".obj_status{{curr_obj.id}}"
       hx-swapp="innerHTML"
       class="p-2 flex items-center hover:text-black hover:bg-amber-200 rounded-md w-full text-center"
     >
@@ -38,8 +38,8 @@
       Mettre en cours
     </button>
     <button
-      hx-post="{% url 'edit_visit_status' obj.id 3 %}"
-      hx-target=".obj_status{{obj.id}}, .visit_details"
+      hx-post="{% url 'edit_visit_status' curr_obj.id 3 %}"
+      hx-target=".obj_status{{curr_obj.id}}"
       hx-swapp="innerHTML"
       class="p-2 flex items-center hover:text-black hover:bg-green-200 rounded-md w-full text-center"
     >
@@ -47,8 +47,8 @@
       Terminer
     </button>
     <button
-      hx-post="{% url 'edit_visit_status' obj.id 4 %}"
-      hx-target=".obj_status{{obj.id}}, .visit_details"
+      hx-post="{% url 'edit_visit_status' curr_obj.id 4 %}"
+      hx-target=".obj_status{{curr_obj.id}}"
       hx-swapp="innerHTML"
       class="p-2 flex items-center hover:text-black hover:bg-sky-200 rounded-md w-full text-center"
     >
@@ -56,8 +56,8 @@
       Reporter
     </button>
     <button
-      hx-post="{% url 'edit_visit_status' obj.id 5 %}"
-      hx-target=".obj_status{{obj.id}}, .visit_details"
+      hx-post="{% url 'edit_visit_status' curr_obj.id 5 %}"
+      hx-target=".obj_status{{curr_obj.id}}"
       hx-swapp="innerHTML"
       class="p-2 flex items-center hover:text-black hover:bg-red-200 rounded-md w-full text-center"
     >
@@ -67,8 +67,8 @@
   </div>
 </div>
 <script>
-  function toggleVisitStatusDropdown(e, obj_id) {
-    activeMenu = document.getElementById(`statusMenu${obj_id}`);
+  function toggleVisitStatusDropdown(e, curr_obj_id) {
+    activeMenu = document.getElementById(`statusMenu${curr_obj_id}`);
     e.name === `statusChanger`
       ? ((e.name = "close"), activeMenu.classList.remove("hidden"))
       : ((e.name = `statusChanger`), activeMenu.classList.add("hidden"));

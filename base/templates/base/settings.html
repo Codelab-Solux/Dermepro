@@ -1,0 +1,159 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+
+<div
+  class="p-6 bg-gray-50 border rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
+>
+  <article class="w-5/7">
+    <h1 class="text-black text-3xl lg:text-7xl font-bold">Parametrage</h1>
+    <p class="mt-4">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem rem
+      molestias inventore placeat quod voluptate beatae repudiandae delectus
+      aperiam molestiae vero incidunt facere, voluptatem facilis.
+    </p>
+  </article>
+  <img
+    class="h-60 object-cover"
+    src="{% static 'imgs/params.png' %}"
+    alt="welcome image"
+  />
+</div>
+<!--------------------------------------- menu tabs buttons --------------------------------------->
+<div
+  class="my-4 tabbar w-full p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-md"
+>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'company')"
+    id="defaultTab"
+  >
+    <i class="fa-solid fa-building-columns"></i>
+    <span class="hidden lg:inline lg:ml-2">Compagnie</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'roles')"
+  >
+    <i class="fa-solid fa-shield"></i>
+    <span class="hidden lg:inline lg:ml-2">Rôles</span>
+  </button>
+</div>
+
+<!-- company info -->
+<section
+  id="company"
+  class="tabcontent relative my-8 border border p-4 rounded-md"
+>
+  <!-- admin actions -->
+  {% if user.role.sec_level >= 4 %}
+
+  <button
+    onclick="hide_dialogs()"
+    hx-target="#basic_dialog"
+    hx-get="{% url 'edit_company' curr_comp.id %}"
+    class="absolute right-4 px-2 py-1 hover:bg-purple-300 rounded-md hover:text-black"
+  >
+    <i class="fa-solid fa-pen-to-square"></i>
+  </button>
+
+  {% endif %}
+  <h3 class="mb-4 text-black text-5xl font-bold">{{curr_comp.name}}</h3>
+  <div class="grid lg:grid-cols-2">
+    <div class="flex flex-col gap-4">
+      <p class="text-black italic">
+        <i class="fa-solid fa-quote-left text-purple-700"></i>
+        {{curr_comp.slogan}}
+        <i class="fa-solid fa-quote-right text-purple-700"></i>
+      </p>
+      <p class="text-black">
+        <i class="fa-solid fa-copyright text-purple-700 mr-2"></i>
+        {{curr_comp.company_type}}
+      </p>
+      <p class="text-black">
+        <i class="fa-solid fa-phone text-purple-700 mr-2"></i>
+        {{curr_comp.phone}}
+      </p>
+      <p class="text-black">
+        <i class="fa-solid fa-envelope text-purple-700 mr-2"></i>
+        {{curr_comp.email}}
+      </p>
+      <article class="flex flex-col gap-1">
+        <span class="text-lg text-black font-bold">Description</span>
+        <p class="shortened">{{curr_comp.description|truncatechars:1000}}</p>
+        <p class="lengthened hidden">{{curr_comp.description}}</p>
+        <button
+          id="load_more"
+          class="px-4 py-2 w-fit mx-auto bg-purple-700 hover:bg-purple-950 text-white rounded-md"
+        >
+          <span class="hidden lg:inline lg:ml-2">Lire plus</span>
+        </button>
+        <button
+          id="load_less"
+          class="hidden px-4 py-2 w-fit mx-auto bg-purple-700 hover:bg-purple-950 text-white rounded-md"
+        >
+          <span class="hidden lg:inline lg:ml-2">Lire moins</span>
+        </button>
+      </article>
+    </div>
+    <img
+      class="w-full object-cover"
+      src="{% static 'imgs/company.png' %}"
+      alt="welcome image"
+    />
+  </div>
+</section>
+
+<!-- user roles params -->
+<section id="roles" class="tabcontent hidden my-8 border border p-4 rounded-md">
+  <div class="w-full">
+    {% if not user_roles %}
+    <h3 class="mb-2 bg-gray-100 p-4 rounded-md text-center mx-auto">
+      Aucun rôle enregistré
+    </h3>
+    {% else %}
+    <h3 class="mb-4 text-black text-lg font-bold">Rôles des utilisateurs</h3>
+    <div class="flex gap-4">
+      <img
+        class="h-60 object-cover"
+        src="{% static 'imgs/admin.png' %}"
+        alt="welcome image"
+      />
+      <div class="w-full mb-4 grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {% for obj in user_roles %}
+        <div
+          class="relative grid p-4 h-100 border group hover:border-purple-700 hover:shadow-md rounded-md transition duration-200 ease-in"
+        >
+          <i
+            class="absolute top-4 right-4 fa-solid fa-shield text-md text-gray-300 group-hover:text-purple-700 transition duration-200 ease-in"
+          ></i>
+          <p>
+            Rôle |
+            <span
+              class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
+              >{{obj.name}}</span
+            >
+          </p>
+          <p>
+            Niveau de securité |
+            <span
+              class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
+              >{{obj.sec_level}}</span
+            >
+          </p>
+          <p>Description | {{obj.description}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<script>
+  $(document).ready(function () {
+    $("#load_more").click(function () {
+      $(this).prev(".shortened").hide();
+      $(this).prev(".lengthened").show();
+      $(this).hide(); // Hide the 'Load More' button after clicking
+    });
+  });
+</script>
+{% endblock %}

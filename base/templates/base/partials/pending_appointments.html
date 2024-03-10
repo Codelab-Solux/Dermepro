@@ -11,12 +11,16 @@
 <div class="mb-4 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
   {% for obj in appointments %}
   <div
-    hx-get="{% url 'appointment' obj.id %}"
+    hx-get="{% url 'appointment_alt' obj.id %}"
     hx-target="#appointment_dialog"
     class="p-4 h-full border hover:bg-white hover:shadow-md rounded-md text-sm"
   >
-    <h3 class="font-bold text-black">{{obj.guest}}</h3>
-    <!-- <small class="">{{obj.date}}</small> -->
+    <h3 class="font-bold text-black">
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name}}
+    </h3>
+    <small class="">{{obj.date}}</small>
     <h3 class="">{{obj.time}}</h3>
   </div>
   {% endfor %}

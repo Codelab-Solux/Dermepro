@@ -1,7 +1,5 @@
-const sender_id = JSON.parse(document.getElementById("sender-id").textContent);
-const receiver_id = JSON.parse(
-  document.getElementById("receiver-id").textContent
-);
+var sender_id = JSON.parse(document.getElementById("curr_user").textContent);
+var receiver_id = JSON.parse(document.getElementById("other_user").textContent);
 
 // let loc = window.location;
 
@@ -13,25 +11,26 @@ const receiver_id = JSON.parse(
 
 // let endpoint = wsStart + loc.host + loc.pathname;
 
-// var socket = new WebSocket(endpoint);
-var socket = new WebSocket(
-  `ws://${window.location.host}/chats/${receiver_id}/`
+// var chatSocket = new WebSocket(endpoint);
+var chatSocket = new WebSocket(
+  `ws://${window.location.host}/chats/threads/${receiver_id}/`
 );
 
-let chat_form = $("#chat-form");
+let chat_form = $(`#chat_form`);
 let chat_input = $("#chat-input");
-const chat_body = $("#chat-box");
+var chat_body = $("#chat-box");
 
-socket.onopen = function (e) {
-  console.log(
-    `Connection to user-${receiver_id} opened by user-${sender_id}`,
-    e
-  );
+chatSocket.onopen = function (e) {
+  alert(e);
+  // console.log(
+  //   `Connection to user-${receiver_id} opened by user-${sender_id}`,
+  //   e
+  // );
 
   // chat_body.append(`<div> Textons nous vivant </div>`);
 };
 
-socket.onmessage = function (e) {
+chatSocket.onmessage = function (e) {
   let chat_div;
   var currentdate = new Date();
   let time = currentdate.getHours() + ":" + currentdate.getMinutes();
@@ -66,11 +65,11 @@ socket.onmessage = function (e) {
   );
 };
 
-socket.onerror = function (e) {
+chatSocket.onerror = function (e) {
   console.log("Connection error", e);
 };
 
-socket.onclose = function (e) {
+chatSocket.onclose = function (e) {
   console.log("Connection closed", e);
 };
 
@@ -83,7 +82,7 @@ chat_form.on("submit", function (e) {
     sender: sender_id,
   });
 
-  socket.send(data);
+  chatSocket.send(data);
   $(this)[0].reset();
 });
 

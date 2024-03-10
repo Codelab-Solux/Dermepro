@@ -35,7 +35,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="{% static 'main.js' %}" defer="true"></script>
-    <script src="{% static 'chats.js' %}" defer="true"></script>
     <!-- <script src="{% static 'notifications.js' %}" defer="true"></script> -->
     <link href="{% static 'styles.css' %}" rel="stylesheet" />
     <style>
@@ -50,20 +49,19 @@
     ws-connect="/ws/notifications/"
     hx-boost="true"
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    class="flex flex-row bg-white text-gray-700 max-w-full mx-auto"
+    class="flex flex-row bg-white text-gray-700 max-w-full mx-auto my-0"
   >
-    {% if user.is_authenticated %}
-    <input id="curr_user" type="hidden" value="{{user.id}}" />
-    {% endif %}
-    <!--  -->
     {% include 'sidebar.html' %}
-    <div
-      class="w-full ml-[60px] md:ml-[80px] lg:ml-[200px] xl:ml-[300px] bg-white"
-    >
+    <div class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] bg-white">
       <div
-        class="relative p-4 md:p-6 lg:p-8 w-full max-w-[1350px] mx-auto min-h-screen"
+        class="relative p-4 md:p-6 lg:p-8 pt- w-full max-w-[1350px] mx-auto min-h-screen"
       >
-        {% include 'base/components/badges.html' %}
+        <div
+          class="mb-2 w-full"
+          hx-get="{% url 'badge' %}"
+          hx-trigger="load, db_changed from:body"
+          hx-target="this"
+        ></div>
         <!--  -->
         {% block content %} {% endblock %}
       </div>
@@ -75,6 +73,16 @@
   <script>
     htmx.onLoad(function (content) {
       scripts.init(content);
+    });
+
+    $(document).ready(function () {
+      // Add a placeholder option to the select element
+      $("#sex_selector").prepend(
+        '<option value="" disabled selected>Choisir sexe</option>'
+      );
+      $("#host_selector").prepend(
+        '<option value="" disabled selected>Choisir hôte</option>'
+      );
     });
   </script>
 </html>

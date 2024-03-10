@@ -1,6 +1,6 @@
 <div id="toPrint">
   <div
-    class="w-full mx-auto p-4 flex flex-col gap-4 bg-gray-50 border-2 border-amber-400 rounded-lg"
+    class="w-full mx-auto p-4 flex flex-col gap-4 bg-gray-50 border-2 border-purple-400 rounded-lg"
   >
     <!-- QR code -->
     <img
@@ -12,13 +12,15 @@
     <div class="grid gap-2 w-full">
       <h3 class="text-xl font-bold text-black">
         <i class="fa-solid fa-user mr-2"></i>
-        {{ curr_obj.civility }} {{ curr_obj.guest }}
+        {% if curr_obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+        <!--  -->
+        {{curr_obj.last_name}} {{curr_obj.first_name}}
       </h3>
       <p>
         <i class="fa-solid fa-user-tie mr-2 text-sm"></i>
         Hôte : {{ curr_obj.host.last_name }} {{ curr_obj.host.first_name }}
-        <small class="text-amber-500 italic mr-4"
-          >(@{{ curr_obj.host.username }})</small
+        <small class="text-purple-500 ml-2"
+          >_@{{ curr_obj.host.username }}</small
         >
       </p>
       <p>
@@ -26,19 +28,19 @@
         <!--  -->
         Valide jusqu'au : {{ curr_obj.date }}
       </p>
-      <hr class="mx-6 my-1" />
+      <!-- <hr class="mx-6 my-1" />
       <small class="italic font-light text-xs text-gray-400"
         >NB: Ce badge est une propriété privée de la compagnie qui vous la
         fourni, veuillez le déposer à la réception avant de partir,
         merci.</small
-      >
+      > -->
     </div>
   </div>
 </div>
 
 <button
   onclick="printDiv('toPrint')"
-  class="px-4 py-2 bg-gray-400 hover:bg-amber-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
+  class="px-4 py-2 bg-gray-400 hover:bg-purple-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
 >
   Imprimer le badge
 </button>

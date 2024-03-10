@@ -1,7 +1,7 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div
-  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-50 border rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-5/7">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">
@@ -20,8 +20,44 @@
     alt="welcome image"
   />
 </div>
+
+<!--------------------------------------- menu tabs buttons --------------------------------------->
+<div
+  class="my-4 tabbar w-full p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-md"
+>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'functions')"
+    id="defaultTab"
+  >
+    <i class="fa-solid fa-cog"></i>
+    <span class="hidden lg:inline lg:ml-2">Fonctionnalités</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'support')"
+  >
+    <i class="fa-solid fa-headset"></i>
+    <span class="hidden lg:inline lg:ml-2">Support</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'ccm')"
+  >
+    <i class="fa-solid fa-toolbox"></i>
+    <span class="hidden lg:inline lg:ml-2">Comment ça marche</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'faq')"
+  >
+    <i class="fa-solid fa-question"></i>
+    <span class="hidden lg:inline lg:ml-2">Foire Aux Question</span>
+  </button>
+</div>
+
 <!-- functionalities -->
-<article class="my-8 w-4/7 p-8 mx-auto border-2 rounded-lg">
+<article id="functions" class="tabcontent w-4/7 p-8 mx-auto border rounded-lg">
   <h2 class="text-black text-3xl font-bold">
     Les fonctionnalités de l'application
   </h2>
@@ -86,7 +122,8 @@
 </article>
 <!-- Support -->
 <article
-  class="my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border-2 rounded-lg"
+  id="support"
+  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
   <div>
     <h2 class="text-black text-3xl font-bold">Support</h2>
@@ -127,21 +164,12 @@
       les plus brefs délais.
     </p>
   </div>
-  <img
-    class="h-80 object-cover"
-    src="{% static 'imgs/support.png' %}"
-    alt="welcome image"
-  />
 </article>
 <!-- how it works section -->
 <article
-  class="my-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto bg-gray-100 rounded-lg"
+  id="ccm"
+  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
-  <img
-    class="h-80 object-cover"
-    src="{% static 'imgs/present.png' %}"
-    alt="welcome image"
-  />
   <div>
     <h2 class="mt-4 text-black text-3xl font-bold">Comment ça marche (CCM)</h2>
 
@@ -237,13 +265,9 @@
 </article>
 <!-- FAQ section -->
 <article
-  class="mt-8 w-4/7 p-8 flex flex-col lg:flex-row mx-auto border-2 rounded-lg"
+  id="faq"
+  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
-  <img
-    class="h-80 object-cover"
-    src="{% static 'imgs/faq.png' %}"
-    alt="welcome image"
-  />
   <div>
     <h2 class="mt-4 text-black text-3xl font-bold">Foire Aux Question (FAQ)</h2>
 

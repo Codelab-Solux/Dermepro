@@ -18,12 +18,14 @@
   class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
 >
   <td class="p-3">{{obj.date}}</td>
-  <td class="p-3">{{obj.host.username}}</td>
-  <td class="p-3">{{obj.guest}}</td>
-  <td class="p-3">{{obj.tel}}</td>
-  <td class="p-3">{{obj.arrived_at}}</td>
-  <td class="p-3">{{obj.accepted_at}}</td>
-  <td class="p-3">{{obj.departed_at}}</td>
+  <td class="p-3">{{obj.time}}</td>
+  <td class="p-3">{{obj.host.last_name}} {{obj.host.first_name}}</td>
+  <td class="p-3">{{obj.last_name}}</td>
+  <td class="p-3">{{obj.first_name}}</td>
+  <td class="p-3">{{obj.phone}}</td>
+  <!-- <td class="p-3">{{obj.email}}</td> -->
+  <td class="p-3">{{obj.started_at}}</td>
+  <td class="p-3">{{obj.ended_at}}</td>
   <td class="">{% include 'base/components/status_badge.html' %}</td>
 </tr>
 {% endfor %}

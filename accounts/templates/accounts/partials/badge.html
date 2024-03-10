@@ -1,0 +1,18 @@
+{% if user.is_authenticated %}
+<input id="active_user_id" type="hidden" value="{{user.id}}" />
+{% endif %}
+<div
+  class="fixed absolute top-8 right-6 md:top-10 md:right-8 lg:top-12 lg:right-10 p-1 {% if user.profile.status.id == 1 %}border-green-300 bg-green-100 {% elif user.profile.status.id == 2 %}border-amber-300 bg-amber-100 {% else %} border-red-300 bg-red-100 {% endif %} rounded-md flex items-center gap-2"
+>
+  <small> {% include 'base/components/notification_badge.html' %} </small>
+
+  <small class="text-xs">
+    {% with obj=user %}
+    <!--  -->
+    {% include 'accounts/components/user_status_badge.html' %}
+    <!--  -->
+    {% endwith %}
+  </small>
+
+  <small> {% include 'accounts/components/user_status_changer.html' %} </small>
+</div>

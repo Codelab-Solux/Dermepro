@@ -1,32 +1,29 @@
 from django.db import models
 from django.urls import reverse
-from accounts.models import CustomUser
-from base.utils import h_encode, h_decode
+from accounts.models import CustomUser, Profile
+from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
+from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.contenttypes.fields import GenericForeignKey
+from base.utils import h_encode, h_decode
+from datetime import date
 # from chats.models import ChatMessage
 
-from datetime import date
-
-# Create your models here.
-civility_types = (('M.', 'Monsieur'),
-                  ('Mme.', "Madame"),
-                  ('Mlle.', "Mademoiselle"),
-                  )
 
 visit_types = (('friendly', 'Amicale'),
                ('familial', 'Familiale'),
                ('professional', "Professionelle"),)
-
-genders = (
-        ('female', "Feminin"),
-    ('male', 'Masculin'),
-        )
+genders = (('female', "Feminin"), ('male', 'Masculin'),)
 id_types = (
-    ('id_card', "Carte d'identité"),
-    ('vote_card', "Carte d'électeur"),
-    ('drv_license', "Permit de conduire"),
+    ('id_card', "Carte Nationale d'Identité (CNI)"),
+    ('consul_card', "Carte Consulaire"),
+    ('ecowas_card', "Carte CEDEAO"),
+    ('driver_license', "Permit de conduire"),
     ('passport', "Passport international"),
+)
+company_types = (
+    ('SARL', "SARL"),
+    ('SARLU', "SARLU"),
 )
 
 
@@ -45,36 +42,30 @@ class Status(models.Model):
 
 class Visit(models.Model):
     host = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    guest = models.CharField(max_length=255)
-    civility = models.CharField(max_length=50, blank=True,
-                                null=True, choices=civility_types, default='')
-    context = models.CharField(max_length=50, blank=True,
-                               null=True, choices=visit_types, default='professionelle')
-    tel = models.IntegerField(default='', null=True, blank=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    sex = models.CharField(max_length=50, choices=genders)
+    phone = models.CharField(max_length=255,blank=True, null=True)
+    observations = models.TextField(blank=True, null=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    context = models.CharField(max_length=50, choices=visit_types)
     nationality = models.CharField(
         max_length=255, default='', null=True, blank=True)
     date = models.DateField(default=date.today)
-    arrived_at = models.TimeField(blank=True, null=True)
+    arrived_at = models.TimeField(default=timezone.now)
     accepted_at = models.TimeField(blank=True, null=True)
     departed_at = models.TimeField(null=True, blank=True)
-    sex = models.CharField(max_length=50, blank=True,
-                              null=True, choices=genders, default='')
-    id_doc = models.CharField(max_length=50, blank=True,
-                              null=True, choices=id_types, default='')
-    doc_num = models.IntegerField(blank=True, null=True, default='')
+    id_document = models.CharField(max_length=50,choices=id_types)
+    id_number = models.CharField(max_length=50)
+    is_accepted = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
+    is_missed = models.BooleanField(default=False)
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
-    qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
     signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
-    # signature = models.TextField(null=True, blank=True)
 
-    # def set_signature(self, data):
-    #     self.signature = json.dumps(data)
-
-    # def get_signature(self):
-    #     return json.loads(self.signature) if self.signature else None
     
     def __str__(self):
-        return self.guest
+        return f'{self.last_name} - {self.first_name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -85,38 +76,28 @@ class Visit(models.Model):
 
 class Appointment(models.Model):
     host = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    guest = models.CharField(max_length=255)
-    civility = models.CharField(max_length=50, blank=True,
-                                null=True, choices=civility_types, default='')
-    tel = models.CharField(max_length=128, default='', null=True, blank=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255,blank=True, null=True)
+    observations = models.TextField(blank=True, null=True)
+    sex = models.CharField(max_length=50, choices=genders)
     nationality = models.CharField(
         max_length=255, default='', null=True, blank=True)
     date = models.DateField(default=date.today)
-    time = models.TimeField(null=True, blank=True)
-    arrived_at = models.TimeField(null=True, blank=True)
-    departed_at = models.TimeField(null=True, blank=True)
-    sex = models.CharField(max_length=50, blank=True,
-                              null=True, choices=genders, default='')
-    id_doc = models.CharField(max_length=50, blank=True,
-                              null=True, choices=id_types, default='')
-    doc_num = models.CharField(
-        max_length=50, blank=True, null=True, default='')
+    time = models.TimeField()
+    started_at = models.TimeField(default=timezone.now)
+    ended_at = models.TimeField(null=True, blank=True,default=timezone.now)
+    departed_at = models.TimeField(null=True, blank=True,default=timezone.now)
+    id_document = models.CharField(max_length=50, choices=id_types, null=True, blank=True)
+    id_number = models.CharField(max_length=50,null=True, blank=True)
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
-    is_vip = models.BooleanField(default=False, blank=True, null=True)
-    qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
+    is_vip = models.BooleanField(default=False)
     signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
-    # signature = models.TextField(null=True, blank=True)
 
-    # def set_signature(self, data):
-    #     self.signature = json.dumps(data)
-
-    # def get_signature(self):
-    #     return json.loads(self.signature) if self.signature else None
-    # def __str__(self):
-    #     return self.guest
 
     def __str__(self):
-        return self.guest
+        return f'{self.last_name} - {self.first_name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -131,9 +112,32 @@ class Notification(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
     is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return f'Notification for < user: {self.user.username}>'
 
     def get_hashid(self):
         return h_encode(self.id)
+
+
+class Company(models.Model):
+    manager = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    slogan = models.CharField(max_length=255)
+    company_type = models.CharField(max_length=50, choices=company_types)
+    phone = models.CharField(max_length=255,blank=True, null=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    employees = models.ManyToManyField(Profile, related_name='companies', blank=True)
+    is_verified = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f'{self.name} - {self.company_type}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('Companies', kwargs={'pk': self.pk})

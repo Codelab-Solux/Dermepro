@@ -26,7 +26,7 @@
         name="user_type"
         class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Type d'utilisateur</option>
+        <option value="" selected disabled>Type d'utilisateur</option>
         {% for obj in user_roles %}
         <option value="{{obj.id}}">{{obj.name}}</option>
         {% endfor %}
@@ -36,8 +36,17 @@
         hx-post="{% url 'filter_users' %}"
         hx-target=".filtered_users"
         hx-trigger="keyup changed delay:500ms"
-        placeholder="Nom/prenoms de l'utilisateur"
-        name="name_or_email"
+        placeholder="Nom"
+        name="last_name"
+        type="text"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+      />
+      <input
+        hx-post="{% url 'filter_users' %}"
+        hx-target=".filtered_users"
+        hx-trigger="keyup changed delay:500ms"
+        placeholder="Prénoms"
+        name="first_name"
         type="text"
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
       />
@@ -53,16 +62,16 @@
         name="user_sex"
         class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
-        <option value="" selected>Sexe de l'utilisateur</option>
-        <option value="female">Feminin</option>
+        <option value="" selected disabled>Sexe</option>
         <option value="male">Masculin</option>
+        <option value="female">Feminin</option>
       </select>
       <!-- user statuses -->
       <select
         name="user_status"
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Status de l'utilisateur</option>
+        <option value="" selected disabled>Status de disponibilité</option>
         {% for obj in user_statuses %}
         <option value="{{obj.id}}">{{obj.title}}</option>
         {% endfor %}
@@ -70,10 +79,17 @@
     </div>
 
     <button
-      class="px-3 py-2 bg-purple-200 hover:bg-purple-300 hover:text-black rounded-md transition duration-200 ease-in"
+      class="px-3 py-2 bg-purple-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
       type="submit"
     >
       <i class="fa-solid fa-filter"></i>
+    </button>
+    <button
+      class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+      hx-on:click="clearUserFilter()"
+      type="submit"
+    >
+      <i class="fa-solid fa-rotate-right"></i>
     </button>
   </form>
 </div>
@@ -113,4 +129,10 @@
   </div>
 </section>
 
+<script>
+  function clearUserFilter() {
+    var user_filter = document.getElementById("user_filter");
+    user_filter.reset();
+  }
+</script>
 {% endblock %}

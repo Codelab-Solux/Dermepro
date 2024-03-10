@@ -4,4 +4,5 @@ from .models import *
 admin.site.register(Status)
 admin.site.register(Visit)
 admin.site.register(Appointment)
+admin.site.register(Company)
 # admin.site.register(ChatNotification)

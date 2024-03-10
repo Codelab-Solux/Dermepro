@@ -5,66 +5,100 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 <div class="mt-14 grid gap-8">
-  <!----------------------------------------- users ----------------------------------------->
-  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-700 rounded-xl">
-    <div class="flex justify-between items-center">
-      <h3 class="text-black text-xl font-bold">Rapport des utilisateurs</h3>
-      {% if user.role.sec_level >= 5 %}
-      <button
-        id="export_users"
-        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
-      >
-        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-        <span class="hidden lg:inline font-base">
-          Extraire en fichier excel (XLSX)
-        </span>
-      </button>
-      {% endif %}
-    </div>
-
-    <!-- users table ------------------------------------------------------------->
-    {% include 'base/partials/users_report.html' %}
+  <!--------------------------------------- menu tabs buttons --------------------------------------->
+  <div
+    class="tabbar max-w-[500px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
+  >
+    <button
+      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+      onclick="openTab(event, 'visits')"
+      id="defaultTab"
+    >
+      <i class="fa-solid fa-user-tie"></i>
+      <span class="hidden xl:inline lg:ml-2">Visites</span>
+    </button>
+    <button
+      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+      onclick="openTab(event, 'appointments')"
+    >
+      <i class="fa-solid fa-handshake"></i>
+      <span class="hidden xl:inline lg:ml-2">Rendez-vous</span>
+    </button>
+    <button
+      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+      onclick="openTab(event, 'users')"
+    >
+      <i class="fa-solid fa-users"></i>
+      <span class="hidden xl:inline lg:ml-2">Utilisateurs</span>
+    </button>
   </div>
 
   <!----------------------------------------- visits ----------------------------------------->
-  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-700 rounded-xl">
-    <div class="flex justify-between items-center">
-      <h3 class="text-black text-xl font-bold">Rapport des visites</h3>
-      {% if user.role.sec_level >= 5 %}
-      <button
-        id="export_visits"
-        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
-      >
-        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-        <span class="hidden lg:inline font-base">
-          Extraire en fichier excel (XLSX)
-        </span>
-      </button>
-      {% endif %}
+  <section id="visits" class="tabcontent grid gap-4">
+    <div class="grid gap-2">
+      <div class="flex justify-between items-center">
+        <h3 class="text-black text-xl font-bold">Rapport des visites</h3>
+        {% if user.role.sec_level >= 5 %}
+        <button
+          id="export_visits"
+          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
+        >
+          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+          <span class="hidden lg:inline text-sm">
+            Extraire en fichier excel (XLSX)
+          </span>
+        </button>
+        {% endif %}
+      </div>
+      <!-- visits table ------------------------------------------------------------->
+      {% include 'base/partials/visits_report.html' %}
     </div>
-    <!-- visits table ------------------------------------------------------------->
-    {% include 'base/partials/visits_report.html' %}
-  </div>
+  </section>
 
   <!----------------------------------------- appointments ----------------------------------------->
-  <div class="p-4 lg:p-6 grid gap-4 border hover:border-purple-300 rounded-lg">
-    <div class="flex justify-between items-center">
-      <h3 class="text-black text-xl font-bold">Rapport des rendez-vous</h3>
-      {% if user.role.sec_level >= 5 %}
-      <button
-        id="export_appointments"
-        class="w-fit px-3 py-2 bg-purple-200 hover:text-black hover:bg-purple-300 rounded-lg transition duration-200 ease-in"
-      >
-        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-        <span class="hidden lg:inline font-base">
-          Extraire en fichier excel (XLSX)
-        </span>
-      </button>
-      {% endif %}
+  <section id="appointments" class="tabcontent hidden grid gap-4">
+    <div class="grid gap-2">
+      <div class="flex justify-between items-center">
+        <h3 class="text-black text-xl font-bold">Rapport des rendez-vous</h3>
+        {% if user.role.sec_level >= 5 %}
+        <button
+          id="export_appointments"
+          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
+        >
+          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+          <span class="hidden lg:inline text-sm">
+            Extraire en fichier excel (XLSX)
+          </span>
+        </button>
+        {% endif %}
+      </div>
+      <!-- appointments table ------------------------------------------------------------->
+      {% include 'base/partials/appointments_report.html' %}
     </div>
-    <!-- appointments table ------------------------------------------------------------->
-    {% include 'base/partials/appointments_report.html' %}
-  </div>
+  </section>
+
+  <!----------------------------------------- users ----------------------------------------->
+  <section id="users" class="tabcontent hidden grid gap-4">
+    <div class="grid gap-2">
+      <div class="flex justify-between items-center">
+        <h3 class="text-black text-xl font-bold">Rapport des utilisateurs</h3>
+        {% if user.role.sec_level >= 5 %}
+        <button
+          id="export_users"
+          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
+        >
+          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+          <span class="hidden lg:inline text-sm">
+            Extraire en fichier excel (XLSX)
+          </span>
+        </button>
+        {% endif %}
+      </div>
+
+      <!-- users table ------------------------------------------------------------->
+      {% include 'base/partials/users_report.html' %}
+    </div>
+  </section>
 </div>
 
 <script>

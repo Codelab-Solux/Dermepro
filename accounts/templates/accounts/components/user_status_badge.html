@@ -1,4 +1,25 @@
-<div class="text-black text:xs lg:text-sm" id="obj_status{{obj.id}}">
+{% if curr_profile %}
+<div class="text-black text:xs" id="obj_status{{obj.id}}">
+  {% if curr_profile.status.id == 1 %}
+  <span class="px-3 py-1 bg-green-200 rounded-md">
+    <i class="text-sm fa-solid fa-door-open mr-2"></i>
+    Disponible
+  </span>
+  {% elif curr_profile.status.id == 2 %}
+  <span class="px-3 py-1 bg-amber-200 rounded-md">
+    <i class="text-sm fa-solid fa-hourglass-half mr-2"></i>
+    En reunion
+  </span>
+  {% else %}
+  <span class="px-3 py-1 bg-red-200 rounded-md">
+    <i class="text-sm fa-solid fa-door-closed mr-2"></i>
+    Indisponible
+  </span>
+  {% endif %}
+</div>
+{% else %}
+
+<div class="text-black text:xs" id="obj_status{{obj.id}}">
   {% if obj.profile.status.id == 1 %}
   <span class="px-3 py-1 bg-green-200 rounded-md">
     <i class="text-sm fa-solid fa-door-open mr-2"></i>
@@ -16,3 +37,4 @@
   </span>
   {% endif %}
 </div>
+{% endif %}

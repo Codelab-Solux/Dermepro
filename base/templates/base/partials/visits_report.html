@@ -30,7 +30,7 @@
       name="host"
       class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
     >
-      <option value="" selected>Hôte</option>
+      <option value="" selected disabled>Hôte</option>
       {% for obj in hosts %}
       <option value="{{obj.username}}">@{{obj.username}}</option>
       {% endfor %}
@@ -42,7 +42,7 @@
       name="status"
       class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
     >
-      <option value="" selected>Status</option>
+      <option value="" selected disabled>Status</option>
       {% for obj in statuses %}
       <option value="{{obj.id}}">{{obj.title}}</option>
       {% endfor %}
@@ -53,7 +53,7 @@
       name="type"
       class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
     >
-      <option value="" selected>Type de visite</option>
+      <option value="" selected disabled>Type de visite</option>
       <option value="familial">Amicale</option>
       <option value="friendly">Familiale</option>
       <option value="professional">Professionelle</option>
@@ -64,7 +64,7 @@
       name="sex"
       class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
     >
-      <option value="" selected>Sexe</option>
+      <option value="" selected disabled>Sexe</option>
       <option value="female">Feminin</option>
       <option value="male">Masculin</option>
     </select>
@@ -92,11 +92,12 @@
       <tr>
         <th class="p-4 text-sm">Dates</th>
         <th class="p-4 text-sm">Hôtes</th>
-        <th class="p-4 text-sm">Visiteurs</th>
+        <th class="p-4 text-sm">Nom</th>
+        <th class="p-4 text-sm">Prénoms</th>
         <th class="p-4 text-sm">Télephones</th>
-        <th class="p-4 text-sm">Heures d'arrivée</th>
-        <th class="p-4 text-sm">Heures de debut</th>
-        <th class="p-4 text-sm">Heures de départ</th>
+        <th class="p-4 text-sm">Arrivé</th>
+        <th class="p-4 text-sm">Accepté</th>
+        <th class="p-4 text-sm">Parti</th>
         <th class="p-4 text-sm">Status</th>
       </tr>
     </thead>

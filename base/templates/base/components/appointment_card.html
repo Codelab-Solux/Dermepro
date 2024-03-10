@@ -2,10 +2,7 @@
 <!--  -->
 
 <div
-  hx-get="{% url 'appointment' obj.id %}"
-  hx-target=".appointment_details"
-  hx-swap="innerHTML"
-  class="cursor-pointer hidden relative md:flex flex-col border bg-white focus:border-amber-300 hover:border-amber-300 hover:shadow-md w-full rounded-lg group transition duration-300 ease-in-out"
+  class="cursor-pointer hidden relative md:flex flex-col border bg-gray-50 hover:bg-white focus:border-purple-400 hover:border-purple-400 hover:shadow-md w-full rounded-lg group transition duration-300 ease-in-out"
 >
   <!-- admin functions update + delete -->
   {% if user.role.sec_level >= 4 %}
@@ -20,24 +17,26 @@
     </button>
     <button
       hx-confirm="Voulez vous vraiment supprimer ceci?"
-      class="px-2 py-1 hover:bg-red-300 border-b rounded-tr-lg hover:text-black"
       hx-delete="{% url 'delete_appointment' obj.id %}"
+      class="px-2 py-1 hover:bg-red-300 border-b rounded-tr-md hover:text-black"
     >
       <i class="fa-solid fa-trash"></i>
     </button>
   </div>
   {% endif %}
 
-  <!-- appointment status indicator -->
-  <div class="absolute bottom-2 right-1 text-xs">
-    {% include 'base/components/status_badge.html' %}
-  </div>
-
   <!-- card info -->
 
-  <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
+  <article
+    hx-get="{% url 'appointment' obj.id %}"
+    hx-target="#appointment_dialog"
+    hx-swap="innerHTML"
+    class="p-4 md:text-sm lg:text-md text-left flex flex-col gap-1 justify-between"
+  >
     <h4 class="text-black font-bold">
-      {{obj.guest}}
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name|truncatechars:12}}
       <!--  -->
       {% if obj.is_vip == True %}
       <i
@@ -46,9 +45,19 @@
       {% endif %}
       <!--  -->
     </h4>
-    <span class="italic font-light">@{{obj.host.username}}</span>
-    <small class="mb-4 lg:mb-0 text:xs lg:text-sm text-gray-300"
-      >{{obj.date}} à {{obj.arrived_at}}</small
+    <span class="font-light text-xs text-gray-600"
+      >{{obj.host.last_name}} {{obj.host.first_name}}</span
     >
+
+    <small class="text:xs text-gray-400"
+      ><i class="fa-solid fa-calendar-days text-xs"></i> {{obj.date}}</small
+    >
+    <div class="flex items-start justify-between">
+      <small class="text:xs text-gray-400"
+        ><i class="fa-solid fa-clock text-xs"></i> {{obj.time}}</small
+      >
+      <!-- appointment status indicator -->
+      {% include 'base/components/status_badge.html' %}
+    </div>
   </article>
 </div>

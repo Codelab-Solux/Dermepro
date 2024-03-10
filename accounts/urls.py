@@ -16,6 +16,8 @@ urlpatterns = [
     path('users/<hashid:pk>/delete', delete_user, name='delete_user'),
     path('users/<hashid:pk>/edit', edit_user, name='edit_user'),
     path('change_user_status/<hashid:pk>/', change_user_status, name='change_user_status'),
+    path('fetch_user_status/', fetch_user_status, name='fetch_user_status'),
+    path('badge/', badge, name='badge'),
 ]
 
 

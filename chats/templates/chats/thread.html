@@ -64,19 +64,20 @@
   <!------------------ chat form ------------------->
   <div class="absolute w-full bottom-0">
     <form
-      id="chat-form"
+      id="chat_form"
       class="w-[90%] mx-auto flex flex-row justify-between gap-2"
     >
+      {% csrf_token %}
       <input
         type="text"
         name="message"
         id="chat-input"
         required
-        class="px-4 py-2 rounded-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+        class="px-4 py-2 rounded-t-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
         placeholder="ecrivez votre message..."
       />
       <button
-        class="group px-4 py-3 text-sm bg-purple-950 hover:bg-amber-200 text-white rounded-md"
+        class="group px-4 py-3 text-sm bg-purple-950 hover:bg-amber-200 text-white rounded-t-md"
         type="submit"
       >
         <i class="px-2 fa-solid fa-paper-plane group-hover:text-black"></i>
@@ -85,5 +86,25 @@
   </div>
 </section>
 
-{{other_user.id|json_script:"receiver-id"}}
-{{request.user.id|json_script:"sender-id"}}
+{{other_user.id|json_script:"other_user"}}
+{{request.user.id|json_script:"curr_user"}}
+
+<script>
+  var sender_id = JSON.parse(document.getElementById("curr_user").textContent);
+  var receiver_id = JSON.parse(
+    document.getElementById("other_user").textContent
+  );
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var endpoint = `/ws/chats/${receiver_id}/`;
+    console.log("intro");
+    console.log(endpoint);
+    var socket = new WebSocket("ws://" + window.location.host + endpoint);
+    socket.onopen = function () {
+      console.log("WebSocket connected to " + endpoint);
+    };
+    socket.onclose = function (event) {
+      console.log("WebSocket disconnected from " + endpoint);
+    };
+  });
+</script>

@@ -40,6 +40,7 @@ def groups(req):
     return render(req, 'chats/partials/groups.html', context)
 
 
+@login_required(login_url='login')
 def thread(req, pk):
     curr_user = req.user
     other_user = get_object_or_404(CustomUser, id=pk)
@@ -64,6 +65,8 @@ def thread(req, pk):
     }
 
     return render(req, 'chats/thread.html', context)
+
+
 
 # @login_required(login_url='login')
 # def thread(req, pk):

@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from base.utils import h_encode, h_decode
 from phonenumber_field.modelfields import PhoneNumberField
+from base.utils import h_encode, h_decode
+
 
 
 class Role(models.Model):
@@ -41,7 +42,6 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    pass
     email = models.EmailField(db_index=True, unique=True, max_length=255)
     username = models.CharField(
         max_length=255, unique=True, blank=True, null=True)
@@ -57,10 +57,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return f'{self.last_name} {self.first_name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -91,8 +95,10 @@ gender_list = (
     ('male', 'Masculin'),
 )
 
+# from base.models import Company
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    company = models.ForeignKey('base.Company', on_delete=models.CASCADE, blank=True, null=True)
     reg_number = models.IntegerField(null=True, blank=True)
     nationality = models.CharField(max_length=1000, null=True, blank=True)
     sex = models.CharField(
@@ -106,7 +112,7 @@ class Profile(models.Model):
         upload_to='media/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
 
     def __str__(self):
-        return self.user.email
+        return f'{self.user.last_name} {self.user.first_name} - Profile'
 
     def get_hashid(self):
         return h_encode(self.id)

@@ -15,15 +15,22 @@ from django.core.asgi import get_asgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dermepro.settings')
 
-application = get_asgi_application()
+django_asgi_application = get_asgi_application()
 
 import base.routing
+import chats.routing
 
 application = ProtocolTypeRouter({
-    'http': application,
-    'websocket': AllowedHostsOriginValidator(AuthMiddlewareStack(
-        URLRouter(base.routing.websocket_urlpatterns)
-    ))
+    'http': django_asgi_application,
+    'websocket': AllowedHostsOriginValidator(
+        AuthMiddlewareStack(
+            URLRouter(
+                base.routing.websocket_urlpatterns +
+                chats.routing.websocket_urlpatterns
+            )
+        )
+    ),
 })
+
 
 app = application

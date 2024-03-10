@@ -1,101 +1,101 @@
 {% load static %}
 <div
 
-  class="w-[60px] md:w-20 p-4 bg-purple-950 text-white lg:w-[200px] xl:w-[300px] min-h-screen fixed overflow-auto"
+  class="w-[60px] md:w-20 p-4 bg-purple-950 text-white xl:w-[300px] min-h-screen fixed"
 >
   <a
-    class="lg: mb-4 flex items-end"
+    class="mb-4 flex items-end"
     href="{% url 'home' %}"
   >
-  <img class="h-6 lg:h-10 mx-auto lg:mx-0 lg:mr-2" src="{% static 'imgs/logo-w.png' %}" alt="logo" />
-  <h1 class="hidden lg:inline text-xl font-black">Dermepro</h1>
+  <img class="h-6 xl:h-10 mx-auto xl:mx-0 xl:mr-2" src="{% static 'imgs/logo-w.png' %}" alt="logo" />
+  <h1 class="hidden xl:inline text-xl font-black">Dermepro</h1>
   </a>
 
-  <ul class="flex flex-col mx-auto items-center lg:items-start ">
+  <ul class="h-[calc(100vh-70px)] w-full flex flex-col gap-2 mx-auto items-center xl:items-start overflow-y-auto">
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
       href="{% url 'home' %}"
     >
-      <i class="text-sm fa-solid fa-house lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="text-sm fa-solid fa-house xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Accueil
       </span>
     </a>
 
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
       href="{% url 'visits' %}"
     >
-      <i class="fa-sharp fa-solid fa-user-tie lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="fa-sharp fa-solid fa-user-tie xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Visites
       </span>
     </a>
     {% if user.is_superuser %}
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
       href="{% url 'appointments' %}"
     >
-      <i class="text-sm fa-solid fa-handshake lg:lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="text-sm fa-solid fa-handshake xl:xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Rendez-vous
       </span>
     </a>
     {% endif %}
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
       href="{% url 'users' %}"
     >
-      <i class="text-sm fa-solid fa-users lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="text-sm fa-solid fa-users xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Utilisateurs
       </span>
     </a>
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'chats' %}"
     >
-      <i class="text-sm fa-solid fa-comments lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="text-sm fa-solid fa-comments xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Messagerie
       </span>
     </a>
     {% if user.is_superuser %}
     <a
-    class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{report_page}}"
+    class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{report_page}}"
     href="{% url 'reports' %}"
     >
-    <i class="fa-sharp fa-solid fa-chart-simple lg:mr-2"></i> 
-    <span class="hidden lg:inline">
+    <i class="fa-sharp fa-solid fa-chart-simple xl:mr-2"></i> 
+    <span class="hidden xl:inline">
       Rapports
     </span>
   </a>
   <a
-    class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
-    href="{% url 'parameters' %}"
+    class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
+    href="{% url 'settings' %}"
   >
-    <i class="fa-sharp fa-solid fa-gear lg:mr-2"></i> 
-    <span class="hidden lg:inline">
+    <i class="fa-sharp fa-solid fa-gear xl:mr-2"></i> 
+    <span class="hidden xl:inline">
       Paramètres
     </span>
   </a>
     {% endif %}
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
       href="{% url 'about' %}"
     >
-      <i class="text-sm fa-solid fa-circle-info lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="text-sm fa-solid fa-circle-info xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         A propos
       </span>
     </a>
 
     <a
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
       href="{% url 'dashboard' %}"
     >
-      <i class="fa-sharp fa-solid fa-bars-progress lg:mr-2"></i> 
-      <span class="hidden lg:inline">
+      <i class="fa-sharp fa-solid fa-bars-progress xl:mr-2"></i> 
+      <span class="hidden xl:inline">
         Tableau de bord
       </span>
     </a>
@@ -103,30 +103,30 @@
     {% if user.is_superuser %}
     <a
      target="_blank"
-      class="mb-3 px-1 md:px-3 py-2 text-center lg:text-left rounded-md hover:bg-red-900 hover:text-white transition ease-in duration-200 w-full"
+      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-red-900 hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
-      ><i class="text-sm fa-solid fa-lock lg:mr-2"></i> <span class="hidden lg:inline ">
+      ><i class="text-sm fa-solid fa-lock xl:mr-2"></i> <span class="hidden xl:inline ">
         Admin Dashboard</a
         >
       </span>
     {% endif %}
  <div
-      class="w-full px-1 py-2 lg:p-2 flex flex-col lg:flex-row items-center gap-1 lg:gap-2 mb-2 lg:bg-white sm:text-sm lg:text-md rounded-md cursor-pointer"
+      class="w-full px-1 py-2 xl:p-2 flex flex-col xl:flex-row items-center gap-1 xl:gap-2 mb-2 xl:bg-white sm:text-sm xl:text-md rounded-md cursor-pointer"
     >
     {% if not user.image %}
     <img
-      class="hidden lg:inline h-10 w-10 rounded-md object-cover"
+      class="hidden xl:inline h-10 w-10 rounded-md object-cover"
       src="{% static 'imgs/anon.png' %}"
       alt="welcome image"
     />
     {% else %}
     <img
-      class="hidden lg:block h-10 w-10 rounded-md object-cover"
+      class="hidden xl:block h-10 w-10 rounded-md object-cover"
       src="{{user.image.url}}"
       alt="welcome image"
     />
     {% endif %}
-      <div class="hidden lg:block w-full">
+      <div class="hidden xl:block w-full">
         <p class="text-black font-bold">{{user.last_name|title}} {{user.first_name|title}}</p>
         <p class="text-gray-500">@{{user.username}}</p>
       </div>
@@ -134,7 +134,7 @@
 
         <button
           type="button"
-          class="bg:purple-50 hover:bg-purple-100 hover:text-black px-4 py-2 rounded-lg"
+          class="bg-white hover:bg-purple-200 hover:text-black px-4 py-2 rounded-md"
           name="dropdownBtn"
           id="dropdownBtn"
           aria-expanded="false"
@@ -146,43 +146,33 @@
         </button>
   
         <div
-          class="mb-4 w-full lg:p-2 hidden absolute right-0 top-12 origin-top-left bg-white z-30 rounded-md lg:w-40 flex flex-col gap-2 items-center overflow-hidden"
+          class="mb-4 w-full xl:p-2 hidden absolute right-0 top-12 origin-top-left bg-white z-30 rounded-md xl:w-40 grid gap-2 overflow-hidden"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
-          tabindex="-1"
           id="dropdownMenu"
         >
           <a href="{% url 'user' user.id  %}"
-            class="p-2 flex text-sm text-gray-700 hover:bg-purple-200 lg:rounded-md w-full text-center"
-            role="menuitem"
-            tabindex="-1"
-            id="user-menu-item-0"
+            class="p-2 flex text-sm text-gray-700 hover:text-black hover:bg-purple-200 xl:rounded-md w-full"
             >
-                  <i class="text-sm fa-solid fa-user lg:mr-2"></i> 
-            <span class="hidden lg:inline">Mon Profile</span>
+            <i class="text-sm fa-solid fa-user xl:mr-2"></i> 
+            <span class="hidden xl:inline">Mon Profile</span>
             </a
           >
           <a
             href="#"
-            class="p-2 flex text-sm text-gray-700 hover:bg-purple-200 lg:rounded-md w-full text-center"
-            role="menuitem"
-            tabindex="-1"
-            id="user-menu-item-1"
+            class="p-2 flex text-sm text-gray-700 hover:text-black hover:bg-purple-200 xl:rounded-md w-full"
             >
-            <i class="text-sm fa-solid fa-gear lg:mr-2"></i>
-              <span class="hidden lg:inline">Parametres</span>
+            <i class="text-sm fa-solid fa-gear xl:mr-2"></i>
+              <span class="hidden xl:inline">Parametres</span>
             </a
           >
           <a
             href="{% url 'logout' %}"
-            class="p-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white lg:rounded-md w-full text-center"
-            role="menuitem"
-            tabindex="-1"
-            id="user-menu-item-2"
+            class="p-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded-md w-full"
             >
-            <i class="text-sm fa-solid fa-right-from-bracket lg:mr-2"></i>
-            <span class="hidden lg:inline">Deconnexion </span>
+            <i class="text-sm fa-solid fa-right-from-bracket xl:mr-2"></i>
+            <span class="hidden xl:inline">Deconnexion</span>
             </a
           >
         </div>

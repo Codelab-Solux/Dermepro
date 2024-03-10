@@ -1,4 +1,4 @@
-<div class="relative text-gray-700">
+<div class="relative text-gray-700 text-xs">
   <button
     type="button"
     class="hover:bg-white hover:text-black px-4 py-1 rounded-md"
@@ -12,7 +12,7 @@
   </button>
 
   <div
-    class="hidden overlay bg-purple-100 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-30 rounded-lg flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+    class="hidden overlay {% if user.profile.status.id == 1 %} border-green-300 bg-green-100 {% elif user.profile.status.id == 2 %}border-amber-300 bg-amber-100 {% else %} border-red-300 bg-red-100 {% endif %} w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-30 rounded-lg flex flex-col items-center gap-2 text-xs lg:text-xs overflow-hidden"
     role="status menu"
     aria-orientation="vertical"
     aria-labelledby="status-menu-button"
@@ -23,21 +23,21 @@
       hx-post="{% url 'change_user_status' 1  %}"
       class="p-2 flex items-center hover:text-black hover:bg-green-200 rounded-md w-full text-center"
     >
-      <i class="text-sm fa-solid fa-door-open mr-2"></i>
+      <i class="fa-solid fa-door-open mr-2"></i>
       Disponible
     </button>
     <button
       hx-post="{% url 'change_user_status' 2  %}"
       class="p-2 flex items-center hover:text-black hover:bg-amber-200 rounded-md w-full text-center"
     >
-      <i class="text-sm fa-solid fa-hourglass-half mr-2"></i>
+      <i class="fa-solid fa-hourglass-half mr-2"></i>
       En reunion
     </button>
     <button
       hx-post="{% url 'change_user_status' 3  %}"
       class="p-2 flex items-center hover:text-black hover:bg-red-200 rounded-md w-full text-center"
     >
-      <i class="text-sm fa-solid fa-door-closed mr-2"></i>
+      <i class="fa-solid fa-door-closed mr-2"></i>
       Indisponible
     </button>
   </div>

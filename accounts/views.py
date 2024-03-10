@@ -158,6 +158,11 @@ def change_user_status(req, pk):
     messages.success = 'User Status changed'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
+def fetch_user_status(req):
+    user = req.user
+    status = user.profile.status.name  # Assuming 'name' is the attribute containing the status name
+    return JsonResponse({'status': status})
+
 
 @login_required(login_url='login')
 def user_list(req):
@@ -184,7 +189,8 @@ def filter_users(req):
     user = req.user
     user_type = req.POST.get('user_type')
     user_phone = req.POST.get('user_phone')
-    name_or_email = req.POST.get('name_or_email')
+    last_name = req.POST.get('last_name')
+    first_name = req.POST.get('first_name')
     user_status = req.POST.get('user_status')
     user_sex = req.POST.get('user_sex')
     
@@ -196,8 +202,10 @@ def filter_users(req):
         base_query = base_query.filter(role_id=user_type)
     if user_phone:
         base_query = base_query.filter(phone=user_phone)
-    if name_or_email:
-        base_query = base_query.filter(Q(last_name__icontains=name_or_email)|Q(first_name__icontains=name_or_email)|Q(email__icontains=name_or_email))
+    if last_name:
+        base_query = base_query.filter(last_name__icontains=last_name)
+    if first_name:
+        base_query = base_query.filter(first_name__icontains=first_name)
     if user_status:
         base_query = base_query.filter(profile__status__id=user_status)
     if user_sex:
@@ -207,3 +215,11 @@ def filter_users(req):
     context = {"users" : users}
     print(users)
     return render(req, 'accounts/partials/user_list.html', context)
+
+
+@ login_required(login_url='login')
+def badge(req):
+    user = req.user
+    curr_profile = get_object_or_404(Profile, user=user)  
+    context = {"curr_profile" : curr_profile}
+    return render(req, 'accounts/partials/badge.html', context)

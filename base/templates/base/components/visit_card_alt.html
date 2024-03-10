@@ -33,7 +33,11 @@
   <!-- card info -->
 
   <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
-    <h4 class="text-black font-bold">{{obj.guest}}</h4>
+    <h4 class="text-black font-bold">
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name}}
+    </h4>
     <div class="flex items-start justify-between">
       <span class="italic font-light">@{{obj.host.username}}</span>
       <button

@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django_htmx',
     'base',
-    'dashboard',
     'accounts',
     'chats',
     'dj_database_url',

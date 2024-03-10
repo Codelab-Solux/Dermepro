@@ -25,17 +25,32 @@
         name="host"
         class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Hôte</option>
+        <option value="" selected="true" disabled="disabled">Hôte</option>
         {% for obj in hosts %}
-        <option value="{{obj.username}}">@{{obj.username}}</option>
+        <option value="{{obj.username}}">
+          {{obj.last_name}} {{obj.first_name}}
+        </option>
         {% endfor %}
       </select>
       {% endif %}
+      <!-- date margin -->
+      <input
+        class="hidden lg:inline px-3 py-2 w-full rounded-md"
+        type="date"
+        name="min_date"
+        placeholder="A partir du"
+      />
+      <input
+        class="hidden lg:inline px-3 py-2 w-full rounded-md"
+        type="date"
+        name="max_date"
+        placeholder="Jusqu'au"
+      />
       <input
         hx-post="{% url 'filter_visits' %}"
         hx-target=".filtered_visits"
         hx-trigger="keyup changed delay:500ms"
-        placeholder="Nom/prenoms du visiteur"
+        placeholder="Visiteur"
         name="name"
         type="text"
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
@@ -45,7 +60,7 @@
         name="status"
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Status de visit</option>
+        <option value="" selected="true" disabled="disabled">Status</option>
         {% for obj in statuses %}
         <option value="{{obj.id}}">{{obj.title}}</option>
         {% endfor %}
@@ -55,7 +70,7 @@
         name="type"
         class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected>Type de visite</option>
+        <option value="" selected="true" disabled="disabled">Cadre</option>
         <option value="familial">Amicale</option>
         <option value="friendly">Familiale</option>
         <option value="professional">Professionelle</option>
@@ -65,7 +80,7 @@
         name="sex"
         class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
-        <option value="" selected>Sexe du visiteur</option>
+        <option value="" selected="true" disabled="disabled">Sexe</option>
         <option value="female">Feminin</option>
         <option value="male">Masculin</option>
       </select>
@@ -86,58 +101,7 @@
     </button>
   </form>
 </div>
-<!--------------------------------------- filter tabs buttons --------------------------------------->
-<!-- <div
-  class="tabbar mb-2 w-fit text-gray-500 text-sm rounded-lg flex justify- gap-2 flex-wrap overflow-hidden"
->
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-gray-200 rounded-lg"
-    onclick="openMiniTab(event, 'all')"
-    id="defaultMiniTab"
-  >
-    Tout
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-purple-200 rounded-lg"
-    onclick="openMiniTab(event, 'pending')"
-  >
-    <i class="mr-1 fa-solid fa-spinner"></i>
 
-    En attente
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-amber-200 rounded-lg"
-    onclick="openMiniTab(event, 'ongoing')"
-  >
-    <i class="mr-1 fa-solid fa-hourglass-middle"></i>
-
-    En Cours
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-green-200 rounded-lg"
-    onclick="openMiniTab(event, 'completed')"
-  >
-    <i class="mr-1 fa-solid fa-square-check"></i>
-
-    Terminé
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-sky-200 rounded-lg"
-    onclick="openMiniTab(event, 'postponed')"
-  >
-    <i class="mr-1 fa-solid fa-rotate-right"></i>
-
-    Reporté
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-red-200 rounded-lg"
-    onclick="openMiniTab(event, 'cancelled')"
-  >
-    <i class="mr-1 fa-solid fa-ban"></i>
-
-    Annulé
-  </button>
-</div> -->
 <!--------------------------------------- visits --------------------------------------->
 <section
   id="visits"
@@ -172,11 +136,10 @@
   </div>
 </section>
 
-{% endblock %}
-
 <script>
   function clearForm() {
     var form = document.querySelector("form");
     form.reset();
   }
 </script>
+{% endblock %}

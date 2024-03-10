@@ -12,14 +12,18 @@
 <div class="mb-4 grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
   {% for obj in appointments %}
   <div
-    hx-get="{% url 'appointment' obj.id %}"
+    hx-get="{% url 'appointment_alt' obj.id %}"
     hx-target="#appointment_dialog"
     class="relative p-4 h-full border hover:border-purple-400 hover:shadow-md rounded-md group cursor-pointer"
   >
     <i
-      class="absolute top-2 right-2 fa-solid fa-star text-xs text-gray-300 group-hover:text-purple-400"
+      class="absolute top-2 right-3 fa-solid fa-star text-xs text-gray-300 group-hover:text-amber-300"
     ></i>
-    <h3 class="font-bold text-black text-md">{{obj.guest}}</h3>
+    <h3 class="font-bold text-black text-md">
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name}}
+    </h3>
     <small class="text-sm">{{obj.date}}</small>
     <h3 class="text-sm">{{obj.time}}</h3>
   </div>

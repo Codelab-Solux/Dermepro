@@ -1,0 +1,33 @@
+<div class="flex items-center gap-1">
+  {% include 'base/components/status_badge.html' %}
+  <!--  -->
+  {% if curr_obj.host == user%}
+  <!--  -->
+  {#% include 'base/components/status_changer.html' %#}
+  <!--  -->
+  {% include 'base/components/visit_sentry.html' %}
+  <!--  -->
+  {% endif %}
+  <!-- admin actions -->
+  {% if user.role.sec_level >= 4 %}
+  <div
+    class="flex border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
+  >
+    <button
+      onclick="hide_dialogs()"
+      hx-target="#basic_dialog"
+      hx-get="{% url 'edit_visit' curr_obj.id %}"
+      class="px-2 py-1 hover:bg-purple-300 hover:text-black"
+    >
+      <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+    <button
+      hx-confirm="Voulez vous vraiment supprimer ceci?"
+      class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
+      hx-delete="{% url 'delete_visit' curr_obj.id %}"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+  {% endif %}
+</div>
