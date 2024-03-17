@@ -4,34 +4,13 @@
   <div
     class="flex flex-col gap-2 w-full md:max-w-[300px] xl:max-w-[380px] h-full"
   >
-    <!--------------------------------------- filter form --------------------------------------->
-    <form
-      class="w-full flex items-center gap-1 max-w-[400px]"
-      hx-post="{% url 'filter_users' %}"
-      hx-target=".filtered_chats"
-    >
-      {% csrf_token %}
-      <!--  -->
-      <i
-        class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-amber-100 px-4 py-2"
-      ></i>
-      <input
-        hx-post="{% url 'filter_users' %}"
-        hx-target=".filtered_chats"
-        hx-trigger="keyup changed delay:500ms"
-        placeholder="Nom/prenoms de l'utilisateur"
-        name="name_or_email"
-        type="text"
-        class="px-3 py-2 text-xs rounded-lg focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
-      />
-    </form>
-
-    <!--------------------------------------- menu tabs buttons --------------------------------------->
-    <div
+  
+  <!--------------------------------------- menu tabs buttons --------------------------------------->
+  <div
       class="tabbar max-w-[400px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
     >
       <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'threads')"
         id="defaultTab"
       >
@@ -45,16 +24,37 @@
         <i class="fa-solid fa-address-book"></i>
         <span class="hidden xl:inline lg:ml-2">Contacts</span>
       </button>
-      <button
+      <!-- <button
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'groups')"
       >
         <i class="fa-solid fa-people-group"></i>
         <span class="hidden xl:inline lg:ml-2">Groupes</span>
-      </button>
+      </button> -->
     </div>
     <!--------------------------------------- threads --------------------------------------->
     <section id="threads" class="tabcontent">
+      <!--------------------------------------- filter form --------------------------------------->
+      <form
+        class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+        hx-post="{% url 'filter_users' %}"
+        hx-target=".filtered_threads"
+      >
+        {% csrf_token %}
+        <!--  -->
+        <i
+          class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
+        ></i>
+        <input
+          hx-post="{% url 'filter_users' %}"
+          hx-target=".filtered_chats"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Nom/prenoms de l'utilisateur"
+          name="name_or_email"
+          type="text"
+          class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+        />
+      </form>
       <div
         class="filtered_chats p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
       >
@@ -69,6 +69,27 @@
 
     <!--------------------------------------- contacts --------------------------------------->
     <section id="contacts" class="tabcontent hidden">
+            <!--------------------------------------- filter form --------------------------------------->
+      <form
+        class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+        hx-post="{% url 'filter_users' %}"
+        hx-target=".filtered_contacts"
+      >
+        {% csrf_token %}
+        <!--  -->
+        <i
+          class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
+        ></i>
+        <input
+          hx-post="{% url 'filter_users' %}"
+          hx-target=".filtered_chats"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Nom/prenoms de l'utilisateur"
+          name="name_or_email"
+          type="text"
+          class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+        />
+      </form>
       <div
         class="filtered_contacts p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
       >
@@ -109,5 +130,25 @@
     </p>
   </section>
 </div>
-
+<script>
+  //  tabs control ----------------------------------------------------------------------------------------------------
+document.getElementById("defaultTab").click();
+function openTab(event, tabName) {
+  var i, tabcontent, tabBtn;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tabBtn = document.getElementsByClassName("tabBtn");
+  for (i = 0; i < tabBtn.length; i++) {
+    tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.className += " active";
+  var minitabs = document.getElementsByClassName("minitabcontent");
+  if (minitabs.length != 0) {
+    minitabs = tabcontent.children;
+  }
+}
+</script>
 {% endblock %}

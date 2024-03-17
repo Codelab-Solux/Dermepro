@@ -4,7 +4,7 @@
 {% block content %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
-<div class="mt-14 grid gap-8">
+<div class="mt-16 grid gap-8">
   <!--------------------------------------- menu tabs buttons --------------------------------------->
   <div
     class="tabbar max-w-[500px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
@@ -44,7 +44,7 @@
           class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
         >
           <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden lg:inline text-sm">
+          <span class="hidden md:inline text-sm">
             Extraire en fichier excel (XLSX)
           </span>
         </button>
@@ -66,7 +66,7 @@
           class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
         >
           <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden lg:inline text-sm">
+          <span class="hidden md:inline text-sm">
             Extraire en fichier excel (XLSX)
           </span>
         </button>
@@ -88,7 +88,7 @@
           class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
         >
           <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden lg:inline text-sm">
+          <span class="hidden md:inline text-sm">
             Extraire en fichier excel (XLSX)
           </span>
         </button>
@@ -102,6 +102,25 @@
 </div>
 
 <script>
+  //  tabs control ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
+  }
   // ----------------------------appointments exporter-------------------------------
   document
     .getElementById("export_visits")

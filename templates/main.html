@@ -34,8 +34,8 @@
       src="https://kit.fontawesome.com/f601cf3e61.js"
       crossorigin="anonymous"
     ></script>
+    <script src="{% static 'notifier.js' %}" defer="true"></script>
     <script src="{% static 'main.js' %}" defer="true"></script>
-    <!-- <script src="{% static 'notifications.js' %}" defer="true"></script> -->
     <link href="{% static 'styles.css' %}" rel="stylesheet" />
     <style>
       body {
@@ -45,10 +45,8 @@
     <title>{{title}}</title>
   </head>
   <body
-    hx-ext="ws"
-    ws-connect="/ws/notifications/"
     hx-boost="true"
-    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-headers='{"X-CSRFToken" : "{{ csrf_token }}"}'
     class="flex flex-row bg-white text-gray-700 max-w-full mx-auto my-0"
   >
     {% include 'sidebar.html' %}
@@ -63,26 +61,23 @@
           hx-target="this"
         ></div>
         <!--  -->
-        {% block content %} {% endblock %}
+        {% block content %} 
+        <section id="base">
+          
+        </section>
+          {% endblock %}
       </div>
     </div>
     <!--  -->
     {% include 'modal.html' %}
     <!--  -->
   </body>
+
+  <!--  -->
+  {{ request.user.id|json_script:"user_id" }}
   <script>
     htmx.onLoad(function (content) {
       scripts.init(content);
-    });
-
-    $(document).ready(function () {
-      // Add a placeholder option to the select element
-      $("#sex_selector").prepend(
-        '<option value="" disabled selected>Choisir sexe</option>'
-      );
-      $("#host_selector").prepend(
-        '<option value="" disabled selected>Choisir hôte</option>'
-      );
     });
   </script>
 </html>

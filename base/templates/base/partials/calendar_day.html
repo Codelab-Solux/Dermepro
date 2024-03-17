@@ -1,0 +1,98 @@
+<!--  -->
+{% load get_day_one add_days by_day by_year by_time from base_tags %}
+<!--  -->
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    border: 1px solid rgb(187, 187, 187);
+    padding: 8px;
+    text-align: center;
+  }
+  .highlight {
+    background-color: amber;
+  }
+</style>
+
+<div id="" class="rdv_calendar grid">
+  <div
+    class="px-4 py-2 border border-b-0 border-purple-300 bg-purple-200 rounded-t-lg text-black font-bold flex justify-center items-center gap-4"
+  >
+    <button
+      hx-get='{% url "calendar_day" day|add:"-1" %}'
+      hx-target=".rdv_calendar"
+      hx-swap="outerHTML"
+      class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h3>{{ curr_date }}</h3>
+    <button
+      hx-get='{% url "calendar_day" day|add:"1" %}'
+      hx-target=".rdv_calendar"
+      hx-swap="outerHTML"
+      class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs"
+    >
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- day calendar -->
+  <div class="overflow-x-auto">
+    <table class="rdv_calendar table-auto">
+      <thead>
+        {#% with first_day=date|get_day_one %#}
+        <tr class="p-0 bg-gray-100 text-black text-sm">
+          <th>Heures</th>
+          <th class="p-0 text-right">
+            <span class="p-2 bg-purple-200"> {{curr_date | date:"D" }} </span>
+          </th>
+        </tr>
+        {#% endwith %#}
+      </thead>
+
+      <tbody>
+        {% for hour in hours %}
+        <tr>
+          <td class="bg-gray-100 text-black text-sm">{{ hour }}:00</td>
+          {% with rdv=appts|by_time:hour %}
+          <td class="w-full">
+            {% if rdv %}
+            <!--  -->
+            <div class="w-full flex justify-evenly items-center">
+              {% for obj in rdv %}
+              <div class="relative group w-fit">
+                <span
+                  class="px-4 py-1 rounded-full bg-purple-200 text-xs font-bold highlight"
+                  >R.D.V</span
+                >
+                <div
+                  class="hidden group-hover:grid gap-2 absolute right-0 z-10 h-fit w-60 p-3 bg-purple-100 rounded-lg"
+                >
+                  {% include 'base/components/appointment_card_cal.html' %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <!--  -->
+            {% else %}
+            <span class="text-gray-300 text-xs">R.A.S</span>
+            {% endif %}
+          </td>
+          {% endwith %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  function clearForm() {
+    var form = document.querySelector("form");
+    form.reset();
+  }
+</script>

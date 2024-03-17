@@ -30,23 +30,29 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
     
-    async def new_visitor(self, event):
-        # print(f"Novelle visite : de {event['text']}")
-        # await self.send(text_data=event['text'])
-        html = get_template('base/partials/notifications.html').render(
-            context = {
-                'guest':event['text']
-            }
-        )
-        await self.send(text_data=html)
+    async def notify_visit(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'sex': event['data']['sex'],
+            'person': event['data']['person'],
+            'schedule': event['data']['schedule'],
+        }))
     
-    async def new_appointment(self, event):
-        # print(f"Novelle visite : de {event['text']}")
-        # await self.send(text_data=event['text'])
-        html = get_template('base/partials/notifications.html').render(
-            context = {
-                'guest':event['text']
-            }
-        )
-        await self.send(text_data=html)
+    async def notify_appointment(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'sex': event['data']['sex'],
+            'person': event['data']['person'],
+            'schedule': event['data']['schedule'],
+        }))
+    
+    async def notify_message(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'message': event['data']['message'],
+            'sender': event['data']['sender'],
+        }))
 

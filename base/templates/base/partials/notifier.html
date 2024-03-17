@@ -1,0 +1,108 @@
+<div id="notifier" class="text-gray-700">
+  <button
+    type="button"
+    class="h-full flex items-center gap-1 hover:bg-white hover:text-black px-4 py-2 rounded-md"
+    name="notifBtn"
+    id="notifBtn"
+    aria-expanded="false"
+    aria-haspopup="true"
+    onclick="notificationDropdown(this)"
+  >
+    <i class="fa-sharp fa-solid fa-bell"></i>
+    <small
+      id="notif_counter"
+      class="{% if not notifications %} hidden {% endif %} px-[.3rem] py-[.1rem] bg-purple-500 rounded-full text-white text-xs"
+    >
+      {{ notifications|length }}
+    </small>
+  </button>
+
+  <div
+    class="hidden bg-gray-100 w-60 lg:w-80 shadow-md p-2 absolute right-0 top-12 origin-top-left z-10 rounded-lg flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+    role="status menu"
+    aria-orientation="vertical"
+    aria-labelledby="status-menu-button"
+    id="notifications_box"
+  >
+  <!--------------------------------------- No data placeholder --------------------------------------->
+    <!-- {#% if not notifications %#}
+    <div class="p-8 my-10 w-full mx-auto rounded-md flex-col text-center">
+      <i class="fa-regular fa-folder-open text-3xl text-gray-400"></i>
+      <p class="mt-4">Aucune notification</p>
+    </div>
+    {#% else %#} -->
+    <ul id="notif_list" class="w-full flex flex-col gap-1">
+      {% for obj in notifications %}
+      <!--  -->
+      {{ obj.get_notification_html|safe }}
+      <!--  -->
+      {% endfor %}
+    </ul>
+    <!-- {#% endif %#} -->
+
+    {% if notifications %}
+    <a
+      id="notifications_clearer"
+      class="p-2 flex items-center justify-center text-white bg-gray-500 hover:bg-gray-700 rounded-md w-full text-center cursor-pointer"
+    >
+      <i class="text-sm fa-solid fa-broom mr-2"></i>
+      Tout effacer
+    </a>
+    {% endif %}
+  </div>
+</div>
+<script>
+  function notificationDropdown(e) {
+    e.name === "notifBtn"
+      ? ((e.name = "close"), notifications_box.classList.remove("hidden"))
+      : ((e.name = "notifBtn"), notifications_box.classList.add("hidden"));
+  }
+
+  window.addEventListener("mouseup", function (event) {
+    notifications_box.classList.add("hidden");
+  });
+
+  let notifications_counter = document.getElementById("notification_counter");
+  let notifications_clearer = document.getElementById("notifications_clearer");
+
+  document.body.addEventListener("htmx:wsAfterMessage", (e) => {
+    let notifications_count = notifications_counter.innerHTML;
+    if (!notifications_count) {
+      notifications_counter.classList.remove("hidden");
+      notifications_counter.innerHTML = 1;
+    } else {
+      notifications_counter.classList.remove("hidden");
+      notifications_counter.innerHTML = parseInt(notifications_count) + 1;
+    }
+  });
+
+  notifications_clearer.addEventListener("click", (e) => {
+    e.preventDefault();
+    let notifications = document.getElementById("notifications");
+    notifications.querySelectorAll("li").forEach((element) => element.remove());
+    notifications_counter.innerHTML = "";
+    notifications_counter.classList.add("hidden");
+  });
+
+  //   $(document).ready(function() {
+  //   // Attach click event listener to the button
+  //   $("#notifications_clearer").click(function() {
+  //     // Send AJAX request to update notifications status
+  //     $.ajax({
+  //       url: "/read_notification/",
+  //       type: "POST",
+  //       data: { is_read: true }, // You can include additional data if needed
+  //       success: function(response) {
+  //         // Handle success response
+  //         console.log("Notifications status updated successfully");
+  //         // Optionally, you can update the UI to reflect the changes
+  //       },
+  //       error: function(xhr, status, error) {
+  //         // Handle error response
+  //         console.error("Error updating notifications status:", error);
+  //       }
+  //     });
+  //   });
+
+  // });
+</script>

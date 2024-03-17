@@ -25,7 +25,7 @@
       hx-target=".obj_status{{curr_obj.id}}, .visit_details"
       hx-swapp="innerHTML"
       onclick="close_modal()"
-      class="p-2 flex items-center hover:text-black hover:bg-amber-200 rounded-md w-full text-center {% if curr_obj.status.id >= 2 or curr_obj.status.id <= 4 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+      class="p-2 flex items-center hover:text-black hover:bg-amber-200 rounded-md w-full text-center {% if curr_obj.status.id > 1 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
     >
       <i class="text-sm fa-solid fa-hourglass-start mr-2"></i>
       Accepter
@@ -36,7 +36,7 @@
       hx-target=".obj_status{{curr_obj.id}}, .visit_details"
       hx-swapp="innerHTML"
       onclick="close_modal()"
-      class="p-2 flex items-center hover:text-black hover:bg-red-200 rounded-md w-full text-center {% if curr_obj.status.id >= 2 or curr_obj.status.id <= 4 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+      class="p-2 flex items-center hover:text-black hover:bg-red-200 rounded-md w-full text-center {% if curr_obj.status.id > 1 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
     >
       <i class="text-sm fa-solid fa-ban mr-2"></i>
       Rejeter

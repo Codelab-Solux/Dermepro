@@ -31,7 +31,7 @@
         Visites
       </span>
     </a>
-    {% if user.is_superuser %}
+    {% if user.role.sec_level > 1 %}
     <a
       class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
       href="{% url 'appointments' %}"

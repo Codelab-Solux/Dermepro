@@ -75,13 +75,13 @@
       </div>
       <!-- badge generator -->
       {% if curr_obj.signature and curr_obj.status.id == 3 %}
-      <div class="w-full h-full max-w-[360px] grid gap-2">
+      <div class="w-full h-full max-w-[360px] flex flex-col items-center gap-3">
         <div
           class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
         >
           <img src="{{ curr_obj.signature.url }}" alt="Signature" />
         </div>
-        <hr class="mx-6 my-1" />
+        <hr class="mx-6" />
         <small class="italic font-light text-xs text-gray-400"
           >Visite terminée, le {{ curr_obj.date}} à {{curr_obj.departed_at}}.
         </small>

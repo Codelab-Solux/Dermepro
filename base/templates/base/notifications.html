@@ -15,7 +15,7 @@
       <div class="p-8 my-40 w-full mx-auto rounded-md flex-col text-center">
         <i class="fa-regular fa-folder-open text-7xl"></i>
         <p class="mt-4">
-          Aucun nouvelle notification disponible pour le moment
+          Aucune nouvelle notification
         </p>
       </div>
 
@@ -25,13 +25,7 @@
       <div
         class="contact-li p-6 border hover:border-purple-700 h-full w-60 flex flex-col items-center text-center gap-2 bg-white hover:shadow-md rounded-md"
       >
-        <form action="{% url 'read_notification' obj.id %}" method="POST">
-          {% csrf_token %}
-          <input
-            type="submit"
-            value="lire"
-            class="px-4 py-1 bg-black text-white hover:bg-purple-950 rounded-md flex justify-between items-center transition duration-300 ease-in-out cursor-pointer mx-auto w-full"
-          />
+
           <img
             class="lg:block w-20 h-20 rounded-full mx-auto"
             src="{% static 'imgs/rand.webp' %}"
@@ -49,7 +43,7 @@
             {% endfor %}
           </p>
           <p>{{obj.chat.message|truncatechars:20}}</p>
-        </form>
+  
       </div>
       {% endfor %}
       <!--  -->

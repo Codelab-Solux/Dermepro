@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib import messages
 from accounts.models import CustomUser
+from base.models import Notification
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -215,11 +216,3 @@ def filter_users(req):
     context = {"users" : users}
     print(users)
     return render(req, 'accounts/partials/user_list.html', context)
-
-
-@ login_required(login_url='login')
-def badge(req):
-    user = req.user
-    curr_profile = get_object_or_404(Profile, user=user)  
-    context = {"curr_profile" : curr_profile}
-    return render(req, 'accounts/partials/badge.html', context)

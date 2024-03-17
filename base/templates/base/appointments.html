@@ -10,6 +10,8 @@
     <span class="mr-2">Nouveau rendez-vous</span>
     <i class="fa-solid fa-handshake"></i>
   </button>
+  {% else %}
+  <div class="h-12"></div>
   {% endif %}
   <!--------------------------------------- menu tabs buttons --------------------------------------->
   <div
@@ -37,7 +39,7 @@
   <section id="calendar" class="tabcontent">
     <div
       class="w-full"
-      hx-get="{% url 'weekly_calendar' curr_week %}"
+      hx-get="{% url 'calendar_week' curr_week %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>
@@ -143,9 +145,29 @@
 </div>
 
 <script>
+    //  tabs control ----------------------------------------------------------------------------------------------------
+document.getElementById("defaultTab").click();
+function openTab(event, tabName) {
+  var i, tabcontent, tabBtn;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tabBtn = document.getElementsByClassName("tabBtn");
+  for (i = 0; i < tabBtn.length; i++) {
+    tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.className += " active";
+  var minitabs = document.getElementsByClassName("minitabcontent");
+  if (minitabs.length != 0) {
+    minitabs = tabcontent.children;
+  }
+}
   function clearForm() {
     var form = document.querySelector("form");
     form.reset();
   }
+
 </script>
 {% endblock %}

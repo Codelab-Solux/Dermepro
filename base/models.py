@@ -3,11 +3,12 @@ from django.urls import reverse
 from accounts.models import CustomUser, Profile
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.contenttypes.fields import GenericForeignKey
 from base.utils import h_encode, h_decode
 from datetime import date
-# from chats.models import ChatMessage
+from chats.models import ChatMessage
+from django.template.loader import get_template
+from django.template import Context
 
 
 visit_types = (('friendly', 'Amicale'),
@@ -106,21 +107,6 @@ class Appointment(models.Model):
         return reverse('appointment', kwargs={'pk': self.pk})
 
 
-class Notification(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
-    is_read = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self) -> str:
-        return f'Notification for < user: {self.user.username}>'
-
-    def get_hashid(self):
-        return h_encode(self.id)
-
-
 class Company(models.Model):
     manager = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -141,3 +127,23 @@ class Company(models.Model):
 
     def get_absolute_url(self):
         return reverse('Companies', kwargs={'pk': self.pk})
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Notification for user: {self.user.username}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_notification_html(self):
+        template = get_template('base/components/notification_card.html')
+        rendered_html = template.render({'obj':self})
+        return rendered_html

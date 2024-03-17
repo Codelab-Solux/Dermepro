@@ -1,0 +1,63 @@
+{% load base_tags %}
+
+{% if obj.content_object|get_model_name == "chatmessage" %}
+<li
+  hx-select="#base"
+  hx-get="{% url 'chats' %}"
+  hx-swap="innerHTML"
+  hx-trigger="click"
+  id="notif{{obj.content_object.id}}"
+  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer flex gap-2 items-center"
+>
+  <img
+    class="w-6 h-6 rounded-full object-cover"
+    src="{{obj.content_object.sender.profile.image.url}}"
+    alt="Rounded avatar"
+  />
+  <article class="grid gap-1">
+    <b>{{obj.content_object.sender}}</b>
+    <p>{{obj.content_object.message|truncatechars:10}}</p>
+  </article>
+</li>
+{% elif obj.content_object|get_model_name == "visit" %}
+<li
+  hx-select="#base"
+  hx-target="#base"
+  hx-get="{% url 'visits' %}"
+  hx-swap="innerHTML"
+  hx-trigger="click"
+  id="notif{{obj.content_object.id}}"
+  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
+>
+  <span><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Nouvelle visite de </span
+  ><b
+    >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
+    {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b
+  >
+</li>
+{% elif obj.content_object|get_model_name == "appointment" %}
+<li
+  hx-select="#base"
+  hx-get="{% url 'appointments' %}"
+  hx-swap="innerHTML"
+  hx-trigger="click"
+  id="notif{{obj.content_object.id}}"
+  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
+>
+  <span
+    ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Nouveau rendez-vous avec </span
+  ><b
+    >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
+    {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b
+  >
+</li>
+{% else %}
+<li
+  id="notif{{obj.content_object.id}}"
+  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
+>
+  <span
+    ><i class="mr-2 fa-solid fa-question mr-2"></i>Notification anonym </span
+  >
+</li>
+{% endif %}

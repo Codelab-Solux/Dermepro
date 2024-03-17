@@ -105,12 +105,10 @@
 
   <!----------------------------------------- appointments ----------------------------------------->
 
-  {% if user.role.sec_level >= 4 %}
+  {% if user.role.sec_level > 1 %}
   <div class="mt-8 p-4 border rounded-lg">
     <div class="flex justify-between items-center">
-      <h3 class="text-black text-xl font-bold">
-        File d'attente des rendez-vous
-      </h3>
+      <h3 class="text-black text-xl font-bold">Rendez-vous du jour</h3>
       <button
         hx-target="#basic_dialog"
         hx-get="{% url 'create_appointment' %}"
@@ -121,34 +119,14 @@
       </button>
     </div>
 
-    <!-- Appointments -->
+    <!-- Appointments of the day -->
+
     <div
-      class="mt-4 w-full flex flex-col md:flex-row-reverse justify-between md:items-center"
-    >
-      <img
-        class="md:hidden lg:inline h-80 object-cover"
-        src="{% static 'imgs/schedule.png' %}"
-        alt="welcome image"
-      />
-      <div class="w-full flex flex-col justify-between gap-4">
-        <!-------------------- pending VIP appointments -------------------->
-        <div
-          class="w-full pending_vips"
-          hx-get="{% url 'pending_vips' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-        <!-------------------- other pending appointments -------------------->
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <div
-            class="w-full pending_appointments"
-            hx-get="{% url 'pending_appointments' %}"
-            hx-trigger="load, db_changed from:body"
-            hx-target="this"
-          ></div>
-        </div>
-      </div>
-    </div>
+      class="mt-4 w-full"
+      hx-get="{% url 'calendar_day' day %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
   </div>
   {% endif %}
 </div>

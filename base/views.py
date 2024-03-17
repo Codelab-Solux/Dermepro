@@ -55,43 +55,40 @@ def get_month_from_week(year, week_number):
 
     return month
 
+def get_date_from_day_number(year, day):
+    first_day_of_year = datetime(year, 1, 1)
+    set_day = first_day_of_year + timedelta(days=day - 1)
+    date = set_day.date()
+    return date
+
 def paginate_objects(req, obj_list, obj_count=10):
     paginator = Paginator(obj_list, obj_count)
     page_number = req.GET.get('page',1)
     objects = paginator.get_page(page_number)
     return objects
 
+
 @login_required(login_url='login')
 def home(req):
     user = req.user
-    if user.role.sec_level >= 4:
-        curr_visits = Visit.objects.filter(status=2)
-        # pending_visits = Visit.objects.filter(status=1)
-        curr_rdvs = Appointment.objects.filter(status=2)
-        pending_rdvs = Appointment.objects.filter(
-            is_vip=False, status=1)
-        pending_vips = Appointment.objects.filter(
-            is_vip=True, status=1)
+    today = datetime.today()
+    day = today.timetuple().tm_yday
+    week = today.isocalendar()[1]
+    year = today.year
 
-    else:
-        curr_visits = Visit.objects.filter(host=user, status=2)
-        curr_rdvs = []
-        pending_rdvs = []
-        pending_vips = []
-
-    ordering = ['date']
+    print(f'Today : {today}')
+    print(f'Day : {day}')
+    print(f'Week : {week}')
+    print(f'Year : {year}')
+   
     context = {
         "home_page": "active",
         'title': 'Home',
-        # 'pending_visits': pending_visits,
-        'curr_visits': curr_visits,
-        'pending_rdvs': pending_rdvs,
-        'pending_vips': pending_vips,
-        'curr_rdvs': curr_rdvs,
-        'ordering': ordering,
+        'day': day,
+        'week': week,
+        'year': year,
     }
     return render(req, 'base/index.html', context)
-
 
 
 
@@ -118,6 +115,12 @@ def visits(req):
 def visit(req, pk):
     user = req.user
     curr_obj = get_object_or_404(Visit, id=pk)
+    
+    # Mark associated notifications as read
+    associated_notifications = Notification.objects.filter(content_type=ContentType.objects.get_for_model(Visit), object_id=curr_obj.id)
+    if associated_notifications:
+        associated_notifications.update(is_read=True)
+        print(f'Notification was read at {timezone.now()}')
 
     context = {
         "visit_details_page": "active",
@@ -412,7 +415,7 @@ def appointments(req):
 
 
 @login_required(login_url='login')
-def weekly_calendar(req, date=None, week=None, month=None, year=None):
+def calendar_week(req, date=None, week=None, month=None, year=None):
     user = req.user
     curr_date = datetime.today()
     curr_week = curr_date.isocalendar()[1]
@@ -470,12 +473,69 @@ def weekly_calendar(req, date=None, week=None, month=None, year=None):
         'appts': appointments,
     }
 
-    return render(req, 'base/partials/weekly_calendar.html', context)
+    return render(req, 'base/partials/calendar_week.html', context)
+    
+@login_required(login_url='login')
+# def calendar_day(req, kwargs={'year': 2024, 'day': 1}):
+def calendar_day(req, day=None):
+    user = req.user
+    if day:
+        curr_date = get_date_from_day_number(datetime.today().year, day)
+    else:
+        curr_date = datetime.today()
+    
+    # curr_date = datetime.today()
+    print(curr_date)
+    week = curr_date.isocalendar()[1]
+    month = curr_date.month
+    year = curr_date.year
+    month = get_month_from_week(year, week)
+    month_name = calendar.month_name[month]
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    
+    # Mapping dictionary from English to French day names
+    day_mapping = {
+        'Monday': 'Lundi',
+        'Tuesday': 'Mardi',
+        'Wednesday': 'Mercredi',
+        'Thursday': 'Jeudi',
+        'Friday': 'Vendredi',
+        'Saturday': 'Samedi',
+        'Sunday': 'Dimanche'
+    }
+    hours = list(range(24))  # Hours from 0 to 23
+    if user.role.sec_level >= 4:
+        appointments = Appointment.objects.filter(date=curr_date).order_by('-time')
+    else:
+        appointments = Appointment.objects.filter(date=curr_date, host=user).order_by('-time')
+
+    context = {
+        "rdv_calendar": "active",
+        'title': 'Appointments Calendar',
+        'day': day,
+        'curr_date': curr_date,
+        'week': week,
+        'year': year,
+        'month': month,
+        'month_name': month_name,
+        'days': days,
+        'day_mapping': day_mapping,
+        'hours': hours,
+        'appts': appointments,
+    }
+
+    return render(req, 'base/partials/calendar_day.html', context)
     
 @ login_required(login_url='login')
 def appointment(req, pk):
     user = req.user
     curr_obj = Appointment.objects.get(id=pk)
+    
+    # Mark associated notifications as read
+    associated_notifications = Notification.objects.filter(content_type=ContentType.objects.get_for_model(Appointment), object_id=curr_obj.id)
+    if associated_notifications:
+        associated_notifications.update(is_read=True)
+        print(f'Notification was read at {timezone.now()}')
 
     context = {
         "appointment_details_page": "active",
@@ -1013,29 +1073,40 @@ def filter_appointments_table(req):
 
 # notifications-------------------------------------------------------------------------------------------------
 @login_required(login_url='login')
-def notifications(req):
-    notifications = ChatNotification.objects.filter(
-        user=req.user, is_seen=False)
-    users = CustomUser.objects.all()
-
+def notification_list(req):
+    user = req.user
+    notifications = Notification.objects.filter(user=user, is_read=False)
     context = {
-        'notifications': 'active',
+        'notifications_list': 'active',
         'notifications': notifications,
-        'users': users,
+    }
+    return render(req, 'base/partials/notification_list.html', context)
+
+@login_required(login_url='login')
+def notifications(req):
+    user = req.user
+    notifications = Notification.objects.filter(user=user)
+    context = {
+        'notifications_page': 'active',
+        'notifications': notifications,
     }
     return render(req, 'base/notifications.html', context)
 
 @login_required(login_url='login')
 def read_notification(req, pk):
     user = req.user
-    obj = ChatNotification.objects.get(id=pk)
-    if user != obj.user:
-        return redirect(req.META.get('HTTP_REFERER', '/'))
+    curr_obj = Notification.objects.get(id=pk, user=user)
 
     if req.method == 'POST':
-        if obj.is_seen == False:
-            ChatNotification.objects.filter(id=pk).update(is_seen=True)
-            return redirect('chat_page', obj.chat.sender)
-        else:
-            return redirect(req.META.get('HTTP_REFERER', '/'))
+            curr_obj.is_read = True
+            curr_obj.save()
+            return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
+
+@ login_required(login_url='login')
+def badge(req):
+    user = req.user
+    curr_profile = get_object_or_404(Profile, user=user)  
+    notifications = Notification.objects.filter(user=user, is_read=False)
+    context = {"curr_profile" : curr_profile, 'notifications':notifications}
+    return render(req, 'base/partials/badge.html', context)

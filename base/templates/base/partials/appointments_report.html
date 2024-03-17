@@ -11,13 +11,13 @@
   <div class="w-full flex justify-between items-center gap-1">
     <!-- date margin -->
     <input
-      class="px-3 py-2 w-full rounded-md"
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
       type="date"
       name="min_date"
       placeholder="A partir du"
     />
     <input
-      class="px-3 py-2 w-full rounded-md"
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
       type="date"
       name="max_date"
       placeholder="Jusqu'au"
@@ -25,7 +25,7 @@
     {% if user.role.sec_level >= 4 %}
     <select
       name="host"
-      class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
     >
       <option value="" selected disabled>Hôte</option>
       {% for obj in hosts %}
@@ -36,7 +36,7 @@
     <!-- statuses -->
     <select
       name="visit_status"
-      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
     >
       <option value="" selected disabled>Status</option>
       {% for obj in statuses %}
@@ -46,7 +46,7 @@
     <!-- sex -->
     <select
       name="sex"
-      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full"
     >
       <option value="" selected disabled>Sexe</option>
       <option value="female">Feminin</option>

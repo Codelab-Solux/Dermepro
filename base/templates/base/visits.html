@@ -11,6 +11,8 @@
     <span class="mr-2">Nouvelle visite</span>
     <i class="fa-solid fa-user-tie"></i>
   </button>
+  {% else %}
+  <div class="h-12"></div>
   {% endif %}
   <form
     hx-post="{% url 'filter_visits' %}"

@@ -3,9 +3,6 @@
 <!-- tablet/ PC view -->
 
 <div
-  hx-get="{% url 'visit' obj.id %}"
-  hx-target=".visit_details"
-  hx-swap="innerHTML"
   class="cursor-pointer hidden relative md:flex flex-col border bg-white focus:border-purple-950 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
 >
   <!-- admin functions update + delete -->
@@ -36,7 +33,12 @@
 
   <!-- card info -->
 
-  <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
+  <article 
+  
+  hx-get="{% url 'visit' obj.id %}"
+  hx-target=".visit_details"
+  hx-swap="innerHTML"
+  class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
     <h4 class="text-black font-bold">
       {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
       <!--  -->

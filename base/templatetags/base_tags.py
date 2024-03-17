@@ -6,7 +6,11 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta, MO, SU
 register = template.Library()
 
-def by_week_boundaries(year, week):
+@register.filter
+def get_model_name(obj):
+    return obj._meta.model_name
+
+def get_week_boundaries(year, week):
     # Get the first day of the week (Monday) for the given ISO year and week
     first_day_of_week = datetime.fromisocalendar(year, week, 1)
     

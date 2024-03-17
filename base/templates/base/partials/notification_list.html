@@ -1,0 +1,19 @@
+  {% if not notifications %}
+      <!--------------------------------------- No data placeholder --------------------------------------->
+      <div class="p-8 my-10 w-full mx-auto rounded-md flex-col text-center">
+        <i class="fa-regular fa-folder-open text-3xl text-gray-400"></i>
+        <p class="mt-4">
+          Aucune notification
+        </p>
+      </div>
+
+      {% else %}
+    <ul class="w-full flex flex-col gap-1">
+      {% for obj in notifications %} {% if not obj.is_read %}
+      <!--  -->
+      {{ obj.get_notification_html|safe }}
+      <!--  -->
+      {% endif %} {% endfor %}
+    </ul>
+
+ {% endif %}

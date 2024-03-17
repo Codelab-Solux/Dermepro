@@ -5,5 +5,8 @@
     "python.formatting.provider": "none",
     "html.format.indentHandlebars": true,
     "html.format.indentInnerHtml": true,
-    "html.format.templating": true
+    "html.format.templating": true,
+    "editor.wordWrapColumn": 200,
+    "debug.console.wordWrap": false,
+    "diffEditor.wordWrap": "off"
 }

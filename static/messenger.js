@@ -1,0 +1,95 @@
+var { textContent: thread_id } = document.getElementById("thread");
+var { textContent: sender_id } = document.getElementById("curr_user");
+var { textContent: receiver_id } = document.getElementById("other_user");
+var chat_box = document.getElementById("chat_box");
+var chat_form = document.getElementById("chat_form");
+var endpoint = `/ws/chats/threads/${receiver_id}/`;
+var messengerSocket = new WebSocket("ws://" + window.location.host + endpoint);
+
+messengerSocket.onopen = () => {
+  console.log("WebSocket connected to " + endpoint);
+};
+
+messengerSocket.onmessage = (event) => {
+  var currentdate = new Date();
+  var curr_time = `${currentdate.getHours()}:${currentdate.getMinutes()}`;
+  var data = JSON.parse(event.data);
+
+  let new_message;
+  if (data.sender === sender_id) {
+    new_message = `
+    <tr class="max-h-16">
+        <td class="mr-2 px-4 py-2 bg-purple-200 text-black text-right rounded-lg flex flex-col max-w-md float-right">
+        <p>${data.message}</p>
+          <small class="text-xs text-gray-500 text-right">${curr_time}</small>
+        </td>
+      </tr>`;
+  } else {
+    new_message = `
+      <tr class="max-h-16">    
+      <td class="px-4 py-2 bg-amber-200 text-black text-left rounded-lg flex flex-col max-w-md float-left">
+      <p>${data.message}</p>
+      <small class="text-xs text-gray-500 text-left">${curr_time}</small>
+      </td>
+      </tr>`;
+  }
+
+  chat_box.insertAdjacentHTML("beforeend", new_message);
+  scrollToBottom();
+  updateThreads();
+};
+
+messengerSocket.onclose = () => {
+  console.log("WebSocket disconnected from " + endpoint);
+};
+
+document.getElementById("chat_form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  var chat_input = document.getElementById("chat_input");
+  var message = chat_input.value.trim();
+  if (message !== "") {
+    var data = JSON.stringify({
+      type: "chat",
+      thread_id,
+      sender: sender_id,
+      receiver: receiver_id,
+      message: message,
+    });
+    messengerSocket.send(data);
+    chat_input.value = "";
+  }
+});
+
+// Function to scroll the conversation box to the bottom
+function scrollToBottom() {
+  $("#convo_box").animate(
+    {
+      scrollTop: $("#convo_box")[0].scrollHeight,
+    },
+    "slow"
+  );
+}
+
+// Wait for the DOM content to be loaded
+document.addEventListener("DOMContentLoaded", function () {
+  // Get all thread cards and attach click event listener to each one
+  const threadCards = document.querySelectorAll(".thread_card");
+  threadCards.forEach(function (threadCard) {
+    threadCard.addEventListener("click", function () {
+      updateThreads();
+    });
+  });
+
+  // Function to update the thread list
+  function updateThreads() {
+    // Fetch the latest threads from the server
+    fetch("/chats/threads")
+      .then((response) => response.text())
+      .then((data) => {
+        // Replace the existing thread list with the updated one
+        document.getElementById("threads").innerHTML = data;
+      })
+      .catch((error) => console.error("Error fetching threads:", error));
+  }
+});
+

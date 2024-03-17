@@ -6,7 +6,9 @@ register_converter(HashIdConverter, "hashid")
 
 urlpatterns = [
     path('', home, name='home'),
+    path('badge/', badge, name='badge'),
     path('notifications/', notifications, name='notifications'),
+    path('notifications/list/', notification_list, name='notification_list'),
     path('notifications/<hashid:pk>/read/',
          read_notification, name='read_notification'),
     # -------------------------------------------------------------------------------
@@ -53,10 +55,11 @@ htmx_urls =[
     path('appointments/pending/', pending_appointments, name='pending_appointments'),
     path('appointments/pending/vip/', pending_vips, name='pending_vips'),
     path('appointments/pending/new/', create_appointment, name='create_appointment'),
+    path('appointments/week/<int:week>/', calendar_week, name='calendar_week'),
+    path('appointments/day/<int:day>/', calendar_day, name='calendar_day'),
     path('appointments/<hashid:pk>/<hashid:kp>/edit_status/', edit_appointment_status, name='edit_appointment_status'),
     path('appointments/<hashid:pk>/badge/', generate_appointment_badge, name='generate_appointment_badge'),
     path('appointments/<hashid:pk>/signature/', sign_appointment, name='sign_appointment'),
-    path('weekly_calendar/week/<int:week>/', weekly_calendar, name='weekly_calendar'),
     # visits -----------------------------------------------------------
     # path('visits/add/', add_visit, name='add_visit'),
     path('visits/table/', visits_table, name='visits_table'),

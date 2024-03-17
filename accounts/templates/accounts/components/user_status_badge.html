@@ -2,18 +2,27 @@
 <div class="text-black text:xs" id="obj_status{{obj.id}}">
   {% if curr_profile.status.id == 1 %}
   <span class="px-3 py-1 bg-green-200 rounded-md">
-    <i class="text-sm fa-solid fa-door-open mr-2"></i>
-    Disponible
+    <i class="text-sm fa-solid fa-door-open lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      Disponible
+    </small>
   </span>
   {% elif curr_profile.status.id == 2 %}
   <span class="px-3 py-1 bg-amber-200 rounded-md">
-    <i class="text-sm fa-solid fa-hourglass-half mr-2"></i>
-    En reunion
+    <i class="text-sm fa-solid fa-hourglass-half lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      En reunion
+    </small>
   </span>
   {% else %}
   <span class="px-3 py-1 bg-red-200 rounded-md">
-    <i class="text-sm fa-solid fa-door-closed mr-2"></i>
-    Indisponible
+    <i class="text-sm fa-solid fa-door-closed lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      Indisponible
+    </small>
   </span>
   {% endif %}
 </div>
@@ -22,18 +31,27 @@
 <div class="text-black text:xs" id="obj_status{{obj.id}}">
   {% if obj.profile.status.id == 1 %}
   <span class="px-3 py-1 bg-green-200 rounded-md">
-    <i class="text-sm fa-solid fa-door-open mr-2"></i>
-    Disponible
+    <i class="text-sm fa-solid fa-door-open lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      Disponible
+    </small>
   </span>
   {% elif obj.profile.status.id == 2 %}
   <span class="px-3 py-1 bg-amber-200 rounded-md">
-    <i class="text-sm fa-solid fa-hourglass-half mr-2"></i>
-    En reunion
+    <i class="text-sm fa-solid fa-hourglass-half lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      En reunion
+    </small>
   </span>
   {% else %}
   <span class="px-3 py-1 bg-red-200 rounded-md">
-    <i class="text-sm fa-solid fa-door-closed mr-2"></i>
-    Indisponible
+    <i class="text-sm fa-solid fa-door-closed lg:mr-2"></i>
+    <small class="hidden lg:inline">
+
+      Indisponible
+    </small>
   </span>
   {% endif %}
 </div>

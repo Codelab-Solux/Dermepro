@@ -25,6 +25,7 @@ class ChatMessage(models.Model):
     receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='receiver')
     message = models.TextField(blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     def get_hashid(self):
         return h_encode(self.id)

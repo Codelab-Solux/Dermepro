@@ -24,7 +24,7 @@
     <h3>{{ month_name }}</h3>
     <div class="flex gap-2 items-center">
       <!-- <button
-        hx-get='{% url "weekly_calendar" week|add:"-1" %}'
+        hx-get='{% url "calendar_week" week|add:"-1" %}'
         hx-target=".rdv_calendar"
         hx-swap="outerHTML"
         class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs"
@@ -33,7 +33,7 @@
       </button> -->
       Semaine N° {{ week }}
       <!-- <button
-        hx-get='{% url "weekly_calendar" week|add:"1" %}'
+        hx-get='{% url "calendar_week" week|add:"1" %}'
         hx-target=".rdv_calendar"
         hx-swap="outerHTML"
         class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs"

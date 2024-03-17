@@ -1,27 +1,31 @@
-{% if not threads %}
-<div
-  class="p-4 flex-col justify-center items-center text-center text-black m-auto"
->
-  <i class="fa-solid fa-comments text-purple-400 text-7xl"></i>
-  <p
-    class="mt-2 px-4 py-2 w-fit bg-purple-100 rounded-lg text-sm text-center mx-auto"
+{% load get_last_msg from chats_tags %}
+<!--  -->
+  {% if not threads %}
+  <div
+    class="p-4 flex-col justify-center items-center text-center text-black m-auto"
   >
-    Aucune conversation disponible
-  </p>
-</div>
-{% else %}
-<div class="hidden h-100 w-full md:grid grid grid-cols-1 gap-2">
-  {% for obj in threads %}
-  <!--  -->
-  {% include 'chats/components/thread_card.html' %}
-  <!--  -->
-  {% endfor %}
-</div>
-<div class="md:hidden h-100 w-full grid grid-cols-1 gap-2">
-  {% for obj in threads %}
-  <!--  -->
-  {#% include 'chats/components/thread_card_alt.html' %#}
-  <!--  -->
-  {% endfor %}
-</div>
-{% endif %}
+    <i class="fa-solid fa-comments text-purple-400 text-7xl"></i>
+    <p
+      class="mt-2 px-4 py-2 w-fit bg-purple-100 rounded-lg text-sm text-center mx-auto"
+    >
+      Aucune conversation disponible
+    </p>
+  </div>
+  {% else %}
+  <div  id="threads_list"  class="h-100 w-full grid grid grid-cols-1 gap-2">
+    {% for obj in threads %}
+    <!--  -->
+    {% with msg_obj=obj.id|get_last_msg %}
+    <!--  -->
+    <div class="hidden md:inline">
+      {% include 'chats/components/thread_card.html' %} 
+    </div>
+    <div class="md:hidden">
+      {#% include 'chats/components/thread_card_alt.html' %#}
+    </div>
+    <!--  -->
+    {% endwith %}
+    <!--  -->
+    {% endfor %}
+  </div>
+  {% endif %}

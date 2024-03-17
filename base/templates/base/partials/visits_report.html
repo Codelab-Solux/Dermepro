@@ -11,14 +11,14 @@
   <div class="w-full flex justify-between items-center gap-1">
     <!-- date margin -->
     <input
-      class="px-3 py-2 w-full rounded-md"
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
       type="date"
       id="visit_min_date"
       name="min_date"
       placeholder="A partir du"
     />
     <input
-      class="px-3 py-2 w-full rounded-md"
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
       type="date"
       id="visit_max_date"
       name="max_date"
@@ -28,7 +28,7 @@
     <select
       id="visit_host"
       name="host"
-      class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
     >
       <option value="" selected disabled>Hôte</option>
       {% for obj in hosts %}
@@ -40,7 +40,7 @@
     <select
       id="visit_status"
       name="status"
-      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
     >
       <option value="" selected disabled>Status</option>
       {% for obj in statuses %}
@@ -51,7 +51,7 @@
     <select
       id="visit_type"
       name="type"
-      class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
     >
       <option value="" selected disabled>Type de visite</option>
       <option value="familial">Amicale</option>
@@ -62,7 +62,7 @@
     <select
       id="visit_sex"
       name="sex"
-      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full"
     >
       <option value="" selected disabled>Sexe</option>
       <option value="female">Feminin</option>

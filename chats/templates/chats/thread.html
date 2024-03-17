@@ -1,62 +1,68 @@
+
 {% load static %}
-
-<section class="grid h-full w-full">
+<script src="{% static 'messenger.js' %}" defer="true"></script>
+<!--  -->
+<section class="flex flex-col h-full w-full">
   <!------------------ responder info ------------------->
-
-  <div
-    class="absolute top-0 left-0 rounded-tl-lg rounded-br-lg w-fit px-4 py-2 flex justify-between items-center bg-purple-950 text-white"
-  >
-    <div class="flex items-center">
-      {% if not other_user.profile.image %}
-      <img
-        class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
-        src="{% static 'imgs/anon.png' %}"
-        alt="welcome image"
-      />
-      {% else %}
-      <img
-        class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
-        src="{{other_user.profile.image.url}}"
-        alt="welcome image"
-      />
-      {% endif %}
-      <span class="ml-2">
-        {{other_user.last_name}} {{other_user.first_name}}
-      </span>
+  <div class="bg-white w-full h-10">
+    <div
+      class="absolute top-0 left-0 rounded-tl-lg rounded-br-lg w-fit px-4 py-2 flex justify-between items-center bg-purple-950 text-white"
+    >
+      <div class="flex items-center">
+        {% if not other_user.profile.image %}
+        <img
+          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
+          src="{% static 'imgs/anon.png' %}"
+          alt="welcome image"
+        />
+        {% else %}
+        <img
+          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
+          src="{{other_user.profile.image.url}}"
+          alt="welcome image"
+        />
+        {% endif %}
+        <span class="ml-2">
+          {{other_user.last_name}} {{other_user.first_name}}
+        </span>
+      </div>
     </div>
   </div>
 
   <!------------------ chat messages ------------------->
 
-  <div class="mb-10 h-full w-full overflow-auto">
+  <div id="convo_box" class="pb-14 pt-2 h-full w-full overflow-auto">
     <table class="h-full w-full">
-      <tbody id="chat-box" class="flex flex-col gap-4 overflow-auto">
-        {% for obj in messages %}
-        <!--  -->
-        {% if obj.sender == other_user.id %}
+      <tbody
+        id="chat_box"
+        class="text-sm mx-4 flex flex-col gap-4"
+      >
+        {% for obj in messages %} {% if obj.sender == other_user %}
 
-        <tr>
+        <tr class="max-h-16">
           <td
-            class="px-4 py-2 bg-amber-100 text-black text-left rounded-md flex flex-col max-w-md float-left"
+            class="px-4 py-2 bg-amber-200 text-black text-left rounded-lg flex flex-col max-w-md float-left"
           >
             <p>{{obj.message}}</p>
-            <span class="text-xs text-gray-500">{{obj.timestamp.time}}</span>
+            <small class="text-xs text-gray-500">
+              {{ obj.timestamp.time }}
+            </small>
           </td>
         </tr>
 
         {% else %}
-        <tr>
+        <tr class="max-h-16">
           <td
-            class="mr-2 px-4 py-2 bg-purple-950 text-white text-right rounded-md flex flex-col max-w-md float-right"
+            class="mr-2 px-4 py-2 bg-purple-200 text-black text-right rounded-lg flex flex-col max-w-md float-right"
           >
             <p>{{obj.message}}</p>
-            <span class="text-xs text-gray-300">{{obj.timestamp.time}}</span>
+            <small class="text-xs text-gray-500">
+              {{ obj.timestamp.time }}
+            </small>
           </td>
         </tr>
 
-        {% endif %}
-        <!--  -->
-        {% endfor %}
+        {% endif %} {% endfor %}
       </tbody>
     </table>
   </div>
@@ -65,19 +71,20 @@
   <div class="absolute w-full bottom-0">
     <form
       id="chat_form"
-      class="w-[90%] mx-auto flex flex-row justify-between gap-2"
+       hx-post="false"
+      class="w-[95%] mx-auto flex flex-row justify-between gap-2"
     >
       {% csrf_token %}
       <input
         type="text"
         name="message"
-        id="chat-input"
+        id="chat_input"
         required
         class="px-4 py-2 rounded-t-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
         placeholder="ecrivez votre message..."
       />
       <button
-        class="group px-4 py-3 text-sm bg-purple-950 hover:bg-amber-200 text-white rounded-t-md"
+        class="group px-4 py-3 text-sm bg-purple-950 hover:bg-purple-200 text-white rounded-t-md"
         type="submit"
       >
         <i class="px-2 fa-solid fa-paper-plane group-hover:text-black"></i>
@@ -86,25 +93,15 @@
   </div>
 </section>
 
-{{other_user.id|json_script:"other_user"}}
-{{request.user.id|json_script:"curr_user"}}
+{{ curr_thread.id|json_script:"thread" }}
+<!--  -->
+{{ other_user.id|json_script:"other_user" }}
+<!--  -->
+{{ request.user.id|json_script:"curr_user" }}
+
 
 <script>
-  var sender_id = JSON.parse(document.getElementById("curr_user").textContent);
-  var receiver_id = JSON.parse(
-    document.getElementById("other_user").textContent
-  );
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var endpoint = `/ws/chats/${receiver_id}/`;
-    console.log("intro");
-    console.log(endpoint);
-    var socket = new WebSocket("ws://" + window.location.host + endpoint);
-    socket.onopen = function () {
-      console.log("WebSocket connected to " + endpoint);
-    };
-    socket.onclose = function (event) {
-      console.log("WebSocket disconnected from " + endpoint);
-    };
-  });
+// window.addEventListener("load", function() {
+//   scrollToBottom();
+// });
 </script>
