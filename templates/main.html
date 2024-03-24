@@ -30,6 +30,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script
       src="https://kit.fontawesome.com/f601cf3e61.js"
       crossorigin="anonymous"
@@ -49,23 +51,26 @@
     hx-headers='{"X-CSRFToken" : "{{ csrf_token }}"}'
     class="flex flex-row bg-white text-gray-700 max-w-full mx-auto my-0"
   >
-    {% include 'sidebar.html' %}
+    <div id="sidebar">{% include 'sidebar.html' %}</div>
+
     <div class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] bg-white">
       <div
         class="relative p-4 md:p-6 lg:p-8 pt- w-full max-w-[1350px] mx-auto min-h-screen"
       >
+        <button
+          class="hidden"
+          id="badge_reloader"
+          hx-target=".badge"
+          hx-get="{% url 'badge' %}"
+        ></button>
         <div
-          class="mb-2 w-full"
+          class="badge mb-2 w-full"
           hx-get="{% url 'badge' %}"
           hx-trigger="load, db_changed from:body"
           hx-target="this"
         ></div>
         <!--  -->
-        {% block content %} 
-        <section id="base">
-          
-        </section>
-          {% endblock %}
+        <div id="main">{% block content %} {% endblock %}</div>
       </div>
     </div>
     <!--  -->

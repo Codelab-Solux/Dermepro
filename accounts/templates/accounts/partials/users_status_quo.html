@@ -1,0 +1,56 @@
+
+<section class="grid gap-8">
+  <!-- unavailable users -->
+  <div>
+    <h3 class="mb-4 text-black text-lg font-bold">Hôtes non disponibles</h3>
+    {% if not unavailable_users %}
+    <div class="my-3 bg-gray-50 p-4 rounded-lg flex justify-center items-center gap-2 text-center m-auto">
+      <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+      <p class="text-sm">Aucun</p>
+    </div>
+    {% else %}
+    <div class="my-3 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {% for obj in unavailable_users %}
+      <div class="relative p-4 h-full border hover:border-red-400 hover:shadow-md rounded-md group">
+        <i class="absolute top-2 right-2 fa-solid fa-door-closed text-xs text-gray-400 group-hover:text-red-400"></i>
+        <h3 class="font-bold text-black text-md">
+          {{obj.user.last_name}} {{obj.user.first_name}}
+        </h3>
+        <h3 class="text-sm">
+          Cet hôte est actuellement indisponible.
+        </h3>
+        <p class="italic text-red-600 text-sm">@{{obj.user.username}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <!-- busy users -->
+  <div>
+    <h3 class="mb-4 text-black text-lg font-bold">Hôtes en réunion</h3>
+    {% if not busy_users %}
+    <div
+      class="my-3 bg-gray-50 p-4 rounded-lg flex justify-center items-center gap-2 text-center m-auto"
+    >
+      <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+      <p class="text-sm">Aucun</p>
+    </div>
+    {% else %}
+    <div class="my-3 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {% for obj in busy_users %}
+      <div class="relative p-4 h-full border hover:border-amber-400 hover:shadow-md rounded-md group">
+        <i class="absolute top-2 right-2 fa-solid fa-hourglass-half text-xs text-gray-400 group-hover:text-amber-400"></i>
+        <h3 class="font-bold text-black text-md">
+          {{obj.user.last_name}} {{obj.user.first_name}}
+        </h3>
+        <h3 class="text-sm">
+          Cet hôte est actuellement en reunion.
+        </h3>
+        <p class="italic text-amber-600 text-sm">@{{obj.user.username}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+

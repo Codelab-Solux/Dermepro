@@ -5,11 +5,13 @@
   <button
     hx-target="#basic_dialog"
     hx-get="{% url 'create_user' %}"
-    class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
+    class="mb-2 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
   >
     <span class="hidden md:inline mr-2">Nouvel utilisateur</span>
     <i class="fa-solid fa-user-plus"></i>
   </button>
+  {% else %}
+  <div class="h-12"></div>
   {% endif %}
   <!--------------------------------------- filter form --------------------------------------->
   <form
@@ -24,7 +26,7 @@
       <!-- user types -->
       <select
         name="user_type"
-        class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
         <option value="" selected disabled>Type d'utilisateur</option>
         {% for obj in user_roles %}
@@ -60,7 +62,7 @@
       <!-- sex -->
       <select
         name="user_sex"
-        class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
       >
         <option value="" selected disabled>Sexe</option>
         <option value="male">Masculin</option>
@@ -69,7 +71,7 @@
       <!-- user statuses -->
       <select
         name="user_status"
-        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
         <option value="" selected disabled>Status de disponibilité</option>
         {% for obj in user_statuses %}

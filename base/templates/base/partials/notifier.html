@@ -25,12 +25,12 @@
     id="notifications_box"
   >
   <!--------------------------------------- No data placeholder --------------------------------------->
-    <!-- {#% if not notifications %#}
+    {% if not notifications %}
     <div class="p-8 my-10 w-full mx-auto rounded-md flex-col text-center">
       <i class="fa-regular fa-folder-open text-3xl text-gray-400"></i>
       <p class="mt-4">Aucune notification</p>
     </div>
-    {#% else %#} -->
+    {% else %}
     <ul id="notif_list" class="w-full flex flex-col gap-1">
       {% for obj in notifications %}
       <!--  -->
@@ -38,7 +38,7 @@
       <!--  -->
       {% endfor %}
     </ul>
-    <!-- {#% endif %#} -->
+    {% endif %}
 
     {% if notifications %}
     <a
@@ -83,26 +83,4 @@
     notifications_counter.innerHTML = "";
     notifications_counter.classList.add("hidden");
   });
-
-  //   $(document).ready(function() {
-  //   // Attach click event listener to the button
-  //   $("#notifications_clearer").click(function() {
-  //     // Send AJAX request to update notifications status
-  //     $.ajax({
-  //       url: "/read_notification/",
-  //       type: "POST",
-  //       data: { is_read: true }, // You can include additional data if needed
-  //       success: function(response) {
-  //         // Handle success response
-  //         console.log("Notifications status updated successfully");
-  //         // Optionally, you can update the UI to reflect the changes
-  //       },
-  //       error: function(xhr, status, error) {
-  //         // Handle error response
-  //         console.error("Error updating notifications status:", error);
-  //       }
-  //     });
-  //   });
-
-  // });
 </script>

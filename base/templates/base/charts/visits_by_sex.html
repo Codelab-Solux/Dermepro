@@ -1,0 +1,30 @@
+
+
+    <div id="visits_by_sex"></div>
+
+    <script>
+        // Retrieve data from Django view
+        var counts = {{ counts|safe }};
+        var labels = {{ labels|safe }};
+
+        // Data for the doughnut chart
+        var data = [{
+            values: counts,
+            labels: labels,
+            type: 'pie',
+            hole: 0.4,
+            marker: {
+                colors: ['#1f77b4', '#ff7f0e'] // Customize colors for male and female
+            }
+        }];
+
+        // Layout options for the doughnut chart
+        var layout = {
+            title: 'Male vs Female Visitors',
+            showlegend: true,
+            legend: { "orientation": "h" } // Position legend horizontally
+        };
+
+        // Plot the doughnut chart
+        Plotly.newPlot('visits_by_sex', data, layout);
+    </script>

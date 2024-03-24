@@ -1,0 +1,533 @@
+<!--------------------------------------- overview --------------------------------------->
+<section class="mt-8 grid gap-8">
+  <!-- day recap -->
+  <div class="p-6 bg-purple-950 shadow-lg rounded-xl grid gap-2">
+    <h3 class="text-white text-lg font-bold">Status Quo</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-100">
+      <div class="p-2 grid gap-2 border-2 border-purple-100 rounded-xl">
+        <p class="px-4 py-2 rounded-md bg-purple-100 text-black">
+          <i class="fa-solid fa-spinner text-purple-600"></i> En attente
+        </p>
+        <p>
+          Visites :
+          <span class="text-lg font-bold ml-2">{{pending_visits}}</span>
+        </p>
+        <p>
+          Rendez-vous :
+          <span class="text-lg font-bold ml-2">{{pending_visits}}</span>
+        </p>
+      </div>
+      <div class="p-2 grid gap-2 border-2 border-amber-100 rounded-xl">
+        <p class="px-4 py-2 rounded-md bg-amber-100 text-black">
+          <i class="fa-solid fa-hourglass-half text-amber-600"></i> En cours
+        </p>
+        <p>
+          Visites :
+          <span class="text-lg font-bold ml-2"> {{active_visits}}</span>
+        </p>
+        <p>
+          Rendez-vous :
+          <span class="text-lg font-bold ml-2">{{active_appointments}}</span>
+        </p>
+      </div>
+      <div class="p-2 grid gap-2 border-2 border-green-100 rounded-xl">
+        <p class="px-4 py-2 rounded-md bg-green-100 text-black">
+          <i class="fa-solid fa-hourglass-end mr-2 text-green-600"></i> Terminé
+        </p>
+        <p>
+          Visites :
+          <span class="text-lg font-bold ml-2">{{finished_visits}}</span>
+        </p>
+        <p>
+          Rendez-vous :
+          <span class="text-lg font-bold ml-2">{{finished_appointments}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- general overview -->
+  <div
+    class="w-full text-gray-600 text-sm rounded-xl grid md:grid-cols-2 lg:grid-cols-4 gap-2"
+  >
+    <div
+      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-floppy-disk text-purple-600"></i>
+        <p class="text-black">Total Enregistrés</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="p-4 bg-purple-200 rounded-lg text-lg">
+          <p class="text-sm text-black">Visites</p>
+          <span class="text-black text-xl font-bold"> {{visits|length}} </span>
+        </div>
+        <div class="p-4 bg-purple-300 rounded-lg text-lg">
+          <p class="text-sm text-black">Rendez-vous</p>
+          <span class="text-black text-xl font-bold">
+            {{appointments|length}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-green-600"></i>
+        <p class="text-black">Total Acceptés</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="p-4 bg-green-200 rounded-lg text-lg">
+          <p class="text-sm text-black">Visites</p>
+          <span class="text-black text-xl font-bold"> {{accp_visits}} </span>
+        </div>
+        <div class="p-4 bg-green-300 rounded-lg text-lg">
+          <p class="text-sm text-black">Rendez-vous</p>
+          <span class="text-black text-xl font-bold">
+            {{accp_appointments}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-ban text-red-600"></i>
+        <p class="text-black">Total Rejetés</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="p-4 bg-red-200 rounded-lg text-lg">
+          <p class="text-sm text-black">Visites</p>
+          <span class="text-black text-xl font-bold"> {{cncl_visits}} </span>
+        </div>
+        <div class="p-4 bg-red-300 rounded-lg text-lg">
+          <p class="text-sm text-black">Rendez-vous</p>
+          <span class="text-black text-xl font-bold">
+            {{cncl_appointments}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-toggle-off text-sky-600"></i>
+        <p class="text-black">Total Manqués</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="p-4 bg-sky-200 rounded-lg text-lg">
+          <p class="text-sm text-black">Visites</p>
+          <span class="text-black text-xl font-bold"> {{misd_visits}} </span>
+        </div>
+        <div class="p-4 bg-sky-300 rounded-lg text-lg">
+          <p class="text-sm text-black">Rendez-vous</p>
+          <span class="text-black text-xl font-bold">
+            {{misd_appointments}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- graphs -->
+
+  <div class="grid gap-4">
+    <h3>Aperçu General</h3>
+    <div class="p-6 border rounded-xl shadow-sm flex gap-3">
+      <div class="h-80">
+        <canvas class="text-gray-200" id="guests_chart"></canvas>
+      </div>
+      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+        <canvas id="series_chart"></canvas>
+      </div>
+    </div>
+
+    <h3>Visites</h3>
+    <div class="p-6 border rounded-xl shadow-sm flex">
+      <div class="h-80">
+        <canvas class="text-gray-200" id="visits_sex_chart"></canvas>
+      </div>
+      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+        <canvas id="visits_per_host_chart"></canvas>
+      </div>
+    </div>
+    
+    <h3>Rendez-vous</h3>
+    <div class="p-6 border rounded-xl shadow-sm flex">
+      <div class="h-80">
+        <canvas class="text-gray-200" id="appts_sex_chart"></canvas>
+      </div>
+      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+        <canvas id="appts_per_host_chart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Parse JSON data from Django template variables
+  const currentDate = new Date();
+  var apptsData = JSON.parse('{{ appointments_json|safe }}');
+  var visitsData = JSON.parse('{{ visits_json|safe }}');
+
+  // // general overview char ----------------------------------------------------------------------------------------------------
+  // entries percentage by type --pie(doughnut) chart--------------------------------------
+  var ctx = document.getElementById("guests_chart");
+  var guests_chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Rendez-vous", "Visites"],
+      datasets: [
+        {
+          data: ['{{appointments_count}}', '{{visits_count}}'],
+          backgroundColor: ["rgb(56, 189, 248, 0.5)", "rgb(192, 132, 252, 0.5)"],
+          borderColor: ["rgb(56, 189, 248)", "rgb(192, 132, 252)"],
+          borderWidth: 2,
+          boderColor: "black",
+        },
+      ],
+    },
+  });
+  
+  
+  // 30 day time series chart (visites/ appointments) --multi bar chart--------------------------------------
+  var apptsPerDay = {};
+  var visitsPerDay = {};
+  // console.log(`apptsData : ${apptsData}`);
+
+  // Filter data for the past 30 days including today
+  var last30DaysVisits = visitsData.filter((obj) => {
+    const objDate = new Date(obj.fields.date);
+    const timeDiff = Math.abs(currentDate.getTime() - objDate.getTime());
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return daysDiff <= 30;
+  });
+
+  // Filter data for the past 30 days including today
+  var last30DaysAppts = apptsData.filter((obj) => {
+    const objDate = new Date(obj.fields.date);
+    const timeDiff = Math.abs(currentDate.getTime() - objDate.getTime());
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return daysDiff <= 30;
+  });
+
+  // Loop through the data to aggregate visits per day
+  last30DaysVisits.forEach((obj) => {
+    const date = obj.fields.date;
+    if (!visitsPerDay[date]) {
+      visitsPerDay[date] = 1;
+    } else {
+      visitsPerDay[date]++;
+    }
+  });
+
+  // var last30DaysAppts = {};
+  // Loop through the data to aggregate visits per day
+  last30DaysAppts.forEach((obj) => {
+    const date = obj.fields.date;
+    if (!apptsPerDay[date]) {
+      apptsPerDay[date] = 1;
+    } else {
+      apptsPerDay[date]++;
+    }
+  });
+
+  // console.log(last30DaysAppts);
+  // console.log(last30DaysVisits);
+
+  // Function to generate an array of labels for the past 30 days
+  function generatePast30DaysLabels() {
+    const labels = [];
+    const today = new Date();
+    for (let i = 30; i >= 1; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      labels.push(date.toLocaleDateString()); // You can customize the date format if needed
+    }
+    labels.push(today.toLocaleDateString()); // Add today's date as the last day
+    return labels;
+  }
+
+  // Example usage
+  const graph_dates = generatePast30DaysLabels();
+
+  // Convert the aggregated data into arrays for labels and counts
+  var appts_counts = Object.values(apptsPerDay);
+  var visit_counts = Object.values(visitsPerDay);
+  // console.log(graph_dates);
+  // console.log(appts_counts);
+  // console.log(visit_counts);
+
+  // Initialize Chart.js
+  var ctx = document.getElementById("series_chart");
+  var series_chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: graph_dates,
+      datasets: [
+        {
+          label: "Visites",
+          data: visit_counts,
+          fill: false,
+          backgroundColor: "rgb(192, 132, 252, 0.5)",
+          borderColor: "rgb(192, 132, 252)",
+          borderWidth: 2,
+        },
+        {
+          label: "Rendez-vous",
+          data: appts_counts,
+          fill: false,
+          backgroundColor: "rgb(56, 189, 248, 0.5)",
+          borderColor: "rgb(56, 189, 248)",
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      // cutout: 80,
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+        },
+        title: {
+          display: true,
+          text: "Série chronologique des 30 dernier jours",
+        },
+      },
+      scales: {
+        x: {
+          // type: "category",
+          labels: graph_dates,
+          grid: {
+            display: true,
+          },
+          ticks: {
+            maxTicksLimit: 10,
+            autoSkip: false,
+            maxRotation: 90,
+            minRotation: 90,
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+          },
+        },
+      },
+    },
+  });
+
+  
+  // // Visits charts ----------------------------------------------------------------------------------------------------
+// vistes percentage by sex --pie(doughnut) chart--------------------------------------
+var ctx = document.getElementById("visits_sex_chart");
+  var visits_sex_chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Hommes", "Femmes"],
+      datasets: [
+        {
+          label: "Visiteurs",
+          data: ['{{mal_visits}}', '{{fem_visits}}'],
+          backgroundColor: ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)"],
+          borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+          borderWidth: 2,
+        },
+      ],
+    },
+  });
+
+  // visits per host (per sex) --stacked bar chart--------------------------------------
+  // Parse hosts data from Django template variable
+  var hostsData = JSON.parse('{{ hosts_json|safe }}');
+  var visitsPerHost = {};
+  var hostNames = hostsData.map((obj) => obj.fields.username);
+  const visitCounts = [];
+  const maleVisitCounts = [];
+  const femaleVisitCounts = [];
+
+  // Loop through the visitsData array to aggregate visit counts per host
+  visitsData.forEach((obj) => {
+    const host = obj.fields.host;
+    const sex = obj.fields.sex;
+    if (!visitsPerHost[host]) {
+      visitsPerHost[host] = { male: 0, female: 0 };
+    }
+    if (sex === "male") {
+      visitsPerHost[host].male++;
+    } else if (sex === "female") {
+      visitsPerHost[host].female++;
+    }
+  });
+
+  // Print the number of visits per host
+  for (var host in visitsPerHost) {
+    if (visitsPerHost.hasOwnProperty(host)) {
+      console.log(
+        `Host: ${host}, Male Visits: ${visitsPerHost[host].male}, Female Visits: ${visitsPerHost[host].female}`
+      );
+      maleVisitCounts.push(visitsPerHost[host].male);
+      femaleVisitCounts.push(visitsPerHost[host].female);
+    }
+  }
+
+  // Initialize Chart.js to plot the visits per host
+  var ctx = document.getElementById("visits_per_host_chart");
+  var visits_per_host_chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: hostNames,
+      datasets: [
+       {
+                label: "Hommes",
+                data: maleVisitCounts,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 2,
+            },
+            {
+                label: "Femmes",
+                data: femaleVisitCounts,
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 2,
+            }
+      ],
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Visites",
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                stacked: true,
+                ticks: {
+                    stepSize: 1,
+                },
+            },
+            x: {
+                stacked: true,
+            }
+        },
+    },
+  });
+
+  // // Appointment charts ----------------------------------------------------------------------------------------------------
+// appointment percentage by sex --pie(doughnut) chart--------------------------------------
+  var ctx = document.getElementById("appts_sex_chart");
+  var appts_sex_chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Hommes", "Femmes"],
+      datasets: [
+        {
+          label: "Invités",
+          data: ['{{mal_appointments}}', '{{fem_appointments}}'],
+          backgroundColor: ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)"],
+          borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+          borderWidth: 2,
+        },
+      ],
+    },
+  });
+
+  // visits per host (per sex) --stacked bar chart--------------------------------------
+  // Parse hosts data from Django template variable
+  var hostsData = JSON.parse('{{ hosts_json|safe }}');
+  var apptsPerHost = {};
+  var hostNames = hostsData.map((obj) => obj.fields.username);
+  const apptsCounts = [];
+  const maleApptsCounts = [];
+  const femaleApptsCounts = [];
+
+  // Loop through the visitsData array to aggregate visit counts per host
+  apptsData.forEach((obj) => {
+    const host = obj.fields.host;
+    const sex = obj.fields.sex;
+    if (!apptsPerHost[host]) {
+      apptsPerHost[host] = { male: 0, female: 0 };
+    }
+    if (sex === "male") {
+      apptsPerHost[host].male++;
+    } else if (sex === "female") {
+      apptsPerHost[host].female++;
+    }
+  });
+
+  // Print the number of appts per host
+  for (var host in apptsPerHost) {
+    if (apptsPerHost.hasOwnProperty(host)) {
+      console.log(
+        `Host: ${host}, Male appts: ${apptsPerHost[host].male}, Female appts: ${apptsPerHost[host].female}`
+      );
+      maleApptsCounts.push(apptsPerHost[host].male);
+      femaleApptsCounts.push(apptsPerHost[host].female);
+    }
+  }
+
+  // Initialize Chart.js to plot the appts per host
+  var ctx = document.getElementById("appts_per_host_chart");
+  var appts_per_host_chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: hostNames,
+      datasets: [
+       {
+                label: "Hommes",
+                data: maleApptsCounts,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 2,
+            },
+            {
+                label: "Femmes",
+                data: femaleApptsCounts,
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 2,
+            }
+      ],
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rendez-vous",
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                stacked: true,
+                ticks: {
+                    stepSize: 1,
+                },
+            },
+            x: {
+                stacked: true,
+            }
+        },
+    },
+  });
+
+</script>

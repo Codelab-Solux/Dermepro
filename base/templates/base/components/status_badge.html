@@ -1,6 +1,6 @@
 {% if not curr_obj %}
 
-<div class="obj_status{{obj.id}} text-black text:xs lg:text-xs z-10">
+<div class="obj_status{{obj.id}} text-black text:xs lg:text-xs">
   {% if obj.status.id == 1 %}
   <span class="px-3 py-1 bg-purple-200 rounded-md">
     <i class="text-sm lg:text-md fa-solid fa-spinner"></i>
@@ -24,7 +24,7 @@
 </div>
 
 {% else %}
-<div class="obj_status{{curr_obj.id}} text-black text:xs lg:text-xs z-10 w-fit">
+<div class="obj_status{{curr_obj.id}} text-black text:xs lg:text-xs w-fit">
  {% if curr_obj.status.id == 1 %}
   <span class="px-3 py-1 flex items-center gap-2 bg-purple-200 rounded-md"> 
     <i class="text-sm lg:text-md fa-solid fa-spinner"></i>
@@ -55,8 +55,8 @@
   </span>
   {% else %}
   <span class="px-3 py-1 flex items-center gap-2 bg-red-200 rounded-md"> 
+    <i class="text-sm lg:text-md fa-solid fa-ban"></i>
     <small class="hidden lg:inline">
-      <i class="text-sm lg:text-md fa-solid fa-ban"></i>
       Annulé(e) 
     </small class="hidden lg:inline">
   </span>

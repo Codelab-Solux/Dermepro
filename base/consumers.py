@@ -38,8 +38,26 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'person': event['data']['person'],
             'schedule': event['data']['schedule'],
         }))
+
+    async def notify_visit_status(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'sex': event['data']['sex'],
+            'person': event['data']['person'],
+            'schedule': event['data']['schedule'],
+        }))
     
     async def notify_appointment(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'sex': event['data']['sex'],
+            'person': event['data']['person'],
+            'schedule': event['data']['schedule'],
+        }))
+
+    async def notify_appointment_status(self, event):
         await self.send(text_data=json.dumps({
             'id': event['data']['id'],
             'type': event['data']['type'],
@@ -54,5 +72,20 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'type': event['data']['type'],
             'message': event['data']['message'],
             'sender': event['data']['sender'],
+        }))
+
+    async def notify_new_user(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'user': event['data']['user'],
+        }))
+
+    async def notify_user_status(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'user': event['data']['user'],
+            # 'status': event['data']['status'],
         }))
 

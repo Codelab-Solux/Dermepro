@@ -1,154 +1,157 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-4em)]">
-  <!--------------------------------------- thread/contacts/groups lists --------------------------------------->
-  <div
-    class="flex flex-col gap-2 w-full md:max-w-[300px] xl:max-w-[380px] h-full"
-  >
-  
-  <!--------------------------------------- menu tabs buttons --------------------------------------->
-  <div
-      class="tabbar max-w-[400px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
+<section id="chats_base">
+  <div class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-4em)]">
+    <!--------------------------------------- thread/contacts/groups lists --------------------------------------->
+    <div
+      class="flex flex-col gap-2 w-full md:max-w-[300px] xl:max-w-[380px] h-full"
     >
-      <button
-      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'threads')"
-        id="defaultTab"
-      >
-        <i class="fa-solid fa-comments"></i>
-        <span class="hidden xl:inline lg:ml-2">Messages</span>
-      </button>
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'contacts')"
-      >
-        <i class="fa-solid fa-address-book"></i>
-        <span class="hidden xl:inline lg:ml-2">Contacts</span>
-      </button>
-      <!-- <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'groups')"
-      >
-        <i class="fa-solid fa-people-group"></i>
-        <span class="hidden xl:inline lg:ml-2">Groupes</span>
-      </button> -->
+    
+      <!--------------------------------------- menu tabs buttons --------------------------------------->
+      <div
+          class="tabbar max-w-[400px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
+        >
+          <button
+          class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+            onclick="openTab(event, 'threads')"
+            id="defaultTab"
+          >
+            <i class="fa-solid fa-comments"></i>
+            <span class="hidden xl:inline lg:ml-2">Messages</span>
+          </button>
+          <button
+            class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+            onclick="openTab(event, 'contacts')"
+          >
+            <i class="fa-solid fa-address-book"></i>
+            <span class="hidden xl:inline lg:ml-2">Contacts</span>
+          </button>
+          <!-- <button
+            class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+            onclick="openTab(event, 'groups')"
+          >
+            <i class="fa-solid fa-people-group"></i>
+            <span class="hidden xl:inline lg:ml-2">Groupes</span>
+          </button> -->
+      </div>
+      <!--------------------------------------- threads --------------------------------------->
+      <section id="threads" class="tabcontent">
+        <button class="hidden" id="chats_reloader" hx-target=".thread_list" hx-get="{% url 'threads' %}"></button>
+        <!--------------------------------------- filter form --------------------------------------->
+        <form
+          class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+          hx-post="{% url 'filter_users' %}"
+          hx-target=".filtered_threads"
+        >
+          {% csrf_token %}
+          <!--  -->
+          <i
+            class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
+          ></i>
+          <input
+            hx-post="{% url 'filter_users' %}"
+            hx-target=".filtered_chats"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Nom/prenoms de l'utilisateur"
+            name="name_or_email"
+            type="text"
+            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+          />
+        </form>
+        <div
+          class="filtered_chats p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+        >
+          <div
+            class="thread_list"
+            hx-get="{% url 'threads' %}"
+            hx-trigger="load, db_changed from:body"
+            hx-target="this"
+          ></div>
+        </div>
+      </section>
+  
+      <!--------------------------------------- contacts --------------------------------------->
+      <section id="contacts" class="tabcontent hidden">
+              <!--------------------------------------- filter form --------------------------------------->
+        <form
+          class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+          hx-post="{% url 'filter_users' %}"
+          hx-target=".filtered_contacts"
+        >
+          {% csrf_token %}
+          <!--  -->
+          <i
+            class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
+          ></i>
+          <input
+            hx-post="{% url 'filter_users' %}"
+            hx-target=".filtered_chats"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Nom/prenoms de l'utilisateur"
+            name="name_or_email"
+            type="text"
+            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+          />
+        </form>
+        <div
+          class="filtered_contacts p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+        >
+          <div
+            class="contact_list"
+            hx-get="{% url 'contacts' %}"
+            hx-trigger="load, db_changed from:body"
+            hx-target="this"
+          ></div>
+        </div>
+      </section>
+  
+      <!--------------------------------------- groups --------------------------------------->
+      <section id="groups" class="tabcontent hidden">
+        <div
+          class="filtered_groups p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+        >
+          <div
+            class="group_list"
+            hx-get="{% url 'groups' %}"
+            hx-trigger="load, db_changed from:body"
+            hx-target="this"
+          ></div>
+        </div>
+      </section>
     </div>
-    <!--------------------------------------- threads --------------------------------------->
-    <section id="threads" class="tabcontent">
-      <!--------------------------------------- filter form --------------------------------------->
-      <form
-        class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
-        hx-post="{% url 'filter_users' %}"
-        hx-target=".filtered_threads"
-      >
-        {% csrf_token %}
-        <!--  -->
-        <i
-          class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
-        ></i>
-        <input
-          hx-post="{% url 'filter_users' %}"
-          hx-target=".filtered_chats"
-          hx-trigger="keyup changed delay:500ms"
-          placeholder="Nom/prenoms de l'utilisateur"
-          name="name_or_email"
-          type="text"
-          class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
-        />
-      </form>
-      <div
-        class="filtered_chats p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-      >
-        <div
-          class="thread_list"
-          hx-get="{% url 'threads' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-      </div>
-    </section>
-
-    <!--------------------------------------- contacts --------------------------------------->
-    <section id="contacts" class="tabcontent hidden">
-            <!--------------------------------------- filter form --------------------------------------->
-      <form
-        class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
-        hx-post="{% url 'filter_users' %}"
-        hx-target=".filtered_contacts"
-      >
-        {% csrf_token %}
-        <!--  -->
-        <i
-          class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
-        ></i>
-        <input
-          hx-post="{% url 'filter_users' %}"
-          hx-target=".filtered_chats"
-          hx-trigger="keyup changed delay:500ms"
-          placeholder="Nom/prenoms de l'utilisateur"
-          name="name_or_email"
-          type="text"
-          class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
-        />
-      </form>
-      <div
-        class="filtered_contacts p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-      >
-        <div
-          class="contact_list"
-          hx-get="{% url 'contacts' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-      </div>
-    </section>
-
-    <!--------------------------------------- groups --------------------------------------->
-    <section id="groups" class="tabcontent hidden">
-      <div
-        class="filtered_groups p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-      >
-        <div
-          class="group_list"
-          hx-get="{% url 'groups' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-      </div>
+    <!--------------------------------------- thread details --------------------------------------->
+    <section
+      class="thread_details relative hidden md:flex flex-col items-center justify-center w-full border rounded-xl md:overflow-y-auto"
+    >
+      <img
+        class="h-60 lg:h-80 bg-gray-100 rounded-full"
+        src="{% static 'imgs/chat.png' %}"
+        alt="welcome image"
+      />
+      <p class="m-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
+        Cliquez sur un utilisateur pour entamer ou continuer une conversation.
+      </p>
     </section>
   </div>
-  <!--------------------------------------- thread details --------------------------------------->
-  <section
-    class="thread_details relative hidden md:flex flex-col items-center justify-center w-full border rounded-xl md:overflow-y-auto"
-  >
-    <img
-      class="h-60 lg:h-80 bg-gray-100 rounded-full"
-      src="{% static 'imgs/chat.png' %}"
-      alt="welcome image"
-    />
-    <p class="m-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
-      Cliquez sur un utilisateur pour entamer ou continuer une conversation.
-    </p>
-  </section>
-</div>
-<script>
-  //  tabs control ----------------------------------------------------------------------------------------------------
-document.getElementById("defaultTab").click();
-function openTab(event, tabName) {
-  var i, tabcontent, tabBtn;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+  <script>
+    //  tabs control ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
   }
-  tabBtn = document.getElementsByClassName("tabBtn");
-  for (i = 0; i < tabBtn.length; i++) {
-    tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-  }
-  document.getElementById(tabName).style.display = "block";
-  event.currentTarget.className += " active";
-  var minitabs = document.getElementsByClassName("minitabcontent");
-  if (minitabs.length != 0) {
-    minitabs = tabcontent.children;
-  }
-}
-</script>
+  </script>
+</section>
 {% endblock %}

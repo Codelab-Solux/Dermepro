@@ -17,7 +17,7 @@
   }
 </style>
 
-<div id="" class="rdv_calendar grid">
+<div id="" class="rdv_calendar grid w-full">
   <div
     class="px-4 py-2 border border-b-0 border-purple-300 bg-purple-200 rounded-t-lg text-black font-bold flex justify-between items-center"
   >
@@ -44,35 +44,11 @@
     <h3>{{ year }}</h3>
   </div>
 
-  <!-- monthly calendar -->
-  <table class="hidden">
-    <thead>
-      <tr>
-        <th>Dimanche</th>
-        <th>Lundi</th>
-        <th>Mardi</th>
-        <th>Mercredi</th>
-        <th>Jeudi</th>
-        <th>Vendredi</th>
-        <th>Samedi</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for week in weeks %}
-      <tr>
-        {% for day, has_appointment in week %}
-        <td class="{% if has_appointment %}highlight{% endif %}">{{ day }}</td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
   <!-- weekly calendar -->
   <div class="overflow-x-auto">
+    {% with ref_date=day_one %}
     <table class="rdv_calendar table-auto">
       <thead>
-        {#% with first_day=date|get_day_one %#}
         <tr class="bg-gray-100 text-black text-sm">
           <th>Heures</th>
           {% for french_day in day_mapping.values %}
@@ -90,16 +66,14 @@
           <!--  -->
           {% endfor %}
         </tr>
-        {#% endwith %#}
       </thead>
-
       <tbody>
         {% for hour in hours %}
         <tr>
           <td class="bg-gray-100 text-black text-sm">{{ hour }}:00</td>
           {% for day in days %}
           <!--  -->
-          {% with rdv=appts|by_time:hour|by_day:day|by_week:week|by_year:year %}
+          {% with rdv=appts|by_time:hour|by_day:day %}
           <td class="relative group">
             {% if rdv %}
             <span
@@ -126,6 +100,7 @@
         </tr>
         {% endfor %}
       </tbody>
+      {% endwith %}
     </table>
   </div>
 </div>

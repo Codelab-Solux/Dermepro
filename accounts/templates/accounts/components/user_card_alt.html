@@ -15,7 +15,7 @@
   <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
     <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
     <div class="flex items-start justify-between">
-      <span class="italic font-light">@{{obj.username}}</span>
+      <span class="font-light text-purple-700">@{{obj.username}}</span>
       <button
         onclick="toggleAccordion('{{obj.id}}')"
         hx-get="{% url 'user' obj.id %}"
@@ -35,11 +35,11 @@
 <div
   class="user_details{{obj.id}} accordion active_accordion{{obj.id}} hidden mx-2 p-3 sm:p-4 border bg-gray-50 rounded-xl md:overflow-y-auto"
 >
-  <!-- <img
+  <img
     class="h-60 lg:h-80 bg-gray-100 rounded-full mx-auto my-8"
     src="{% static 'imgs/user.png' %}"
     alt="welcome image"
-  /> -->
+  />
 </div>
 
 <script>

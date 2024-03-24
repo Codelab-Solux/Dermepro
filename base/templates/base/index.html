@@ -18,31 +18,22 @@
 
   <!----------------------------------------- status quo ----------------------------------------->
 
+  <button
+    class="hidden"
+    id="status_quo_reloader"
+    hx-target=".users_status_quo"
+    hx-get="{% url 'users_status_quo' %}"
+  ></button>
+
   <div class="mt-8 p-4 border rounded-lg">
     {% if user.role.sec_level >= 4 %}
-    <h3 class="mb-4 text-black text-lg font-bold">Status Quo</h3>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="grid">
-        <h3>Hôtes non disponibles</h3>
-        <div
-          class="mt-2 w-full"
-          hx-get="{% url 'unavailable_users' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-      </div>
-      <div class="grid">
-        <h3>Hôtes en réunion</h3>
-        <div
-          class="mt-2 w-full"
-          hx-get="{% url 'occupied_users' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
-        ></div>
-      </div>
-    </div>
+    <div
+      class="users_status_quo mt-2 w-full"
+      hx-get="{% url 'users_status_quo' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
     {% endif %}
-
     <!-------------------- ongoing appointments -------------------->
     <div
       class="w-full mt-4 ongoing_appointments"
@@ -62,7 +53,6 @@
   <!----------------------------------------- visits ----------------------------------------->
 
   <div class="mt-8 p-4 border rounded-lg">
-    <!-- visits -->
     <div class="flex justify-between items-center">
       <h3 class="text-black text-xl font-bold">File d'attente des visites</h3>
       {% if user.role.sec_level >= 4 %}
@@ -74,13 +64,6 @@
         <span class="hidden md:inline mr-2">Nouvelle visite</span>
         <i class="fa-solid fa-plus"></i>
       </button>
-      <!-- <a
-        href="{#% url 'add_visit' %#}"
-        class="w-fit px-3 py-2 bg-purple-100 text-sm hover:bg-purple-200 flex items-center rounded-lg cursor-pointer transition duration-200 ease-in"
-      >
-        <span class="hidden md:inline mr-2">Nouvelle visite</span>
-        <i class="fa-solid fa-plus"></i>
-      </a> -->
       {% endif %}
     </div>
 
@@ -93,7 +76,6 @@
         src="{% static 'imgs/waiting.png' %}"
         alt="welcome image"
       />
-
       <div
         class="w-full pending_visits"
         hx-get="{% url 'pending_visits' %}"

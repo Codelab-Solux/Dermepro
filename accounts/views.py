@@ -90,17 +90,15 @@ def create_user(req):
     if user.role.sec_level < 4:
         return redirect('visits')
 
-
     form = CreateUserForm()
     if req.method == 'POST':
         form = CreateUserForm(req.POST)
         if form.is_valid():
             form.save()
         messages.success = "Nouveau compte créé!"
-        return redirect('users')
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Utilisateur'})
+        return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title' : 'Créer un Utilisateur'})
 
 
 
@@ -109,18 +107,20 @@ def edit_user(req, pk):
     user = req.user
     curr_obj = get_object_or_404(CustomUser, id=pk)
 
-    if user != curr_obj and user.role.sec_level < 6:
-        return redirect('visits')
+    if user != curr_obj and not user.is_superuser:
+        return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
 
     form = EditUserForm(instance=curr_obj)
     if req.method == 'POST':
         form = EditUserForm(req.POST, instance=curr_obj)
         if form.is_valid():
+            print(form)
             form.save()
         messages.success = 'Données modifiée avec success'
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        return render(req, 'base/components/basic_form.html', context={'form': form, 'form_title' : 'Rendez-vous', 'curr_obj': curr_obj})
+        return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title' : 'Modifier un Utilisateur', 'curr_obj': curr_obj})
 
 
 @ login_required(login_url='login')
@@ -130,22 +130,20 @@ def delete_user(req, pk):
     if req.user.role.sec_level < 6:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     curr_obj.delete()
-    success = 'Deleted successfully'
+    messages.success = 'Deleted successfully'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
 @login_required(login_url='login')
-def unavailable_users(req):
-    user_profiles = Profile.objects.filter(status=3)
-    context = {"user_profiles" : user_profiles}
-    return render(req, 'accounts/partials/unavailable_users.html', context)
+def users_status_quo(req):
+    unavailable_users = Profile.objects.filter(status=3)
+    busy_users = Profile.objects.filter(status=2)
+    context = {
+        "unavailable_users" : unavailable_users,
+        "busy_users" : busy_users,
+        }
+    return render(req, 'accounts/partials/users_status_quo.html', context)
 
-
-@login_required(login_url='login')
-def occupied_users(req):
-    user_profiles = Profile.objects.filter(status=2)
-    context = {"user_profiles" : user_profiles}
-    return render(req, 'accounts/partials/occupied_users.html', context)
 
 
 @login_required(login_url='login')
@@ -158,11 +156,6 @@ def change_user_status(req, pk):
     curr_profile.save()
     messages.success = 'User Status changed'
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
-
-def fetch_user_status(req):
-    user = req.user
-    status = user.profile.status.name  # Assuming 'name' is the attribute containing the status name
-    return JsonResponse({'status': status})
 
 
 @login_required(login_url='login')
@@ -214,5 +207,4 @@ def filter_users(req):
 
     users = base_query
     context = {"users" : users}
-    print(users)
     return render(req, 'accounts/partials/user_list.html', context)

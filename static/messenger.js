@@ -36,7 +36,7 @@ messengerSocket.onmessage = (event) => {
 
   chat_box.insertAdjacentHTML("beforeend", new_message);
   scrollToBottom();
-  updateThreads();
+  updateUI();
 };
 
 messengerSocket.onclose = () => {
@@ -70,26 +70,8 @@ function scrollToBottom() {
   );
 }
 
-// Wait for the DOM content to be loaded
-document.addEventListener("DOMContentLoaded", function () {
-  // Get all thread cards and attach click event listener to each one
-  const threadCards = document.querySelectorAll(".thread_card");
-  threadCards.forEach(function (threadCard) {
-    threadCard.addEventListener("click", function () {
-      updateThreads();
-    });
-  });
 
-  // Function to update the thread list
-  function updateThreads() {
-    // Fetch the latest threads from the server
-    fetch("/chats/threads")
-      .then((response) => response.text())
-      .then((data) => {
-        // Replace the existing thread list with the updated one
-        document.getElementById("threads").innerHTML = data;
-      })
-      .catch((error) => console.error("Error fetching threads:", error));
-  }
-});
-
+// Reload thread list by triggering a request to fetch updated content
+function updateUI() {
+    document.getElementById("chats_reloader").click();
+}

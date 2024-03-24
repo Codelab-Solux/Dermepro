@@ -60,8 +60,9 @@ htmx_urls =[
     path('appointments/<hashid:pk>/<hashid:kp>/edit_status/', edit_appointment_status, name='edit_appointment_status'),
     path('appointments/<hashid:pk>/badge/', generate_appointment_badge, name='generate_appointment_badge'),
     path('appointments/<hashid:pk>/signature/', sign_appointment, name='sign_appointment'),
+
+
     # visits -----------------------------------------------------------
-    # path('visits/add/', add_visit, name='add_visit'),
     path('visits/table/', visits_table, name='visits_table'),
     path('visits/ongoing/', ongoing_visits, name='ongoing_visits'),
     path('visits/pending/', pending_visits, name='pending_visits'),
@@ -69,9 +70,14 @@ htmx_urls =[
     path('visits/<hashid:pk>/badge/', generate_visit_badge, name='generate_visit_badge'),
     path('visits/<hashid:pk>/signature/', sign_visit, name='sign_visit'),
     
+
     # users -----------------------------------------------------------
     path('users/table/', users_table, name='users_table'),
     path('users/table/filter/', filter_users_table, name='filter_users_table'),
+
+
+    # dashboard -----------------------------------------------------------
+    path('dashboard/overview/', dash_overview, name='dash_overview'),
 ]
 
 urlpatterns += htmx_urls

@@ -36,7 +36,6 @@ def get_item(dictionary, key):
 
 @register.filter
 def get_day_one(curr_date):
-    print(curr_date)
     return curr_date - timedelta(days=curr_date.weekday())
 
 
@@ -72,9 +71,18 @@ def by_day(appts, day_name):
 
     day_number = days_mapping[day_name.lower()]
     desired_day = current_date - timedelta(days=current_date.weekday() - day_number)
-    print(desired_day)
 
     # Filter appointments for the desired day
+    return appts.filter(date=desired_day)
+
+
+@register.filter(name='by_ref_date')
+def by_ref_date(appts, ref_date):
+    if ref_date is None:
+        ref_date = datetime.now()
+
+    desired_day = ref_date - timedelta(days=ref_date.weekday() - 0)
+
     return appts.filter(date=desired_day)
 
 

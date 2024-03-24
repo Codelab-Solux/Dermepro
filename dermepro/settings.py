@@ -158,17 +158,18 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "CONFIG": {
-#             "hosts": [('localhost', '6379')],
-#         },
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#     },
-# }
-
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],  # Adjust host and port as needed
+        },
+    },
 }
+
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }

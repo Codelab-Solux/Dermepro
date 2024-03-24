@@ -1,4 +1,4 @@
-{% if not user_profiles %}
+{% if not busy_users %}
 <div
   class="bg-gray-50 p-4 rounded-lg flex justify-center items-center gap-2 text-center m-auto"
 >
@@ -7,7 +7,7 @@
 </div>
 {% else %}
 <div class="mb-4 grid lg:grid-cols-2 gap-4">
-  {% for obj in user_profiles %}
+  {% for obj in busy_users %}
   <div
     class="relative p-4 h-full border hover:border-amber-400 hover:shadow-md rounded-md group"
   >

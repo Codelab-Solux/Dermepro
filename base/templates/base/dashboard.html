@@ -1,16 +1,13 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div
-  class="p-6 bg-gray-100 border-2 rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-50 border rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-5/7">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">Tableau de board</h1>
     <p class="mt-4">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem rem
-      molestias inventore placeat quod voluptate beatae repudiandae delectus
-      aperiam molestiae vero incidunt facere, voluptatem facilis porro harum in
-      eos voluptatibus laborum! Sint enim consequuntur totam quo obcaecati.
-      Dolor facilis deleniti sapiente ullam deserunt.
+      Avec ce tableau de board vous avez toujours à votre disposition, un aperçu
+      de la situation générale des visites et rendez-vous de votre compagnie.
     </p>
   </article>
   <img
@@ -20,57 +17,15 @@
   />
 </div>
 
-{% endblock %}
+{#% include 'base/partials/dash_overview.html' %#}
 
-<!--------------------------------------- filter tabs buttons --------------------------------------->
-<!-- <div
-  class="tabbar mb-2 w-fit text-gray-500 text-sm rounded-lg flex justify- gap-2 flex-wrap overflow-hidden"
+<div
+  class="dash_overview w-full min-h-[calc(100vh-400px)] h-full flex flex-col"
+  hx-get="{% url 'dash_overview' %}"
+  hx-trigger="load, db_changed from:body"
+  hx-target="this"
 >
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-gray-200 rounded-lg"
-    onclick="openMiniTab(event, 'all')"
-    id="defaultMiniTab"
-  >
-    Tout
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-purple-200 rounded-lg"
-    onclick="openMiniTab(event, 'pending')"
-  >
-    <i class="mr-1 fa-solid fa-spinner"></i>
+  <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+</div>
 
-    En attente
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-amber-200 rounded-lg"
-    onclick="openMiniTab(event, 'ongoing')"
-  >
-    <i class="mr-1 fa-solid fa-hourglass-middle"></i>
-
-    En Cours
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-green-200 rounded-lg"
-    onclick="openMiniTab(event, 'completed')"
-  >
-    <i class="mr-1 fa-solid fa-square-check"></i>
-
-    Terminé
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-sky-200 rounded-lg"
-    onclick="openMiniTab(event, 'postponed')"
-  >
-    <i class="mr-1 fa-solid fa-rotate-right"></i>
-
-    Reporté
-  </button>
-  <button
-    class="tabBtn px-3 py-2 bg-gray-100 hover:text-black hover:bg-red-200 rounded-lg"
-    onclick="openMiniTab(event, 'cancelled')"
-  >
-    <i class="mr-1 fa-solid fa-ban"></i>
-
-    Annulé
-  </button>
-</div> -->
+{% endblock %}

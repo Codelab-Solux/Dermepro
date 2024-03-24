@@ -29,62 +29,75 @@
     {% endif %}
   </div>
   {% endwith %}
-
-  <div class="flex flex-col gap-4">
-    {% if not curr_obj.profile.image %}
-    <img
-      class="h-60 w-60 bg-white rounded-full object-cover"
-      src="{% static 'imgs/anon.png' %}"
-      alt="image"
-    />
-    {% else %}
-    <img
-      class="h-60 w-60 bg-white rounded-full object-cover"
-      src="{{curr_obj.profile.image.url}}"
-      alt="image"
-    />
-    {% endif %}
-    <div class="flex flex-col gap-1 justify-center">
-      <h4 class="text-black text-2xl font-bold">
-        {{curr_obj.last_name}} {{curr_obj.first_name}}
-      </h4>
-      <span class="italic text-purple-700">@{{curr_obj.username}}</span>
+  <div class="mt-0 w-full flex flex-col gap-4 items-center justify-center">
+    <div class="flex flex-col gap-4">
+      {% if not curr_obj.profile.image %}
+      <img
+        class="h-80 w-80 bg-white rounded-full object-cover"
+        src="{% static 'imgs/anon.png' %}"
+        alt="image"
+      />
+      {% else %}
+      <img
+        class="h-80 w-80 bg-white rounded-full object-cover"
+        src="{{curr_obj.profile.image.url}}"
+        alt="image"
+      />
+      {% endif %}
     </div>
-  </div>
 
-  <div class="mt-4 flex flex-col gap-2 text-gray-500">
-    <p>
-      <i class="fa-solid fa-venus-mars text-gray-600 mr-3"></i> Sexe :
-      <span class="text-black">
-        {{curr_obj.profile.get_sex_display|title}}
-      </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-flag text-gray-600 mr-3"></i> Nationalité :
-      <span class="text-black"> {{curr_obj.nationality}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-calendar-days text-gray-600 mr-3"></i> Jours
-      d'anniversaire :
-      <span class="text-black"> {{curr_obj.profile.birthday}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-hashtag text-gray-600 mr-3"></i> Numero
-      d'immatriculation :
-      <span class="text-black"> {{curr_obj.profile.reg_number|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-phone text-gray-600 mr-3"></i> Numero de telephone :
-      <span class="text-black"> {{curr_obj.tel|title}} </span>
-    </p>
-    {% if not is_self %}
-    <a
-      href="{% url 'thread' curr_obj.id %}"
-      class="w-fit px-4 py-2 bg-purple-100 hover:bg-purple-300 hover:text-black rounded-lg flex items-center text-black transition duration-300 ease-in-out"
+    <div
+      class="p-4 xl:p-8 border bg-gray-50 w-full max-w-[450px] rounded-lg flex flex-col gap-2 text-gray-500"
     >
-      Contacter<i class="fa-solid fa-message ml-2"></i
-    ></a>
-    {% endif %}
+      <div class="grid gap-1 justify-center items-center">
+        <h4 class="text-black text-2xl font-bold">
+          {{curr_obj.last_name}} {{curr_obj.first_name}}
+        </h4>
+        <span class="text-purple-700 text-center">@{{curr_obj.username}}</span>
+      </div>
+      <p>
+        <i class="fa-solid fa-venus-mars text-gray-800 mr-3"></i> Sexe :
+        <span class="text-black">
+          {{curr_obj.profile.get_sex_display|title}}
+        </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-flag text-gray-800 mr-3"></i> Nationalité :
+        <span class="text-black"> {{curr_obj.nationality}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-calendar-days text-gray-800 mr-3"></i> Jours
+        d'anniversaire :
+        <span class="text-black"> {{curr_obj.profile.birthday}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-hashtag text-gray-800 mr-3"></i> Numero
+        d'immatriculation :
+        <span class="text-black"> {{curr_obj.profile.reg_number|title}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-phone text-gray-800 mr-3"></i> Numero de telephone
+        :
+        <span class="text-black"> {{curr_obj.phone}} </span>
+      </p>
+      {% if not is_self %}
+
+      <div class="flex items-center gap-4">
+        <a
+          href="{% url 'chats' %}"
+          class="w-fit px-4 py-2 bg-purple-200 hover:bg-purple-300 hover:text-black rounded-lg flex items-center text-black transition duration-300 ease-in-out"
+        >
+          Ecrire <i class="fa-solid fa-message ml-2"></i
+        ></a>
+        <a
+          href="tel:{{curr_obj.phone}}"
+          class="w-fit px-4 py-2 bg-amber-100 hover:bg-amber-300 hover:text-black rounded-lg flex items-center text-black transition duration-300 ease-in-out"
+        >
+          Telephoner<i class="fa-solid fa-phone ml-2"></i
+        ></a>
+      </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 
