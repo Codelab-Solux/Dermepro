@@ -33,6 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000/',
     "https://dermepro.onrender.com",
     # Add any other allowed origins as needed
 ]
@@ -167,14 +168,19 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
+
+# redis channel layer for render webservice
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "redis://red-co09c4v79t8c73d97h90",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],  # Adjust host and port as needed
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('red-co09c4v79t8c73d97h90.redis.cache.windows.net', 6379)],
         },
     },
 }
+
+
+# redis channel layer
 # CHANNEL_LAYERS = {
 #     "default": {
 #         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -184,7 +190,7 @@ CHANNEL_LAYERS = {
 #     },
 # }
 
-
+# windows in-memory channel layer
 # CHANNEL_LAYERS = {
 #     "default": {
 #         "BACKEND": "channels.layers.InMemoryChannelLayer"

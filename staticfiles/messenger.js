@@ -3,8 +3,17 @@ var { textContent: sender_id } = document.getElementById("curr_user");
 var { textContent: receiver_id } = document.getElementById("other_user");
 var chat_box = document.getElementById("chat_box");
 var chat_form = document.getElementById("chat_form");
-var endpoint = `/ws/chats/threads/${receiver_id}/`;
-var messengerSocket = new WebSocket("ws://" + window.location.host + endpoint);
+
+// Function to get the appropriate WebSocket URL based on the current page protocol
+function getWebSocketURL() {
+  var protocol = window.location.protocol.startsWith("https")
+    ? "wss://"
+    : "ws://";
+  return protocol + window.location.host + `/ws/chats/threads/${receiver_id}/`;
+}
+
+var endpoint = getWebSocketURL();
+var messengerSocket = new WebSocket(endpoint);
 
 messengerSocket.onopen = () => {
   console.log("WebSocket connected to " + endpoint);
@@ -70,8 +79,7 @@ function scrollToBottom() {
   );
 }
 
-
 // Reload thread list by triggering a request to fetch updated content
 function updateUI() {
-    document.getElementById("chats_reloader").click();
+  document.getElementById("chats_reloader").click();
 }
