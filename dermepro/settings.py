@@ -169,12 +169,20 @@ AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "redis://red-co09c4v79t8c73d97h90",
         "CONFIG": {
             "hosts": [("localhost", 6379)],  # Adjust host and port as needed
         },
     },
 }
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("localhost", 6379)],  # Adjust host and port as needed
+#         },
+#     },
+# }
 
 
 # CHANNEL_LAYERS = {
