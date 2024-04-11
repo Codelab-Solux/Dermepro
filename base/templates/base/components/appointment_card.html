@@ -5,22 +5,15 @@
   class="cursor-pointer hidden relative md:flex flex-col border bg-white focus:border-purple-400 hover:border-purple-400 hover:shadow-md w-full rounded-lg group transition duration-300 ease-in-out"
 >
   <!-- admin functions update + delete -->
-  {% if user.role.sec_level >= 4 %}
+  {% if user.role.sec_level >= 4 and obj.status.id != 3 %}
   <div class="flex absolute top-0 right-0 text-gray-300 text-xs">
     <button
       onclick="hide_dialogs()"
       hx-target="#basic_dialog"
       hx-get="{% url 'edit_appointment' obj.id %}"
-      class="px-2 py-1 hover:bg-purple-300 border border-t-0 rounded-bl-md hover:text-black"
+      class="px-2 py-1 hover:bg-purple-300 border border-t-0 rounded-md hover:text-black"
     >
       <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-    <button
-      hx-confirm="Voulez vous vraiment supprimer ceci?"
-      hx-delete="{% url 'delete_appointment' obj.id %}"
-      class="px-2 py-1 hover:bg-red-300 border-b rounded-tr-md hover:text-black"
-    >
-      <i class="fa-solid fa-trash"></i>
     </button>
   </div>
   {% endif %}

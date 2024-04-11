@@ -3,6 +3,14 @@ from .models import *
 from django import forms
 
 
+class TimeInput(forms.TimeInput):
+    input_type = 'time'
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
@@ -24,7 +32,7 @@ class SignupForm(UserCreationForm):
             'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md bg-gray-100 w-full"}),
-            'role': forms.Select(attrs={'id':'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'role': forms.Select(attrs={'id': 'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
 
 
@@ -40,14 +48,14 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = (
-            'role', 'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 
-             'phone',
+            'role', 'username', 'email', 'first_name', 'last_name', 'password1', 'password2',
+            'phone',
             #  'address'
         )
         labels = {'username': "Nom d'utilisateur", 'email': 'Email',
                   'first_name': 'Prenoms', 'last_name': 'Nom',
-                   'phone': 'Telephone', 
-                #   'address': 'Adresse'
+                  'phone': 'Telephone',
+                  #   'address': 'Adresse'
                   }
         widgets = {
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
@@ -58,7 +66,7 @@ class CreateUserForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'role': forms.Select(attrs={'id':'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'role': forms.Select(attrs={'id': 'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
 
 
@@ -68,10 +76,8 @@ class EditUserForm(forms.ModelForm):
         fields = ('__all__')
         exclude = (
             'role', 'groups', 'user_permissions', 'password', 'last_login', 'is_staff', 'is_superuser', 'is_active')
-        labels = {'username': "Nom d'utilisateur", 'email': 'Email',
-                  'first_name': 'Prenoms', 'last_name': 'Nom',
-                   'phone': 'Telephone', 'address': 'Adresse'
-                   }
+        labels = {'username': "Nom d'utilisateur", 'email': 'Email', 'first_name': 'Prenoms', 'last_name': 'Nom', 'phone': 'Telephone', 'address': 'Adresse'
+                  }
         widgets = {
             'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
@@ -79,6 +85,28 @@ class EditUserForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+        }
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('__all__')
+        # exclude = (
+        #     'user', 'company', 'status', 'is_online', 'status_message')
+        labels = {'reg_number': "Numero d'immatriculation", 'sex': 'Sexe', 'department': 'Departement',
+                  'nationality': 'Nationalité', 'job_position': 'Poste', 'phone_alt': 'Telephone'
+                  }
+        widgets = {
+            'reg_number': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'nationality': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'sex': forms.Select(attrs={'id':"sex_selector", 'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'birthday': DateInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'bio': forms.Textarea(attrs={'placeholder': 'Bio', "rows": "4", 'class': "mb-2 px-4 py-2 rounded-md border border-gray-200 focus:border-none focus:outline-none focus:ring-2 focus:ring-green-300 w-full"}),
+            'department': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'job_position': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'status_message': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'phone_alt': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
 
 
@@ -89,7 +117,7 @@ class AdminEditUserForm(forms.ModelForm):
         exclude = ('groups', 'user_permissions', 'password',
                    'last_login', 'is_staff', 'is_superuser', 'is_active')
         labels = {'username': "Nom d'utilisateur", 'email': 'Email',
-                  'first_name': 'Prenoms', 'last_name': 'Nom', 
+                  'first_name': 'Prenoms', 'last_name': 'Nom',
                   'phone': 'Telephone', 'address': 'Adresse'
                   }
         widgets = {
@@ -99,7 +127,7 @@ class AdminEditUserForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'address': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'role': forms.Select(attrs={'id':'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'role': forms.Select(attrs={'id': 'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
 
 

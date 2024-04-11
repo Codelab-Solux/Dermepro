@@ -14,7 +14,9 @@ from django.template import Context
 visit_types = (('friendly', 'Amicale'),
                ('familial', 'Familiale'),
                ('professional', "Professionelle"),)
+
 genders = (('female', "Feminin"), ('male', 'Masculin'),)
+
 id_types = (
     ('id_card', "Carte Nationale d'Identité (CNI)"),
     ('consul_card', "Carte Consulaire"),
@@ -22,14 +24,35 @@ id_types = (
     ('driver_license', "Permit de conduire"),
     ('passport', "Passport international"),
 )
+
 company_types = (
+    ('SC', "SC"),
+    ('SA', "SA"),
+    ('SAS', "SAS"),
+    ('SNS', "SNS"),
+    ('SNC', "SNC"),
+    ('SANC', "SANC"),
     ('SARL', "SARL"),
     ('SARLU', "SARLU"),
 )
 
 
+class WorkDay(models.Model):
+    name = models.CharField(max_length=255)
+    fr_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.fr_name
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('workday', kwargs={'pk': self.pk})
+
+
 class Status(models.Model):
-    title = models.CharField(max_length = 255)
+    title = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
@@ -46,7 +69,7 @@ class Visit(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     sex = models.CharField(max_length=50, choices=genders)
-    phone = models.CharField(max_length=255,blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
     observations = models.TextField(blank=True, null=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
     context = models.CharField(max_length=50, choices=visit_types)
@@ -56,15 +79,15 @@ class Visit(models.Model):
     arrived_at = models.TimeField(default=timezone.now)
     accepted_at = models.TimeField(blank=True, null=True)
     departed_at = models.TimeField(null=True, blank=True)
-    id_document = models.CharField(max_length=50,choices=id_types)
+    id_document = models.CharField(max_length=50, choices=id_types)
     id_number = models.CharField(max_length=50)
     is_accepted = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     is_missed = models.BooleanField(default=False)
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
-    signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
+    signature = models.ImageField(
+        upload_to='signatures/', null=True, blank=True)
 
-    
     def __str__(self):
         return f'{self.last_name} - {self.first_name}'
 
@@ -80,7 +103,7 @@ class Appointment(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, null=True, blank=True)
-    phone = models.CharField(max_length=255,blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
     observations = models.TextField(blank=True, null=True)
     sex = models.CharField(max_length=50, choices=genders)
     nationality = models.CharField(
@@ -90,15 +113,16 @@ class Appointment(models.Model):
     started_at = models.TimeField(default=timezone.now)
     ended_at = models.TimeField(null=True, blank=True)
     departed_at = models.TimeField(null=True, blank=True)
-    id_document = models.CharField(max_length=50, choices=id_types, null=True, blank=True)
-    id_number = models.CharField(max_length=50,null=True, blank=True)
+    id_document = models.CharField(
+        max_length=50, choices=id_types, null=True, blank=True)
+    id_number = models.CharField(max_length=50, null=True, blank=True)
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)
     is_cancelled = models.BooleanField(default=False)
     is_missed = models.BooleanField(default=False)
     is_vip = models.BooleanField(default=False)
-    signature = models.ImageField(upload_to='signatures/', null=True, blank=True)
-
+    signature = models.ImageField(
+        upload_to='signatures/', null=True, blank=True)
 
     def __str__(self):
         return f'{self.last_name} - {self.first_name}'
@@ -115,12 +139,16 @@ class Company(models.Model):
     name = models.CharField(max_length=255)
     slogan = models.CharField(max_length=255)
     company_type = models.CharField(max_length=50, choices=company_types)
-    phone = models.CharField(max_length=255,blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
-    description = models.TextField(blank=True, null=True)
-    employees = models.ManyToManyField(Profile, related_name='companies', blank=True)
+    description = models.TextField(blank=True, null=True, max_length=1000)
+    employees = models.ManyToManyField(
+        Profile, related_name='companies', blank=True)
+    workdays = models.ManyToManyField(WorkDay, blank=True)
     is_verified = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    opening_time = models.TimeField(blank=True, null=True)
+    closing_time = models.TimeField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.name} - {self.company_type}'
@@ -133,7 +161,10 @@ class Company(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    n_type = models.CharField(
+        max_length=255, default='', blank=True, null=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
@@ -148,5 +179,5 @@ class Notification(models.Model):
 
     def get_notification_html(self):
         template = get_template('base/components/notification_card.html')
-        rendered_html = template.render({'obj':self})
+        rendered_html = template.render({'obj': self})
         return rendered_html

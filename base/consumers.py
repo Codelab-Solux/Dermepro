@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import DatabaseSyncToAsync
 from django.template.loader import get_template
+from asgiref.sync import sync_to_async
 from . models import *
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -17,6 +18,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             self.room_name,
             self.channel_name
         )
+        # Update user's online status
+        user_profile = await sync_to_async(Profile.objects.get)(user=self.user)
+        user_profile.is_online = True
+        await sync_to_async(user_profile.save)()
+        print(f'user is online: {user_profile.is_online}')
         print(f'Channel name : {self.channel_name}')
         print(f'Room name : {self.room_name}')
         await self.accept()
@@ -86,6 +92,21 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'id': event['data']['id'],
             'type': event['data']['type'],
             'user': event['data']['user'],
-            # 'status': event['data']['status'],
         }))
 
+    async def notify_user_auth(self, event):
+        await self.send(text_data=json.dumps({
+            'id': event['data']['id'],
+            'type': event['data']['type'],
+            'user': event['data']['user'],
+        }))
+
+    async def ping_user(self, user_id):
+        user = await sync_to_async(CustomUser.objects.get)(id=user_id)
+        notification_message = f"You have been pinged by {self.scope['user'].username}"
+        # Here you can send the notification to the user
+        await self.send(text_data=json.dumps({
+            'type': 'ping',
+            'message': notification_message,
+        }))
+        print('pinged')

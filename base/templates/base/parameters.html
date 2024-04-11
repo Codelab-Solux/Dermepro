@@ -1,23 +1,23 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div
-  class="p-6 bg-gray-50 border rounded-md flex flex-col md:flex-row gap-8 justify-between items-center"
+  class="p-6 bg-gray-100 border rounded-md grid md:grid-cols-2 gap-8 justify-between items-center"
 >
-  <article class="w-5/7">
-    <h1 class="text-black text-3xl lg:text-7xl font-bold">Parametrage</h1>
+  <article class="w-full">
+    <h1 class="text-black text-3xl lg:text-5xl xl:text-7xl font-bold">Parametrage</h1>
     <p class="mt-4">
       Gerer les parametres votre solution de gestion des visites et de rendez-vous ici.
     </p>
   </article>
-  <img
-    class="h-60 object-cover"
-    src="{% static 'imgs/params.png' %}"
-    alt="welcome image"
-  />
+    <img
+      class="w-full h-[300px] rounded-xl object-cover"
+      src="{% static 'vectors/office.svg' %}"
+      alt="image"
+    />
 </div>
 <!--------------------------------------- menu tabs buttons --------------------------------------->
 <div
-  class="my-4 tabbar w-full p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-md"
+  class="my-4 tabbar w-full p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-sm"
 >
   <button
     class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
@@ -26,6 +26,13 @@
   >
     <i class="fa-solid fa-building-columns"></i>
     <span class="hidden lg:inline lg:ml-2">Compagnie</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'users')"
+  >
+    <i class="fa-solid fa-people-group"></i>
+    <span class="hidden lg:inline lg:ml-2">Utilisateurs</span>
   </button>
   <button
     class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
@@ -39,7 +46,7 @@
 <!-- company info -->
 <section
   id="company"
-  class="tabcontent relative my-8 border border p-4 rounded-md"
+  class="tabcontent relative my-4 border border p-4 rounded-xl"
 >
   <!-- admin actions -->
   {% if user.role.sec_level >= 4 %}
@@ -47,20 +54,19 @@
     onclick="hide_dialogs()"
     hx-target="#basic_dialog"
     hx-get="{% url 'edit_company' curr_comp.id %}"
-    class="absolute right-4 px-2 py-1 hover:bg-purple-300 rounded-md hover:text-black"
+    class="absolute top-6 right-6 px-2 py-1 bg-white hover:bg-purple-400 rounded-md hover:text-black"
   >
     <i class="fa-solid fa-pen-to-square"></i>
   </button>
-
   {% endif %}
-  <h3 class="mb-4 text-black text-4xl font-bold">{{curr_comp.name}}</h3>
-  <div class="grid lg:grid-cols-2 gap-8">
-    <div class="flex flex-col gap-2">
-      <p class="text-black italic">
-        <i class="fa-solid fa-quote-left text-purple-700"></i>
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-2 p-4 bg-gray-100 border rounded-lg">
+      <h3 class="4 text-black text-4xl font-bold">{{curr_comp.name}}</h3>
+      <small class="text-black italic">
+        <i class="fa-solid fa-quote-left"></i>
         {{curr_comp.slogan}}
-        <i class="fa-solid fa-quote-right text-purple-700"></i>
-      </p>
+        <i class="fa-solid fa-quote-right"></i>
+      </small>
       <p class="text-black">
         <i class="fa-solid fa-copyright text-purple-700 mr-2"></i>
         {{curr_comp.company_type}}
@@ -73,34 +79,57 @@
         <i class="fa-solid fa-envelope text-purple-700 mr-2"></i>
         {{curr_comp.email}}
       </p>
-      <article class="flex flex-col gap-1">
-        <span class="text-lg text-black font-bold">Description</span>
-        <p class="shortened">{{curr_comp.description|truncatechars:1000}}</p>
-        <p class="lengthened hidden">{{curr_comp.description}}</p>
-        <button
-          id="load_more"
-          class="px-4 py-2 w-fit mx-auto bg-purple-900 hover:bg-purple-950 text-white rounded-md"
-        >
-          <span class="hidden lg:inline lg:ml-2">Lire plus</span>
-        </button>
-        <button
-          id="load_less"
-          class="hidden px-4 py-2 w-fit mx-auto bg-purple-700 hover:bg-purple-950 text-white rounded-md"
-        >
-          <span class="hidden lg:inline lg:ml-2">Lire moins</span>
-        </button>
-      </article>
+      <p class="text-black">
+        <i class="fa-solid fa-clock text-purple-700 mr-2"></i>
+        {{curr_comp.opening_time}} - {{curr_comp.closing_time}}
+      </p>
+      <p class="text-black">
+        <i class="fa-solid fa-calendar-days text-purple-700 mr-2"></i>
+        {{first_day.fr_name}} - {{last_day.fr_name}}
+      </p>
     </div>
-    <img
-      class="w-full object-contain"
-      src="{% static 'imgs/logo.png' %}"
-      alt="welcome image"
-    />
+    <article class="flex flex-col gap-1 p-4 bg-amber-200 rounded-lg">
+      <span class="text-lg text-black font-bold">Description</span>
+      <p class="shortened">{{curr_comp.description|truncatechars:1001}}</p>
+    </article>
   </div>
 </section>
+<!-- users params -->
+<section id="users" class="tabcontent hidden my-4 border border p-4 rounded-xl">
+  <div class="pb-4 flex flex-col gap-3">
+    <div class="flex justify-between items-center">
+      <h3 class="text-black text-lg font-bold">Utilisateurs</h3>
+      {% if user.role.sec_level >= 4 %}
+      <button
+        hx-target="#basic_dialog"
+        hx-get="{% url 'create_user' %}"
+        class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
+      >
+        <span class="mr-2">Nouvel utilisateur</span>
+        <i class="fa-solid fa-user-plus"></i>
+      </button>
+      {% endif %}
+    </div>
 
-<!-- user roles params -->
-<section id="roles" class="tabcontent hidden my-8 border border p-4 rounded-md">
+   <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {% for obj in users %}
+      <div
+      class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
+      >
+      <a href="{% url 'user' obj.id  %}" >
+          <h3 class="font-bold text-black text-md">
+            {{obj.last_name}} {{obj.first_name}}
+          </h3>
+          <p class="font-bold text-purple-900 text-sm">@{{obj.username}}</p>
+          <p class="text-sm">{{e.email}}</p>
+          <p class="text-sm">{{obj.role}}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+</section>
+<!-- roles params -->
+<section id="roles" class="tabcontent hidden my-4 border border p-4 rounded-xl">
   <div class="w-full">
     {% if not user_roles %}
     <h3 class="mb-2 bg-gray-100 p-4 rounded-md text-center mx-auto">
@@ -108,12 +137,13 @@
     </h3>
     {% else %}
     <h3 class="mb-4 text-black text-lg font-bold">Rôles des utilisateurs</h3>
-    <div class="flex gap-4">
-      <img
+    <div class="flex gap-4 items-center">
+      <!-- <i class="fa-solid fa-shield text-gray-400 text-3xl"></i> -->
+      <!-- <img
         class="h-60 object-cover"
         src="{% static 'imgs/admin.png' %}"
         alt="welcome image"
-      />
+      /> -->
       <div class="w-full mb-4 grid md:grid-cols-2 xl:grid-cols-3 gap-4">
         {% for obj in user_roles %}
         <div
@@ -144,8 +174,11 @@
     {% endif %}
   </div>
 </section>
+
+
+
+<!-- tabs control -->
 <script>
-    //  tabs control ----------------------------------------------------------------------------------------------------
 document.getElementById("defaultTab").click();
 function openTab(event, tabName) {
   var i, tabcontent, tabBtn;
@@ -164,13 +197,5 @@ function openTab(event, tabName) {
     minitabs = tabcontent.children;
   }
 }
-
-  $(document).ready(function () {
-    $("#load_more").click(function () {
-      $(this).prev(".shortened").hide();
-      $(this).prev(".lengthened").show();
-      $(this).hide(); // Hide the 'Load More' button after clicking
-    });
-  });
 </script>
 {% endblock %}

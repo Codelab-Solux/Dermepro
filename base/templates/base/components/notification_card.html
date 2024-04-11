@@ -25,7 +25,7 @@
   id="notif{{obj.content_object.id}}"
   class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
 >
-  <span><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Nouvelle visite de </span
+  <span><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Visite de </span
   ><b
     >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
     {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b
@@ -40,7 +40,7 @@
   class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
 >
   <span
-    ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Nouveau rendez-vous avec </span
+    ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Rendez-vous avec </span
   ><b
     >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
     {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b

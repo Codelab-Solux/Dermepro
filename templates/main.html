@@ -54,15 +54,20 @@
     <div id="sidebar">{% include 'sidebar.html' %}</div>
 
     <div class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] bg-white">
+      <button
+        class="hidden"
+        id="badge_reloader"
+        hx-target=".badge"
+        hx-get="{% url 'badge' %}"
+      ></button>
       <div
-        class="relative p-4 md:p-6 lg:p-8 pt- w-full max-w-[1350px] mx-auto min-h-screen"
+        class="relative px-4 md:px-6 pt-3 w-full max-w-[1350px] mx-auto min-h-screen"
       >
-        <button
-          class="hidden"
-          id="badge_reloader"
-          hx-target=".badge"
-          hx-get="{% url 'badge' %}"
-        ></button>
+        <!-- <button
+          class="py-1 px-3 rounded-md bg-sky-300 text-black"
+          id="testBtn"
+        >Test
+        </button> -->
         <div
           class="badge mb-2 w-full"
           hx-get="{% url 'badge' %}"
@@ -83,6 +88,42 @@
   <script>
     htmx.onLoad(function (content) {
       scripts.init(content);
+    });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/static/workers.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Service Worker registration failed:", error);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+          // You can now send notifications
+        } else {
+          console.log("Unable to get permission to notify.");
+        }
+      });
+  
+  const testBtn = document.getElementById("testBtn");
+
+  testBtn.addEventListener("click", function () {
+    if (Notification.permission === "granted") {
+      console.log("Notifyinnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng.");
+      new Notification("Test Notification");
+    } else {
+      console.log("Permission for notifications not granted.");
+    }
+  });
     });
   </script>
 </html>

@@ -1,23 +1,12 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div class="pb-4 flex flex-col gap-3">
-  {% if user.role.sec_level >= 4 %}
-  <button
-    hx-target="#basic_dialog"
-    hx-get="{% url 'create_user' %}"
-    class="mb-2 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
-  >
-    <span class="hidden md:inline mr-2">Nouvel utilisateur</span>
-    <i class="fa-solid fa-user-plus"></i>
-  </button>
-  {% else %}
-  <div class="h-12"></div>
-  {% endif %}
+
   <!--------------------------------------- filter form --------------------------------------->
   <form
     hx-post="{% url 'filter_users' %}"
     hx-target=".filtered_users"
-    class="p-1 w-full bg-purple-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+    class="mt-14 p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
   >
     {% csrf_token %}
     <!--  -->
@@ -81,7 +70,7 @@
     </div>
 
     <button
-      class="px-3 py-2 bg-purple-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+      class="px-3 py-2 bg-gray-100 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
       type="submit"
     >
       <i class="fa-solid fa-filter"></i>
@@ -104,7 +93,7 @@
 >
   <!--------------------------------------- user list --------------------------------------->
   <div
-    class="filtered_users p-2 bg-purple-50 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+    class="filtered_users p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
   >
     <div
       class="user_list"
@@ -121,10 +110,11 @@
     class="user_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
   >
     <img
-      class="h-60 lg:h-80 bg-gray-100 rounded-full"
-      src="{% static 'imgs/user_profile.png' %}"
+        class="h-60 lg:h-80"
+        src="{% static 'vectors/profile.jpg' %}"
       alt="welcome image"
     />
+     <!-- <i class="fa-solid fa-user-alt text-gray-400 text-5xl"></i> -->
     <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
       Cliquez sur un utilisateur pour voir ses detail ici.
     </p>

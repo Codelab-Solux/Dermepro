@@ -65,18 +65,27 @@
     class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{report_page}}"
     href="{% url 'reports' %}"
     >
-    <i class="fa-sharp fa-solid fa-chart-simple xl:mr-2"></i> 
+    <i class="fa-sharp fa-solid fa-file-lines xl:mr-2"></i> 
     <span class="hidden xl:inline">
       Rapports
     </span>
   </a>
   <a
     class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
-    href="{% url 'settings' %}"
+    href="{% url 'parameters' %}"
   >
-    <i class="fa-sharp fa-solid fa-gear xl:mr-2"></i> 
+    <i class="fa-solid fa-sliders xl:mr-2"></i> 
     <span class="hidden xl:inline">
       Paramètres
+    </span>
+  </a>
+  <a
+    class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
+    href="{% url 'dashboard' %}"
+  >
+    <i class="fa-sharp fa-solid fa-bars-progress xl:mr-2"></i> 
+    <span class="hidden xl:inline">
+      Tableau de bord
     </span>
   </a>
     {% endif %}
@@ -90,15 +99,6 @@
       </span>
     </a>
 
-    <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
-      href="{% url 'dashboard' %}"
-    >
-      <i class="fa-sharp fa-solid fa-bars-progress xl:mr-2"></i> 
-      <span class="hidden xl:inline">
-        Tableau de bord
-      </span>
-    </a>
 
     {% if user.is_superuser %}
     <a
@@ -152,7 +152,7 @@
           aria-labelledby="user-menu-button"
           id="dropdownMenu"
         >
-          <a href="{% url 'user' user.id  %}"
+          <a href="{% url 'profile' user.id  %}"
             class="p-2 flex text-sm text-gray-700 hover:text-black hover:bg-purple-200 xl:rounded-md w-full"
             >
             <i class="text-sm fa-solid fa-user xl:mr-2"></i> 
@@ -160,14 +160,7 @@
             </a
           >
           <a
-            href="#"
-            class="p-2 flex text-sm text-gray-700 hover:text-black hover:bg-purple-200 xl:rounded-md w-full"
-            >
-            <i class="text-sm fa-solid fa-gear xl:mr-2"></i>
-              <span class="hidden xl:inline">Parametres</span>
-            </a
-          >
-          <a
+            hx-confirm="Voulez vous vraiment vous deconnecter?"
             href="{% url 'logout' %}"
             class="p-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded-md w-full"
             >

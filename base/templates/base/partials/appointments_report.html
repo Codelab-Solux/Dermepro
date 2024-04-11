@@ -4,7 +4,7 @@
   hx-post="{% url 'filter_appointments_table' %}"
   hx-target=".filtered_appointments_table"
   hx-trigger="submit"
-  class="p-1 w-full bg-purple-100 border rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+  class="p-1 w-full bg-gray-100 border rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
 >
   {% csrf_token %}
   <!--  -->
@@ -29,7 +29,7 @@
     >
       <option value="" selected disabled>Hôte</option>
       {% for obj in hosts %}
-      <option value="{{obj.username}}">@{{obj.username}}</option>
+      <option value="{{obj.username}}">{{obj.last_name}} {{obj.first_name}}</option>
       {% endfor %}
     </select>
     {% endif %}
@@ -55,7 +55,7 @@
   </div>
 
   <button
-    class="px-3 py-2 bg-purple-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+    class="px-3 py-2 bg-gray-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
     type="submit"
   >
     <i class="fa-solid fa-filter"></i>

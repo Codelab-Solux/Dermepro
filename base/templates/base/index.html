@@ -25,15 +25,16 @@
     hx-get="{% url 'users_status_quo' %}"
   ></button>
 
+  <!-- {% if user.role.sec_level >= 4 %}
+  <div
+    class="users_status_quo mt-2 w-full"
+    hx-get="{% url 'users_status_quo' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
+  {% endif %} -->
+  
   <div class="mt-8 p-4 border rounded-lg">
-    {% if user.role.sec_level >= 4 %}
-    <div
-      class="users_status_quo mt-2 w-full"
-      hx-get="{% url 'users_status_quo' %}"
-      hx-trigger="load, db_changed from:body"
-      hx-target="this"
-    ></div>
-    {% endif %}
     <!-------------------- ongoing appointments -------------------->
     <div
       class="w-full mt-4 ongoing_appointments"
@@ -72,10 +73,12 @@
       class="my-4 flex flex-col md:flex-row justify-between md:items-center gap-8"
     >
       <img
-        class="md:hidden lg:inline h-80 object-contain"
-        src="{% static 'imgs/waiting.png' %}"
+        class="md:hidden lg:inline w-80 rounded-lg object-cover"
+        src="{% static 'vectors/reception.avif' %}"
         alt="welcome image"
       />
+        <!-- <i class="fa-solid fa-user-tie text-gray-400 text-5xl"></i> -->
+
       <div
         class="w-full pending_visits"
         hx-get="{% url 'pending_visits' %}"
@@ -91,6 +94,7 @@
   <div class="mt-8 p-4 border rounded-lg">
     <div class="flex justify-between items-center">
       <h3 class="text-black text-xl font-bold">Rendez-vous du jour</h3>
+      {% if user.role.sec_level >= 4 %}
       <button
         hx-target="#basic_dialog"
         hx-get="{% url 'create_appointment' %}"
@@ -99,6 +103,7 @@
         <span class="hidden md:inline mr-2">Nouveau rendez-vous</span>
         <i class="fa-solid fa-plus"></i>
       </button>
+      {% endif %}
     </div>
 
     <!-- Appointments of the day -->

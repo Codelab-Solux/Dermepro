@@ -3,13 +3,11 @@
   <!--  -->
   {% if curr_obj.host == user%}
   <!--  -->
-  {#% include 'base/components/status_changer.html' %#}
-  <!--  -->
   {% include 'base/components/visit_sentry.html' %}
   <!--  -->
   {% endif %}
   <!-- admin actions -->
-  {% if user.role.sec_level >= 4 %}
+  {% if user.role.sec_level >= 4 and curr_obj.status.id == 1 %}
   <div
     class="flex border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
   >
@@ -21,6 +19,7 @@
     >
       <i class="fa-solid fa-pen-to-square"></i>
     </button>
+    {% if user.is_superuser %}
     <button
       hx-confirm="Voulez vous vraiment supprimer ceci?"
       class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
@@ -28,6 +27,13 @@
     >
       <i class="fa-solid fa-trash"></i>
     </button>
+    {% endif %}
   </div>
+  {% if curr_obj.status.id == 1 %}
+  <!--  -->
+  {#% include 'base/components/pinger.html' %#}
+  <!--  -->
+  {% endif %}
+  <!--  -->
   {% endif %}
 </div>

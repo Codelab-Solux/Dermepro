@@ -53,12 +53,15 @@ def loginView(req):
             messages.info(req, 'Username or Password is incorrect!')
     context = {
         "login_page": "active",
-        "title": 'login'}
+        "title": 'Login'}
     return render(req, 'accounts/login.html', context)
 
 
 @login_required(login_url='login')
 def logoutUser(req):
+    profile = req.user.profile
+    profile.is_online = False
+    profile.save()
     logout(req)
     return redirect('login')
 
@@ -73,7 +76,7 @@ def users(req):
     ordering = ['last_name']
     context = {
         "users_page": "active",
-        'title': 'users',
+        'title': 'Users',
         'new_users': new_users,
         'users': users,
         'user_roles': user_roles,
@@ -101,7 +104,6 @@ def create_user(req):
         return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title' : 'Créer un Utilisateur'})
 
 
-
 @login_required(login_url='login')
 def edit_user(req, pk):
     user = req.user
@@ -121,6 +123,23 @@ def edit_user(req, pk):
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title' : 'Modifier un Utilisateur', 'curr_obj': curr_obj})
+
+@login_required(login_url='login')
+def edit_profile(req, pk):
+    user = req.user
+    curr_obj = get_object_or_404(Profile, id=pk)
+
+
+    form = EditProfileForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = EditProfileForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            print('saved')
+            form.save()
+        messages.success = 'Données modifiée avec success'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'accounts/forms/profile_form.html', context={'form': form, 'form_title' : 'Modifier ce profil', 'curr_obj': curr_obj})
 
 
 @ login_required(login_url='login')
@@ -143,7 +162,6 @@ def users_status_quo(req):
         "busy_users" : busy_users,
         }
     return render(req, 'accounts/partials/users_status_quo.html', context)
-
 
 
 @login_required(login_url='login')
@@ -176,7 +194,27 @@ def user(req, pk):
         'title': 'User Details',
         'curr_obj': curr_obj,
     }
-    return render(req, 'accounts/user.html', context)
+    return render(req, 'accounts/profile_alt.html', context)
+    
+
+@ login_required(login_url='login')
+def profile(req, pk):
+    user = req.user
+    curr_obj = get_object_or_404(CustomUser, id=pk)
+    curr_profile = get_object_or_404(Profile, user=curr_obj)
+    if user == curr_obj:
+        is_self = True
+    else:
+        is_self = False
+
+    context = {
+        "user_profile_page": "active",
+        'title': 'User Profile',
+        'is_self': is_self,
+        'curr_obj': curr_obj,
+        'curr_profile': curr_profile,
+    }
+    return render(req, 'accounts/profile.html', context)
     
 
 def filter_users(req):

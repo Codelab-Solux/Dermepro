@@ -4,7 +4,7 @@
   hx-post="{% url 'filter_users_table' %}"
   hx-target=".filtered_users_table"
   hx-trigger="submit"
-  class="p-1 w-full bg-purple-100 border rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+  class="p-1 w-full bg-gray-100 border rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
 >
   {% csrf_token %}
   <!--  -->
@@ -34,6 +34,15 @@
       name="first_name"
       placeholder="Prenoms"
     />
+    <!-- sex -->
+    <select
+      name="sex"
+      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+    >
+      <option value="" selected disabled>Sexe</option>
+      <option value="female">Feminin</option>
+      <option value="male">Masculin</option>
+    </select>
     <!-- statuses -->
     <select
       name="status"
@@ -44,26 +53,34 @@
       <option value="{{obj.id}}">{{obj.title}}</option>
       {% endfor %}
     </select>
-    <!-- sex -->
+    <!-- visit counts -->
     <select
       name="sex"
       class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
     >
-      <option value="" selected disabled>Sexe</option>
-      <option value="female">Feminin</option>
-      <option value="male">Masculin</option>
+      <option value="" selected disabled>Visites</option>
+      <option value="female">1 - 10</option>
+      <option value="male">11 - 30</option>
+      <option value="male">31 - 50</option>
+      <option value="male">51 - 100</option>
+      <option value="male">101 - 500</option>
     </select>
-    <!-- last login -->
-    <!-- <input
-      class="px-3 py-2 w-full rounded-md"
-      type="date"
-      name="last_login"
-      placeholder="Derniere connexion"
-    /> -->
+    <!-- appointment counts -->
+    <select
+      name="sex"
+      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+    >
+      <option value="" selected disabled>Rendez-vous</option>
+      <option value="female">1 - 10</option>
+      <option value="male">11 - 30</option>
+      <option value="male">31 - 50</option>
+      <option value="male">51 - 100</option>
+      <option value="male">101 - 500</option>
+    </select>
   </div>
 
   <button
-    class="px-3 py-2 bg-purple-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+    class="px-3 py-2 bg-gray-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
     type="submit"
   >
     <i class="fa-solid fa-filter"></i>
@@ -89,6 +106,8 @@
         <th class="p-4 text-sm">Telephone</th>
         <th class="p-4 text-sm">Role</th>
         <th class="p-4 text-sm">Status</th>
+        <th class="p-4 text-sm">Visites</th>
+        <th class="p-4 text-sm">Rendez-vous</th>
       </tr>
     </thead>
 

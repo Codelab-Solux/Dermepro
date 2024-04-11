@@ -12,8 +12,11 @@ urlpatterns = [
     path('users/', users, name='users'),
     path('users/new/', create_user, name='create_user'),
     path('users/status_quo', users_status_quo, name='users_status_quo'),
+    path('users/status_quo', users_status_quo, name='users_status_quo'),
+    path('users/<hashid:pk>/profile', profile, name='profile'),
     path('users/<hashid:pk>/delete', delete_user, name='delete_user'),
     path('users/<hashid:pk>/edit', edit_user, name='edit_user'),
+    path('profiles/<hashid:pk>/edit', edit_profile, name='edit_profile'),
     path('change_user_status/<hashid:pk>/', change_user_status, name='change_user_status'),
 ]
 

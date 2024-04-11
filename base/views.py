@@ -83,11 +83,6 @@ def home(req):
     week = today.isocalendar()[1]
     year = today.year
 
-    print(f'Today : {today}')
-    print(f'Day : {day}')
-    print(f'Week : {week}')
-    print(f'Year : {year}')
-
     context = {
         "home_page": "active",
         'title': 'Home',
@@ -129,7 +124,7 @@ def visit(req, pk):
         content_type=ContentType.objects.get_for_model(Visit), object_id=curr_obj.id)
     if associated_notifications:
         associated_notifications.update(is_read=True)
-        print(f'Notification was read at {timezone.now()}')
+        # print(f'Notification was read at {timezone.now()}')
 
     context = {
         "visit_details_page": "active",
@@ -192,9 +187,9 @@ def edit_visit(req, pk):
 @login_required(login_url='login')
 def moderate_visit(req, pk, kp):
     user = req.user
-    curr_profile = get_object_or_404(Profile, user=user)
-    curr_obj = get_object_or_404(Visit, id=pk, host=user)
+    curr_obj = get_object_or_404(Visit, id=pk)
     new_status = get_object_or_404(Status, id=kp)
+    host_profile = get_object_or_404(Profile, user=curr_obj.host)
 
     if kp == 2:
         curr_obj.is_accepted = True
@@ -204,9 +199,9 @@ def moderate_visit(req, pk, kp):
         curr_obj.save()
 
         new_user_status = get_object_or_404(UserStatus, id=2)
-        curr_profile.status = new_user_status
-        curr_profile.save()
-        print(curr_profile.status)
+        host_profile.status = new_user_status
+        host_profile.save()
+        # print(host_profile.status)
 
     elif kp == 3:
         curr_obj.is_accepted = True
@@ -216,9 +211,9 @@ def moderate_visit(req, pk, kp):
         curr_obj.save()
 
         new_user_status = get_object_or_404(UserStatus, id=1)
-        curr_profile.status = new_user_status
-        curr_profile.save()
-        print(curr_profile.status)
+        host_profile.status = new_user_status
+        host_profile.save()
+        # print(curr_profile.status)
 
     elif kp == 5:
         curr_obj.is_rejected = True
@@ -373,20 +368,20 @@ def generate_visit_badge(req, pk):
 
 def sign_visit(req, pk):
     if req.method == 'POST':
-        print("req FILES:", req.FILES)
+        # print("req FILES:", req.FILES)
         if 'image' in req.FILES:
             curr_obj = Visit.objects.get(id=pk)
             image_file = req.FILES['image']
-            print("Received image file:", image_file.name)
+            # print("Received image file:", image_file.name)
             curr_obj.signature = image_file
             curr_obj.departed_at = timezone.now()
             curr_obj.save()
             return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
         else:
-            print("No 'image' field found in req.FILES")
+            # print("No 'image' field found in req.FILES")
             return JsonResponse({'success': False, 'error': 'Missing image data'})
     else:
-        print("Invalid req method")
+        # print("Invalid req method")
         return JsonResponse({'success': False, 'error': 'Invalid req method'})
 
 
@@ -425,12 +420,13 @@ def calendar_week(req, week=None):
     if not week:
         week = datetime.today().isocalendar()[1]
 
-    print(f'Weeeeeeeeeeeeeeeeeeeeeeeeeeek : {week}')
+    # print(f'Weeeeeeeeeeeeeeeeeeeeeeeeeeek : {week}')
 
     year = datetime.today().year
     month = get_month_from_week(year, week)
     month_name = calendar.month_name[month]
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    # days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     # Mapping dictionary from English to French day names
     day_mapping = {
@@ -440,9 +436,18 @@ def calendar_week(req, week=None):
         'Thursday': 'Jeudi',
         'Friday': 'Vendredi',
         'Saturday': 'Samedi',
-        'Sunday': 'Dimanche'
+        # 'Sunday': 'Dimanche'
     }
-    hours = list(range(24))  # Hours from 0 to 23
+    curr_company = Company.objects.first()
+    starts_at = curr_company.opening_time.hour
+    ends_at = curr_company.closing_time.hour
+    if not starts_at:
+        starts_at = 8
+    if not ends_at:
+        ends_at = 18
+
+    hours = list(range(starts_at, ends_at + 1))
+        
     first_day_of_week, last_day_of_week = get_week_boundaries(year, week)
     if user.role.sec_level >= 4:
         appointments = Appointment.objects.filter(
@@ -453,17 +458,17 @@ def calendar_week(req, week=None):
             date__range=(first_day_of_week, last_day_of_week), host=user
         ).order_by('-date', '-time')
 
-    print(f'appointments : {appointments}')
+    # print(f'appointments : {appointments}')
+    workdays = WorkDay.objects.filter(company = curr_company)
     
     context = {
         "rdv_calendar": "active",
         'title': 'Appointments Calendar',
         'week': week,
+        'workdays': workdays,
         'year': year,
         'month': month,
         'month_name': month_name,
-        'days': days,
-        'day_mapping': day_mapping,
         'day_one': first_day_of_week,
         'hours': hours,
         'appts': appointments,
@@ -485,20 +490,17 @@ def calendar_day(req, day=None):
     year = curr_date.year
     month = get_month_from_week(year, week)
     month_name = calendar.month_name[month]
-    days = ['Monday', 'Tuesday', 'Wednesday',
-            'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-    # Mapping dictionary from English to French day names
-    day_mapping = {
-        'Monday': 'Lundi',
-        'Tuesday': 'Mardi',
-        'Wednesday': 'Mercredi',
-        'Thursday': 'Jeudi',
-        'Friday': 'Vendredi',
-        'Saturday': 'Samedi',
-        'Sunday': 'Dimanche'
-    }
-    hours = list(range(24))  # Hours from 0 to 23
+    curr_company = Company.objects.first()
+    starts_at = curr_company.opening_time.hour
+    ends_at = curr_company.closing_time.hour
+    if not starts_at:
+        starts_at = 8
+    if not ends_at:
+        ends_at = 18
+
+    hours = list(range(starts_at, ends_at + 1))
+
     if user.role.sec_level >= 4:
         appointments = Appointment.objects.filter(
             date=curr_date).order_by('-time')
@@ -515,8 +517,6 @@ def calendar_day(req, day=None):
         'year': year,
         'month': month,
         'month_name': month_name,
-        'days': days,
-        'day_mapping': day_mapping,
         'hours': hours,
         'appts': appointments,
     }
@@ -534,7 +534,7 @@ def appointment(req, pk):
         content_type=ContentType.objects.get_for_model(Appointment), object_id=curr_obj.id)
     if associated_notifications:
         associated_notifications.update(is_read=True)
-        print(f'Notification was read at {timezone.now()}')
+        # print(f'Notification was read at {timezone.now()}')
 
     context = {
         "appointment_details_page": "active",
@@ -598,10 +598,8 @@ def edit_appointment(req, pk):
 @login_required(login_url='login')
 def moderate_appointment(req, pk, kp):
     user = req.user
-    curr_profile = get_object_or_404(Profile, user=user)
-    curr_obj = get_object_or_404(Appointment, id=pk, host=user)
-    pending = get_object_or_404(Status, id=2)
-    pending_appts = Appointment.objects.filter(host=user, status=pending)
+    curr_obj = get_object_or_404(Appointment, id=pk)
+    host_profile = get_object_or_404(Profile, user=curr_obj.host)
     new_status = get_object_or_404(Status, id=kp)
 
     # starts the appointment
@@ -610,8 +608,8 @@ def moderate_appointment(req, pk, kp):
         curr_obj.status = new_status
         curr_obj.save()
         new_user_status = get_object_or_404(UserStatus, id=2)
-        curr_profile.status = new_user_status
-        curr_profile.save()
+        host_profile.status = new_user_status
+        host_profile.save()
 
     # ends the appointment
 
@@ -620,10 +618,10 @@ def moderate_appointment(req, pk, kp):
         curr_obj.departed_at = timezone.now()
         curr_obj.status = new_status
         curr_obj.save()
-        if len(pending_appts) == 1:
-            new_user_status = get_object_or_404(UserStatus, id=1)
-            curr_profile.status = new_user_status
-            curr_profile.save()
+        # ---------------------------------------------------
+        new_user_status = get_object_or_404(UserStatus, id=1)
+        host_profile.status = new_user_status
+        host_profile.save()
 
     else:
         return "error"
@@ -649,7 +647,7 @@ def edit_appointment_status(req, pk, kp):
         new_user_status = get_object_or_404(UserStatus, id=1)
         curr_profile.status = new_user_status
         curr_profile.save()
-        print(curr_profile.status)
+        # print(curr_profile.status)
 
     context = {'obj': curr_obj}
     return render(req, 'base/components/status_badge.html', context)
@@ -706,6 +704,12 @@ def pending_appointments(req):
     context = {"appointments": appointments}
     return render(req, 'base/partials/pending_appointments.html', context)
 
+@login_required(login_url='login')
+def pending_appointments_all(req):
+    appointments = Appointment.objects.filter(status=1)
+    context = {"appointments": appointments}
+    return render(req, 'base/partials/pending_appointments_all.html', context)
+
 
 @login_required(login_url='login')
 def ongoing_appointments(req):
@@ -714,7 +718,7 @@ def ongoing_appointments(req):
     return render(req, 'base/partials/ongoing_appointments.html', context)
 
 
-def filter_appointments(req):
+def filter_appointments(req, pk='list'):
     user = req.user
     host_query = req.POST.get('host')
     name_query = req.POST.get('name')
@@ -741,8 +745,11 @@ def filter_appointments(req):
 
     appointments = base_query
     context = {"appointments": appointments}
-    # print(appointments)
-    return render(req, 'base/partials/appointment_grid.html', context)
+    print(appointments)
+    if pk == 'grid':
+        return render(req, 'base/partials/appointment_grid.html', context)
+    else:
+        return render(req, 'base/partials/appointment_list.html', context)
 
 
 def generate_appointment_badge(req, pk):
@@ -772,20 +779,20 @@ def generate_appointment_badge(req, pk):
 
 def sign_appointment(req, pk):
     if req.method == 'POST':
-        print("req FILES:", req.FILES)
+        # print("req FILES:", req.FILES)
         if 'image' in req.FILES:
             curr_obj = Appointment.objects.get(id=pk)
             image_file = req.FILES['image']
-            print("Received image file:", image_file.name)
+            # print("Received image file:", image_file.name)
             curr_obj.signature = image_file
             curr_obj.departed_at = timezone.now()
             curr_obj.save()
             return JsonResponse({'success': True})
         else:
-            print("No 'image' field found in req.FILES")
+            # print("No 'image' field found in req.FILES")
             return JsonResponse({'success': False, 'error': 'Missing image data'})
     else:
-        print("Invalid req method")
+        # print("Invalid req method")
         return JsonResponse({'success': False, 'error': 'Invalid req method'})
 
 
@@ -796,32 +803,38 @@ def appointment_status(req, pk):
     return render(req, 'base/partials/appointment_status.html', context)
 
 
-# settings -------------------------------------------------------------------------------------------------
+# parameters -------------------------------------------------------------------------------------------------
 @ login_required(login_url='login')
-def settings(req):
+def parameters(req):
     user = req.user
     if user.role.sec_level < 3:
         curr_comp = get_object_or_404(Company, id=user.profile.company.id)
     else:
         curr_comp = get_object_or_404(Company, manager=user)
 
+    users = CustomUser.objects.all()
     user_roles = Role.objects.all()
+    first_day = curr_comp.workdays.first()
+    last_day = curr_comp.workdays.last()
 
     form = RoleForm()
     if req.method == 'POST':
         form = RoleForm(req.POST)
         if form.is_valid():
             form.save()
-            return redirect('settings')
+            return redirect('parameters')
 
     context = {
         "params_page": "active",
-        'title': 'Settings',
+        'title': 'Parameters',
+        'users': users,
         'user_roles': user_roles,
         'curr_comp': curr_comp,
+        'first_day': first_day,
+        'last_day': last_day ,
         'form': form,
     }
-    return render(req, 'base/settings.html', context)
+    return render(req, 'base/parameters.html', context)
 
 
 @login_required(login_url='login')

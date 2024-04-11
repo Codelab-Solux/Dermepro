@@ -1,0 +1,31 @@
+{% if curr_obj %}
+<button onclick="pingUser('{{curr_obj.host.id}}')">
+  <span
+    class="px-3 py-1 flex items-center gap-2 bg-red-700 text-white rounded-md"
+  >
+    <i class="text-sm lg:text-md fa-solid fa-tower-cell"></i>
+    <small class="hidden lg:inline">Alerter</small>
+  </span>
+</button>
+{% else %}
+<button onclick="pingUser('{{obj.id}}')">
+  <span
+    class="px-3 py-1 flex items-center gap-2 bg-red-700 text-white rounded-md"
+  >
+    <i class="text-sm lg:text-md fa-solid fa-tower-cell"></i>
+    <small class="hidden lg:inline">Alerter</small>
+  </span>
+</button>
+{% endif %}
+
+<script>
+    function pingUser(userId) {
+  alert("pinging");
+  const data = {
+    type: "ping",
+    userId: userId,
+  };
+  notifierSocket.send(data);
+}
+//   pingUser();
+</script>

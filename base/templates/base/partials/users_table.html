@@ -1,3 +1,5 @@
+{% load get_visit_count get_appt_count from base_tags %}
+<!--  -->
 {% if not objects %}
 <tr
   class="p-4 flex-col justify-center items-center text-center text-black mx-auto"
@@ -14,17 +16,27 @@
 {% else %}
 <!--  -->
 {% for obj in objects %}
+<!--  -->
+
 <tr
   class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
->
+  >
   <td class="p-3">@{{obj.username}}</td>
   <td class="p-3">{{obj.last_name}}</td>
   <td class="p-3">{{obj.first_name}}</td>
   <td class="p-3">{{obj.email}}</td>
   <td class="p-3">{{obj.phone}}</td>
   <td class="p-3 font-bold">{{obj.role}}</td>
-  <td class=" text-center">{% include 'accounts/components/user_status_badge.html' %}</td>
+  <td class="text-center">{% include 'accounts/components/user_status_badge.html' %}</td>
+  {% with visit_count=obj.id|get_visit_count %}
+  <td class="p-3 font-bold text-center">{{visit_count}}</td>
+  {% endwith %}
+  <!--  -->
+  {% with appt_count=obj.id|get_appt_count %}
+  <td class="p-3 font-bold text-center">{{appt_count}}</td>
+  {% endwith %}
 </tr>
+<!--  -->
 {% endfor %}
 
 <!-- htmx load-more button ------------------------------------------------------------->

@@ -1,31 +1,30 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<section id="chats_base">
+<section id="chats_base" class="mt-16 md:mt-0">
   <div class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-4em)]">
     <!--------------------------------------- thread/contacts/groups lists --------------------------------------->
     <div
-      class="flex flex-col gap-2 w-full md:max-w-[300px] xl:max-w-[380px] h-full"
+      class="flex flex-col gap-2 w-full md:max-w-[260px] lg:max-w-[320px] xl:max-w-[380px] h-full"
     >
-    
       <!--------------------------------------- menu tabs buttons --------------------------------------->
       <div
-          class="tabbar max-w-[400px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
-        >
-          <button
+        class="tabbar p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full lg:lg: text-xs"
+      >
+        <button
           class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-            onclick="openTab(event, 'threads')"
-            id="defaultTab"
-          >
-            <i class="fa-solid fa-comments"></i>
-            <span class="hidden xl:inline lg:ml-2">Messages</span>
-          </button>
-          <button
-            class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-            onclick="openTab(event, 'contacts')"
-          >
-            <i class="fa-solid fa-address-book"></i>
-            <span class="hidden xl:inline lg:ml-2">Contacts</span>
-          </button>
-          <!-- <button
+          onclick="openTab(event, 'threads')"
+          id="defaultTab"
+        >
+          <i class="fa-solid fa-comments"></i>
+          <span class="hidden xl:inline lg:ml-2">Messages</span>
+        </button>
+        <button
+          class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+          onclick="openTab(event, 'contacts')"
+        >
+          <i class="fa-solid fa-address-book"></i>
+          <span class="hidden xl:inline lg:ml-2">Contacts</span>
+        </button>
+        <!-- <button
             class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
             onclick="openTab(event, 'groups')"
           >
@@ -35,10 +34,15 @@
       </div>
       <!--------------------------------------- threads --------------------------------------->
       <section id="threads" class="tabcontent">
-        <button class="hidden" id="chats_reloader" hx-target=".thread_list" hx-get="{% url 'threads' %}"></button>
+        <button
+          class="hidden"
+          id="chats_reloader"
+          hx-target=".thread_list"
+          hx-get="{% url 'threads' %}"
+        ></button>
         <!--------------------------------------- filter form --------------------------------------->
         <form
-          class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+          class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
           hx-post="{% url 'filter_users' %}"
           hx-target=".filtered_threads"
         >
@@ -68,12 +72,12 @@
           ></div>
         </div>
       </section>
-  
+
       <!--------------------------------------- contacts --------------------------------------->
       <section id="contacts" class="tabcontent hidden">
-              <!--------------------------------------- filter form --------------------------------------->
+        <!--------------------------------------- filter form --------------------------------------->
         <form
-          class="mb-2 w-full flex items-center gap-1 max-w-[400px]"
+          class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
           hx-post="{% url 'filter_users' %}"
           hx-target=".filtered_contacts"
         >
@@ -103,7 +107,7 @@
           ></div>
         </div>
       </section>
-  
+
       <!--------------------------------------- groups --------------------------------------->
       <section id="groups" class="tabcontent hidden">
         <div
@@ -123,35 +127,36 @@
       class="thread_details relative hidden md:flex flex-col items-center justify-center w-full border rounded-xl md:overflow-y-auto"
     >
       <img
-        class="h-60 lg:h-80 bg-gray-100 rounded-full"
-        src="{% static 'imgs/chat.png' %}"
+        class="h-60 lg:h-80 rounded-lg"
+        src="{% static 'vectors/chat.avif' %}"
         alt="welcome image"
       />
+      <!-- <i class="fa-regular fa-comments text-gray-400 text-5xl"></i> -->
       <p class="m-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
-        Cliquez sur un utilisateur pour entamer ou continuer une conversation.
+        Restez connecter en temps réel.
       </p>
     </section>
   </div>
   <script>
     //  tabs control ----------------------------------------------------------------------------------------------------
-  document.getElementById("defaultTab").click();
-  function openTab(event, tabName) {
-    var i, tabcontent, tabBtn;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+    document.getElementById("defaultTab").click();
+    function openTab(event, tabName) {
+      var i, tabcontent, tabBtn;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tabBtn = document.getElementsByClassName("tabBtn");
+      for (i = 0; i < tabBtn.length; i++) {
+        tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+      var minitabs = document.getElementsByClassName("minitabcontent");
+      if (minitabs.length != 0) {
+        minitabs = tabcontent.children;
+      }
     }
-    tabBtn = document.getElementsByClassName("tabBtn");
-    for (i = 0; i < tabBtn.length; i++) {
-      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    event.currentTarget.className += " active";
-    var minitabs = document.getElementsByClassName("minitabcontent");
-    if (minitabs.length != 0) {
-      minitabs = tabcontent.children;
-    }
-  }
   </script>
 </section>
 {% endblock %}

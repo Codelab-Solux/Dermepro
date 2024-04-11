@@ -20,7 +20,6 @@ hx-click="delayedUpdateThreads()"
         {{ msg_obj.timestamp.time }}
     {% endif %}
   </small>
-  
   {% with unread_count=msg_obj.thread.id|get_unread_msgs %}
   <!--  -->
   {% if user != msg_obj.sender and not msg_obj.is_read %}
@@ -30,9 +29,10 @@ hx-click="delayedUpdateThreads()"
   {% endif %}
   <!--  -->
   {% endwith %}
-  <span
-    class="absolute h-3 w-3 bottom-2 left-10 bg-purple-500 border-2 border-white rounded-full"
-  ></span>
+  <!--  -->
+  {% if other_user.profile.is_online %}
+  <span class="absolute h-3 w-3 bottom-2 left-10 bg-purple-500 border-2 border-white rounded-full"></span>
+  {% endif %}
   <img
     class="w-12 h-12 rounded-full object-cover"
     src="{% static 'imgs/anon.png' %}"

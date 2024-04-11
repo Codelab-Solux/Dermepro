@@ -87,7 +87,6 @@
 
       {% if curr_obj.status.id == 1 %}
       <div
-        id="badge_viewer"
         class="w-full max-w-[360px] mx-auto  min-h-80 h-full p-4 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
       >
         <div
@@ -103,7 +102,7 @@
           >
         </div>
       </div>
-            {% elif curr_obj.signature and curr_obj.status.id == 3 %}
+      {% elif curr_obj.signature and curr_obj.status.id == 3 %}
       <div class="w-full h-full max-w-[360px] mx-auto grid gap-2">
         <div
           class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
@@ -129,7 +128,6 @@
         </div>
         <button
           hx-post="{% url 'moderate_appointment' curr_obj.id 3 %}"
-          hx-target=".obj_status{{curr_obj.id}}, .appointment_details"
           hx-swapp="innerHTML"
           class="p-2 w-full flex justify-center items-center hover:text-black bg-green-100 hover:bg-green-300 rounded-md w-full text-center {% if curr_obj.status.id == 3 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
         >
@@ -209,7 +207,6 @@
 
   var form = document.getElementById("signature_form");
   var canvas = document.getElementById("signature_canvas");
-  var badge_viewer = document.getElementById("badge_viewer");
   var signature_validator = document.getElementById("signature_validator");
   var signaturePad = new SignaturePad(canvas);
 
@@ -275,9 +272,8 @@
         console.log("Screenshot saved successfully!");
         // Hide signature pad and display signature image
         document.getElementById("new_signature").src = image_data; // Replace with the actual URL of the saved signature image
-        signature_form.classList.add("hidden");
-        badge_viewer.classList.add("hidden");
         signature_validator.classList.remove("hidden");
+        signature_form.classList.add("hidden");
       },
       error: function (e) {
         console.log(e);

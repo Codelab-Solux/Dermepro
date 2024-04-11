@@ -1,8 +1,8 @@
-var { textContent: thread_id } = document.getElementById("thread");
-var { textContent: sender_id } = document.getElementById("curr_user");
-var { textContent: receiver_id } = document.getElementById("other_user");
-var chat_box = document.getElementById("chat_box");
-var chat_form = document.getElementById("chat_form");
+var { textContent: thread_id } = document.getElementById("thread_id");
+var { textContent: sender_id } = document.getElementById("curr_user_id");
+var { textContent: receiver_id } = document.getElementById("other_user_id");
+var chat_box = document.getElementById(`chat_box_${thread_id}`);
+var chat_form = document.getElementById(`chat_form_${thread_id}`);
 
 // Function to get the appropriate WebSocket URL based on the current page protocol
 function getWebSocketURL() {
@@ -52,7 +52,7 @@ messengerSocket.onclose = () => {
   console.log("WebSocket disconnected from " + endpoint);
 };
 
-document.getElementById("chat_form").addEventListener("submit", (event) => {
+chat_form.addEventListener("submit", (event) => {
   event.preventDefault();
   var chat_input = document.getElementById("chat_input");
   var message = chat_input.value.trim();

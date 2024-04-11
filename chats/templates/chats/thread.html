@@ -1,42 +1,39 @@
-
 {% load static %}
 <script src="{% static 'messenger.js' %}" defer="true"></script>
 <!--  -->
-<section class="flex flex-col h-full w-full">
+<section
+  class="relative flex flex-col h-[calc(100vh-30px)] md:h-full w-full border md:border-none rounded-lg"
+>
   <!------------------ responder info ------------------->
-  <div class="bg-white w-full h-10">
-    <div
-      class="absolute top-0 left-0 rounded-tl-lg rounded-br-lg w-fit px-4 py-2 flex justify-between items-center bg-purple-950 text-white"
-    >
-      <div class="flex items-center">
-        {% if not other_user.profile.image %}
-        <img
-          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
-          src="{% static 'imgs/anon.png' %}"
-          alt="welcome image"
-        />
-        {% else %}
-        <img
-          class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
-          src="{{other_user.profile.image.url}}"
-          alt="welcome image"
-        />
-        {% endif %}
-        <span class="ml-2">
-          {{other_user.last_name}} {{other_user.first_name}}
-        </span>
-      </div>
+  <div
+    class="absolute top-0 left-0 rounded-tl-lg rounded-br-lg w-fit px-4 py-2 flex justify-between items-center bg-purple-950 text-white"
+  >
+    <div class="flex items-center">
+      {% if not other_user.profile.image %}
+      <img
+        class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
+        src="{% static 'imgs/anon.png' %}"
+        alt="welcome image"
+      />
+      {% else %}
+      <img
+        class="h-5 w-5 lg:h-8 lg:w-8 rounded-full object-cover"
+        src="{{other_user.profile.image.url}}"
+        alt="welcome image"
+      />
+      {% endif %}
+      <span class="ml-2">
+        {{other_user.last_name}} {{other_user.first_name}}
+      </span>
     </div>
   </div>
+  <!-- <div class="mx-2 bg-white w-full">
+  </div> -->
 
   <!------------------ chat messages ------------------->
-
-  <div id="convo_box" class="pb-14 pt-2 h-full w-full overflow-auto">
+  <div id="convo_box" class="py-14 h-full w-full overflow-auto">
     <table class="h-full w-full">
-      <tbody
-        id="chat_box"
-        class="text-sm mx-4 flex flex-col gap-4"
-      >
+      <tbody id="chat_box_{{curr_thread.id}}" class="text-sm mx-4 flex flex-col gap-4">
         {% for obj in messages %} {% if obj.sender == other_user %}
 
         <tr class="max-h-16">
@@ -70,8 +67,8 @@
   <!------------------ chat form ------------------->
   <div class="absolute w-full bottom-0">
     <form
-      id="chat_form"
-       hx-post="false"
+      id="chat_form_{{curr_thread.id}}"
+      hx-post="false"
       class="w-[95%] mx-auto flex flex-row justify-between gap-2"
     >
       {% csrf_token %}
@@ -91,15 +88,19 @@
       </button>
     </form>
   </div>
+
+  <button
+    class="absolute bottom-14 right-2 px-3 py-2 rounded-md hover:bg-purple-950 text-black text-xs hover:text-white"
+    onclick="scrollToBottom()"
+  >
+    <i class="fa-solid fa-arrow-down"></i>
+  </button>
 </section>
-
-{{ curr_thread.id|json_script:"thread" }}
+{{ curr_thread.id|json_script:"thread_id" }}
 <!--  -->
-{{ other_user.id|json_script:"other_user" }}
+{{ other_user.id|json_script:"other_user_id" }}
 <!--  -->
-{{ request.user.id|json_script:"curr_user" }}
-
-
+{{ request.user.id|json_script:"curr_user_id" }}
 <script>
   scrollToBottom();
 </script>

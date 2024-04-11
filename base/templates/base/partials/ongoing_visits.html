@@ -1,18 +1,31 @@
-<h3 class="mb-2 py-1 px-4 rounded-md text-sm bg-gray-100">Visites en cours</h3>
-{% if not visits %}
-<div class="p-20 bg-white w-fit h-full rounded-xl flex-col text-center m-auto">
-  <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
-  <p class="mt-2 px-4 py-2 rounded-md bg-gray-100 text-xs text-center">
-    Aucune visite en cours
-  </p>
-</div>
-{% else %}
+{% load static %}
+<section class="p-2 bg-gray-300 rounded-lg">
+  <h3 class="mb-2 py-1 px-4 rounded-md text-md bg-white">Visites en cours</h3>
+  <div class="flex gap-2">
+    {% if not visits %}
+    <div
+      class="p-20 bg-white w-full h-full rounded-xl flex-col text-center m-auto"
+    >
+      <i class="fa-solid fa-folder-open text-3xl text-gray-300"></i>
+      <p class="mt-2 px-4 py-2 rounded-md bg-gray-100 text-xs text-center">
+        Aucune visite en cours
+      </p>
+    </div>
+    {% else %}
 
-<div class="mb-4 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-  {% for obj in visits %}
-  <!--  -->
-  {% include 'base/components/visit_card_gen.html' %}
-  <!--  -->
-  {% endfor %}
-</div>
-{% endif %}
+    <div class="mb-4 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {% for obj in visits %}
+      <!--  -->
+      {% include 'base/components/visit_card_gen.html' %}
+      <!--  -->
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <img
+      class="md:hidden lg:inline w-60 rounded-lg object-cover"
+      src="{% static 'vectors/meeting.avif' %}"
+      alt="welcome image"
+    />
+  </div>
+</section>

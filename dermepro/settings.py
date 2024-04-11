@@ -159,6 +159,15 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 
+# NGINX setup--------------------------------------------------------------
+
+# STATIC_URL = '/static/'
+# STATIC_ROOT = '/app/static/'
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = '/app/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -170,25 +179,25 @@ AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
 
 # redis channel layer for render webservice
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('red-co09c4v79t8c73d97h90.redis.cache.windows.net', 6379)],
-        },
-    },
-}
-
-
-# redis channel layer
 # CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("localhost", 6379)],  # Adjust host and port as needed
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [('red-co09c4v79t8c73d97h90.redis.cache.windows.net', 6379)],
 #         },
 #     },
 # }
+
+
+# redis channel layer // MAKE SURE YOU GET REDIS RUNNING IN YOUR WSL BEFORE STARTING THE SERVER
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],  # Adjust host and port as needed
+        },
+    },
+}
 
 # windows in-memory channel layer
 # CHANNEL_LAYERS = {

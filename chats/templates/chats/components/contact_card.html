@@ -2,6 +2,7 @@
 
 <!-- tablet/ PC view -->
 <div
+onclick="openTab(event, 'threads')"
   hx-get="{% url 'thread' obj.id %}"
   hx-target=".thread_details"
   hx-swap="innerHTML"

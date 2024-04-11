@@ -1,23 +1,32 @@
-{% extends 'main.html' %} 
-
-{% load static %} {% block content %}
+{% extends 'main.html' %} {% load static %} {% block content %}
 <section id="appointmens_base" class="flex flex-col gap-4">
   <div class="flex flex-col gap-3">
     {% if user.role.sec_level >= 4 %}
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_appointment' %}"
-      class="mt-1 w-fit px-3 py-2 bg-purple-100 text-sm hover:text-black hover:bg-purple-200 flex items-center rounded-md transition duration-200 ease-in"
+      class="mt-1 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-md transition duration-200 ease-in"
     >
-      <span class="mr-2">Nouveau rendez-vous</span>
+    <span class="mr-2">Nouveau rendez-vous</span>
       <i class="fa-solid fa-handshake"></i>
     </button>
     {% else %}
     <div class="h-12"></div>
     {% endif %}
+    <!-- pending visits list -->
+    <div
+      class="p-6 bg-purple-950 rounded-xl flex flex-col md:flex-row justify-between md:items-center gap-8"
+    >
+      <div
+        class="w-full pending_appointments_all"
+        hx-get="{% url 'pending_appointments_all' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
     <!--------------------------------------- menu tabs buttons --------------------------------------->
     <div
-      class="tabbar max-w-[500px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 h-fit w-full text-xs"
+      class="tabbar h-fit w-full lg:max-w-[800px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 text-xs"
     >
       <button
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
@@ -28,40 +37,59 @@
         <span class="hidden lg:inline lg:ml-2">Calendrier Hebdomadaire</span>
       </button>
       <button
-      hx-target=".appointment_grid" hx-get="{% url 'appointment_grid' %}"
+        hx-target=".appointment_grid"
+        hx-get="{% url 'appointment_grid' %}"
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'appointments')"
+        onclick="openTab(event, 'appointment_grid')"
       >
         <i class="fa-solid fa-grip"></i>
         <span class="hidden lg:inline lg:ml-2">Grille</span>
       </button>
+      <button
+        hx-target=".appointment_grid"
+        hx-get="{% url 'appointment_grid' %}"
+        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+        onclick="openTab(event, 'appointment_list')"
+      >
+        <i class="fa-solid fa-list"></i>
+        <span class="hidden lg:inline lg:ml-2">Liste</span>
+      </button>
     </div>
-  
+
     <!--------------------------------------- calendar --------------------------------------->
-  
-    <button class="hidden" id="appointments_reloader" hx-target=".calendar_week" hx-get="{% url 'calendar_week' curr_week %}"></button>
-    <section id="calendar" class="tabcontent w-full h-100 flex flex-col items-center">
+
+    <button
+      class="hidden"
+      id="appointments_reloader"
+      hx-target=".calendar_week"
+      hx-get="{% url 'calendar_week' curr_week %}"
+    ></button>
+
+    <section
+      id="calendar"
+      class="tabcontent w-full h-100 flex flex-col items-center"
+    >
       <div
-        class="calendar_week w-full  min-h-[calc(100vh-200px)] h-full flex flex-col items-center"
+        class="calendar_week w-full min-h-[calc(100vh-200px)] h-full flex flex-col items-center"
         hx-get="{% url 'calendar_week' curr_week %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
       >
-        <i class="m-auto fas fa-spinner fa-spin text-3xl  animate-spin"></i>
+        <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
       </div>
     </section>
-  
-    <!--------------------------------------- appointments --------------------------------------->
+
+    <!--------------------------------------- appointments grid --------------------------------------->
     <section
-      id="appointments"
+      id="appointment_grid"
       class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
     >
       <div class="grid gap-4">
         <!--------------------------------------- filter form --------------------------------------->
         <form
-          hx-post="{% url 'filter_appointments' %}"
-          hx-target=".filtered_appointments"
-          class="p-1 w-full bg-purple-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+          hx-post="{% url 'filter_appointments' 'grid' %}"
+          hx-target=".filtered_grid"
+          class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
         >
           {% csrf_token %}
           <!--  -->
@@ -93,8 +121,8 @@
               placeholder="Jusqu'au"
             />
             <input
-              hx-post="{% url 'filter_appointments' %}"
-              hx-target=".filtered_appointments"
+              hx-post="{% url 'filter_appointments' 'grid' %}"
+              hx-target=".filtered_grid"
               hx-trigger="keyup changed delay:500ms"
               placeholder="Invité"
               name="name"
@@ -121,9 +149,9 @@
               <option value="male">Masculin</option>
             </select>
           </div>
-  
+
           <button
-            class="px-3 py-2 bg-purple-50 hover:bg-purple-200 hover:text-black rounded-md transition duration-200 ease-in"
+            class="px-3 py-2 bg-gray-200 hover:bg-purple-200 hover:text-black rounded-md transition duration-200 ease-in"
             type="submit"
           >
             <i class="fa-solid fa-filter"></i>
@@ -136,9 +164,9 @@
             <i class="fa-solid fa-rotate-right"></i>
           </button>
         </form>
-  
+
         <!--------------------------------------- appointment grid --------------------------------------->
-        <div class="filtered_appointments h-full w-full overflow-y-auto">
+        <div class="filtered_grid p-2 bg-gray-100 rounded-xl h-full w-full overflow-y-auto">
           <div
             class="appointment_grid"
             hx-get="{% url 'appointment_grid' %}"
@@ -148,33 +176,155 @@
         </div>
       </div>
     </section>
+
+    <!--------------------------------------- appointments list --------------------------------------->
+    <section
+      id="appointment_list"
+      class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
+    >
+      <div class="grid gap-4">
+        <!--------------------------------------- filter form --------------------------------------->
+        <form
+          hx-post="{% url 'filter_appointments' 'list' %}"
+          hx-target=".filtered_list"
+          class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+        >
+          {% csrf_token %}
+          <!--  -->
+          <div class="w-full flex justify-between items-center gap-1">
+            {% if user.role.sec_level >= 4 %}
+            <select
+              name="host"
+              class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+            >
+              <option value="" selected disabled>Hôte</option>
+              {% for obj in hosts %}
+              <option value="{{obj.username}}">
+                {{obj.last_name}} {{obj.first_name}}
+              </option>
+              {% endfor %}
+            </select>
+            {% endif %}
+            <!-- date margin -->
+            <input
+              class="hidden lg:inline px-3 py-2 w-full rounded-md"
+              type="date"
+              name="min_date"
+              placeholder="A partir du"
+            />
+            <input
+              class="hidden lg:inline px-3 py-2 w-full rounded-md"
+              type="date"
+              name="max_date"
+              placeholder="Jusqu'au"
+            />
+            <input
+              hx-post="{% url 'filter_appointments' 'list' %}"
+              hx-target=".filtered_list"
+              hx-trigger="keyup changed delay:500ms"
+              placeholder="Invité"
+              name="name"
+              type="text"
+              class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+            />
+            <!-- statuses -->
+            <select
+              name="status"
+              class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+            >
+              <option value="" selected disabled>Status</option>
+              {% for obj in statuses %}
+              <option value="{{obj.id}}">{{obj.title}}</option>
+              {% endfor %}
+            </select>
+            <!-- sex -->
+            <select
+              name="sex"
+              class="hidden sm:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+            >
+              <option value="" selected disabled>Sexe</option>
+              <option value="female">Feminin</option>
+              <option value="male">Masculin</option>
+            </select>
+          </div>
+
+          <button
+            class="px-3 py-2 bg-gray-200 hover:bg-purple-200 hover:text-black rounded-md transition duration-200 ease-in"
+            type="submit"
+          >
+            <i class="fa-solid fa-filter"></i>
+          </button>
+          <button
+            class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+            hx-on:click="clearForm()"
+            type="submit"
+          >
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </form>
+
+        <div
+          class="h-[calc(100vh-96px)] lg:h-[calc(100vh-180px)] w-full flex gap-2"
+        >
+          <!--------------------------------------- appointment list --------------------------------------->
+          <div
+            class="filtered_list p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+          >
+            <div
+              class="appointment_list"
+              hx-get="{% url 'appointment_list' %}"
+              hx-trigger="load, db_changed from:body"
+              hx-target="this"
+            ></div>
+          </div>
+
+          <!--------------------------------------- visit details --------------------------------------->
+
+          <div
+            class="appointment_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+          >
+            <img
+              class="h-60 lg:h-80 rounded-lg object-cover"
+              src="{% static 'vectors/rdv.svg' %}"
+              alt="welcome image"
+            />
+
+            <!-- <i class="fa-regular fa-handshake text-gray-400 text-5xl"></i> -->
+            <p
+              class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg"
+            >
+              Cliquez sur un rendez-vous pour voir ses detail ici
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
-  
+
   <script>
-      //  tabs control ----------------------------------------------------------------------------------------------------
-  document.getElementById("defaultTab").click();
-  function openTab(event, tabName) {
-    var i, tabcontent, tabBtn;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+    //  tabs control ----------------------------------------------------------------------------------------------------
+    document.getElementById("defaultTab").click();
+    function openTab(event, tabName) {
+      var i, tabcontent, tabBtn;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tabBtn = document.getElementsByClassName("tabBtn");
+      for (i = 0; i < tabBtn.length; i++) {
+        tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+      var minitabs = document.getElementsByClassName("minitabcontent");
+      if (minitabs.length != 0) {
+        minitabs = tabcontent.children;
+      }
     }
-    tabBtn = document.getElementsByClassName("tabBtn");
-    for (i = 0; i < tabBtn.length; i++) {
-      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    event.currentTarget.className += " active";
-    var minitabs = document.getElementsByClassName("minitabcontent");
-    if (minitabs.length != 0) {
-      minitabs = tabcontent.children;
-    }
-  }
     function clearForm() {
       var form = document.querySelector("form");
       form.reset();
     }
-  
   </script>
 </section>
 {% endblock %}

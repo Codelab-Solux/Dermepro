@@ -3,10 +3,25 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ObjectDoesNotExist
 from asgiref.sync import sync_to_async
 from .models import *
+from django.db.models import Q
 from base.models import Notification
 from accounts.models import CustomUser
 
+
 class PrivateChatConsumer(AsyncWebsocketConsumer):
+
+    async def fetch_thread(self):
+        curr_user = await sync_to_async(CustomUser.objects.get)(id=int(self.scope['user'].id))
+        other_user = await sync_to_async(CustomUser.objects.get)(
+            id=int(self.scope['url_route']['kwargs']['id']))
+        try:
+            active_thread = await sync_to_async(ChatThread.objects.get)(
+                Q(initiator=curr_user, responder=other_user) |
+                Q(initiator=other_user, responder=curr_user)
+            )
+            return active_thread
+        except ChatThread.DoesNotExist:
+            return None
     
     async def connect(self):
         curr_user_id = int(self.scope['user'].id)
@@ -15,11 +30,21 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         self.room_group_name = f'room_group_{self.room_name}'
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+        thread = await self.fetch_thread()
+        if thread is not None:
+            thread.is_active = True
+            await sync_to_async(thread.save)()
+            print(f'thread {thread.id} activated')
         print(f"Correspondent = {other_user_id}")
         print(f"Chatroom = {self.room_name}")
         print(f"Chatgroup = {self.room_group_name}")
 
     async def disconnect(self, close_code):
+        thread = await self.fetch_thread()
+        if thread is not None:
+            thread.is_active = False
+            await sync_to_async(thread.save)()
+            print(f'thread {thread.id} deactivated')
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data=None, bytes_data=None):

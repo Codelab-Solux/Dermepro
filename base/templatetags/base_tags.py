@@ -25,7 +25,7 @@ def get_hour_schedule(appts, day, hour):
     # Filter appointments for the given day and hour
     day_appointments = appts.filter(date=day)
     # Extract the hour from the datetime objects and filter again
-    hour_appointments = day_appts.filter(time__hour=hour)
+    hour_appointments = day_appointments.filter(time__hour=hour)
     return hour_appointments
 
 
@@ -112,3 +112,16 @@ def by_year(appts, year=None):
 
     # Filter appointments for the desired year
     return appts.filter(date__gte=first_day_of_year, date__lt=datetime(year + 1, 1, 1))
+
+
+@register.filter
+def get_visit_count(pk):
+    user = CustomUser.objects.get(id=pk)
+    visit_count = int(Visit.objects.filter(host=user).count())
+    return visit_count
+
+@register.filter
+def get_appt_count(pk):
+    user = CustomUser.objects.get(id=pk)
+    appt_count = int(Appointment.objects.filter(host=user).count())
+    return appt_count

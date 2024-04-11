@@ -7,8 +7,7 @@ class ChatThread(models.Model):
     initiator = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='initiator')
     responder = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='responder')
     timestamp = models.DateTimeField(auto_now_add=True)
-    # thread_name = models.CharField(
-    #     max_length=50, default=None, blank=True, null=True)
+    is_active = models.BooleanField(default=False)
         
     def get_thread_name(self):
         return f'{self.initiator}_{self.responder}>'

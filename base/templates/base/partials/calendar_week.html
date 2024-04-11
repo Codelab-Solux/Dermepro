@@ -51,11 +51,11 @@
       <thead>
         <tr class="bg-gray-100 text-black text-sm">
           <th>Heures</th>
-          {% for french_day in day_mapping.values %}
+          {% for obj in workdays %}
           <!--  -->
           {% with first_day=day_one|add_days:forloop.counter %}
           <th>
-            {{ french_day }}
+            {{ obj.fr_name }}
             <br />
             <!-- Display the date -->
             <small class="text-gray-500 font-light">
@@ -71,9 +71,9 @@
         {% for hour in hours %}
         <tr>
           <td class="bg-gray-100 text-black text-sm">{{ hour }}:00</td>
-          {% for day in days %}
+          {% for day in workdays %}
           <!--  -->
-          {% with rdv=appts|by_time:hour|by_day:day %}
+          {% with rdv=appts|by_time:hour|by_day:day.name %}
           <td class="relative group">
             {% if rdv %}
             <span
@@ -91,7 +91,7 @@
             </div>
 
             {% else %}
-            <span class="text-gray-300 text-xs">R.A.S</span>
+            <span class="text-gray-300 text-xs">...</span>
             {% endif %}
           </td>
           {% endwith %}

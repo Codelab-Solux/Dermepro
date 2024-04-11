@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from base.utils import h_encode, h_decode
 
@@ -105,11 +106,14 @@ class Profile(models.Model):
         max_length=10, choices=gender_list, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     bio = models.CharField(max_length=1000, null=True, blank=True)
+    department = models.CharField(max_length=1000, null=True, blank=True)
+    job_position = models.CharField(max_length=1000, null=True, blank=True)
     status_message = models.CharField(max_length=200, default='Je suis disponible.', null=True, blank=True)
     status = models.ForeignKey(UserStatus, default=1, on_delete=models.CASCADE)
     phone_alt = PhoneNumberField(unique=True, blank=True, null=True)
     image = models.ImageField(
         upload_to='media/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
+    is_online = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.last_name} {self.user.first_name} - Profile'

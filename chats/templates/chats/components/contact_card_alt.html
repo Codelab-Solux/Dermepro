@@ -1,0 +1,20 @@
+{% load static %}
+
+<!-- tablet/ PC view -->
+<div
+  hx-get="{% url 'thread' obj.id %}"
+  hx-target="#chats_base"
+  hx-swap="outerHTML"
+  class="p-2 cursor-pointer relative flex items-center gap-2 bg-white border hover:border-purple-400 hover:shadow-md w-full rounded-xl transition duration-300 ease-in-out"
+>
+  <!-- <span class="absolute h-2 w-2 top-2 right-2 bg-green-400 rounded-full"></span> -->
+  <img
+    class="w-14 h-14 rounded-full object-cover"
+    src="{% static 'imgs/anon.png' %}"
+    alt="Rounded avatar"
+  />
+  <article class="md:text-sm lg:text-md flex flex-col justify-between">
+    <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
+    <span class="font-light text-gray-400">@{{obj.username}}</span>
+  </article>
+</div>

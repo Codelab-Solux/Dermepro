@@ -1,3 +1,4 @@
+{% if curr_obj.status.id < 3 %}
 <div class="relative text-gray-700">
   <button
     type="button"
@@ -57,6 +58,8 @@
     {% endif %}
   </div>
 </div>
+{% endif %}
+
 <script>
   function toggleHostActionDropdown(e, obj_id) {
     activeMenu = document.getElementById(`actionMenu${obj_id}`);
