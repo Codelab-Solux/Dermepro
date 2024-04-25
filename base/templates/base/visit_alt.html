@@ -6,109 +6,16 @@
 {% if visit_details_page %}
 <!--  -->
 <section class="relative grid gap-4 lg:p-6 h-full md:h-full md:w-full">
-  <div class="absolute top-0 right-0 flex items-center gap-1">
-    <!--  -->
-    <div hx-swap-oob="true"></div>
-    <div class="hidden sm:inline">
-      {% include 'base/components/status_badge.html' %}
-    </div>
-    <div class="sm:hidden">
-      {% include 'base/components/status_badge_alt.html' %}
-    </div>
-    <!--  -->
-    {% if curr_obj.host == user%}
-    <!--  -->
-    {#% include 'base/components/status_changer.html' %#}
-    <!--  -->
-    {% include 'base/components/visit_sentry.html' %}
-    <!--  -->
-    {% endif %}
-    <!-- admin actions -->
-    {% if user.role.sec_level >= 4 %}
     <div
-      class="flex border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
-    >
-      <button
-        onclick="hide_dialogs()"
-        hx-target="#basic_dialog"
-        hx-get="{% url 'edit_visit' obj.id %}"
-        class="px-2 py-1 hover:bg-purple-300 hover:text-black"
-      >
-        <i class="fa-solid fa-pen-to-square"></i>
-      </button>
-      <button
-        hx-confirm="Voulez vous vraiment supprimer ceci?"
-        class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
-        hx-delete="{% url 'delete_visit' obj.id %}"
-      >
-        <i class="fa-solid fa-trash"></i>
-      </button>
-    </div>
-    {% endif %}
-  </div>
+      class="absolute top-0 right-0 w-fit"
+      hx-get="{% url 'visit_status' curr_obj.id %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
+    
   <!-- visit details -->
-  <div id="details" class="mt-10 grid gap-3 text-gray-500">
-    <h2 class="font-bold text-lg md:text-xl lg:text-2xl text-black">
-      {% if curr_obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
-      <!--  -->
-      {{curr_obj.last_name}} {{curr_obj.first_name}}
-    </h2>
+    {% include 'base/components/visits/info.html' %}
 
-    <p>
-      <i class="fa-solid fa-user-alt text-gray-400 mr-2 text-xs"></i>Hôte :
-      <span class="text-black text-md">
-        {{curr_obj.host.last_name}} {{curr_obj.host.first_name}}
-      </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-layer-group text-gray-400 mr-2 text-xs"></i> Cadre
-      de la visite :
-      <span class="text-black text-md">
-        {{curr_obj.get_context_display|title}}
-      </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-flag text-gray-400 mr-2 text-xs"></i> Nationalité :
-      <span class="text-black text-md"> {{curr_obj.nationality}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-venus-mars text-gray-400 mr-2 text-xs"></i> Sexe :
-      <span class="text-black text-md">
-        {{curr_obj.get_sex_display|title}}
-      </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-calendar-days text-gray-400 mr-2 text-xs"></i> Date
-      :
-      <span class="text-black text-md"> {{curr_obj.date}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-clock text-gray-400 mr-2 text-xs"></i> Arrivée à :
-      <span class="text-black text-md"> {{curr_obj.arrived_at}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-hourglass-start text-gray-400 mr-2 text-xs"></i>
-      Accepté(e) à :
-      <span class="text-black text-md"> {{curr_obj.accepted_at}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-id-card text-gray-400 mr-2 text-xs"></i>Pièce
-      d'identite :
-      <span class="text-black text-md"
-        >{{curr_obj.get_id_document_display}}
-      </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-hashtag text-gray-400 mr-2 text-xs"></i> Numero de
-      la piece d'identite :
-      <span class="text-black text-md"> {{curr_obj.id_number|title}} </span>
-    </p>
-    <p>
-      <i class="fa-solid fa-phone text-gray-400 mr-2 text-xs"></i> Numero de
-      telephone :
-      <span class="text-black text-md"> {{curr_obj.phone|title}} </span>
-    </p>
-  </div>
 </section>
 
 {% endif %}

@@ -1,0 +1,68 @@
+  <div id="details" class=" grid gap-3 text-gray-500">
+    <h2 class="font-bold text-lg md:text-xl lg:text-2xl text-black">
+      {% if curr_obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{curr_obj.last_name}} {{curr_obj.first_name}}
+    </h2>
+    <p>
+      <i class="fa-solid fa-user-alt text-gray-400 mr-3"></i>Hôte :
+      <span class="text-black">
+        {{curr_obj.host.last_name}} {{curr_obj.host.first_name}}
+      </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Contexte :
+      <span class="text-black"> {{curr_obj.get_context_display|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-flag text-gray-400 mr-3"></i> Nationalité :
+      <span class="text-black"> {{curr_obj.nationality}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-venus-mars text-gray-400 mr-3"></i> Sexe :
+      <span class="text-black"> {{curr_obj.get_sex_display|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i> Date :
+      <span class="text-black"> {{curr_obj.date}} </span>
+    </p>
+    <!--  -->
+    <div class="grid gap-2 text-black bg-amber-100 rounded-lg py-2 px-3">
+      <p>
+        <i class="fa-solid fa-clock mr-3"></i> Arrivé(e) à :
+        <span class="font-bold"> {{curr_obj.arrived_at}} </span>
+      </p>
+      {% if curr_obj.status.id > 1 and curr_obj.status.id < 4 %}
+      <p>
+        <i class="fa-solid fa-stopwatch mr-3"></i>
+        Accepté(e) à :
+        <span class="font-bold"> {{curr_obj.started_at}} </span>
+      </p>
+      {% endif %}
+      <!--  -->
+      {% if curr_obj.status.id == 3 %}
+      <p>
+        <i class="fa-solid fa-hourglass-end mr-3"></i>
+        Terminé(e) à :
+        <span class="font-bold"> {{curr_obj.ended_at}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-door-closed mr-3"></i>
+        Parti(e) à :
+        <span class="font-bold"> {{curr_obj.departed_at}} </span>
+      </p>
+      {% endif %}
+    </div>
+    <p>
+      <i class="fa-solid fa-id-card text-gray-400 mr-3"></i>Type de ID :
+      <span class="text-black">{{curr_obj.get_id_document_display}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> N° de la pièce ID :
+      <span class="text-black"> {{curr_obj.id_number|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-phone text-gray-400 mr-3"></i> N° de téléphone :
+      <span class="text-black"> {{curr_obj.phone|title}} </span>
+    </p>
+  </div>

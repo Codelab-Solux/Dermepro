@@ -1,0 +1,74 @@
+{% if curr_obj.status.id < 3 %}
+<div class="relative text-gray-700">
+  <button
+    type="button"
+    class="hover:text-black border hover:bg-gray-100 px-4 py-1 rounded-md"
+    name="appointmentSentry"
+    id="appointmentSentry"
+    aria-expanded="false"
+    aria-haspopup="true"
+    onclick="toggleHostActionDropdown(this,'{{curr_obj.id}}')"
+  >
+    <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+  </button>
+
+  <div
+    class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-lg flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+    role="status menu"
+    aria-orientation="vertical"
+    aria-labelledby="status-menu-button"
+    tabindex="-1"
+    id="actionMenu{{curr_obj.id}}"
+  >
+  {% if curr_obj.host == user and curr_obj.status.id == 1 %}
+    <button
+      hx-post="{% url 'moderate_appointment' curr_obj.id 2 %}"
+      hx-target=".obj_status{{curr_obj.id}}, .appointment_details"
+      hx-swapp="innerHTML"
+      onclick="close_modal()"
+      class="p-2 flex items-center hover:text-black hover:bg-amber-200 rounded-md w-full text-center {% if curr_obj.status.id > 1 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+    >
+      <i class="text-sm fa-solid fa-hourglass-start mr-2"></i>
+      Commencer
+    </button>
+
+    <button
+      hx-post="{% url 'moderate_appointment' curr_obj.id 5 %}"
+      hx-target=".obj_status{{curr_obj.id}}, .visit_details"
+      hx-swapp="innerHTML"
+      onclick="close_modal()"
+      class="p-2 flex items-center hover:text-black hover:bg-red-200 rounded-md w-full text-center {% if curr_obj.status.id > 1 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+    >
+      <i class="text-sm fa-solid fa-ban mr-2"></i>
+      Annuler
+    </button>
+    
+    {% elif curr_obj.is_accepted and not curr_obj.is_finished %}
+    <button
+      hx-post="{% url 'moderate_appointment' curr_obj.id 0 %}"
+      hx-target=".obj_status{{curr_obj.id}}, .visit_details"
+      hx-swapp="innerHTML"
+      onclick="close_modal()"
+      class="p-2 flex items-center hover:text-black hover:bg-green-200 rounded-md w-full text-center {% if curr_obj.status.id > 2 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+    >
+      <i class="text-sm fa-solid fa-hourglass-end mr-2"></i>
+      Cloturer
+    </button>
+    <!--  -->
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<script>
+  function toggleHostActionDropdown(e, obj_id) {
+    activeMenu = document.getElementById(`actionMenu${obj_id}`);
+    e.name === `appointmentSentry`
+      ? ((e.name = "close"), activeMenu.classList.remove("hidden"))
+      : ((e.name = `appointmentSentry`), activeMenu.classList.add("hidden"));
+  }
+
+  window.addEventListener("mouseup", function (event) {
+    activeMenu.classList.add("hidden");
+  });
+</script>

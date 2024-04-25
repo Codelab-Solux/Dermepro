@@ -1,0 +1,82 @@
+<!--  -->
+{% load base_tags accounts_tags %}
+<!--  -->
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    border: 1px solid rgb(187, 187, 187);
+    padding: 24px 8px;
+    text-align: center;
+  }
+  .highlight {
+    background-color: amber;
+  }
+</style>
+
+<div id="" class="mt-4 bg-gray-50 grid rounded-xl border-sky-400">
+  <div
+    class="px-2 py-2 border border-b-0 border-sky-300 bg-sky-200 rounded-t-lg text-black font-bold flex justify-between items-center gap-4"
+  >
+    <span class="p-2 w-[96px] bg-sky-100 rounded-md text-center"> Heures </span>
+    <div class="flex justify-center items-center gap-4">
+      <button class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full text-xs">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <h3>{{ curr_date }}</h3>
+      <button class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full text-xs">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+    {% if user.role.sec_level >= 4 %}
+    <button
+      hx-target="#basic_dialog"
+      hx-get="{% url 'new_time_record' %}"
+      class="w-fit px-3 py-2 bg-sky-300 text-black text-sm hover:bg-white flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+    >
+      <i class="fa-solid fa-plus"></i>
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- day calendar -->
+  <div class="overflow-x-auto rounded-b-xl border-sky-200">
+    <table class="table-auto">
+      <tbody>
+        {% for hour in hours %}
+        <tr>
+          <td class="bg-gray-100 text-black text-sm px-10">{{ hour }}:00</td>
+          {% with user_entries=time_records|by_time:hour %}
+          <td class="w-full">
+            {% if user_entries %}
+            <!--  -->
+            <div class="w-full flex justify-evenly items-center">
+              {% for obj in user_entries %}
+              <div class="relative group w-fit">
+                <span
+                  class="px-4 py-1 rounded-lg {% if obj.movement == 'entry' %} bg-green-200 {% else %} bg-red-200 {% endif %} text-xs font-bold highlight"
+                  >{{obj.get_movement_display}}</span
+                >
+                <div
+                  class="hidden group-hover:grid gap-2 absolute right-0 z-10 h-fit w-60 p-3 {% if obj.movement == 'entry' %} bg-green-100 {% else %} bg-red-100 {% endif %} rounded-lg"
+                >
+                  {% include 'accounts/components/time_card_cal.html' %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <!--  -->
+            {% else %}
+            <span class="text-gray-300 text-xl">...</span>
+            {% endif %}
+          </td>
+          {% endwith %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -5,25 +5,22 @@
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_appointment' %}"
-      class="mt-1 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-md transition duration-200 ease-in"
+      class="mt-1 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
     >
-    <span class="mr-2">Nouveau rendez-vous</span>
+      <span class="mr-2">Nouveau rendez-vous</span>
       <i class="fa-solid fa-handshake"></i>
     </button>
     {% else %}
     <div class="h-12"></div>
     {% endif %}
     <!-- pending visits list -->
+
     <div
-      class="p-6 bg-purple-950 rounded-xl flex flex-col md:flex-row justify-between md:items-center gap-8"
-    >
-      <div
-        class="w-full pending_appointments_all"
-        hx-get="{% url 'pending_appointments_all' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
+      class="w-full pending_appointments_all"
+      hx-get="{% url 'pending_appointments_all' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
     <!--------------------------------------- menu tabs buttons --------------------------------------->
     <div
       class="tabbar h-fit w-full lg:max-w-[800px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 text-xs"
@@ -34,25 +31,25 @@
         id="defaultTab"
       >
         <i class="fa-solid fa-calendar-week"></i>
-        <span class="hidden lg:inline lg:ml-2">Calendrier Hebdomadaire</span>
+        <span class="hidden md:inline md:ml-2">Calendrier</span>
       </button>
       <button
-        hx-target=".appointment_grid"
-        hx-get="{% url 'appointment_grid' %}"
+        hx-target=".appointments_grid"
+        hx-get="{% url 'appointments_grid' %}"
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'appointment_grid')"
+        onclick="openTab(event, 'appointments_gridview')"
       >
         <i class="fa-solid fa-grip"></i>
-        <span class="hidden lg:inline lg:ml-2">Grille</span>
+        <span class="hidden md:inline md:ml-2">Grille</span>
       </button>
       <button
-        hx-target=".appointment_grid"
-        hx-get="{% url 'appointment_grid' %}"
+        hx-target=".appointments_list"
+        hx-get="{% url 'appointments_list' %}"
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'appointment_list')"
+        onclick="openTab(event, 'appointments_listview')"
       >
         <i class="fa-solid fa-list"></i>
-        <span class="hidden lg:inline lg:ml-2">Liste</span>
+        <span class="hidden md:inline md:ml-2">Liste</span>
       </button>
     </div>
 
@@ -81,14 +78,14 @@
 
     <!--------------------------------------- appointments grid --------------------------------------->
     <section
-      id="appointment_grid"
+      id="appointments_gridview"
       class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
     >
       <div class="grid gap-4">
         <!--------------------------------------- filter form --------------------------------------->
         <form
           hx-post="{% url 'filter_appointments' 'grid' %}"
-          hx-target=".filtered_grid"
+          hx-target=".appointments_grid"
           class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
         >
           {% csrf_token %}
@@ -107,22 +104,12 @@
               {% endfor %}
             </select>
             {% endif %}
-            <!-- date margin -->
-            <input
-              class="hidden lg:inline px-3 py-2 w-full rounded-md"
-              type="date"
-              name="min_date"
-              placeholder="A partir du"
-            />
-            <input
-              class="hidden lg:inline px-3 py-2 w-full rounded-md"
-              type="date"
-              name="max_date"
-              placeholder="Jusqu'au"
-            />
+            <!-- date margins -->
+            {% include 'base/components/date_margins.html' %}
+            <!-- invitee name -->
             <input
               hx-post="{% url 'filter_appointments' 'grid' %}"
-              hx-target=".filtered_grid"
+              hx-target=".appointments_grid"
               hx-trigger="keyup changed delay:500ms"
               placeholder="Invité"
               name="name"
@@ -166,27 +153,29 @@
         </form>
 
         <!--------------------------------------- appointment grid --------------------------------------->
-        <div class="filtered_grid p-2 bg-gray-100 rounded-xl h-full w-full overflow-y-auto">
+        <div
+          class="p-2 bg-gray-100 rounded-xl h-full w-full overflow-y-auto"
+        >
           <div
-            class="appointment_grid"
-            hx-get="{% url 'appointment_grid' %}"
+            class="appointments_grid"
+            hx-get="{% url 'appointments_grid' %}"
             hx-trigger="load, db_changed from:body"
             hx-target="this"
-          ></div>
+          > <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i></div>
         </div>
       </div>
     </section>
 
     <!--------------------------------------- appointments list --------------------------------------->
     <section
-      id="appointment_list"
+      id="appointments_listview"
       class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
     >
       <div class="grid gap-4">
         <!--------------------------------------- filter form --------------------------------------->
         <form
           hx-post="{% url 'filter_appointments' 'list' %}"
-          hx-target=".filtered_list"
+          hx-target=".appointments_list"
           class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
         >
           {% csrf_token %}
@@ -205,22 +194,12 @@
               {% endfor %}
             </select>
             {% endif %}
-            <!-- date margin -->
-            <input
-              class="hidden lg:inline px-3 py-2 w-full rounded-md"
-              type="date"
-              name="min_date"
-              placeholder="A partir du"
-            />
-            <input
-              class="hidden lg:inline px-3 py-2 w-full rounded-md"
-              type="date"
-              name="max_date"
-              placeholder="Jusqu'au"
-            />
+            <!-- date margins -->
+            {% include 'base/components/date_margins.html' %}
+            <!-- invitee name -->
             <input
               hx-post="{% url 'filter_appointments' 'list' %}"
-              hx-target=".filtered_list"
+              hx-target=".appointments_list"
               hx-trigger="keyup changed delay:500ms"
               placeholder="Invité"
               name="name"
@@ -268,14 +247,16 @@
         >
           <!--------------------------------------- appointment list --------------------------------------->
           <div
-            class="filtered_list p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+            class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
           >
             <div
-              class="appointment_list"
-              hx-get="{% url 'appointment_list' %}"
+              class="appointments_list"
+              hx-get="{% url 'appointments_list' %}"
               hx-trigger="load, db_changed from:body"
               hx-target="this"
-            ></div>
+            >
+           <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+          </div>
           </div>
 
           <!--------------------------------------- visit details --------------------------------------->
@@ -283,13 +264,7 @@
           <div
             class="appointment_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
           >
-            <img
-              class="h-60 lg:h-80 rounded-lg object-cover"
-              src="{% static 'vectors/rdv.svg' %}"
-              alt="welcome image"
-            />
-
-            <!-- <i class="fa-regular fa-handshake text-gray-400 text-5xl"></i> -->
+            <i class="fa-solid fa-calendar-days text-gray-300 text-9xl"></i>
             <p
               class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg"
             >

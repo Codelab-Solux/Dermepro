@@ -1,0 +1,23 @@
+{% if not appointments %}
+<div class="flex-col justify-center items-center text-center text-black m-auto">
+  <i class="fa-solid fa-folder-open text-amber-200 text-7xl"></i>
+  <p class="mt-2 px-4 py-2 w-fit bg-amber-100 rounded-lg text-sm text-center">
+    Aucun rendez-vous disponible
+  </p>
+</div>
+{% else %}
+<div class="hidden w-full md:grid grid grid-cols-1 gap-2">
+  {% for obj in appointments %}
+  <!--  -->
+  {% include 'base/components/appointments/list_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+<div class="md:hidden w-full grid grid-cols-1 gap-2">
+  {% for obj in appointments %}
+  <!--  -->
+  {% include 'base/components/appointments/mobile_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

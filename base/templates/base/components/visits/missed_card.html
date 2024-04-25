@@ -1,0 +1,13 @@
+<div
+  hx-get="{% url 'visit_alt' obj.id %}"
+  hx-target="#basic_dialog"
+  class="p-3 h-full bg-red-50 border border-transparent hover:bg-white hover:border-red-400 hover:shadow-md rounded-lg cursor-pointer smoothen"
+>
+  <h3 class="font-bold text-black text-md">
+    {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+    <!--  -->
+    {{obj.last_name}} {{obj.first_name}}
+  </h3>
+  <p class="text-xs">{{obj.host.last_name}} {{obj.host.first_name}}</p>
+  <small class="text-xs">{{obj.date}} - {{obj.arrived_at}}</small>
+</div>

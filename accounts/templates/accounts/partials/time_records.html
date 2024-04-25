@@ -1,0 +1,71 @@
+<!--  -->
+
+{% if objects %}
+<div class="mb-3 flex flex-col lg:flex-row gap-3 justify-between items-center">
+  <div
+    class="p-1 bg-sky-100 rounded-md w-full flex justify-center items-center gap-2 text-sm"
+  >
+    <button
+      hx-get='{% url "daily_time_records" curr_user.id day|add:"-1" %}'
+      hx-target=".time_records"
+      hx-swap="outerHTML"
+      class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h3>{{ curr_date }}</h3>
+    {% if curr_date != now %}
+    <button
+    hx-get='{% url "daily_time_records" curr_user.id day|add:"1" %}'
+    hx-target=".time_records"
+    hx-swap="outerHTML"
+    class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full"
+    >
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  {% endif %}
+  </div>
+  <!-- filter form -->
+  <form
+    id="times_filter"
+    hx-post="{% url 'filter_time_records' curr_user.id %}"
+    hx-target=".time_records"
+    class="p-1 w-full bg-gray-100 rounded-lg flex items-center gap-1 text-sm xl:text-sm"
+  >
+    {% csrf_token %}
+    <section class="flex items-center gap-1 text-xs">
+      <!-- date margins -->
+      {% include 'base/components/date_margins.html' %}
+      <!-- onsite -->
+      <select
+        name="movement"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected disabled>Mouvement</option>
+        <option value="entry">Entrée</option>
+        <option value="exit">Sortie</option>
+      </select>
+    </section>
+    <button
+      class="px-3 py-2 bg-sky-200 hover:bg-sky-400 hover:text-black rounded-md transition duration-200 ease-in"
+      type="submit"
+    >
+      <i class="fa-solid fa-filter"></i>
+    </button>
+    <button
+      class="px-3 py-2 bg-gray-300 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+      hx-on:click="clearForm()"
+      type="submit"
+    >
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </form>
+</div>
+<div class="grid border rounded-lg p-1 pb-0">
+  {% for obj in objects %} 
+  <!--  -->
+  {% include 'accounts/components/time_tile.html' %} 
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

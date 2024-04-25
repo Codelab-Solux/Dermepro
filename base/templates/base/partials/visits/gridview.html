@@ -1,0 +1,18 @@
+{% if not visits %}
+<div class="flex-col justify-center items-center text-center text-black m-auto">
+  <i class="fa-solid fa-folder-open text-purple-200 text-7xl"></i>
+  <p class="mt-2 px-4 py-2 w-fit bg-purple-100 rounded-lg text-sm text-center">
+    Aucun rendez-vous disponible
+  </p>
+</div>
+{% else %}
+<div
+  class="w-full grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+>
+  {% for obj in visits %}
+  <!--  -->
+  {% include 'base/components/visits/grid_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

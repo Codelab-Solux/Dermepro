@@ -5,186 +5,91 @@
 <!--  -->
 {% if curr_obj %}
 <!--  -->
-<div class="relative grid gap-4 h-full md:h-full md:w-full">
-  <div class="grid md:pt-10 xl:pt-0">
+<section class="pb-8 flex flex-col w-full h-full gap-4">
+  <div class="flex flex-row-reverse">
     <div
-      class="absolute top-0 right-0 w-fit"
+      class="top-0 right-0 w-fit"
       hx-get="{% url 'appointment_status' curr_obj.id %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>
+  </div>
     <!-- appointment details -->
-    <section id="details" class="mt-10 h-fit grid gap-6">
-      <!-- appointment info -->
-      <div class="w-full h-100 flex flex-col gap-3 text-gray-500">
-        <h2
-          class="font-bold text-lg md:text-xl lg:text-2xl text-black gap-2 flex items-center"
-        >
-          {% if curr_obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
-          <!--  -->
-          {{curr_obj.last_name}} {{curr_obj.first_name}}
-          <!--  -->
-          {% if curr_obj.is_vip == True %}
-          <i
-            class="fa-solid fa-star text-xs text-amber-300"
-          ></i>
-          {% endif %}
-          <!--  -->
-        </h2>
-        <p>
-          <i class="fa-solid fa-user-alt text-gray-400 mr-2 text-xs"></i>Hôte :
-          <span class="text-black text-md">
-            {{curr_obj.host.last_name}} {{curr_obj.host.first_name}}
-          </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-venus-mars text-gray-400 mr-2"></i>Sexe :
-          <span class="text-black">{{curr_obj.get_sex_display|title}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-phone text-gray-400 mr-3"></i>Téléphone :
-          <span class="text-black"> {{curr_obj.phone}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-envelope-open text-gray-400 mr-3"></i>Email :
-          <span class="text-black"> {{curr_obj.email}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i>Date :
-          <span class="text-black"> {{curr_obj.date}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Heure :
-          <span class="text-black"> {{curr_obj.time}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i>
-          Début :
-          <span class="text-black"> {{curr_obj.started_at}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-hourglass-end text-gray-400 mr-3"></i>
-          Fin :
-          <span class="text-black"> {{curr_obj.ended_at}} </span>
-        </p>
-        <p>
-          <i class="fa-regular fa-clock text-gray-400 mr-3"></i>
-          Depart :
-          <span class="text-black"> {{curr_obj.departed_at}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-id-card text-gray-400 mr-2"></i> Type de pièce
-          d'identite :
-          <span class="text-black"> {{curr_obj.get_id_document_display}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> Numero de la
-          piece d'identité :
-          <span class="text-black"> {{curr_obj.id_number|upper}} </span>
-        </p>
-      </div>
+  <section
+    id="details"
+    class="h-fit w-full flex flex-col xl:flex-row justify-between xl:items-center gap-4"
+  >
+    <!-- appointment info -->
+      {% include 'base/components/appointments/info.html' %}
       <!-- badge generator -->
-
-      {% if curr_obj.status.id == 1 %}
-      <div
-        class="w-full max-w-[360px] mx-auto  min-h-80 h-full p-4 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
-      >
+      {% if user.role.sec_level >= 4 %}
+      <div>
+        {% if curr_obj.status.id == 2 and not curr_obj.is_finished %}
         <div
-          class="badge_generator flex flex-col justify-center items-center gap-3"
+          class="w-full max-w-[360px] mx-auto min-h-80 h-full p-4 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
         >
-          <i class="fa-solid fa-qrcode text-7xl"></i>
-          <a
-            hx-get="{% url 'generate_appointment_badge' curr_obj.id %}"
-            hx-swap="outerHTML"
-            hx-target=".badge_generator"
-            class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
-            >Generer un badge</a
+          <div
+            class="badge_generator flex flex-col justify-center items-center gap-3"
           >
+            <i class="fa-solid fa-qrcode text-7xl"></i>
+            <a
+              hx-get="{% url 'generate_appointment_badge' curr_obj.id %}"
+              hx-swap="outerHTML"
+              hx-target=".badge_generator"
+              class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
+              >Generer un badge</a
+            >
+          </div>
         </div>
-      </div>
-      {% elif curr_obj.signature and curr_obj.status.id == 3 %}
-      <div class="w-full h-full max-w-[360px] mx-auto grid gap-2">
+        {% elif curr_obj.is_finished and curr_obj.status.id == 2 %}
+        <!--  -->
+        {% include 'base/components/appointments/sign_pad.html' %}
+        <!--  -->
+        {% elif curr_obj.signature and curr_obj.status.id == 3 %}
         <div
-          class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+          class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-sky-200 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
         >
-          <img src="{{ curr_obj.signature.url }}" alt="Signature" />
+          <div
+            class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+          >
+            <img src="{{ curr_obj.signature.url }}" alt="Signature" />
+          </div>
+          <hr class="mx-6" />
+          <small class="italic font-light text-xs text-gray-800"
+            >Rendez-vous terminé, le {{ curr_obj.date}} à
+            {{curr_obj.finished_at}}.
+          </small>
         </div>
-        <hr class="mx-6 my-1" />
-        <small class="italic font-light text-xs text-gray-400"
-          >Rendez-vous terminé, le {{ curr_obj.date}} à
-          {{curr_obj.departed_at}}.
-        </small>
+        {% endif %}
+        <!-- signature viewer and validator -->
+        <div
+          id="signature_validator"
+          class="hidden w-full h-full xl:max-w-[260px] 2xl:max-w-[360px] grid gap-2"
+        >
+          <div
+            class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+          >
+            <img id="new_signature" src="" alt="Signature" />
+          </div>
+          <button
+            hx-post="{% url 'moderate_appointment' curr_obj.id 3 %}"
+            hx-swapp="innerHTML"
+            class="p-2 w-full flex justify-center items-center hover:text-black bg-green-100 hover:bg-green-300 rounded-md w-full text-center {% if curr_obj.status.id == 3 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
+          >
+            <i class="text-sm fa-solid fa-hourglass-end mr-2"></i>
+            Terminer le rendez-vous
+          </button>
+          <hr class="mx-6 my-1" />
+          <small
+            class="italic font-light text-xs text-gray-400 text-center mx-auto"
+            >NB: En cliquant sur ce button, ce rendez-vous aura le status
+            "Terminé". Vous ne pourrez plus le modifier.
+          </small>
+        </div>
       </div>
       {% endif %}
-      <!-- signature viewer and validator -->
-      <div
-        id="signature_validator"
-        class="hidden w-full h-full max-w-[360px] mx-auto grid gap-2"
-      >
-        <div
-          class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
-        >
-          <img id="new_signature" src="" alt="Signature" />
-        </div>
-        <button
-          hx-post="{% url 'moderate_appointment' curr_obj.id 3 %}"
-          hx-swapp="innerHTML"
-          class="p-2 w-full flex justify-center items-center hover:text-black bg-green-100 hover:bg-green-300 rounded-md w-full text-center {% if curr_obj.status.id == 3 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
-        >
-          <i class="text-sm fa-solid fa-hourglass-end mr-2"></i>
-          Terminer le rendez-vous
-        </button>
-        <hr class="mx-6 my-1" />
-        <small class="italic font-light text-xs text-gray-400 text-center mx-auto"
-          >NB: En cliquant sur ce button, ce rendez-vous aura le status
-          "Terminé". Vous ne pourrez plus le modifier.
-        </small>
-      </div>
     </section>
   </div>
-
-  <!-- signature pad -->
-
-  {% if curr_obj.status.id == 2 %}
-  <form
-    id="signature_form"
-    class="flex flex-col items-center gap-3"
-    action="{% url 'sign_appointment' curr_obj.id %}"
-    method="post"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
-    <p
-      class="px-4 py-2 bg-purple-100 rounded-lg text-sm text-black text-center"
-    >
-      Veuillez signer ici
-      <i class="fa-solid fa-arrow-down text-xs"></i>
-    </p>
-    <!-- signature canvas -->
-    <canvas
-      id="signature_canvas"
-      width="350"
-      height="250"
-      class="w-fit rounded-lg bg-gray-50 hover:bg-white text-black border hover:border-purple-700 cursor-crosshair overflow-hidden"
-    ></canvas>
-
-    <!--  -->
-    <div class="mb-4 w-full max-w-[350px] mx-auto flex items-center gap-2">
-      <a
-        onclick="clearCanvas()"
-        class="px-4 py-2 bg-red-200 hover:bg-red-400 text-sm text-black rounded-md transition duration-200 ease-in cursor-pointer"
-        >Effacer</a
-      >
-      <button
-        type="button"
-        onclick="saveSignature()"
-        class="px-4 py-2 w-full bg-purple-800 hover:bg-purple-950 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
-      >
-        Valider
-      </button>
-    </div>
-  </form>
-  {% endif %}
 </div>
 
 <script>

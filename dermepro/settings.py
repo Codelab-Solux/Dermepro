@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from django.contrib import messages
 from pathlib import Path
 import dj_database_url
 import environ
@@ -74,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # custom middleware--------------------------------------
+    'dermepro.middleware.HtmxMessageMiddleware',
 ]
 
 ROOT_URLCONF = 'dermepro.urls'
@@ -93,6 +96,15 @@ TEMPLATES = [
         },
     },
 ]
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "w-full bg-gray-100 border rounded-lg px-4 py-2",
+    messages.INFO: "w-full bg-blue-100 border border-blue-400  hover:bg-blue-200rounded-lg px-4 py-2",
+    messages.SUCCESS: "w-full bg-green-100 border border-green-400 hover:bg-green-200 rounded-lg px-4 py-2",
+    messages.WARNING: "w-full bg-amber-100 border border-amber-400 hover:bg-amber-200 rounded-lg px-4 py-2",
+    messages.ERROR: "w-full bg-red-100 border border-g-red-400 hover:bg-red-200 rounded-lg px-4 py-2",
+}
 
 ASGI_APPLICATION = 'dermepro.asgi.application'
 WSGI_APPLICATION = 'dermepro.wsgi.application'

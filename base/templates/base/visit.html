@@ -5,78 +5,29 @@
 <!--  -->
 {% if curr_obj %}
 <!--  -->
-<div class="relative grid gap-4 h-full md:h-full md:w-full">
-  <div class="grid md:pt-10 xl:pt-0">
+<section class="pb-8 flex flex-col w-full h-full gap-4">
+  <div class="flex flex-row-reverse">
     <div
-      class="absolute top-0 right-0 w-fit"
+      class="top-0 right-0 w-fit"
       hx-get="{% url 'visit_status' curr_obj.id %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>
-    <!-- visit details -->
-    <section id="details" class="mt-10 h-fit flex flex-col xl:flex-row gap-x-2 gap-y-8">
-      <!-- visit info -->
-      <div class="w-full h-100 flex flex-col gap-3 text-gray-500">
-        <h2 class="font-bold text-lg md:text-xl lg:text-2xl text-black">
-          {% if curr_obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
-          <!--  -->
-          {{curr_obj.last_name}} {{curr_obj.first_name}}
-        </h2>
-
-        <p>
-          <i class="fa-solid fa-user-alt text-gray-400 mr-3"></i>Hôte :
-          <span class="text-black">
-            {{curr_obj.host.last_name}} {{curr_obj.host.first_name}}
-          </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Cadre de la
-          visite :
-          <span class="text-black">
-            {{curr_obj.get_context_display|title}}
-          </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-flag text-gray-400 mr-3"></i> Nationalité :
-          <span class="text-black"> {{curr_obj.nationality}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-venus-mars text-gray-400 mr-3"></i> Sexe :
-          <span class="text-black"> {{curr_obj.get_sex_display|title}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i> Date :
-          <span class="text-black"> {{curr_obj.date}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Arrivée à :
-          <span class="text-black"> {{curr_obj.arrived_at}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i>
-          Accepté(e) à :
-          <span class="text-black"> {{curr_obj.accepted_at}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-id-card text-gray-400 mr-3"></i>Pièce d'identite
-          :
-          <span class="text-black">{{curr_obj.get_id_document_display}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> Numero de la
-          piece d'identite :
-          <span class="text-black"> {{curr_obj.id_number|title}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-phone text-gray-400 mr-3"></i> Numero de
-          telephone :
-          <span class="text-black"> {{curr_obj.phone|title}} </span>
-        </p>
-      </div>
-      {% if  curr_obj.status.id == 1 and user.role.sec_level >= 4 %}
+  </div>
+  <!-- visit details -->
+  <section
+    id="details"
+    class="h-fit w-full flex flex-col xl:flex-row justify-between xl:items-center gap-4"
+  >
+    <!-- visit info -->
+    {% include 'base/components/visits/info.html' %}
+    <!-- badge generator -->
+    {% if user.role.sec_level >= 4 %}
+    <div>
+      {% if curr_obj.status.id == 2 and not curr_obj.is_finished %}
       <div
         id="badge_viewer"
-        class="w-full max-w-[360px] mx-auto min-h-80 h-full p-4 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+        class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
       >
         <div
           class="badge_generator flex flex-col justify-center items-center gap-3"
@@ -91,24 +42,30 @@
           >
         </div>
       </div>
-      <!-- badge generator -->
+      {% elif curr_obj.is_finished and curr_obj.status.id == 2 %}
+      <!--  -->
+      {% include 'base/components/visits/sign_pad.html' %}
+      <!--  -->
       {% elif curr_obj.signature and curr_obj.status.id == 3 %}
-      <div class="my-8 w-full h-full max-w-[360px] mx-auto flex flex-col items-center gap-3">
+      <!-- signature viewer -->
+      <div
+        class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-sky-200 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
+      >
         <div
-          class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
+          class="w-full h-full p-6 bg-sky-50 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
         >
           <img src="{{ curr_obj.signature.url }}" alt="Signature" />
         </div>
         <hr class="mx-6" />
-        <small class="italic font-light text-xs text-gray-400"
-          >Visite terminée, le {{ curr_obj.date}} à {{curr_obj.departed_at}}.
+        <small class="italic font-light text-xs text-gray-800"
+          >Visiteur parti, le {{ curr_obj.date}} à {{curr_obj.finished_at}}.
         </small>
       </div>
       {% endif %}
-      <!-- signature viewer and validator -->
+      <!-- signature validator -->
       <div
         id="signature_validator"
-        class="hidden w-full h-full max-w-[360px] grid gap-2"
+        class="hidden w-full h-full xl:max-w-[260px] 2xl:max-w-[360px] grid gap-2"
       >
         <div
           class="w-full h-full p-6 bg-gray-50 border rounded-lg flex flex-col justify-center items-center gap-4 overflow-hidden"
@@ -116,166 +73,30 @@
           <img id="new_signature" src="" alt="Signature" />
         </div>
         <button
+          id="finishBtn"
           hx-post="{% url 'moderate_visit' curr_obj.id 3 %}"
           hx-target=".obj_status{{curr_obj.id}}, .visit_details"
           hx-trigger="click"
           hx-swapp="outerHTML"
           class="p-2 w-full flex justify-center items-center hover:text-black bg-green-100 hover:bg-green-300 rounded-md w-full text-center {% if curr_obj.status.id == 3 %} cursor-none pointer-events-none opacity-50 disabled {% endif %}"
         >
-          <i class="text-sm fa-solid fa-hourglass-end mr-2"></i>
+          <i class="text-sm hover:text-black fa-solid fa-hourglass-end mr-2"></i>
           Terminer la visite
         </button>
         <hr class="mx-6 my-1" />
-        <small class="italic font-light text-xs text-gray-400"
+        <small class="italic font-light text-xs text-gray-600 text-center"
           >NB: En cliquant sur ce button, cette visite aura le status "Terminé".
-          Vous ne pourrez plus la modifier.
+          Vous ne pourrez donc plus la modifier.
         </small>
       </div>
-    </section>
-  </div>
-  <!-- signature pad -->
-  {% if curr_obj.status.id == 2 %}
-  <form
-    id="signature_form"
-    class="flex flex-col items-center gap-3"
-    action="{% url 'sign_visit' curr_obj.id %}"
-    method="post"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
-    <p
-      class="px-4 py-2 bg-purple-100 rounded-lg text-sm text-black text-center"
-    >
-      Veuillez signer ici
-      <i class="fa-solid fa-arrow-down text-xs"></i>
-    </p>
-    <!-- signature canvas -->
-    <canvas
-      id="signature_canvas"
-      width="350"
-      height="250"
-      class="w-fit rounded-lg bg-gray-50 hover:bg-white text-black border hover:border-purple-700 cursor-crosshair overflow-hidden"
-    ></canvas>
-
-    <!--  -->
-    <div class="mb-4 w-full max-w-[350px] mx-auto flex items-center gap-2">
-      <a
-        onclick="clearCanvas()"
-        class="px-4 py-2 bg-red-200 hover:bg-red-400 text-sm text-black rounded-md transition duration-200 ease-in cursor-pointer"
-        >Effacer</a
-      >
-      <button
-        type="button"
-        onclick="saveSignature()"
-        class="px-4 py-2 w-full bg-purple-800 hover:bg-purple-950 text-sm text-white rounded-md transition duration-200 ease-in cursor-pointer"
-      >
-        Valider
-      </button>
     </div>
-  </form>
-  {% endif %}
-</div>
+    {% endif %}
+  </section>
+</section>
+{% endif %}
 
 <script>
-  // Get the CSRF token from the cookie
-  function getCSRFToken() {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      var cookies = document.cookie.split(";");
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        // Extract the CSRF token
-        if (cookie.substring(0, 10) === "csrftoken=") {
-          cookieValue = decodeURIComponent(cookie.substring(10));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  var form = document.getElementById("signature_form");
-  var canvas = document.getElementById("signature_canvas");
-  var signature_validator = document.getElementById("signature_validator");
-  var signaturePad = new SignaturePad(canvas);
-
-  // JavaScript code to save signature
-  function saveSignature() {
-    // Check if the signature pad is empty
-    if (signaturePad.isEmpty()) {
-      alert("Veuillez signer avant de valider.");
-      return; // Exit function if signature pad is empty
-    }
-
-    // Get the CSRF token
-    var csrftoken = getCSRFToken();
-
-    // from base 64 to blob
-    function b64toBlob(b64Data, contentType, sliceSize) {
-      contentType = contentType || "";
-      sliceSize = sliceSize || 512;
-
-      var byteCharacters = atob(b64Data);
-      var byteArrays = [];
-
-      for (
-        var offset = 0;
-        offset < byteCharacters.length;
-        offset += sliceSize
-      ) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-        var byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-      }
-
-      var blob = new Blob(byteArrays, { type: contentType });
-      return blob;
-    }
-
-    // form data handling
-    var image_data = signaturePad.toDataURL("image/png"); // Convert canvas content to data URL
-    console.log("Data URL:", image_data);
-    var block = image_data.split(";");
-    var contentType = block[0].split(":")[1];
-    var realData = block[1].split(",")[1];
-
-    var blob = b64toBlob(realData, contentType);
-    var formData = new FormData();
-    formData.append("image", blob, "signature.png");
-
-    // form submission handling with  ajax
-    $.ajax({
-      url: form.action,
-      type: form.method,
-      processData: false,
-      contentType: false,
-      data: formData,
-      headers: {
-        "X-CSRFToken": csrftoken,
-      },
-      success: function (data) {
-        console.log("Screenshot saved successfully!");
-        // Hide signature pad and display signature image
-        document.getElementById("new_signature").src = image_data; // Replace with the actual URL of the saved signature image
-        signature_validator.classList.remove("hidden");
-        signature_form.classList.add("hidden");
-      },
-      error: function (e) {
-        console.log(e);
-      },
-    }).done(function (o) {});
-  }
-
-  // ----------------------------------------------------------------------------------------
-
-  // JavaScript code to clear canvas
-  function clearCanvas() {
-    signaturePad.clear();
-  }
+document.getElementById('finishBtn').addEventListener('click', (e) => {
+    e.target.classList.add('hidden');
+});
 </script>
-<!--  -->
-{% endif %}

@@ -10,6 +10,14 @@ def create_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 
-# @receiver(post_save, sender=CustomUser)
-# def save_profile(sender, instance, **kwargs):
-#     instance.profile.save()
+@receiver(post_save, sender=TimeManagement)
+def change_user_presence(sender, instance, created, **kwargs):
+    if created:
+        curr_profile = instance.user.profile
+        if curr_profile.is_onsite == True:
+            curr_profile.is_onsite = False
+            curr_profile.is_online = False
+        else:
+            curr_profile.is_onsite = True
+            
+        curr_profile.save()

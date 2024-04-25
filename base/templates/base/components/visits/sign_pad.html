@@ -1,0 +1,139 @@
+<form
+  id="signature_form"
+  class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-sky-200 border border-sky-400 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
+  action="{% url 'sign_visit' curr_obj.id %}"
+  method="post"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+
+  <p class="text-sm text-black text-center">
+    Veuillez signer ici
+    <i class="fa-solid fa-arrow-down text-xs"></i>
+  </p>
+  <!-- signature canvas -->
+  <canvas
+    id="signature_canvas"
+    width="400"
+    height="250"
+    class="w-fit bg-sky-50 rounded-md bg-sky-50 hover:bg-white text-black cursor-crosshair overflow-hidden"
+  ></canvas>
+
+  <!--  -->
+    <div class="w-full max-w-[325px] flex items-center gap-2 text-xs">
+    <a
+      onclick="clearCanvas()"
+      class="px-4 py-2 bg-white hover:bg-red-300 text-black rounded-md transition duration-200 ease-in cursor-pointer"
+      >Effacer</a
+    >
+    <button
+      type="button"
+      onclick="saveSignature()"
+      class="px-4 py-2 w-full bg-sky-600 hover:bg-sky-700 text-white rounded-md transition duration-200 ease-in cursor-pointer"
+    >
+      Valider
+    </button>
+  </div>
+</form>
+
+<script>
+  // Get the CSRF token from the cookie
+  function getCSRFToken() {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Extract the CSRF token
+        if (cookie.substring(0, 10) === "csrftoken=") {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  var form = document.getElementById("signature_form");
+  var canvas = document.getElementById("signature_canvas");
+  var signature_validator = document.getElementById("signature_validator");
+  var signaturePad = new SignaturePad(canvas);
+
+  // JavaScript code to save signature
+  function saveSignature() {
+    // Check if the signature pad is empty
+    if (signaturePad.isEmpty()) {
+      alert("Veuillez signer avant de valider.");
+      return; // Exit function if signature pad is empty
+    }
+
+    // Get the CSRF token
+    var csrftoken = getCSRFToken();
+
+    // from base 64 to blob
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || "";
+      sliceSize = sliceSize || 512;
+
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+
+      for (
+        var offset = 0;
+        offset < byteCharacters.length;
+        offset += sliceSize
+      ) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      var blob = new Blob(byteArrays, { type: contentType });
+      return blob;
+    }
+
+    // form data handling
+    var image_data = signaturePad.toDataURL("image/png"); // Convert canvas content to data URL
+    console.log("Data URL:", image_data);
+    var block = image_data.split(";");
+    var contentType = block[0].split(":")[1];
+    var realData = block[1].split(",")[1];
+
+    var blob = b64toBlob(realData, contentType);
+    var formData = new FormData();
+    formData.append("image", blob, "signature.png");
+
+    // form submission handling with  ajax
+    $.ajax({
+      url: form.action,
+      type: form.method,
+      processData: false,
+      contentType: false,
+      data: formData,
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      success: function (data) {
+        console.log("Screenshot saved successfully!");
+        // Hide signature pad and display signature image
+        document.getElementById("new_signature").src = image_data; // Replace with the actual URL of the saved signature image
+        signature_validator.classList.remove("hidden");
+        signature_form.classList.add("hidden");
+      },
+      error: function (e) {
+        console.log(e);
+      },
+    }).done(function (o) {});
+  }
+
+  // ----------------------------------------------------------------------------------------
+
+  // JavaScript code to clear canvas
+  function clearCanvas() {
+    signaturePad.clear();
+  }
+</script>

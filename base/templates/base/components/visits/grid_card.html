@@ -1,0 +1,51 @@
+{% load static %}
+
+<!-- tablet/ PC view -->
+
+<div
+  class="cursor-pointer relative flex flex-col border bg-white focus:border-purple-950 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition group duration-300 ease-in-out"
+>
+  <!-- admin functions update + delete -->
+  {% if user.role.sec_level >= 4 and obj.status.id == 1 %}
+  <div class="flex absolute top-0 right-0 text-gray-300 text-xs">
+    <button
+      onclick="hide_dialogs()"
+      hx-target="#basic_dialog"
+      hx-get="{% url 'edit_visit' obj.id %}"
+      class="px-2 py-1 hover:bg-purple-300 border border-t-0 rounded-md hover:text-black"
+    >
+      <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+  </div>
+  {% endif %}
+
+  <!-- card info -->
+
+  <article
+    hx-get="{% url 'visit_alt' obj.id %}"
+    hx-target="#basic_dialog"
+    hx-swap="innerHTML"
+    class="p-4 md:text-sm lg:text-md flex flex-col gap-1 justify-between"
+  >
+    <h4 class="text-black font-bold">
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name}}
+    </h4>
+    <span class="font-light text-xs text-gray-600"
+      ><i class="fa-solid fa-user text-xs"></i> {{obj.host.last_name}}
+      {{obj.host.first_name}}</span
+    >
+
+    <small class="text:xs text-gray-400"
+      ><i class="fa-solid fa-calendar-days text-xs"></i> {{obj.date}}</small
+    >
+    <div class="flex items-start justify-between">
+      <small class="text:xs text-gray-400"
+        ><i class="fa-solid fa-clock text-xs"></i> {{obj.arrived_at}}</small
+      >
+      <!-- appointment status indicator -->
+      {% include 'base/components/status_badge.html' %}
+    </div>
+  </article>
+</div>

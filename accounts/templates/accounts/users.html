@@ -4,9 +4,9 @@
 
   <!--------------------------------------- filter form --------------------------------------->
   <form
-    hx-post="{% url 'filter_users' %}"
-    hx-target=".filtered_users"
-    class="mt-14 p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+    hx-post="{% url 'filter_users' 'users' %}"
+    hx-target=".users_list"
+    class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
   >
     {% csrf_token %}
     <!--  -->
@@ -17,15 +17,15 @@
         name="user_type"
         class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected disabled>Type d'utilisateur</option>
+        <option value="" selected disabled>Rôles</option>
         {% for obj in user_roles %}
         <option value="{{obj.id}}">{{obj.name}}</option>
         {% endfor %}
       </select>
       {% endif %}
       <input
-        hx-post="{% url 'filter_users' %}"
-        hx-target=".filtered_users"
+        hx-post="{% url 'filter_users' 'users' %}"
+        hx-target=".users_list"
         hx-trigger="keyup changed delay:500ms"
         placeholder="Nom"
         name="last_name"
@@ -33,21 +33,14 @@
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
       />
       <input
-        hx-post="{% url 'filter_users' %}"
-        hx-target=".filtered_users"
+        hx-post="{% url 'filter_users' 'users' %}"
+        hx-target=".users_list"
         hx-trigger="keyup changed delay:500ms"
         placeholder="Prénoms"
         name="first_name"
         type="text"
         class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
       />
-      <!-- phaone -->
-      <!-- <input
-        placeholder="Telephone de l'utilisateur"
-        name="user_phone"
-        type="text"
-        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit max-w-[200px] border"
-      /> -->
       <!-- sex -->
       <select
         name="user_sex"
@@ -62,7 +55,7 @@
         name="user_status"
         class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
       >
-        <option value="" selected disabled>Status de disponibilité</option>
+        <option value="" selected disabled>Disponibilité</option>
         {% for obj in user_statuses %}
         <option value="{{obj.id}}">{{obj.title}}</option>
         {% endfor %}
@@ -77,7 +70,7 @@
     </button>
     <button
       class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
-      hx-on:click="clearUserFilter()"
+      hx-on:click="clearForm()"
       type="submit"
     >
       <i class="fa-solid fa-rotate-right"></i>
@@ -93,15 +86,14 @@
 >
   <!--------------------------------------- user list --------------------------------------->
   <div
-    class="filtered_users p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+    class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
   >
     <div
-      class="user_list"
-      hx-get="{% url 'user_list' %}"
+      class="users_list"
+      hx-get="{% url 'users_list' 'users' %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>
-    <!-- <div id="vis_list">{#% include 'base/partials/user_list.html' %#}</div> -->
   </div>
 
   <!--------------------------------------- user details --------------------------------------->
@@ -109,12 +101,7 @@
   <div
     class="user_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
   >
-    <img
-        class="h-60 lg:h-80"
-        src="{% static 'vectors/profile.jpg' %}"
-      alt="welcome image"
-    />
-     <!-- <i class="fa-solid fa-user-alt text-gray-400 text-5xl"></i> -->
+     <i class="fa-solid fa-user-alt text-gray-300 text-9xl"></i>
     <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
       Cliquez sur un utilisateur pour voir ses detail ici.
     </p>
@@ -122,9 +109,9 @@
 </section>
 
 <script>
-  function clearUserFilter() {
-    var user_filter = document.getElementById("user_filter");
-    user_filter.reset();
-  }
+    function clearForm() {
+      var form = document.querySelector("form");
+      form.reset();
+    }
 </script>
 {% endblock %}

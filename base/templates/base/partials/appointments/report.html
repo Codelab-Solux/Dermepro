@@ -1,0 +1,105 @@
+<!-- appointments table filter ------------------------------------------------------------->
+<form
+  id="appointment_filter"
+  hx-post="{% url 'filter_appointments_table' %}"
+  hx-target=".filtered_appointments_table"
+  hx-trigger="submit"
+  class="p-1 w-full bg-gray-100 border rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+>
+  {% csrf_token %}
+  <!--  -->
+  <div class="w-full flex justify-between items-center gap-1">
+    <!-- date margin -->
+    <input
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
+      type="date"
+      name="min_date"
+      placeholder="A partir du"
+    />
+    <input
+      class="hidden lg:inline px-3 py-2 w-full rounded-md"
+      type="date"
+      name="max_date"
+      placeholder="Jusqu'au"
+    />
+    {% if user.role.sec_level >= 4 %}
+    <select
+      name="host"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+    >
+      <option value="" selected disabled>Hôte</option>
+      {% for obj in hosts %}
+      <option value="{{obj.username}}">{{obj.last_name}} {{obj.first_name}}</option>
+      {% endfor %}
+    </select>
+    {% endif %}
+    <!-- statuses -->
+    <select
+      name="visit_status"
+      class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+    >
+      <option value="" selected disabled>Status</option>
+      {% for obj in statuses %}
+      <option value="{{obj.id}}">{{obj.title}}</option>
+      {% endfor %}
+    </select>
+    <!-- sex -->
+    <select
+      name="sex"
+      class="hidden md:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full"
+    >
+      <option value="" selected disabled>Sexe</option>
+      <option value="female">Feminin</option>
+      <option value="male">Masculin</option>
+    </select>
+  </div>
+
+  <button
+    class="px-3 py-2 bg-gray-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+    type="submit"
+  >
+    <i class="fa-solid fa-filter"></i>
+  </button>
+  <button
+    class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+    hx-on:click="clearAppointmnentFilter()"
+    type="submit"
+  >
+    <i class="fa-solid fa-rotate-right"></i>
+  </button>
+</form>
+
+<!-- appointments table ------------------------------------------------------------->
+<div class="overflow-auto rounded-lg bg-gray-50">
+  <table id="appointments_table" class="w-full text-left db-table">
+    <thead class="bg-purple-950 border border-purple-950 text-white">
+      <tr>
+        <th class="p-4 text-sm">Dates</th>
+        <th class="p-4 text-sm">Heures</th>
+        <th class="p-4 text-sm">Hôtes</th>
+        <th class="p-4 text-sm">Nom</th>
+        <th class="p-4 text-sm">Prénoms</th>
+        <th class="p-4 text-sm">Télephones</th>
+        <!-- <th class="p-4 text-sm">Email</th> -->
+        <th class="p-4 text-sm">Début</th>
+        <th class="p-4 text-sm">Fin</th>
+        <th class="p-4 text-sm">Status</th>
+        <th class="p-4 text-sm">Durée</th>
+      </tr>
+    </thead>
+
+    <tbody
+      class="filtered_appointments_table"
+      hx-get="{% url 'appointments_table' %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></tbody>
+  </table>
+</div>
+
+<script>
+  function clearAppointmnentFilter() {
+    var appointment_filter = document.getElementById("appointment_filter");
+    appointment_filter.reset();
+  }
+</script>

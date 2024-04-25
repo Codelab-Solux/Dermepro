@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import date
+from django.utils import timezone
 from base.utils import h_encode, h_decode
-
+# from base.models import Company
 
 
 class Role(models.Model):
@@ -96,7 +98,8 @@ gender_list = (
     ('male', 'Masculin'),
 )
 
-# from base.models import Company
+
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     company = models.ForeignKey('base.Company', on_delete=models.CASCADE, blank=True, null=True)
@@ -114,6 +117,7 @@ class Profile(models.Model):
     image = models.ImageField(
         upload_to='media/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
     is_online = models.BooleanField(default=False)
+    is_onsite = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.last_name} {self.user.first_name} - Profile'
@@ -123,3 +127,27 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'pk': self.pk})
+    
+
+movements_list = (
+    ('entry', 'Entrée'),
+    ('exit', 'Sortie'),
+)
+class TimeManagement(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    date = models.DateField(default=date.today)
+    time = models.TimeField(default=timezone.now)
+    movement = models.CharField(
+        max_length=10, choices=movements_list, blank=True, null=True)
+    user_password = models.CharField(max_length=255)
+    # signature = models.ImageField(
+    #     upload_to='signatures/', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user} - {self.movement}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('time_management', kwargs={'pk': self.pk})

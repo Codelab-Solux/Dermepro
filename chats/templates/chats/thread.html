@@ -31,7 +31,7 @@
   </div> -->
 
   <!------------------ chat messages ------------------->
-  <div id="convo_box" class="py-14 h-full w-full overflow-auto">
+  <div id="convo_box_{{curr_thread.id}}" class="py-14 h-full w-full overflow-auto">
     <table class="h-full w-full">
       <tbody id="chat_box_{{curr_thread.id}}" class="text-sm mx-4 flex flex-col gap-4">
         {% for obj in messages %} {% if obj.sender == other_user %}
@@ -78,7 +78,7 @@
         id="chat_input"
         required
         class="px-4 py-2 rounded-t-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
-        placeholder="ecrivez votre message..."
+        placeholder="Ecrivez votre message..."
       />
       <button
         class="group px-4 py-3 text-sm bg-purple-950 hover:bg-purple-200 text-white rounded-t-md"
@@ -102,5 +102,6 @@
 <!--  -->
 {{ request.user.id|json_script:"curr_user_id" }}
 <script>
+  
   scrollToBottom();
 </script>

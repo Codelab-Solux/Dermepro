@@ -131,6 +131,19 @@ class AdminEditUserForm(forms.ModelForm):
         }
 
 
+class TimeManagementForm(forms.ModelForm):
+    class Meta:
+        model = TimeManagement
+        fields = ('user','user_password',)
+        labels = {'user': "Utilisateur", 
+                  'user_password': 'Mots de passe',
+                  }
+        widgets = {
+            'user': forms.Select(attrs={'id': 'role_selector',  'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'user_password': forms.PasswordInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+        }
+
+
 class RoleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

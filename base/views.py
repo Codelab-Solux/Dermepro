@@ -1,3 +1,5 @@
+from django.db.models.functions import ExtractHour, ExtractMinute, ExtractDay
+from django.db.models import Sum, F, DurationField
 import json
 import calendar
 from django.core.paginator import Paginator
@@ -25,7 +27,7 @@ from dateutil.relativedelta import relativedelta, MO, SU
 from calendar import Calendar, month_name, monthrange
 from django.core.serializers import serialize
 from collections import defaultdict
-from .templatetags.base_tags import get_hour_schedule
+from .templatetags.base_tags import *
 
 
 def get_week_boundaries(year, week):
@@ -66,6 +68,12 @@ def get_date_from_day_number(year, day):
     set_day = first_day_of_year + timedelta(days=day - 1)
     date = set_day.date()
     return date
+
+
+def get_day_number_from_date(date):
+    first_day_of_year = datetime(date.year, 1, 1)
+    day_number = (date - first_day_of_year).days + 1
+    return day_number
 
 
 def paginate_objects(req, obj_list, obj_count=10):
@@ -116,7 +124,6 @@ def visits(req):
 
 @login_required(login_url='login')
 def visit(req, pk):
-    user = req.user
     curr_obj = get_object_or_404(Visit, id=pk)
 
     # Mark associated notifications as read
@@ -124,7 +131,6 @@ def visit(req, pk):
         content_type=ContentType.objects.get_for_model(Visit), object_id=curr_obj.id)
     if associated_notifications:
         associated_notifications.update(is_read=True)
-        # print(f'Notification was read at {timezone.now()}')
 
     context = {
         "visit_details_page": "active",
@@ -136,9 +142,7 @@ def visit(req, pk):
 
 @login_required(login_url='login')
 def visit_alt(req, pk):
-    user = req.user
     curr_obj = get_object_or_404(Visit, id=pk)
-
     context = {
         "visit_details_page": "active",
         'title': 'Visit Details',
@@ -159,7 +163,7 @@ def create_visit(req):
         form = VisitForm(req.POST)
         if form.is_valid():
             form.save()
-        messages.success = 'Nouvelle visit ajoutée!'
+        messages.success(req, 'Nouvelle visit ajoutée!')
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/forms/visit_form.html', context={'form': form, 'form_title': 'Nouvelle Visite'})
@@ -178,51 +182,61 @@ def edit_visit(req, pk):
         form = VisitForm(req.POST, instance=curr_obj)
         if form.is_valid():
             form.save()
-        messages.success = 'Données modifiée avec success'
+        messages.success(req, 'Données modifiée avec success')
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title': 'Modifier Une Visite', 'curr_obj': curr_obj})
 
 
 @login_required(login_url='login')
-def moderate_visit(req, pk, kp):
-    user = req.user
+def moderate_visit(req, pk, kp=None):
     curr_obj = get_object_or_404(Visit, id=pk)
-    new_status = get_object_or_404(Status, id=kp)
-    host_profile = get_object_or_404(Profile, user=curr_obj.host)
-
-    if kp == 2:
+    if kp == 0:
+        print('cloturer')
         curr_obj.is_accepted = True
         curr_obj.is_rejected = False
-        curr_obj.accepted_at = timezone.now()
-        curr_obj.status = new_status
+        curr_obj.is_missed = False
+        curr_obj.is_finished = True
+        curr_obj.ended_at = timezone.now()
         curr_obj.save()
 
-        new_user_status = get_object_or_404(UserStatus, id=2)
-        host_profile.status = new_user_status
-        host_profile.save()
-        # print(host_profile.status)
-
-    elif kp == 3:
-        curr_obj.is_accepted = True
-        curr_obj.is_rejected = False
-        curr_obj.departed_at = timezone.now()
-        curr_obj.status = new_status
-        curr_obj.save()
-
-        new_user_status = get_object_or_404(UserStatus, id=1)
-        host_profile.status = new_user_status
-        host_profile.save()
-        # print(curr_profile.status)
-
-    elif kp == 5:
-        curr_obj.is_rejected = True
-        curr_obj.is_accepted = False
-        curr_obj.status = new_status
-        curr_obj.save()
     else:
-        return "error"
+        new_status = get_object_or_404(Status, id=kp)
+        host_profile = get_object_or_404(Profile, user=curr_obj.host)
 
+        if kp == 2:
+            curr_obj.is_accepted = True
+            curr_obj.is_rejected = False
+            curr_obj.started_at = timezone.now()
+            curr_obj.status = new_status
+            curr_obj.save()
+
+            new_user_status = get_object_or_404(UserStatus, id=2)
+            host_profile.status = new_user_status
+            host_profile.save()
+            # print(host_profile.status)
+
+        elif kp == 3:
+            curr_obj.is_accepted = True
+            curr_obj.is_rejected = False
+            curr_obj.departed_at = timezone.now()
+            curr_obj.status = new_status
+            curr_obj.save()
+
+            new_user_status = get_object_or_404(UserStatus, id=1)
+            host_profile.status = new_user_status
+            host_profile.save()
+            # print(curr_profile.status)
+
+        elif kp == 5:
+            curr_obj.is_rejected = True
+            curr_obj.is_accepted = False
+            curr_obj.status = new_status
+            curr_obj.save()
+        else:
+            return "error"
+
+    messages.success(req, 'Status changer avec succes!')
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
@@ -263,14 +277,14 @@ def delete_visit(req, pk):
     if req.user.role.sec_level < 4:
         return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
     curr_obj.delete()
-    success = 'Deleted successfully'
+    # message.success(req,'Deleted successfully')
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 # -----------------------visits htmx partials-----------------------
 
 
 @login_required(login_url='login')
-def visit_list(req):
+def visits_list(req):
     user = req.user
     if user.role.sec_level >= 4:
         visits = Visit.objects.all().order_by('-date', '-arrived_at')
@@ -278,7 +292,19 @@ def visit_list(req):
         visits = Visit.objects.filter(
             host=user).order_by('-date', '-arrived_at')
     context = {"visits": visits}
-    return render(req, 'base/partials/visit_list.html', context)
+    return render(req, 'base/partials/visits/listview.html', context)
+
+
+@login_required(login_url='login')
+def visits_grid(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.all().order_by('-date', '-arrived_at')
+    else:
+        visits = Visit.objects.filter(
+            host=user).order_by('-date', '-arrived_at')
+    context = {"visits": visits}
+    return render(req, 'base/partials/visits/gridview.html', context)
 
 
 @login_required(login_url='login')
@@ -291,7 +317,7 @@ def ongoing_visits(req):
         visits = Visit.objects.filter(
             status=2, host=user).order_by('-date', '-arrived_at')
     context = {"visits": visits}
-    return render(req, 'base/partials/ongoing_visits.html', context)
+    return render(req, 'base/partials/visits/ongoing.html', context)
 
 
 @login_required(login_url='login')
@@ -304,10 +330,23 @@ def pending_visits(req):
         visits = Visit.objects.filter(
             status=1, host=user).order_by('-date', '-arrived_at')
     context = {"visits": visits}
-    return render(req, 'base/partials/pending_visits.html', context)
+    return render(req, 'base/partials/visits/pending.html', context)
 
 
-def filter_visits(req):
+@login_required(login_url='login')
+def missed_visits(req):
+    user = req.user
+    if user.role.sec_level >= 4:
+        visits = Visit.objects.filter(
+            status=4).order_by('-date', '-arrived_at')
+    else:
+        visits = Visit.objects.filter(
+            status=1, host=user).order_by('-date', '-arrived_at')
+    context = {"visits": visits}
+    return render(req, 'base/partials/visits/missed.html', context)
+
+
+def filter_visits(req, pk):
     user = req.user
     host_query = req.POST.get('host')
     name_query = req.POST.get('name')
@@ -338,7 +377,11 @@ def filter_visits(req):
     visits = base_query
 
     context = {"visits": visits}
-    return render(req, 'base/partials/visit_list.html', context)
+
+    if pk == 'list':
+        return render(req, 'base/partials/visits/listview.html', context)
+    else:
+        return render(req, 'base/partials/visits/gridview.html', context)
 
 
 def generate_visit_badge(req, pk):
@@ -363,7 +406,7 @@ def generate_visit_badge(req, pk):
         'curr_obj': curr_obj
     }
 
-    return render(req, 'base/partials/visitor_badge.html', context)
+    return render(req, 'base/partials/visits/badge.html', context)
 
 
 def sign_visit(req, pk):
@@ -389,7 +432,7 @@ def sign_visit(req, pk):
 def visit_status(req, pk):
     curr_obj = get_object_or_404(Visit, id=pk)
     context = {"curr_obj": curr_obj}
-    return render(req, 'base/partials/visit_status.html', context)
+    return render(req, 'base/partials/visits/status.html', context)
 
 
 # appointments -------------------------------------------------------------------------------------------------
@@ -447,7 +490,7 @@ def calendar_week(req, week=None):
         ends_at = 18
 
     hours = list(range(starts_at, ends_at + 1))
-        
+
     first_day_of_week, last_day_of_week = get_week_boundaries(year, week)
     if user.role.sec_level >= 4:
         appointments = Appointment.objects.filter(
@@ -459,8 +502,8 @@ def calendar_week(req, week=None):
         ).order_by('-date', '-time')
 
     # print(f'appointments : {appointments}')
-    workdays = WorkDay.objects.filter(company = curr_company)
-    
+    workdays = WorkDay.objects.filter(company=curr_company)
+
     context = {
         "rdv_calendar": "active",
         'title': 'Appointments Calendar',
@@ -474,7 +517,7 @@ def calendar_week(req, week=None):
         'appts': appointments,
     }
 
-    return render(req, 'base/partials/calendar_week.html', context)
+    return render(req, 'base/partials/appointments/calendar_week.html', context)
 
 
 @login_required(login_url='login')
@@ -521,7 +564,7 @@ def calendar_day(req, day=None):
         'appts': appointments,
     }
 
-    return render(req, 'base/partials/calendar_day.html', context)
+    return render(req, 'base/partials/appointments/calendar_day.html', context)
 
 
 @ login_required(login_url='login')
@@ -589,7 +632,7 @@ def edit_appointment(req, pk):
         form = AppointmentEditForm(req.POST, instance=curr_obj)
         if form.is_valid():
             form.save()
-        messages.success = 'Données modifiée avec success'
+        messages.success(req, 'Données modifiée avec success')
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title': 'Modifier  Ce Rendez-vous', 'curr_obj': curr_obj})
@@ -668,7 +711,7 @@ def delete_appointment(req, pk):
 
 
 @login_required(login_url='login')
-def appointment_list(req):
+def appointments_list(req):
     user = req.user
     if user.role.sec_level >= 4:
         appointments = Appointment.objects.all().order_by('-date', '-time')
@@ -676,11 +719,11 @@ def appointment_list(req):
         appointments = Appointment.objects.filter(
             host=user).order_by('-date', '-time')
     context = {"appointments": appointments}
-    return render(req, 'base/partials/appointment_list.html', context)
+    return render(req, 'base/partials/appointments/listview.html', context)
 
 
 @login_required(login_url='login')
-def appointment_grid(req):
+def appointments_grid(req):
     user = req.user
     if user.role.sec_level >= 4:
         appointments = Appointment.objects.all().order_by('-date', '-time')
@@ -688,34 +731,35 @@ def appointment_grid(req):
         appointments = Appointment.objects.filter(
             host=user).order_by('-date', '-time')
     context = {"appointments": appointments}
-    return render(req, 'base/partials/appointment_grid.html', context)
+    return render(req, 'base/partials/appointments/gridview.html', context)
 
 
 @login_required(login_url='login')
 def pending_vips(req):
     appointments = Appointment.objects.filter(is_vip=True, status=1)
     context = {"appointments": appointments}
-    return render(req, 'base/partials/pending_vips.html', context)
+    return render(req, 'base/partials/appointments/pending_vips.html', context)
 
 
 @login_required(login_url='login')
 def pending_appointments(req):
     appointments = Appointment.objects.filter(status=1).exclude(is_vip=True)
     context = {"appointments": appointments}
-    return render(req, 'base/partials/pending_appointments.html', context)
+    return render(req, 'base/partials/appointments/pending.html', context)
+
 
 @login_required(login_url='login')
 def pending_appointments_all(req):
     appointments = Appointment.objects.filter(status=1)
     context = {"appointments": appointments}
-    return render(req, 'base/partials/pending_appointments_all.html', context)
+    return render(req, 'base/partials/appointments/pending_alt.html', context)
 
 
 @login_required(login_url='login')
 def ongoing_appointments(req):
     appointments = Appointment.objects.filter(status=2)
     context = {"appointments": appointments}
-    return render(req, 'base/partials/ongoing_appointments.html', context)
+    return render(req, 'base/partials/appointments/ongoing.html', context)
 
 
 def filter_appointments(req, pk='list'):
@@ -747,9 +791,9 @@ def filter_appointments(req, pk='list'):
     context = {"appointments": appointments}
     print(appointments)
     if pk == 'grid':
-        return render(req, 'base/partials/appointment_grid.html', context)
+        return render(req, 'base/partials/appointments/gridview.html', context)
     else:
-        return render(req, 'base/partials/appointment_list.html', context)
+        return render(req, 'base/partials/appointments/listview.html', context)
 
 
 def generate_appointment_badge(req, pk):
@@ -774,7 +818,7 @@ def generate_appointment_badge(req, pk):
         'curr_obj': curr_obj
     }
 
-    return render(req, 'base/partials/appointment_badge.html', context)
+    return render(req, 'base/partials/appointments/badge.html', context)
 
 
 def sign_appointment(req, pk):
@@ -800,7 +844,7 @@ def sign_appointment(req, pk):
 def appointment_status(req, pk):
     curr_obj = get_object_or_404(Appointment, id=pk)
     context = {"curr_obj": curr_obj}
-    return render(req, 'base/partials/appointment_status.html', context)
+    return render(req, 'base/partials/appointments/status.html', context)
 
 
 # parameters -------------------------------------------------------------------------------------------------
@@ -831,7 +875,7 @@ def parameters(req):
         'user_roles': user_roles,
         'curr_comp': curr_comp,
         'first_day': first_day,
-        'last_day': last_day ,
+        'last_day': last_day,
         'form': form,
     }
     return render(req, 'base/parameters.html', context)
@@ -847,7 +891,7 @@ def edit_company(req, pk):
         form = CompanyForm(req.POST, instance=curr_obj)
         if form.is_valid():
             form.save()
-        messages.success = 'Données modifiée avec success'
+        messages.success(req, 'Données modifiée avec success')
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'base/forms/company_form.html', context={'form': form, 'form_title': 'Modifier Cette Compagnie', 'curr_obj': curr_obj})
@@ -919,7 +963,7 @@ def users_table(req):
     users = CustomUser.objects.all()
     objects = paginate_objects(req, users)
     context = {'objects': objects}
-    return render(req, 'base/partials/users_table.html', context)
+    return render(req, 'base/partials/users/table.html', context)
     # return render(req, 'base/reports.html', context)
 
 
@@ -954,7 +998,7 @@ def filter_users_table(req):
     users = base_query
     objects = paginate_objects(req, users)
     context = {'objects': objects}
-    return render(req, 'base/partials/users_table.html', context)
+    return render(req, 'base/partials/users/table.html', context)
 
 # -----------------------visits report partials-----------------------
 
@@ -964,7 +1008,7 @@ def visits_table(req):
     visits = Visit.objects.all().order_by('-date', '-arrived_at')
     objects = paginate_objects(req, visits)
     context = {'objects': objects}
-    return render(req, 'base/partials/visits_table.html', context)
+    return render(req, 'base/partials/visits/table.html', context)
     # return render(req, 'base/reports.html', context)
 
 
@@ -1016,7 +1060,7 @@ def filter_visits_table(req):
         # Write data rows
         for visit in visits:
             writer.writerow([visit.date, visit.host.username, visit.first_name, visit.phone, visit.sex,
-                            visit.context, visit.arrived_at, visit.accepted_at, visit.departed_at, visit.status])
+                            visit.context, visit.arrived_at, visit.started_at, visit.departed_at, visit.status])
 
         return response
 
@@ -1033,7 +1077,7 @@ def appointments_table(req):
     appointments = Appointment.objects.all().order_by('-date', '-time')
     objects = paginate_objects(req, appointments)
     context = {'objects': objects}
-    return render(req, 'base/partials/appointments_table.html', context)
+    return render(req, 'base/partials/appointments/table.html', context)
     # return render(req, 'base/reports.html', context)
 
 
@@ -1180,6 +1224,22 @@ def dash_overview(req):
     # --------------------------------------------------------------
     hosts = CustomUser.objects.all()
     hosts_json = serialize('json', hosts)
+    # --------------------------------------------------------------
+    visit_hours_list = []
+    appt_hours_list = []
+
+    for host in hosts:
+        visit_hours = get_total_visits_minutes(host)
+        visit_hours_list.append(visit_hours)
+        appt_hours = get_total_appointment_minutes(host)
+        appt_hours_list.append(appt_hours)
+
+    # Convert the lists to JSON strings
+    visit_hours_json = json.dumps(visit_hours_list)
+    appt_hours_json = json.dumps(appt_hours_list)
+
+    print(visit_hours_json)
+    print(appt_hours_json)
 
     for obj in appointments:
         if obj.status.id == 3:
@@ -1213,12 +1273,14 @@ def dash_overview(req):
         'finished_appointments': finished_appointments,
         # --------------------------------
         'hosts_json': hosts_json,
+        'visit_hours_json': visit_hours_json,
+        'appt_hours_json': appt_hours_json,
     }
 
     return render(req, 'base/partials/dash_overview.html', context)
 
 
-def visitor_ratio_chart(request):
+def visitor_ratio_chart(req):
     male_count = Visit.objects.filter(sex='male').count()
     female_count = Visit.objects.filter(sex='female').count()
 
@@ -1230,10 +1292,10 @@ def visitor_ratio_chart(request):
         'labels': labels,
     }
 
-    return render(request, 'visits_by_sex.html', context)
+    return render(req, 'visits_by_sex.html', context)
 
 
-def visitors_per_host_chart(request):
+def visitors_per_host_chart(req):
     # Assuming you have a Host model with a ForeignKey relationship with Visit
     hosts = CustomUser.objects.all()
     data = []
@@ -1245,4 +1307,44 @@ def visitors_per_host_chart(request):
             'male_visitors': male_visitors,
             'female_visitors': female_visitors
         })
-    return render(request, 'charts/visits_by_host.html', {'data': data})
+    return render(req, 'charts/visits_by_host.html', {'data': data})
+
+
+def get_total_hours_chart(req):
+    hosts = CustomUser.objects.all()
+    hosts_json = serialize('json', hosts)
+    visit_hours_list = []
+    appt_hours_list = []
+
+    for host in hosts:
+        visit_hours = get_total_visits_minutes(host)
+        visit_hours_list.append(visit_hours)
+        appt_hours = get_total_appointment_minutes(host)
+        appt_hours_list.append(appt_hours)
+
+    # Convert the lists to JSON strings
+    visit_hours_json = json.dumps(visit_hours_list)
+    appt_hours_json = json.dumps(appt_hours_list)
+
+    print(visit_hours_json)
+    print(appt_hours_json)
+
+    context = {
+        'hosts_json': hosts_json,
+        'visit_hours_list': visit_hours_list,
+        'appt_hours_list': appt_hours_list,
+        'visit_hours_json': visit_hours_json,
+        'appt_hours_json': appt_hours_json,
+    }
+
+    return render(req, 'base/partials/dash_overview.html', context)
+
+
+def fetch_messages(req):
+    message_list = []
+    for message in messages.get_messages(req):
+        message_list.append({
+            'level': message.level,
+            'message': message.message,
+        })
+    return JsonResponse({'messages': message_list})

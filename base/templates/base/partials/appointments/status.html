@@ -1,0 +1,33 @@
+<div class="flex items-center gap-1">
+  {% include 'base/components/status_badge.html' %}
+  <!--  -->
+  {% if curr_obj.host == user and curr_obj.is_accepted and not curr_obj.is_finished %}
+  <!--  -->
+  {% include 'base/components/appointments/sentry.html' %}
+  <!--  -->
+  {% endif %}
+  <!-- admin actions -->
+  {% if user.role.sec_level >= 4 and curr_obj.status.id == 1 %}
+  <div
+    class="flex border rounded-md right-0 text-gray-300 text-xs overflow-hidden"
+  >
+    <button
+      onclick="hide_dialogs()"
+      hx-target="#basic_dialog"
+      hx-get="{% url 'edit_appointment' curr_obj.id %}"
+      class="px-2 py-1 hover:bg-purple-300 hover:text-black"
+    >
+      <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+    {% if user.is_superuser %}
+    <button
+      hx-confirm="Voulez vous vraiment supprimer ceci?"
+      class="px-2 py-1 hover:bg-red-300 border-l hover:text-black"
+      hx-delete="{% url 'delete_appointment' curr_obj.id %}"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>

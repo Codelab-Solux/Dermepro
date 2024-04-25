@@ -1,0 +1,28 @@
+{% load static %}
+<section class="p-3 lg:p-6 bg-purple-100 border border-purple-300 rounded-xl">
+  <h3 class="mb-2 text-black text-lg">Visites en cours</h3>
+  <div class="flex flex-col lg:flex-row-reverse justify-between lg:items-center gap-2">
+    <i class="hidden lg:inline fa-solid fa-stopwatch text-9xl text-purple-300"></i>
+    {% if not visits %}
+    <div
+      class="my-8 w-full h-full rounded-xl flex-col text-center gap-2 m-auto"
+    >
+      <i class="fa-solid fa-folder-open text-3xl text-purple-300"></i>
+      <p
+        class="mx-auto px-4 py-2 w-fit rounded-md bg-purple-200 text-xs text-center"
+      >
+        Aucune visite en cours
+      </p>
+    </div>
+    {% else %}
+
+    <div class="mb-4 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {% for obj in visits %}
+      <!--  -->
+      {% include 'base/components/visits/alt_card.html' %}
+      <!--  -->
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>

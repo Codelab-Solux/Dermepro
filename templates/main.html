@@ -53,18 +53,19 @@
   >
     <div id="sidebar">{% include 'sidebar.html' %}</div>
 
-    <div class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] bg-white">
+    <div class="w-full lg:ml-[80px] xl:ml-[300px] bg-white">
       <button
         class="hidden"
         id="badge_reloader"
         hx-target=".badge"
         hx-get="{% url 'badge' %}"
       ></button>
+
       <div
-        class="relative px-4 md:px-6 pt-3 w-full max-w-[1350px] mx-auto min-h-screen"
+        class="relative px-4 lg:px-6 pt-3 w-full max-w-[1350px] mx-auto min-h-screen"
       >
         <!-- <button
-          class="py-1 px-3 rounded-md bg-sky-300 text-black"
+        class="py-1 px-3 rounded-md bg-sky-300 text-black"
           id="testBtn"
         >Test
         </button> -->
@@ -74,9 +75,10 @@
           hx-trigger="load, db_changed from:body"
           hx-target="this"
         ></div>
-        <!--  -->
-        <div id="main">{% block content %} {% endblock %}</div>
+        {% block content %}
+        {% endblock %}
       </div>
+
     </div>
     <!--  -->
     {% include 'modal.html' %}
@@ -91,7 +93,7 @@
     });
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
+        navigator.serviceWorker
         .register("/static/workers.js")
         .then(function (registration) {
           console.log(
@@ -113,17 +115,17 @@
           console.log("Unable to get permission to notify.");
         }
       });
-  
-  const testBtn = document.getElementById("testBtn");
 
-  testBtn.addEventListener("click", function () {
-    if (Notification.permission === "granted") {
-      console.log("Notifyinnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng.");
-      new Notification("Test Notification");
-    } else {
-      console.log("Permission for notifications not granted.");
-    }
-  });
+      const testBtn = document.getElementById("testBtn");
+
+      testBtn.addEventListener("click", function () {
+        if (Notification.permission === "granted") {
+          console.log("Notifyinnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng.");
+          new Notification("Test Notification");
+        } else {
+          console.log("Permission for notifications not granted.");
+        }
+      });
     });
   </script>
 </html>

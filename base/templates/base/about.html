@@ -3,23 +3,32 @@
 <div
   class="p-6 bg-gray-50 border rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
 >
-  <article class="w-5/7">
+  <article class="w-5/7 flex flex-col gap-4">
     <h1 class="text-black text-3xl lg:text-7xl font-bold">
       A propos de Dermepro
     </h1>
-    <p class="mt-4">
+    <p class="">
       Notre application a été conçue pour simplifier et automatiser le processus
       de gestion des visiteurs dans une entreprise. Elle permet aux entreprises
       de créer des profils pour leurs visiteurs, de suivre leurs mouvements et
       de faciliter leur accès aux zones autorisées.
     </p>
+    <div class="flex gap-4">
+      <a target="_blank" href="" class="px-3 py-2 rounded-lg bg-sky-200 hover:bg-sky-300 text-black text-lg">
+        <i class="fa-brands fa-linkedin"></i>
+      </a>
+      <a target="_blank" href="" class="px-3 py-2 rounded-lg bg-blue-200 hover:bg-blue-300 text-black text-lg">
+        <i class="fa-brands fa-facebook"></i>
+      </a>
+      <a target="_blank" href="" class="px-3 py-2 rounded-lg bg-red-200 hover:bg-red-300 text-black text-lg">
+        <i class="fa-brands fa-youtube"></i>
+      </a>
+      <a target="_blank" href="" class="px-3 py-2 rounded-lg bg-cyan-200 hover:bg-cyan-300 text-black text-lg">
+        <i class="fa-brands fa-twitter"></i>
+      </a>
+    </div>
   </article>
-  <!-- <i class="fa-solid fa-building text-gray-400 text-5xl"></i> -->
-    <img
-      class="w-full h-[300px] rounded-xl object-cover"
-      src="{% static 'vectors/office.jpg' %}"
-      alt="image"
-    />
+  <i class="fa-solid fa-circle-info text-gray-400 text-9xl"></i>
 </div>
 
 <!--------------------------------------- menu tabs buttons --------------------------------------->
@@ -58,61 +67,123 @@
 </div>
 
 <!-- functionalities -->
-<article id="functions" class="tabcontent w-4/7 p-8 mx-auto border rounded-lg">
+<article
+  id="functions"
+  class="tabcontent w-4/7 p-4 lg:p-8 mx-auto border rounded-xl"
+>
   <h2 class="text-black text-3xl font-bold">
     Les fonctionnalités de l'application
   </h2>
-  <h3 class="mt-4 text-black text-lg font-bold">
-    1. Enregistrement des visiteurs
-  </h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func1')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    1 - Enregistrement des visiteurs
+    <i id="shower_func1" class="fa-solid fa-plus"></i>
+    <i id="hider_func1" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func1" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les entreprises peuvent enregistrer les visiteurs dans la base de données de
     l'application en remplissant un formulaire. Les informations demandées
     comprennent le nom, l'adresse e-mail, le numéro de téléphone, la société et
     le motif de la visite.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">
-    2. Gestion de la file d’attente
-  </h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func2')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    2 - Gestion de la file d’attente
+    <i id="shower_func2" class="fa-solid fa-plus"></i>
+    <i id="hider_func2" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func2" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Une fonction de la gestion de la file d’attente des visiteurs de la
     direction générale contrôlée par une assistante de direction.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">3. Gestion des accès</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func3')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    3 - Gestion des accès
+    <i id="shower_func3" class="fa-solid fa-plus"></i>
+    <i id="hider_func3" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func3" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les entreprises peuvent accorder des autorisations d'accès aux visiteurs
     pour les zones autorisées. Les visiteurs peuvent être enregistrés pour une
     période de temps spécifique et peuvent recevoir des badges d'identification
     pour faciliter leur accès.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">4. Suivi des mouvements</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func4')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    4 - Suivi des mouvements
+    <i id="shower_func4" class="fa-solid fa-plus"></i>
+    <i id="hider_func4" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func4" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les entreprises peuvent suivre les mouvements des visiteurs dans
     l'entreprise. Les informations de suivi incluent l'heure d'arrivée et de
     départ, ainsi que les zones visitées.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">5. Notifications</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func5')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    5 - Notifications
+    <i id="shower_func5" class="fa-solid fa-plus"></i>
+    <i id="hider_func5" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func5" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les hôtes peuvent recevoir des notifications en temps réel lorsqu'un
     visiteur arrive, ils peuvent accepter ou décliner la visite.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">6. Rapports</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func6')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    6 - Rapports
+    <i id="shower_func6" class="fa-solid fa-plus"></i>
+    <i id="hider_func6" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func6" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     L'application peut générer des rapports personnalisés sur les mouvements des
     visiteurs et par hôtes visités.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">7. Messagerie</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func7')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    7 - Messagerie
+    <i id="shower_func7" class="fa-solid fa-plus"></i>
+    <i id="hider_func7" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func7" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Une fonctionnalité de messagerie groupée ou individuelle est disponible pour
     les hôtes pour toutes discussion interne.
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">8. Signature électronique</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func8')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    8 - Signature électronique
+    <i id="shower_func8" class="fa-solid fa-plus"></i>
+    <i id="hider_func8" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func8" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les visiteurs peuvent signer électroniquement des formulaires ou des accords
     de non-divulgation à travers une tablette électronique
   </p>
-  <h3 class="mt-4 text-black text-lg font-bold">9. Gestion des retours</h3>
-  <p class="mt-2">
+  <button
+    onclick="toggleAccordion('func9')"
+    class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+  >
+    9 - Gestion des retours
+    <i id="shower_func9" class="fa-solid fa-plus"></i>
+    <i id="hider_func9" class="hidden fa-solid fa-minus"></i>
+  </button>
+  <p id="func9" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
     Les entreprises peuvent enregistrer le départ des visiteurs, leurs
     commentaires et leurs retours d'expérience pour améliorer leur expérience
     future. Nous espérons que cette présentation vous a donné un aperçu de
@@ -124,7 +195,7 @@
 <!-- Support -->
 <article
   id="support"
-  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
+  class="tabcontent hidden w-4/7 p-4 lg:p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
   <div>
     <h2 class="text-black text-3xl font-bold">Support</h2>
@@ -169,7 +240,7 @@
 <!-- how it works section -->
 <article
   id="ccm"
-  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
+  class="tabcontent hidden w-4/7 p-4 lg:p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
   <div>
     <h2 class="mt-4 text-black text-3xl font-bold">Comment ça marche (CCM)</h2>
@@ -181,79 +252,148 @@
       de son fonctionnement :
     </p>
 
-    <h3 class="mt-4 text-black text-lg font-bold">
-      1.Enregistrement des visiteurs
-    </h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm1')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      1 - Enregistrement des visiteurs
+      <i id="shower_ccm1" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm1" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm1" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       A l'entrée de l'immeuble ou à l’accueil, le visiteur est enregistré par
       une personne habilitée, qui leur demande leur nom, leur entreprise, leur
       numéro de téléphone, leur adresse e-mail, leur identité et le but de leur
       visite.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">2.Attribution d'un badge</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm2')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      2 - Attribution d'un badge
+      <i id="shower_ccm2" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm2" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm2" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Une fois que les visiteurs sont enregistrés et identifiés, ils se voient
       attribuer un badge d'identification ou un code QR qui leur permettra
       d'accéder aux zones autorisées.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">3.Suivi des visiteurs</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm3')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      3 - Suivi des visiteurs
+      <i id="shower_ccm3" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm3" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm3" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       L’application enregistre le mouvement des visiteurs dans le bâtiment, en
       enregistrant leur heure d'entrée et de sortie. A la sortie les visiteurs
       signent via une tablette électronique.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">4.Notification des hôtes</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm4')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      4 - Notification des hôtes
+      <i id="shower_ccm4" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm4" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm4" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       L’application peut automatiquement notifier les hôtes de la visite de leur
       invité, par e-mail ou par SMS.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">5.Gestion des données</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm5')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      5 - Gestion des données
+      <i id="shower_ccm5" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm5" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm5" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Toutes les informations relatives aux visiteurs sont stockées dans une
       base de données, permettant ainsi aux gestionnaires de suivre les
       visiteurs et de générer des rapports d'activité.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      7.Personnalisation des profils de visiteurs
-    </h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm6')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      6 - Personnalisation des profils de visiteurs
+      <i id="shower_ccm6" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm6" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm6" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       L’application peut permettre aux hôtes de personnaliser les profils des
       visiteurs, en ajoutant des informations complémentaires telles que leur
       photo, leur titre ou leur département, pour faciliter leur identification.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      8.Gestion des autorisations
-    </h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm7')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      7 - Gestion des autorisations
+      <i id="shower_ccm7" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm7" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm7" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Les administrateurs peuvent définir des autorisations d'accès
       personnalisées pour chaque visiteur en fonction de leur statut, de leur
       entreprise, de leur objectif de visite ou de leur position dans le
       bâtiment.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">9.Analyse des données</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm8')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      8 - Analyse des données
+      <i id="shower_ccm8" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm8" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm8" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Les données enregistrées par l'application peuvent être utilisées pour
       générer des rapports d'activité et des analyses de l'utilisation des
       zones, des statistiques de fréquentation, de la durée moyenne de visite et
       d'autres informations utiles pour améliorer l'efficacité de la gestion des
       visiteurs.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      10. Conformité réglementaire
-    </h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm9')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      9 - Conformité réglementaire
+      <i id="shower_ccm9" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm9" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm9" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       En gardant une trace précise des visiteurs qui entrent et sortent du
       bâtiment, l'application peut aider à se conformer aux exigences
       réglementaires en matière de sécurité et de protection des données.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">11. Gestion des urgences</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm10')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      10 - Gestion des urgences
+      <i id="shower_ccm10" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm10" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm10" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       En cas d'urgence, les données enregistrées par l'application peuvent aider
       à localiser rapidement les visiteurs présents dans le bâtiment et à
       assurer leur sécurité.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">12. Flexibilité</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('ccm11')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      11 - Flexibilité
+      <i id="shower_ccm11" class="fa-solid fa-plus"></i>
+      <i id="hider_ccm11" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="ccm11" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Dermepro est un outil polyvalent qui offre de nombreux avantages pour
       améliorer la sécurité, la gestion des visiteurs et l'expérience globale
       des visiteurs dans le local de votre entreprise ou une zone spécifique.
@@ -267,7 +407,7 @@
 <!-- FAQ section -->
 <article
   id="faq"
-  class="tabcontent hidden my-8 w-4/7 p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
+  class="tabcontent hidden w-4/7 p-4 lg:p-8 flex flex-col-reverse lg:flex-row items-center mx-auto border rounded-lg"
 >
   <div>
     <h2 class="mt-4 text-black text-3xl font-bold">Foire Aux Question (FAQ)</h2>
@@ -278,8 +418,15 @@
       fréquemment posées :
     </p>
 
-    <h3 class="mt-4 text-black text-lg font-bold">Qu'est-ce que Dermepro?</h3>
-    <p class="mt-2">
+    <button
+      onclick="toggleAccordion('faq1')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      Qu'est-ce que Dermepro?
+      <i id="shower_faq1" class="fa-solid fa-plus"></i>
+      <i id="hider_faq1" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq1" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Dermepro, votre application de gestion des visiteurs est un logiciel qui
       permet aux entreprises ou aux organisations de suivre et de gérer les
       visites de leurs visiteurs. L'application peut aider à enregistrer les
@@ -287,19 +434,31 @@
       suivre les horaires de visite, à envoyer des notifications aux hôtes et à
       effectuer des vérifications de sécurité.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
-      Qui peut utiliser Dermepro?
-    </h3>
-    <p class="mt-2">
+
+    <button
+      onclick="toggleAccordion('faq2')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
+      Qui peut utiliser Dermepro ?
+      <i id="shower_faq2" class="fa-solid fa-plus"></i>
+      <i id="hider_faq2" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq2" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Dermepro est utile pour toutes les entreprises ou organisations qui ont
       des visiteurs réguliers, notamment les entreprises, les écoles, les
       hôpitaux, les centres de congrès, les musées, les galeries d'art, les
       bibliothèques, les centres de formation, etc.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
+
+    <button
+      onclick="toggleAccordion('faq3')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
       Comment fonctionne DermePro ?
-    </h3>
-    <p class="mt-2">
+      <i id="shower_faq3" class="fa-solid fa-plus"></i>
+      <i id="hider_faq3" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq3" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Dermepro permet de créer un profil pour chaque visiteur, qui peut inclure
       des informations telles que son nom, son adresse e-mail, sa photo, son
       entreprise, son numéro de téléphone, etc. Lorsqu'un visiteur arrive, il
@@ -307,30 +466,48 @@
       badge peut être imprimé. L'application peut également envoyer une
       notification à l'hôte pour l'informer de l'arrivée du visiteur.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
+
+    <button
+      onclick="toggleAccordion('faq4')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
       Comment garantir la sécurité des visiteurs ?
-    </h3>
-    <p class="mt-2">
+      <i id="shower_faq4" class="fa-solid fa-plus"></i>
+      <i id="hider_faq4" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq4" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Dermepro peut effectuer des vérifications de sécurité, telles que la
       vérification de l'identité des visiteurs, la vérification des antécédents
       criminels et la comparaison avec des listes de surveillance. Elle peut
       également permettre aux visiteurs de signer des accords de non-divulgation
       ou de confidentialité avant leur visite.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
+
+    <button
+      onclick="toggleAccordion('faq5')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
       Comment gérer les données des visiteurs ?
-    </h3>
-    <p class="mt-2">
+      <i id="shower_faq5" class="fa-solid fa-plus"></i>
+      <i id="hider_faq5" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq5" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Les données des visiteurs peuvent être stockées dans une base de données
       sécurisée et accessible uniquement aux personnes autorisées. Les
       entreprises et les organisations doivent respecter les lois sur la
       protection des données personnelles et informer les visiteurs de la façon
       dont leurs données sont collectées, stockées et utilisées.
     </p>
-    <h3 class="mt-4 text-black text-lg font-bold">
+
+    <button
+      onclick="toggleAccordion('faq6')"
+      class="mt-4 p-4 w-full border bg-gray-100 rounded-t-xl flex justify-between items-center text-black text-lg font-bold cursor-pointer"
+    >
       Quelles sont les fonctionnalités les plus courantes de Dermepro?
-    </h3>
-    <p class="mt-2">
+      <i id="shower_faq6" class="fa-solid fa-plus"></i>
+      <i id="hider_faq6" class="hidden fa-solid fa-minus"></i>
+    </button>
+    <p id="faq6" class="accordion hidden border rounded-b-xl p-2 lg:p-4">
       Les fonctionnalités les plus courantes incluent l'enregistrement des
       visiteurs, l'impression de badges, la notification des hôtes, les
       vérifications de sécurité, la gestion des horaires de visite, l'analyse
@@ -339,24 +516,52 @@
   </div>
 </article>
 <script>
-    //  tabs control ----------------------------------------------------------------------------------------------------
-document.getElementById("defaultTab").click();
-function openTab(event, tabName) {
-  var i, tabcontent, tabBtn;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+  //  tabs control ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
   }
-  tabBtn = document.getElementsByClassName("tabBtn");
-  for (i = 0; i < tabBtn.length; i++) {
-    tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+
+  //  accordions control ----------------------------------------------------------------------------------------------------
+  function toggleAccordion(div_id) {
+    var active_accordion = document.getElementById(div_id);
+    var shower = document.getElementById(`shower_${div_id}`);
+    var hider = document.getElementById(`hider_${div_id}`);
+    console.log(div_id);
+
+    if (active_accordion.classList.contains("hidden")) {
+      shower.classList.add("hidden");
+      hider.classList.remove("hidden");
+      for (let element of document.getElementsByClassName("accordion")) {
+        element.classList.remove("block");
+        element.classList.add("hidden");
+      }
+      active_accordion.classList.remove("hidden");
+      active_accordion.classList.add("block");
+    } else {
+      shower.classList.remove("hidden");
+      hider.classList.add("hidden");
+      for (let element of document.getElementsByClassName("accordion")) {
+        element.classList.remove("block");
+        element.classList.add("hidden");
+      }
+      active_accordion.classList.remove("block");
+      active_accordion.classList.add("hidden");
+    }
   }
-  document.getElementById(tabName).style.display = "block";
-  event.currentTarget.className += " active";
-  var minitabs = document.getElementsByClassName("minitabcontent");
-  if (minitabs.length != 0) {
-    minitabs = tabcontent.children;
-  }
-}
 </script>
 {% endblock %}

@@ -43,26 +43,23 @@
         <!--------------------------------------- filter form --------------------------------------->
         <form
           class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
-          hx-post="{% url 'filter_users' %}"
-          hx-target=".filtered_threads"
+          hx-post="{% url 'filter_users' 'users' %}"
+          hx-target=".thread_list"
         >
           {% csrf_token %}
-          <!--  -->
-          <i
-            class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
-          ></i>
+
           <input
-            hx-post="{% url 'filter_users' %}"
-            hx-target=".filtered_chats"
+            hx-post="{% url 'filter_users' 'users' %}"
+            hx-target=".thread_list"
             hx-trigger="keyup changed delay:500ms"
-            placeholder="Nom/prenoms de l'utilisateur"
+            placeholder="Recherchez..."
             name="name_or_email"
             type="text"
             class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
           />
         </form>
         <div
-          class="filtered_chats p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+          class="p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
         >
           <div
             class="thread_list"
@@ -78,26 +75,23 @@
         <!--------------------------------------- filter form --------------------------------------->
         <form
           class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
-          hx-post="{% url 'filter_users' %}"
-          hx-target=".filtered_contacts"
+          hx-post="{% url 'filter_users' 'users' %}"
+          hx-target=".contact_list"
         >
           {% csrf_token %}
-          <!--  -->
-          <i
-            class="fa-solid fa-search text-xs text-gray-500 rounded-md bg-purple-200 px-4 py-2"
-          ></i>
+
           <input
-            hx-post="{% url 'filter_users' %}"
-            hx-target=".filtered_chats"
+            hx-post="{% url 'filter_users' 'users' %}"
+            hx-target=".contact_list"
             hx-trigger="keyup changed delay:500ms"
-            placeholder="Nom/prenoms de l'utilisateur"
+            placeholder="Recherchez..."
             name="name_or_email"
             type="text"
             class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
           />
         </form>
         <div
-          class="filtered_contacts p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+          class="p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
         >
           <div
             class="contact_list"
@@ -111,7 +105,7 @@
       <!--------------------------------------- groups --------------------------------------->
       <section id="groups" class="tabcontent hidden">
         <div
-          class="filtered_groups p-2 bg-purple-50 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+          class="filtered_groups p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
         >
           <div
             class="group_list"
@@ -126,12 +120,7 @@
     <section
       class="thread_details relative hidden md:flex flex-col items-center justify-center w-full border rounded-xl md:overflow-y-auto"
     >
-      <img
-        class="h-60 lg:h-80 rounded-lg"
-        src="{% static 'vectors/chat.avif' %}"
-        alt="welcome image"
-      />
-      <!-- <i class="fa-regular fa-comments text-gray-400 text-5xl"></i> -->
+      <i class="fa-solid fa-comments text-gray-300 text-9xl"></i>
       <p class="m-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
         Restez connecter en temps réel.
       </p>

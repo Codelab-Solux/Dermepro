@@ -1,0 +1,169 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+
+<!--------------------------------------- menu tabs buttons --------------------------------------->
+<div
+  class="tabbar h-fit w-full lg:max-w-[400px] p-1 bg-purple-950 rounded-lg flex justify-between gap-1 text-xs"
+>
+  <button
+    id="defaultTab"
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'calendar')"
+  >
+    <i class="fa-solid fa-calendar-week"></i>
+    <span class="hidden md:inline md:ml-2">Vue journalière</span>
+  </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'users_listview')"
+  >
+    <i class="fa-solid fa-list"></i>
+    <span class="hidden md:inline md:ml-2">Liste</span>
+  </button>
+</div>
+
+<!--------------------------------------- times calendar --------------------------------------->
+
+<section id="calendar" class="tabcontent flex flex-col">
+  <div
+    class="w-full calendar_times"
+    hx-get="{% url 'calendar_times' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
+</section>
+
+<!--------------------------------------- users listview --------------------------------------->
+<section id="users_listview" class="tabcontent flex flex-col">
+  <!--------------------------------------- filter form --------------------------------------->
+  <form
+    id="users_form"
+    hx-post="{% url 'filter_users' 'time' %}"
+    hx-target=".users_list"
+    class="my-4 p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+  >
+    {% csrf_token %}
+    <!--  -->
+    <div class="w-full flex justify-between items-center gap-1">
+      {% if user.role.sec_level >= 5 %}
+      <!-- user types -->
+      <select
+        name="user_role"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+      >
+        <option value="" selected disabled>Rôle</option>
+        {% for obj in user_roles %}
+        <option value="{{obj.id}}">{{obj.name}}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
+      <input
+        hx-post="{% url 'filter_users' 'time' %}"
+        hx-target=".users_list"
+        hx-trigger="keyup changed delay:500ms"
+        placeholder="Nom"
+        name="last_name"
+        type="text"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+      />
+      <input
+        hx-post="{% url 'filter_users' 'time' %}"
+        hx-target=".users_list"
+        hx-trigger="keyup changed delay:500ms"
+        placeholder="Prénoms"
+        name="first_name"
+        type="text"
+        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+      />
+      <!-- sex -->
+      <select
+        name="user_sex"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected disabled>Sexe</option>
+        <option value="male">Masculin</option>
+        <option value="female">Feminin</option>
+      </select>
+      <!-- onsite -->
+      <select
+        name="user_presence"
+        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+      >
+        <option value="" selected disabled>Status</option>
+        <option value="true">Present</option>
+        <option value="false">Absent</option>
+      </select>
+    </div>
+
+    <button
+      class="px-3 py-2 bg-gray-100 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+      type="submit"
+    >
+      <i class="fa-solid fa-filter"></i>
+    </button>
+    <button
+      class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+      hx-on:click="clearUsersForm()"
+      type="submit"
+    >
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </form>
+
+  <!--------------------------------------- time management list --------------------------------------->
+  <div class="h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full flex gap-2">
+    <!--------------------------------------- user list --------------------------------------->
+    <div
+      class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+    >
+      <div
+        class="users_list"
+        hx-get="{% url 'users_list' 'time' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+
+    <!--------------------------------------- user details --------------------------------------->
+
+    <div
+      class="times_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+    >
+      <i class="fa-solid fa-clock text-gray-300 text-9xl"></i>
+      <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
+        Cliquez sur un utilisateur pour voir ses navettes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  function clearUsersForm() {
+    var users_form = document.getElementById("users_form");
+    users_form.reset();
+  }
+
+  //  tabs control ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
+  }
+  function clearForm() {
+    var form = document.querySelector("form");
+    form.reset();
+  }
+</script>
+{% endblock %}

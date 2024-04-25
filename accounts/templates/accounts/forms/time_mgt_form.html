@@ -1,0 +1,43 @@
+
+<form
+  id="time_mgt_form"
+  action="{% url 'new_time_record' %}"
+  class="w-full rounded-lg flex flex-col justify-between items-center gap-2 text-sm xl:text-sm"
+  method="post"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+  <!--  -->
+
+  <select
+  required
+    name="user_id"
+    class="mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"
+  >
+    <option value="" selected disabled>Utilisateur</option>
+    {% for obj in users %}
+    <option value="{{obj.id}}">{{obj.last_name}} - {{obj.first_name}}</option>
+    {% endfor %}
+  </select>
+
+  <input 
+  required type="password" name="user_password" placeholder="Mots de pass" value="" 
+  class="mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"
+
+  >
+
+
+  <div class="w-full flex flex-row-reverse items-center gap-2 text-xs">
+    <button
+      type="submit"
+      class="px-4 py-2 w-full bg-sky-600 hover:bg-sky-700 text-white rounded-md transition duration-200 ease-in cursor-pointer"
+    >
+      Valider
+    </button>
+    <a
+      onclick="close_modal()"
+      class="modal_closer px-4 py-2 bg-gray-100 hover:bg-red-300 text-black rounded-md transition duration-200 ease-in cursor-pointer"
+      >Annuler</a
+    >
+  </div>
+</form>

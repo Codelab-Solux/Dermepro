@@ -1,0 +1,36 @@
+{% load static %}
+<!--  -->
+
+<div
+  hx-get="{% url 'appointment_alt' obj.id %}"
+  hx-target="#basic_dialog"
+  class="cursor-pointer relative flex flex-col border bg-white focus:border-purple-400 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-400 ease-in-out"
+>
+  <!-- appointment status indicator -->
+  <div class="absolute bottom-2 right-1 text-xs">
+    {% include 'base/components/status_badge.html' %}
+  </div>
+
+  <!-- card info -->
+
+  <article
+    class="p-4 md:text-sm lg:text-md text-left flex flex-col justify-between"
+  >
+    <h4 class="text-black font-bold">
+      {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
+      <!--  -->
+      {{obj.last_name}} {{obj.first_name|truncatechars:12}}
+      <!--  -->
+      {% if obj.is_vip == True %}
+      <i class="fa-solid fa-star text-xs text-amber-300"></i>
+      {% endif %}
+      <!--  -->
+    </h4>
+    <span class="font-light text-xs text-gray-600"
+      >{{obj.host.last_name}} {{obj.host.first_name}}</span
+    >
+    <small class="mb-4 lg:mb-0 text:xs text-gray-400"
+      ><i class="fa-solid fa-clock text-xs"></i> {{obj.time}}</small
+    >
+  </article>
+</div>

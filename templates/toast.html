@@ -1,0 +1,35 @@
+<div id="toast" class="fixed top-0 w-full bg-gray-900 text-white p-4 text-center transform -translate-y-full transition-transform duration-300 ease-in-out">
+  <span id="toastMessage"></span>
+</div>
+
+<script>
+
+// htmx.on('toast_msg',(e) =>{
+//     showToast(e)
+
+// })
+
+  // Function to show the toast with a message
+  function showToast(message) {
+    var toast = document.getElementById('toast');
+    var toastMessage = document.getElementById('toastMessage');
+
+    // Update the toast message
+    toastMessage.textContent = message.message;
+
+    // Slide the toast into view
+    toast.classList.remove('-translate-y-full');
+  }
+
+  // Function to hide the toast
+  function hideToast() {
+    var toast = document.getElementById('toast');
+
+    // Slide the toast out of view
+    toast.classList.add('-translate-y-full');
+  }
+
+  // Hide the toast after 3 seconds
+  setTimeout(hideToast, 3000);
+</script>
+

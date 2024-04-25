@@ -1,0 +1,31 @@
+{% if curr_profile %}
+<div class="text-black text:xs" id="obj_status{{obj.id}}">
+  {% if obj.profile.is_onsite %}
+  <span class="px-3 py-1 bg-green-200 rounded-md group">
+    <i class="text-sm fa-solid fa-eye lg:mr-2"></i>
+    <small class="hidden lg:inline"> Present </small>
+  </span>
+  {% else %}
+  <span class="px-3 py-1 bg-red-200 rounded-md group">
+    <i class="text-sm fa-solid fa-eye-slash lg:mr-2"></i>
+    <small class="hidden lg:inline"> Absent </small>
+  </span>
+  {% endif %}
+</div>
+{% else %}
+<div class="text-black text:xs" id="obj_status{{obj.id}}">
+  {% if obj.profile.is_onsite %}
+  <span class="px-3 py-1 bg-green-200 rounded-md group">
+    <i class="fa-solid fa-eye"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      Present
+    </small>
+  </span>
+  {% else %}
+  <span class="px-3 py-1 bg-red-200 rounded-md group">
+    <i class="fa-solid fa-eye-slash"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]"> Absent </small>
+  </span>
+  {% endif %}
+</div>
+{% endif %}

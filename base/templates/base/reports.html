@@ -2,8 +2,6 @@
 
 <!--  -->
 {% block content %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-
 <div class="mt-16 grid gap-8">
   <!--------------------------------------- menu tabs buttons --------------------------------------->
   <div
@@ -34,72 +32,108 @@
   </div>
 
   <!----------------------------------------- visits ----------------------------------------->
-  <section id="visits" class="tabcontent grid gap-4">
+  <section id="visits" class="tabcontent  mb-4  grid gap-4">
     <div class="grid gap-2">
       <div class="flex justify-between items-center">
         <h3 class="text-black text-xl font-bold">Rapport des visites</h3>
         {% if user.role.sec_level >= 5 %}
-        <button
-          id="export_visits"
-          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
-        >
-          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden md:inline text-sm">
-            Extraire en fichier excel (XLSX)
-          </span>
-        </button>
+        <div class="flex gap-2 text-black">
+          <button
+            onclick="generatePDF('visits_table')"
+            class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-pdf lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format PDF
+            </span>
+          </button>
+          <button
+            id="export_visits"
+            class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format XLSX
+            </span>
+          </button>
+        </div>
         {% endif %}
       </div>
       <!-- visits table ------------------------------------------------------------->
-      {% include 'base/partials/visits_report.html' %}
+      {% include 'base/partials/visits/report.html' %}
     </div>
   </section>
 
   <!----------------------------------------- appointments ----------------------------------------->
-  <section id="appointments" class="tabcontent hidden grid gap-4">
+  <section id="appointments" class="tabcontent mb-4 hidden grid gap-4">
     <div class="grid gap-2">
       <div class="flex justify-between items-center">
         <h3 class="text-black text-xl font-bold">Rapport des rendez-vous</h3>
         {% if user.role.sec_level >= 5 %}
-        <button
-          id="export_appointments"
-          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
-        >
-          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden md:inline text-sm">
-            Extraire en fichier excel (XLSX)
-          </span>
-        </button>
+        <div class="flex gap-2 text-black">
+          <button
+            onclick="generatePDF('appointments_table')"
+            class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-pdf lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format PDF
+            </span>
+          </button>
+          <button
+            id="export_appointments"
+            class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format XLSX
+            </span>
+          </button>
+        </div>
         {% endif %}
       </div>
       <!-- appointments table ------------------------------------------------------------->
-      {% include 'base/partials/appointments_report.html' %}
+      {% include 'base/partials/appointments/report.html' %}
     </div>
   </section>
 
   <!----------------------------------------- users ----------------------------------------->
-  <section id="users" class="tabcontent hidden grid gap-4">
+  <section id="users" class="tabcontent  mb-4 hidden grid gap-4">
     <div class="grid gap-2">
       <div class="flex justify-between items-center">
         <h3 class="text-black text-xl font-bold">Rapport des utilisateurs</h3>
         {% if user.role.sec_level >= 5 %}
-        <button
-          id="export_users"
-          class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 hover:text-black rounded-md transition duration-200 ease-in"
-        >
-          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-          <span class="hidden md:inline text-sm">
-            Extraire en fichier excel (XLSX)
-          </span>
-        </button>
+        <div class="flex gap-2 text-black">
+          <button
+            onclick="generatePDF('users_table')"
+            class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-pdf lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format PDF
+            </span>
+          </button>
+          <button
+            id="export_users"
+            class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"
+          >
+            <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+            <span class="hidden md:inline text-sm">
+              Extraire en format XLSX
+            </span>
+          </button>
+        </div>
         {% endif %}
       </div>
-
       <!-- users table ------------------------------------------------------------->
-      {% include 'base/partials/users_report.html' %}
+      {% include 'base/partials/users/report.html' %}
     </div>
   </section>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.5/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   //  tabs control ----------------------------------------------------------------------------------------------------
@@ -121,6 +155,20 @@
       minitabs = tabcontent.children;
     }
   }
+
+  // ----------------------------pdf generator and exporter-------------------------------
+
+  function generatePDF(div_id) {
+  var doc = new jsPDF();
+  html2canvas(document.getElementById(div_id))
+    .then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      doc.addImage(imgData, 'PNG', 0, 0);
+      doc.save(`${div_id}.pdf`);
+    });
+    // Save the PDF
+  }
+
   // ----------------------------appointments exporter-------------------------------
   document
     .getElementById("export_visits")

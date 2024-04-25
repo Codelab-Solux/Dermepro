@@ -1,7 +1,7 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div
-  class="p-6 bg-gray-100 border rounded-md grid md:grid-cols-2 gap-8 justify-between items-center"
+  class="p-6 bg-gray-50 border rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
 >
   <article class="w-full">
     <h1 class="text-black text-3xl lg:text-5xl xl:text-7xl font-bold">Parametrage</h1>
@@ -9,11 +9,7 @@
       Gerer les parametres votre solution de gestion des visites et de rendez-vous ici.
     </p>
   </article>
-    <img
-      class="w-full h-[300px] rounded-xl object-cover"
-      src="{% static 'vectors/office.svg' %}"
-      alt="image"
-    />
+  <i class="fa-solid fa-sliders text-gray-400 text-9xl"></i>
 </div>
 <!--------------------------------------- menu tabs buttons --------------------------------------->
 <div
@@ -88,7 +84,7 @@
         {{first_day.fr_name}} - {{last_day.fr_name}}
       </p>
     </div>
-    <article class="flex flex-col gap-1 p-4 bg-amber-200 rounded-lg">
+    <article class="flex flex-col gap-1 p-4 bg-sky-200 rounded-lg">
       <span class="text-lg text-black font-bold">Description</span>
       <p class="shortened">{{curr_comp.description|truncatechars:1001}}</p>
     </article>
@@ -114,16 +110,19 @@
    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for obj in users %}
       <div
-      class="p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
+          hx-get="{% url 'user' obj.id  %}"
+          hx-target="#basic_dialog"
+          hx-swap="innerHTML" 
+          class="cursor-pointer p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
       >
-      <a href="{% url 'user' obj.id  %}" >
+        <article>
           <h3 class="font-bold text-black text-md">
             {{obj.last_name}} {{obj.first_name}}
           </h3>
           <p class="font-bold text-purple-900 text-sm">@{{obj.username}}</p>
           <p class="text-sm">{{e.email}}</p>
           <p class="text-sm">{{obj.role}}</p>
-        </a>
+        </article>
       </div>
       {% endfor %}
     </div>

@@ -1,15 +1,37 @@
-<div
-  class="fixed absolute z-10 top-0 right-7 md:top-6 p-1 {% if user.profile.status.id == 1 %} border-green-300 bg-green-100 {% elif user.profile.status.id == 2 %} border-amber-300 bg-amber-100 {% else %} border-red-300 bg-red-100 {% endif %} border rounded-lg flex items-center gap-2"
->
-  <small> {% include 'base/partials/notifier.html' %} </small>
+<div class="w-full flex xl:flex-row-reverse justify-between items-center">
+  <button
+    type="button"
+    name="sidebarBtn"
+    id="sidebarBtn"
+    onclick="toggleSidebar(this)"
+    class="hidden lg:inline xl:hidden px-3 py-2 rounded-lg border border-purple-300 bg-purple-50 text-black hover:bg-purple-200 text-xs transition ease-in duration-200"
+    >
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <button
+    type="button"
+    name="sidebarAltBtn"
+    id="sidebarAltBtn"
+    onclick="toggleSidebarAlt(this)"
+    class="lg:hidden px-3 py-2 rounded-lg border border-sky-300 bg-sky-50 text-black hover:bg-sky-200 text-xs transition ease-in duration-200"
+    >
+    <i class="fa-solid fa-bars-staggered"></i>
+  </button>
+  <div
+    class="p-1 w-fit border rounded-lg flex items-center gap-2 {% if user.profile.status.id == 1 %} border-green-300 bg-green-100 {% elif user.profile.status.id == 2 %} border-amber-300 bg-amber-100 {% else %} border-red-300 bg-red-100 {% endif %}"
+  >
+    <small> {% include 'base/partials/notifier.html' %} </small>
 
-  <small class="text-xs">
-    {% with obj=user %}
-    <!--  -->
-    {% include 'accounts/components/user_status_badge.html' %}
-    <!--  -->
-    {% endwith %}
-  </small>
+    <small class="text-xs">
+      {% with obj=user %}
+      <!--  -->
+      {% include 'accounts/components/user_status_badge.html' %}
+      <!--  -->
+      {% endwith %}
+    </small>
 
-  <small> {% include 'accounts/components/user_status_changer.html' %} </small>
+    <small>
+      {% include 'accounts/components/user_status_changer.html' %}
+    </small>
+  </div>
 </div>

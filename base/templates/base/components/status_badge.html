@@ -1,24 +1,39 @@
 {% if not curr_obj %}
-
 <div class="obj_status{{obj.id}} text-black text:xs lg:text-xs">
   {% if obj.status.id == 1 %}
-  <span class="px-3 py-1 bg-purple-200 rounded-md">
+  <span class="px-3 py-1 bg-purple-200 rounded-md group">
     <i class="text-sm lg:text-md fa-solid fa-spinner"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      En attente 
+    </small>
   </span>
   {% elif obj.status.id == 2 %}
-  <span class="px-3 py-1 bg-amber-200 rounded-md">
-    <i class="text-sm lg:text-md fa-solid fa-hourglass-half"></i>
+  <span class="px-3 py-1 bg-amber-200 rounded-md group">
+    <i class="text-sm lg:text-md fa-solid fa-stopwatch"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      En cours 
+    </small>
   </span>
   {% elif obj.status.id == 3 %}
-  <span class="px-3 py-1 bg-green-200 rounded-md">
+  <span class="px-3 py-1 bg-green-200 rounded-md group">
     <i class="text-sm lg:text-md fa-solid fa-hourglass-end"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      Terminé(e) 
+    </small>
   </span>
   {% elif obj.status.id == 4 %}
-  <span class="px-3 py-1 bg-sky-200 rounded-md"><i class="text-sm lg:text-md fa-solid fa-toggle-off"></i
-  ></span>
+  <span class="px-3 py-1 bg-sky-200 rounded-md group">
+    <i class="text-sm lg:text-md fa-solid fa-toggle-off"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      En absence 
+    </small>
+  </span>
   {% else %}
-  <span class="px-3 py-1 bg-red-200 rounded-md">
+  <span class="px-3 py-1 bg-red-200 rounded-md group">
     <i class="text-sm lg:text-md fa-solid fa-ban"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
+      Rejeté(e) 
+    </small>
   </span>
   {% endif %}
 </div>
@@ -30,35 +45,35 @@
     <i class="text-sm lg:text-md fa-solid fa-spinner"></i>
     <small class="hidden lg:inline">
       En attente 
-    </small class="hidden lg:inline">
+    </small>
   </span>
   {% elif curr_obj.status.id == 2 %}
   <span class="px-3 py-1 flex items-center gap-2 bg-amber-200 rounded-md"> 
-    <i class="text-sm lg:text-md fa-solid fa-hourglass-half"></i>
+    <i class="text-sm lg:text-md fa-solid fa-stopwatch"></i>
     <small class="hidden lg:inline">
       En cours 
-    </small class="hidden lg:inline">
+    </small>
   </span>
   {% elif curr_obj.status.id == 3 %}
   <span class="px-3 py-1 flex items-center gap-2 bg-green-200 rounded-md"> 
     <i class="text-sm lg:text-md fa-solid fa-hourglass-end"></i>
     <small class="hidden lg:inline">
       Terminé(e) 
-    </small class="hidden lg:inline">
+    </small>
   </span>
   {% elif curr_obj.status.id == 4 %}
   <span class="px-3 py-1 flex items-center gap-2 bg-sky-200 rounded-md"> 
     <i class="text-sm lg:text-md fa-solid fa-toggle-off"></i>
     <small class="hidden lg:inline">
       En absence 
-    </small class="hidden lg:inline">
+    </small>
   </span>
   {% else %}
   <span class="px-3 py-1 flex items-center gap-2 bg-red-200 rounded-md"> 
     <i class="text-sm lg:text-md fa-solid fa-ban"></i>
     <small class="hidden lg:inline">
-      Annulé(e) 
-    </small class="hidden lg:inline">
+      Rejeté(e) 
+    </small>
   </span>
   {% endif %}
 </div>

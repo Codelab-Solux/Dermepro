@@ -14,8 +14,9 @@ urlpatterns = [
     # -------------------------------------------------------------------------------
     path('visits/', visits, name='visits'),
     path('visits/new/', create_visit, name='create_visit'),
-    path('visits/list/', visit_list, name='visit_list'),
-    path('visits/filter/', filter_visits, name='filter_visits'),
+    path('visits/list/', visits_list, name='visits_list'),
+    path('visits/grid/', visits_grid, name='visits_grid'),
+    path('visits/filter/<str:pk>/', filter_visits, name='filter_visits'),
     path('visits/<hashid:pk>/', visit, name='visit'),
     path('visits/<hashid:pk>/alt/', visit_alt, name='visit_alt'),
     path('visits/<hashid:pk>/edit/', edit_visit, name='edit_visit'),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('appointments/new/', create_appointment, name='create_appointment'),
     path('appointments/<hashid:pk>/', appointment, name='appointment'),
     path('appointments/<hashid:pk>/status/', appointment_status, name='appointment_status'),
-    path('appointment/<hashid:pk>/alt/', appointment_alt, name='appointment_alt'),
+    path('appointments/<hashid:pk>/alt/', appointment_alt, name='appointment_alt'),
     path('appointments/<hashid:pk>/edit/', edit_appointment, name='edit_appointment'),
     path('appointments/<hashid:pk>/delete/',
          delete_appointment, name='delete_appointment'),
@@ -41,13 +42,14 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('reports/', reports, name='reports'),
     path('settings/companies/<hashid:pk>/edit/', edit_company, name='edit_company'),
+    path('fetch_messages/', fetch_messages, name='fetch_messages'),
 ]
 
 
 htmx_urls =[
     # appointments -----------------------------------------------------------
-    path('appointments/list/', appointment_list, name='appointment_list'),
-    path('appointments/grid/', appointment_grid, name='appointment_grid'),
+    path('appointments/list/', appointments_list, name='appointments_list'),
+    path('appointments/grid/', appointments_grid, name='appointments_grid'),
     path('appointments/table/', appointments_table, name='appointments_table'),
     path('appointments/table/filter/', filter_appointments_table, name='filter_appointments_table'),
     path('appointments/filter/<str:pk>/',
@@ -68,6 +70,7 @@ htmx_urls =[
     path('visits/table/', visits_table, name='visits_table'),
     path('visits/ongoing/', ongoing_visits, name='ongoing_visits'),
     path('visits/pending/', pending_visits, name='pending_visits'),
+    path('visits/missed/', missed_visits, name='missed_visits'),
     path('visits/table/filter/', filter_visits_table, name='filter_visits_table'),
     path('visits/<hashid:pk>/badge/', generate_visit_badge, name='generate_visit_badge'),
     path('visits/<hashid:pk>/signature/', sign_visit, name='sign_visit'),

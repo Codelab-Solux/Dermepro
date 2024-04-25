@@ -1,30 +1,61 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <section id="visits_base">
-  <div class="pb-4 flex flex-col gap-3">
+  <div class="pb-4 flex flex-col md:flex-row gap-3 justify-between">
     <!--------------------------------------- filter form --------------------------------------->
     {% if user.role.sec_level >= 4 %}
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_visit' %}"
-      class="mb-2 w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
+      class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
     >
       <span class="mr-2">Nouvelle visite</span>
       <i class="fa-solid fa-user-tie"></i>
     </button>
-    {% else %}
-    <div class="h-12"></div>
     {% endif %}
+    <!--------------------------------------- menu tabs buttons --------------------------------------->
+    <div
+      class="flex justify-between gap-1 text-xs tabbar h-fit w-full max-w-80 lg:max-w-[500px] p-1 bg-purple-950 rounded-lg"
+    >
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+        onclick="openTab(event, 'visits_listview')"
+        id="defaultTab"
+      >
+        <i class="fa-solid fa-list"></i>
+        <span class="ml-2">Liste</span>
+      </button>
+
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+        onclick="openTab(event, 'visits_gridview')"
+      >
+        <i class="fa-solid fa-grip"></i>
+        <span class="ml-2">Grille</span>
+      </button>
+    </div>
+  </div>
+
+  <!--------------------------------------- visits listview --------------------------------------->
+  <section
+    id="visits_listview"
+    class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
+  >
+    <button
+      class="hidden visits_reloader"
+      hx-target=".visits_list"
+      hx-get="{% url 'visits_list' %}"
+    ></button>
     <form
-      hx-post="{% url 'filter_visits' %}"
-      hx-target=".filtered_visits"
-      class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+      hx-post="{% url 'filter_visits' 'list' %}"
+      hx-target=".visits_list"
+      class="mb-4 p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
     >
       {% csrf_token %}
       <section class="w-full flex justify-between items-center gap-1 text-xs">
         {% if user.role.sec_level >= 4 %}
         <select
           name="host"
-          class="px-3 py-2 hidden lg:inline rounded-md focus:bg-gray-100 outilne-none w-full border"
+          class="px-3 py-2 hidden lg:inline rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
         >
           <option value="" selected="true" disabled="disabled">Hôte</option>
           {% for obj in hosts %}
@@ -34,33 +65,22 @@
           {% endfor %}
         </select>
         {% endif %}
-        <!-- date margin -->
-        <input
-          class="px-3 py-2 hidden lg:inline w-full rounded-md"
-          type="date"
-          name="min_date"
-          id="min_date"
-        />
-        <input
-          class="px-3 py-2 hidden lg:inline w-full rounded-md"
-          type="date"
-          name="max_date"
-          id="max_date"
-        />
+        <!-- date margins -->
+        {% include 'base/components/date_margins.html' %}
         <!-- name field -->
         <input
-          hx-post="{% url 'filter_visits' %}"
-          hx-target=".filtered_visits"
+          hx-post="{% url 'filter_visits' 'list' %}"
+          hx-target=".visits_list"
           hx-trigger="keyup changed delay:500ms"
           placeholder="Visiteur"
           name="name"
           type="text"
-          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
         />
         <!-- statuses -->
         <select
           name="status"
-          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
         >
           <option value="" selected="true" disabled="disabled">Status</option>
           {% for obj in statuses %}
@@ -70,7 +90,7 @@
         <!-- visit types -->
         <select
           name="type"
-          class="hidden sm:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border"
+          class="hidden sm:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
         >
           <option value="" selected="true" disabled="disabled">Contexte</option>
           <option value="familial">Amicale</option>
@@ -80,7 +100,7 @@
         <!-- sex -->
         <select
           name="sex"
-          class="hidden md:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full"
+          class="hidden md:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full cursor-pointerr"
         >
           <option value="" selected="true" disabled="disabled">Sexe</option>
           <option value="female">Feminin</option>
@@ -101,46 +121,131 @@
         <i class="fa-solid fa-rotate-right"></i>
       </button>
     </form>
-  </div>
 
-  <!--------------------------------------- visits --------------------------------------->
+    <div class="h-full flex gap-2">
+      <!--------------------------------------- visits list --------------------------------------->
+      <div
+        class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+      >
+        <div
+          class="visits_list"
+          hx-get="{% url 'visits_list' %}"
+          hx-trigger="load, db_changed from:body"
+          hx-target="this"
+        ></div>
+      </div>
+
+      <!--------------------------------------- visit details --------------------------------------->
+
+      <div
+        class="visit_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+      >
+        <i class="fa-solid fa-user-tie text-gray-300 text-9xl"></i>
+        <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
+          Cliquez sur une visite pour voir ses detail ici
+        </p>
+      </div>
+    </div>
+  </section>
+  <!--------------------------------------- visits gridview --------------------------------------->
+
   <section
-    id="visits"
-    class="h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full flex gap-2"
+    id="visits_gridview"
+      class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
   >
     <button
-      class="hidden"
-      id="visits_reloader"
-      hx-target=".visit_list"
-      hx-get="{% url 'visit_list' %}"
+      class="hidden visits_reloader"
+      hx-target=".visits_grid"
+      hx-get="{% url 'visits_grid' %}"
     ></button>
-
-    <!--------------------------------------- visit list --------------------------------------->
-    <div
-      class="filtered_visits p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
-    >
+    <div class="grid gap-4">
+      <form
+        hx-post="{% url 'filter_visits' 'grid' %}"
+        hx-target=".visits_grid"
+        class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
+      >
+        {% csrf_token %}
+        <section class="w-full flex justify-between items-center gap-1 text-xs">
+          {% if user.role.sec_level >= 4 %}
+          <select
+            name="host"
+            class="px-3 py-2 hidden lg:inline rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
+          >
+            <option value="" selected="true" disabled="disabled">Hôte</option>
+            {% for obj in hosts %}
+            <option value="{{obj.username}}">
+              {{obj.last_name}} {{obj.first_name}}
+            </option>
+            {% endfor %}
+          </select>
+          {% endif %}
+          <!-- date margins -->
+          {% include 'base/components/date_margins.html' %}
+          <!-- name field -->
+          <input
+            hx-post="{% url 'filter_visits' 'grid' %}"
+            hx-target=".visits_grid"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Visiteur"
+            name="name"
+            type="text"
+            class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
+          />
+          <!-- statuses -->
+          <select
+            name="status"
+            class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
+          >
+            <option value="" selected="true" disabled="disabled">Status</option>
+            {% for obj in statuses %}
+            <option value="{{obj.id}}">{{obj.title}}</option>
+            {% endfor %}
+          </select>
+          <!-- visit types -->
+          <select
+            name="type"
+            class="hidden sm:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full border cursor-pointerr"
+          >
+            <option value="" selected="true" disabled="disabled">Contexte</option>
+            <option value="familial">Amicale</option>
+            <option value="friendly">Familiale</option>
+            <option value="professional">Professionelle</option>
+          </select>
+          <!-- sex -->
+          <select
+            name="sex"
+            class="hidden md:flex px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full cursor-pointerr"
+          >
+            <option value="" selected="true" disabled="disabled">Sexe</option>
+            <option value="female">Feminin</option>
+            <option value="male">Masculin</option>
+          </select>
+        </section>
+        <button
+          class="px-3 py-2 bg-purple-200 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+          type="submit"
+        >
+          <i class="fa-solid fa-filter"></i>
+        </button>
+        <button
+          class="px-3 py-2 bg-gray-300 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+          hx-on:click="clearForm()"
+          type="submit"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </form>
+      <!--------------------------------------- visits grid --------------------------------------->
       <div
-        class="visit_list"
-        hx-get="{% url 'visit_list' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
-
-    <!--------------------------------------- visit details --------------------------------------->
-
-    <div
-      class="visit_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
-    >
-      <img
-        class="h-60 lg:h-80 rounded-lg object-cover"
-        src="{% static 'vectors/meeting.avif' %}"
-        alt="welcome image"
-      />
-      <!-- <i class="fa-solid fa-user-tie text-gray-400 text-5xl"></i> -->
-      <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
-        Cliquez sur une visite pour voir ses detail ici
-      </p>
+        class="p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+      >
+        <div
+          class="visits_grid"
+          hx-get="{% url 'visits_grid' %}"
+          hx-trigger="load, db_changed from:body"
+          hx-target="this"
+        ></div>
+      </div>
     </div>
   </section>
 
@@ -150,41 +255,29 @@
       form.reset();
     }
 
-    // document.addEventListener("DOMContentLoaded", function () {
-    // let minDateInput = document.getElementById("min_date");
-    // minDateInput.addEventListener("focus", function () {
-    //   this.setAttribute("type", "date");
-    // });
-
-    // minDateInput.addEventListener("blur", function () {
-    //   if (!this.value) {
-    //     this.setAttribute("type", "text");
-    //     this.value = "A partir du";
-    //   }
-    // });
-
-    // let maxDateInput = document.getElementById("min_date");
-    // maxDateInput.addEventListener("focus", function () {
-    //   this.setAttribute("type", "date");
-    // });
-
-    // maxDateInput.addEventListener("blur", function () {
-    //   if (!this.value) {
-    //     this.setAttribute("type", "text");
-    //     this.value = "Jusqu'au";
-    //   }
-    // });
-
-    // if (!maxDateInput.value) {
-    //   // minDateInput.setAttribute("type", "text");
-    //   minDateInput.setAttribute("placeholder", "A partir du");
-    // }
-
-    // let maxDateInput = document.getElementById("max_date");
-    // if (!maxDateInput.value) {
-    //   maxDateInput.setAttribute("placeholder", "Jusqu'au");
-    // }
-    // });
+    //  tabs control ----------------------------------------------------------------------------------------------------
+    document.getElementById("defaultTab").click();
+    function openTab(event, tabName) {
+      var i, tabcontent, tabBtn;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tabBtn = document.getElementsByClassName("tabBtn");
+      for (i = 0; i < tabBtn.length; i++) {
+        tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+      var minitabs = document.getElementsByClassName("minitabcontent");
+      if (minitabs.length != 0) {
+        minitabs = tabcontent.children;
+      }
+    }
+    function clearForm() {
+      var form = document.querySelector("form");
+      form.reset();
+    }
   </script>
 </section>
 {% endblock %}

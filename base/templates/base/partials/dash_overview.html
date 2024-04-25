@@ -1,47 +1,47 @@
 <!--------------------------------------- overview --------------------------------------->
 <section class="mt-8 grid gap-8">
   <!-- day recap -->
-  <div class="p-6 bg-purple-950 shadow-lg rounded-xl grid gap-2">
+  <div class="w-full p-6 bg-purple-950 shadow-lg rounded-xl grid gap-2">
     <h3 class="mt-4 text-white text-lg font-bold">Situation du jour</h3>
-    <div class="grid md:grid-cols-3 gap-4 text-gray-100">
-      <div class="p-4 grid gap-2 bg-purple-100 rounded-xl text-gray-700">
-        <p class="rounded-md bg-purple-100 text-black font-bold flex items-center gap-2">
+    <div class="w-full grid md:grid-cols-3 gap-4">
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
+        <p class="rounded-md text-black font-bold flex items-center gap-2">
           <i class="fa-solid fa-spinner text-purple-600 text-xl"></i> En attente
         </p>
-        <p>
-          Visites :
+        <p class="bg-purple-100 rounded-lg px-4 py-2">
+          Nombres de visites :
           <span class="text-lg font-bold ml-2 text-black">{{pending_visits}}</span>
         </p>
-        <p>
-          Rendez-vous :
+         <p class="bg-purple-200 rounded-lg px-4 py-2">
+          Nombres de rendez-vous :
           <span class="text-lg font-bold ml-2 text-black">{{pending_visits}}</span>
         </p>
       </div>
       <!--  -->
-      <div class="p-4 grid gap-2 bg-amber-100 rounded-xl text-gray-700">
-        <p class="rounded-md bg-amber-100 text-black font-bold flex items-center gap-2">
-          <i class="fa-solid fa-hourglass-half text-amber-600 text-xl"></i> En cours
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
+        <p class="rounded-md text-black font-bold flex items-center gap-2">
+          <i class="fa-solid fa-stopwatch text-amber-400 text-xl"></i> En cours
         </p>
-        <p>
-          Visites :
+        <p class="bg-amber-100 rounded-lg px-4 py-2">
+          Nombres de visites :
           <span class="text-lg font-bold ml-2 text-black"> {{active_visits}}</span>
         </p>
-        <p>
-          Rendez-vous :
+        <p class="bg-amber-200 rounded-lg px-4 py-2">
+          Nombres de rendez-vous :
           <span class="text-lg font-bold ml-2 text-black">{{active_appointments}}</span>
         </p>
       </div>
       <!--  -->
-      <div class="p-4 grid gap-2 bg-green-100 rounded-xl text-gray-700">
-        <p class="rounded-md bg-green-100 text-black font-bold flex items-center gap-2">
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
+        <p class="rounded-md text-black font-bold flex items-center gap-2">
           <i class="fa-solid fa-hourglass-end text-green-600 text-xl"></i> Terminé
         </p>
-        <p>
-          Visites :
+        <p class="bg-green-100 rounded-lg px-4 py-2">
+          Nombres de visites :
           <span class="text-lg font-bold ml-2 text-black">{{finished_visits}}</span>
         </p>
-        <p>
-          Rendez-vous :
+        <p class="bg-green-200 rounded-lg px-4 py-2">
+          Nombres de rendez-vous :
           <span class="text-lg font-bold ml-2 text-black">{{finished_appointments}}</span>
         </p>
       </div>
@@ -53,7 +53,7 @@
     class="w-full text-gray-600 text-sm rounded-xl grid md:grid-cols-2 lg:grid-cols-4 gap-2"
   >
     <div
-      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+      class="grid p-4 border border-purple-300 hover:shadow-lg rounded-xl text-lg flex gap-2"
     >
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-floppy-disk text-purple-600"></i>
@@ -74,7 +74,7 @@
     </div>
 
     <div
-      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+      class="grid p-4 border border-green-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
     >
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-circle-check text-green-600"></i>
@@ -95,7 +95,7 @@
     </div>
 
     <div
-      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+      class="grid p-4 border border-red-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
     >
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-ban text-red-600"></i>
@@ -116,7 +116,7 @@
     </div>
 
     <div
-      class="grid p-4 bg-gray-50 border hover:shadow-md rounded-lg text-lg flex gap-2"
+      class="grid p-4 border border-sky-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
     >
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-toggle-off text-sky-600"></i>
@@ -144,9 +144,14 @@
       <div class="h-80">
         <canvas class="text-gray-200" id="guests_chart"></canvas>
       </div>
-      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+      <div class="h-80 w-full border bg-gray-50 rounded-lg px-4 py-2">
         <canvas id="series_chart"></canvas>
       </div>
+    </div>
+    
+    <h3 class="mt-4 text-black text-lg font-bold">Graphique des Heures</h3>
+    <div class="h-80 w-full border bg-gray-50 rounded-lg px-4 py-2">
+      <canvas id="hoursChart"></canvas>
     </div>
 
     <h3 class="mt-4 text-black text-lg font-bold">Visites</h3>
@@ -154,7 +159,7 @@
       <div class="h-80">
         <canvas class="text-gray-200" id="visits_sex_chart"></canvas>
       </div>
-      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+      <div class="h-80 w-full border bg-gray-50 rounded-lg px-4 py-2">
         <canvas id="visits_per_host_chart"></canvas>
       </div>
     </div>
@@ -164,10 +169,12 @@
       <div class="h-80">
         <canvas class="text-gray-200" id="appts_sex_chart"></canvas>
       </div>
-      <div class="h-80 w-full border bg-gray-50 rounded-lg p-2">
+      <div class="h-80 w-full border bg-gray-50 rounded-lg px-4 py-2">
         <canvas id="appts_per_host_chart"></canvas>
       </div>
     </div>
+
+    
   </div>
 </section>
 
@@ -189,7 +196,7 @@
           data: ['{{appointments_count}}', '{{visits_count}}'],
           backgroundColor: ["rgb(56, 189, 248, 0.5)", "rgb(192, 132, 252, 0.5)"],
           borderColor: ["rgb(56, 189, 248)", "rgb(192, 132, 252)"],
-          borderWidth: 2,
+          borderWidth: 0,
           boderColor: "black",
         },
       ],
@@ -239,9 +246,6 @@
     }
   });
 
-  // console.log(last30DaysAppts);
-  // console.log(last30DaysVisits);
-
   // Function to generate an array of labels for the past 30 days
   function generatePast30DaysLabels() {
     const labels = [];
@@ -278,7 +282,7 @@
           fill: false,
           backgroundColor: "rgb(192, 132, 252, 0.5)",
           borderColor: "rgb(192, 132, 252)",
-          borderWidth: 2,
+          borderWidth: 0,
         },
         {
           label: "Rendez-vous",
@@ -286,7 +290,7 @@
           fill: false,
           backgroundColor: "rgb(56, 189, 248, 0.5)",
           borderColor: "rgb(56, 189, 248)",
-          borderWidth: 2,
+          borderWidth: 0,
         },
       ],
     },
@@ -326,6 +330,47 @@
     },
   });
 
+
+
+// Hours aggregate--------------------------------------------------------------------------------
+
+var hosts_json = JSON.parse('{{ hosts_json|escapejs }}');
+var visitHours_json = JSON.parse('{{ visit_hours_json|escapejs }}');
+var apptHours_json = JSON.parse('{{ appt_hours_json|escapejs }}');
+
+var ctx = document.getElementById('hoursChart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: hosts_json.map(host => `${host.fields.last_name} ${host.fields.first_name}`),
+        datasets: [
+            {
+                label: 'Temps de visites (minutes)',
+                backgroundColor: 'rgb(192, 132, 252, 0.5)',
+                data: visitHours_json
+            },
+            {
+                label: 'Temps de rendez-vous (minutes)',
+                backgroundColor: 'rgb(56, 189, 248, 0.5)',
+                data: apptHours_json
+            }
+        ]
+    },
+options: {
+        scales: {
+            xAxes: [{ stacked: true }],
+            yAxes: [{
+                stacked: true,
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value, index, values) {
+                        return value + 'mins'; // Add 'hrs' as the unit
+                    }
+                }
+            }]
+        }
+    }
+});
   
   // // Visits charts ----------------------------------------------------------------------------------------------------
 // vistes percentage by sex --pie(doughnut) chart--------------------------------------
@@ -340,7 +385,7 @@ var ctx = document.getElementById("visits_sex_chart");
           data: ['{{mal_visits}}', '{{fem_visits}}'],
           backgroundColor: ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)"],
           borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
-          borderWidth: 2,
+          borderWidth: 0,
         },
       ],
     },
@@ -392,14 +437,14 @@ var ctx = document.getElementById("visits_sex_chart");
                 data: maleVisitCounts,
                 backgroundColor: "rgba(54, 162, 235, 0.5)",
                 borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 2,
+                borderWidth: 0,
             },
             {
                 label: "Femmes",
                 data: femaleVisitCounts,
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
                 borderColor: "rgba(255, 99, 132, 1)",
-                borderWidth: 2,
+                borderWidth: 0,
             }
       ],
     },
@@ -429,6 +474,8 @@ var ctx = document.getElementById("visits_sex_chart");
     },
   });
 
+
+  
   // // Appointment charts ----------------------------------------------------------------------------------------------------
 // appointment percentage by sex --pie(doughnut) chart--------------------------------------
   var ctx = document.getElementById("appts_sex_chart");
@@ -442,7 +489,7 @@ var ctx = document.getElementById("visits_sex_chart");
           data: ['{{mal_appointments}}', '{{fem_appointments}}'],
           backgroundColor: ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)"],
           borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
-          borderWidth: 2,
+          borderWidth: 0,
         },
       ],
     },
@@ -494,14 +541,96 @@ var ctx = document.getElementById("visits_sex_chart");
                 data: maleApptsCounts,
                 backgroundColor: "rgba(54, 162, 235, 0.5)",
                 borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 2,
+                borderWidth: 0,
             },
             {
                 label: "Femmes",
                 data: femaleApptsCounts,
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
                 borderColor: "rgba(255, 99, 132, 1)",
-                borderWidth: 2,
+                borderWidth: 0,
+            }
+      ],
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rendez-vous",
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                stacked: true,
+                ticks: {
+                    stepSize: 1,
+                },
+            },
+            x: {
+                stacked: true,
+            }
+        },
+    },
+  });
+
+
+
+  // // Host Aggregate charts ----------------------------------------------------------------------------------------------------
+// visits and appointments per host --stacked bar chart--------------------------------------
+  // Parse hosts data from Django template variable
+  var hostsData = JSON.parse('{{ hosts_json|safe }}');
+  var apptsPerHost = {};
+  var visitsPerHost = {};
+  var hostNames = hostsData.map((obj) => obj.fields.username);
+  const visitTimes = [];
+  const apptTimes = [];
+
+  // Loop through the visitsData array to aggregate visit counts per host
+  apptsData.forEach((obj) => {
+    const host = obj.fields.host;
+    x=0
+    if (!apptsPerHost[host]) {
+      x ++
+    }
+  });
+
+  // Print the number of appts per host
+  for (var host in apptsPerHost) {
+    if (apptsPerHost.hasOwnProperty(host)) {
+      apptTimes.push(apptsPerHost[host].male);
+    }
+  }
+  for (var host in visitsPerHost) {
+    if (apptsPerHost.hasOwnProperty(host)) {
+      visitTimes.push(apptsPerHost[host]);
+    }
+  }
+
+  // Initialize Chart.js to plot the appts per host
+  var ctx = document.getElementById("host_aggregate_chart");
+  var appts_per_host_chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: hostNames,
+      datasets: [
+       {
+                label: "Visites",
+                data: visitTimes,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 0,
+            },
+            {
+                label: "Rendez-vous",
+                data: apptTimes,
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 0,
             }
       ],
     },

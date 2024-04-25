@@ -2,9 +2,9 @@
 
 <!--  -->
 {% block content %}
-<div>
+<div class="grid gap-8 mb-8">
   <div
-    class="p-6 bg-purple-50 border border-purple-300 rounded-lg flex flex-col md:flex-row gap-8 justify-between items-center"
+    class="p-6 bg-gray-100 border border-gray-300 rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
   >
     <article class="w-5/7 max-w-[800px]">
       <h1 class="text-black text-3xl lg:text-7xl font-bold">Dermepro</h1>
@@ -31,74 +31,72 @@
     hx-get="{% url 'users_status_quo' %}"
     hx-trigger="load, db_changed from:body"
     hx-target="this"
-  ></div>
+  > <div class="flex justify-center items-center bg-red-100 p-4 border border-red-300 rounded-lg">
+
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div>
+  </div>
   {% endif %} -->
   
-  <div class="mt-8 p-4 border rounded-lg">
-    <!-------------------- ongoing appointments -------------------->
-    <div
-      class="w-full mt-4 ongoing_appointments"
-      hx-get="{% url 'ongoing_appointments' %}"
-      hx-trigger="load, db_changed from:body"
-      hx-target="this"
-    ></div>
-    <!-------------------- ongoing visits -------------------->
-    <div
-      class="w-full mt-4 ongoing_visits"
-      hx-get="{% url 'ongoing_visits' %}"
-      hx-trigger="load, db_changed from:body"
-      hx-target="this"
-    ></div>
+  <!-------------------- missed visits -------------------->
+  <div
+    class="w-full missed_visits"
+    hx-get="{% url 'missed_visits' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  > <div class="flex justify-center items-center bg-red-100 p-4 border border-red-300 rounded-lg">
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div>
+  </div>
+
+  <!-------------------- ongoing appointments -------------------->
+  <div
+    class="w-full ongoing_appointments"
+    hx-get="{% url 'ongoing_appointments' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  > <div class="flex justify-center items-center bg-amber-100 p-4 border border-amber-300 rounded-lg">
+
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div>
+  </div>
+
+  <!-------------------- ongoing visits -------------------->
+  <div
+    class="w-full ongoing_visits"
+    hx-get="{% url 'ongoing_visits' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  > <div class="flex justify-center items-center bg-purple-100 p-4 border border-purple-300 rounded-lg">
+
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div>
   </div>
 
   <!----------------------------------------- visits ----------------------------------------->
 
-  <div class="mt-8 p-4 border rounded-lg">
-    <div class="flex justify-between items-center">
-      <h3 class="text-black text-xl font-bold">File d'attente des visites</h3>
-      {% if user.role.sec_level >= 4 %}
-      <button
-        hx-target="#basic_dialog"
-        hx-get="{% url 'create_visit' %}"
-        class="w-fit px-3 py-2 bg-purple-200 text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
-      >
-        <span class="hidden md:inline mr-2">Nouvelle visite</span>
-        <i class="fa-solid fa-plus"></i>
-      </button>
-      {% endif %}
-    </div>
+  <div
+    class="w-full pending_visits"
+    hx-get="{% url 'pending_visits' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  > <div class="flex justify-center items-center  border border-purple-400 rounded-lg">
 
-    <!-- pending visits list -->
-    <div
-      class="my-4 flex flex-col md:flex-row justify-between md:items-center gap-8"
-    >
-      <img
-        class="md:hidden lg:inline w-80 rounded-lg object-cover"
-        src="{% static 'vectors/reception.avif' %}"
-        alt="welcome image"
-      />
-        <!-- <i class="fa-solid fa-user-tie text-gray-400 text-5xl"></i> -->
-
-      <div
-        class="w-full pending_visits"
-        hx-get="{% url 'pending_visits' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div>
   </div>
 
   <!----------------------------------------- appointments ----------------------------------------->
 
   {% if user.role.sec_level > 1 %}
-  <div class="mt-8 p-4 border rounded-lg">
+  <div class="p-4 border border-purple-400 rounded-xl">
     <div class="flex justify-between items-center">
       <h3 class="text-black text-xl font-bold">Rendez-vous du jour</h3>
       {% if user.role.sec_level >= 4 %}
       <button
         hx-target="#basic_dialog"
         hx-get="{% url 'create_appointment' %}"
-        class="w-fit px-3 py-2 bg-purple-200 text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+        class="w-fit px-3 py-2 bg-purple-100 text-black text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
       >
         <span class="hidden md:inline mr-2">Nouveau rendez-vous</span>
         <i class="fa-solid fa-plus"></i>
@@ -113,7 +111,10 @@
       hx-get="{% url 'calendar_day' day %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
-    ></div>
+    ><div class="py-4 flex justify-center items-center rounded-lg">
+
+    <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
+  </div></div>
   </div>
   {% endif %}
 </div>

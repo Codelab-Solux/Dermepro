@@ -1,0 +1,20 @@
+<div
+  class="p-2 border-b hover:shadow-md flex flex-col md:flex-row justify-between items-center bg-white overflow-hidden"
+>
+  
+  <p class="text-sm">{{obj.date}}</p>
+  <p class="text-sm">{{obj.time}}</p>
+  {% if obj.movement == 'entry' %}
+  <h4
+    class="top-2 right-2 px-4 py-1 rounded-md bg-green-200 text-xs text-black"
+  >
+    {{obj.get_movement_display}}
+    <i class="fa-solid fa-arrow-down ml-2"></i>
+  </h4>
+  {% else %}
+  <h4 class="top-2 right-2 px-4 py-1 rounded-md bg-red-200 text-xs text-black">
+    {{obj.get_movement_display}}
+    <i class="fa-solid fa-arrow-up ml-2"></i>
+  </h4>
+  {% endif %}
+</div>
