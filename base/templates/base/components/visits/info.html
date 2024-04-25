@@ -27,7 +27,7 @@
       <span class="text-black"> {{curr_obj.date}} </span>
     </p>
     <!--  -->
-    <div class="grid gap-2 text-black bg-amber-100 rounded-lg py-2 px-3">
+    <div class="grid gap-2 text-black rounded-lg py-2 px-3 {% if curr_obj.status.id == 1 %} bg-purple-200  {% elif curr_obj.status.id == 2 %} bg-amber-200  {% elif curr_obj.status.id == 3 %} bg-green-200  {% elif curr_obj.status.id == 4 %} bg-red-200 {% else %} bg-sky-200  {% endif %}">
       <p>
         <i class="fa-solid fa-clock mr-3"></i> Arrivé(e) à :
         <span class="font-bold"> {{curr_obj.arrived_at}} </span>
