@@ -15,10 +15,10 @@
       {{curr_obj.host.last_name}} {{curr_obj.host.first_name}}
     </span>
   </p>
-    <p>
-      <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Contexte :
-      <span class="text-black"> {{curr_obj.get_context_display|title}} </span>
-    </p>
+  <p>
+    <i class="fa-solid fa-layer-group text-gray-400 mr-3"></i> Contexte :
+    <span class="text-black"> {{curr_obj.get_context_display|title}} </span>
+  </p>
   <p>
     <i class="fa-solid fa-venus-mars text-gray-400 mr-2"></i>Sexe :
     <span class="text-black">{{curr_obj.get_sex_display|title}} </span>
@@ -31,40 +31,44 @@
     <i class="fa-solid fa-envelope-open text-gray-400 mr-3"></i>Email :
     <span class="text-black"> {{curr_obj.email}} </span>
   </p>
+  <div
+  class="grid gap-2 text-black rounded-lg py-2 px-3 {% if curr_obj.status.id == 1 %} bg-purple-200 {% elif curr_obj.status.id == 2 %} bg-amber-200 {% elif curr_obj.status.id == 3 %} bg-green-200 {% elif curr_obj.status.id == 4 %} bg-red-200 {% else %} bg-sky-200 {% endif %}"
+  >
   <p>
-    <i class="fa-solid fa-calendar-days text-gray-400 mr-3"></i>Date :
+    <i class="fa-solid fa-calendar-days mr-3"></i>Date :
     <span class="text-black"> {{curr_obj.date}} </span>
   </p>
   <p>
-    <i class="fa-solid fa-clock text-gray-400 mr-3"></i> Heure :
+    <i class="fa-solid fa-clock mr-3"></i> Heure :
     <span class="text-black"> {{curr_obj.time}} </span>
   </p>
-  {% if curr_obj.status.id >= 2 and curr_obj.status.id < 4 %}
-  <p>
-    <i class="fa-solid fa-id-card text-gray-400 mr-3"></i>Type de ID :
-    <span class="text-black">{{curr_obj.get_id_document_display}} </span>
-  </p>
-  <p>
-    <i class="fa-solid fa-hashtag text-gray-400 mr-3"></i> N° de la pièce ID :
-    <span class="text-black"> {{curr_obj.id_number|title}} </span>
-  </p>
-  <p>
-    <i class="fa-solid fa-hourglass-start text-gray-400 mr-3"></i>
-    Début :
-    <span class="text-black"> {{curr_obj.started_at}} </span>
-  </p>
-  {% endif %}
-  <!--  -->
-  {% if curr_obj.status.id == 3 %}
-  <p>
-    <i class="fa-solid fa-hourglass-end text-gray-400 mr-3"></i>
-    Fin :
-    <span class="text-black"> {{curr_obj.ended_at}} </span>
-  </p>
-  <p>
-    <i class="fa-regular fa-clock text-gray-400 mr-3"></i>
-    Depart :
-    <span class="text-black"> {{curr_obj.departed_at}} </span>
-  </p>
-  {% endif %}
+    {% if curr_obj.status.id > 1 and curr_obj.status.id < 4 %}
+    <p>
+      <i class="fa-solid fa-id-card mr-3"></i>Type de ID :
+      <span class="text-black">{{curr_obj.get_id_document_display}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-hashtag mr-3"></i> N° ID :
+      <span class="text-black"> {{curr_obj.id_number|title}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-stopwatch mr-3"></i>
+      Début :
+      <span class="font-bold"> {{curr_obj.started_at}} </span>
+    </p>
+    {% endif %}
+    <!--  -->
+    {% if curr_obj.status.id == 3 %}
+    <p>
+      <i class="fa-solid fa-hourglass-end mr-3"></i>
+      Fin :
+      <span class="font-bold"> {{curr_obj.ended_at}} </span>
+    </p>
+    <p>
+      <i class="fa-solid fa-door-closed mr-3"></i>
+      Départ :
+      <span class="font-bold"> {{curr_obj.departed_at}} </span>
+    </p>
+    {% endif %}
+  </div>
 </div>

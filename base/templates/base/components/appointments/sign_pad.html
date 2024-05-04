@@ -1,7 +1,7 @@
 <form
-  id="signature_form"
-  class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-sky-200 border border-sky-400 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
-  action="{% url 'sign_appointment' curr_obj.id %}"
+action="{% url 'sign_appointment' curr_obj.id %}"
+id="signature_form"
+  class="w-full xl:max-w-[260px] 2xl:max-w-[360px] min-h-80 h-full p-4 bg-amber-100 border border-amber-400 rounded-xl flex flex-col justify-center items-center gap-4 overflow-hidden"
   method="post"
   enctype="multipart/form-data"
 >
@@ -16,20 +16,20 @@
     id="signature_canvas"
     width="400"
     height="250"
-    class="w-fit bg-sky-50 rounded-md bg-sky-50 hover:bg-white text-black cursor-crosshair overflow-hidden"
+    class="w-fit bg-amber-50 rounded-md bg-amber-50 hover:bg-white text-black cursor-crosshair overflow-hidden"
   ></canvas>
 
   <!--  -->
     <div class="w-full max-w-[325px] flex items-center gap-2 text-xs">
     <a
       onclick="clearCanvas()"
-      class="px-4 py-2 bg-white hover:bg-red-300 text-black rounded-md transition duration-200 ease-in cursor-pointer"
+      class="px-4 py-2 bg-white hover:bg-amber-300 text-black rounded-md transition duration-200 ease-in cursor-pointer"
       >Effacer</a
     >
     <button
       type="button"
       onclick="saveSignature()"
-      class="px-4 py-2 w-full bg-sky-600 hover:bg-sky-700 text-white rounded-md transition duration-200 ease-in cursor-pointer"
+      class="px-4 py-2 w-full bg-gray-700 hover:bg-black text-white rounded-md transition duration-200 ease-in cursor-pointer"
     >
       Valider
     </button>

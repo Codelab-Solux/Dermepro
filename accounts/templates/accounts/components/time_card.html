@@ -6,10 +6,10 @@
   hx-get="{% url 'time_mgt_details' obj.id %}"
   hx-target=".times_details"
   hx-swap="innerHTML"
-  class="cursor-pointer hidden relative md:flex flex-col border bg-white hover:border-sky-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
+  class="cursor-pointer hidden relative md:flex flex-col border bg-white hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
 >
   <!-- user status indicator -->
-  <div class="absolute bottom-2 right-1 text-xs">
+  <div class="absolute bottom-3 right-2 text-xs">
     {% include 'accounts/components/time_badge.html' %}
   </div>
 
@@ -17,9 +17,11 @@
 
   <article class="p-4 md:text-sm lg:text-md flex flex-col gap-2 justify-between">
     <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
-    <span class="font-light text-xs text-sky-500">@{{obj.username}}</span>
+    <span class="font-light text-xs text-purple-600">@{{obj.username}}</span>
     {% with latest=obj.id|get_last_movement %}
-    <small class="border {% if latest.movement == 'entry' %}border-green-300{% else %}border-red-300{% endif %} w-fit px-2 py-[.25em] rounded-md lg:mb-0 text:xs text-black">{{latest.get_movement_display|title}}</small>
+    {% if latest %}
+    <small class="border {% if latest.movement == 'entry' %}border-green-300{% else %}border-red-300{% endif %} w-fit px-2 py-[.25em] rounded-md lg:mb-0 text:xs text-black">{{latest.time}}</small>
+    {% endif %}
     {% endwith %}
   </article>
 </div>

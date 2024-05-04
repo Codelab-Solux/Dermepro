@@ -1,0 +1,13 @@
+<!--  -->
+
+
+{% if moves %}
+<h3 class="mb-2 font-bold text-lg">Mouvements récents</h3>
+<div class="w-full grid border rounded-lg p-1 pb-0">
+  {% for obj in moves %} 
+  <!--  -->
+  {% include 'accounts/components/time_tile.html' %} 
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

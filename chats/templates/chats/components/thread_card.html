@@ -3,29 +3,31 @@
 <!-- tablet/ PC view -->
 {% if msg_obj %}
 <div
-{% if obj.initiator == user %}
-hx-get="{% url 'thread' obj.responder.id %}"
-{% else %}
-hx-get="{% url 'thread' obj.initiator.id %}"
-{% endif %}
-hx-target=".thread_details"
-hx-swap="innerHTML"
-hx-click="delayedUpdateThreads()"
+  id="thread_card_{{ msg_obj.thread.id }}"
+  {% if obj.initiator == user %}
+  hx-get="{% url 'thread' obj.responder.id %}"
+  {% else %}
+  hx-get="{% url 'thread' obj.initiator.id %}"
+  {% endif %}
+  hx-target=".thread_page"
+  hx-trigger="click"
   class="thread_card px-2 py-3 cursor-pointer relative flex items-center gap-2 bg-white border hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
 >
   <small class="absolute top-2 right-2 text-gray-400 text-xs">
     {% if msg_obj.timestamp|date:"Y-m-d" == now|date:"Y-m-d" %}
-        {{ msg_obj.timestamp|time:"H:i" }}
+    {{ msg_obj.timestamp|time:"H:i" }}
     {% else %}
-        {{ msg_obj.timestamp.time }}
+    {{ msg_obj.timestamp.time }}
     {% endif %}
   </small>
   {% with unread_count=msg_obj.thread.id|get_unread_msgs %}
   <!--  -->
   {% if user != msg_obj.sender and not msg_obj.is_read %}
   <small
-  class="absolute px-[.7em] py-[0.2em] bottom-2 right-2 bg-purple-500 text-white text-xs rounded-full"
-  >{{ unread_count }}</small>
+    class="absolute px-[.7em] py-[0.2em] bottom-2 right-2 bg-purple-500 text-white text-xs rounded-full"
+  >
+    {{ unread_count }}
+  </small>
   {% endif %}
   <!--  -->
   {% endwith %}
@@ -41,14 +43,14 @@ hx-click="delayedUpdateThreads()"
   <article class="w-full text-sm flex flex-col justify-between">
     {% if msg_obj.sender == user %}
     <h4 class="text-black font-bold">
-      {{msg_obj.receiver.last_name}} {{msg_obj.receiver.first_name}}
+      {{ msg_obj.receiver.last_name }} {{ msg_obj.receiver.first_name }}
     </h4>
     {% else %}
     <h4 class="text-black font-bold">
-      {{msg_obj.sender.last_name}} {{msg_obj.sender.first_name}}
+      {{ msg_obj.sender.last_name }} {{ msg_obj.sender.first_name }}
     </h4>
     {% endif %}
-    <p class=" text-xs text-gray-600 font-light">
+    <p class="text-xs text-gray-600 font-light">
       {% if user == msg_obj.sender %}
       <span class="text-gray-300">
         {% if msg_obj.is_read %}
@@ -58,14 +60,8 @@ hx-click="delayedUpdateThreads()"
         {% endif %}
       </span>
       {% endif %}
-      {{msg_obj.message}}
+      {{ msg_obj.message }}
     </p>
   </article>
 </div>
-  {% endif %}
-
-  <script>
-    function delayedUpdateThreads() {
-  setTimeout(updateThreads, 1000); // Delay execution by 1000 milliseconds (1 second)
-}
-  </script>
+{% endif %}

@@ -17,17 +17,17 @@
   }
 </style>
 
-<div id="" class="mt-4 bg-gray-50 grid rounded-xl border-sky-400">
+<div id="" class="mt-4 bg-gray-50 grid rounded-xl border-purple-400">
   <div
-    class="px-2 py-2 border border-b-0 border-sky-300 bg-sky-200 rounded-t-lg text-black font-bold flex justify-between items-center gap-4"
+    class="px-2 py-2 border border-b-0 border-purple-300 bg-purple-200 rounded-t-lg text-black font-bold flex justify-between items-center gap-4"
   >
-    <span class="p-2 w-[96px] bg-sky-100 rounded-md text-center"> Heures </span>
+    <span class="p-2 w-[96px] bg-purple-100 rounded-md text-center"> Heures </span>
     <div class="flex justify-center items-center gap-4">
-      <button class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full text-xs">
+      <button class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs">
         <i class="fa-solid fa-arrow-left"></i>
       </button>
       <h3>{{ curr_date }}</h3>
-      <button class="px-3 py-2 bg-white hover:bg-sky-300 rounded-full text-xs">
+      <button class="px-3 py-2 bg-white hover:bg-purple-300 rounded-full text-xs">
         <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
@@ -35,7 +35,7 @@
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'new_time_record' %}"
-      class="w-fit px-3 py-2 bg-sky-300 text-black text-sm hover:bg-white flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+      class="w-fit px-3 py-2 bg-purple-300 text-black text-sm hover:bg-white flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
     >
       <i class="fa-solid fa-plus"></i>
     </button>
@@ -43,7 +43,7 @@
   </div>
 
   <!-- day calendar -->
-  <div class="overflow-x-auto rounded-b-xl border-sky-200">
+  <div class="overflow-x-auto rounded-b-xl border-purple-200">
     <table class="table-auto">
       <tbody>
         {% for hour in hours %}

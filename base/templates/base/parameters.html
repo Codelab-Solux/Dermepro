@@ -37,12 +37,17 @@
     <i class="fa-solid fa-shield"></i>
     <span class="hidden lg:inline lg:ml-2">Rôles</span>
   </button>
+  <button
+    class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+    onclick="openTab(event, 'workdays')"
+  >
+    <i class="fa-solid fa-calendar-days"></i>
+    <span class="hidden lg:inline lg:ml-2">Jours de travail</span>
+  </button>
 </div>
 
 <!-- company info -->
-<section
-  id="company"
-  class="tabcontent relative my-4 border border p-4 rounded-xl"
+<section id="company" class="tabcontent relative my-4 border border p-4 rounded-xl"
 >
   <!-- admin actions -->
   {% if user.role.sec_level >= 4 %}
@@ -56,7 +61,7 @@
   </button>
   {% endif %}
   <div class="grid lg:grid-cols-2 gap-4">
-    <div class="flex flex-col gap-2 p-4 bg-gray-100 border rounded-lg">
+    <div class="flex flex-col gap-2 p-4 border rounded-lg">
       <h3 class="4 text-black text-4xl font-bold">{{curr_comp.name}}</h3>
       <small class="text-black italic">
         <i class="fa-solid fa-quote-left"></i>
@@ -76,15 +81,40 @@
         {{curr_comp.email}}
       </p>
       <p class="text-black">
-        <i class="fa-solid fa-clock text-purple-700 mr-2"></i>
-        {{curr_comp.opening_time}} - {{curr_comp.closing_time}}
-      </p>
-      <p class="text-black">
         <i class="fa-solid fa-calendar-days text-purple-700 mr-2"></i>
         {{first_day.fr_name}} - {{last_day.fr_name}}
       </p>
+      <p class="text-black">
+        <i class="fa-solid fa-clock text-purple-700 mr-2"></i>
+        {{curr_comp.opening_time}} - {{curr_comp.closing_time}}
+      </p>
+      {% for obj in exceptional_days %}
+        <div
+          class="grid gap-1 p-4 bg-amber-100 border border-amber-400 rounded-lg"
+        >
+          <!-- admin actions -->
+          {% if user.role.sec_level >= 4 %}
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'edit_workday' obj.id %}"
+            class="absolute top-2 right-2 px-2 py-1 text-sm text-gray-300 hover:text-purple-700 rounded-md hover:text-black"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          {% endif %}
+          <p>
+            <i class="fa-solid fa-calendar-days group-hover:text-purple-700 transition duration-200 ease-in"></i>
+            <span class="font-bold group-hover:text-purple-700 transition duration-200 ease-in">{{obj.fr_name}}</span>
+          </p>
+          <p class="text-gray-500 text-sm">
+            <i class="fa-solid fa-clock"></i>
+            <span>{{obj.opening_time}} - {{obj.closing_time}}</span>
+          </p>
+        </div>
+      {% endfor %}
     </div>
-    <article class="flex flex-col gap-1 p-4 bg-sky-200 rounded-lg">
+    <article class="flex flex-col gap-1 p-4 bg-purple-100 rounded-lg">
       <span class="text-lg text-black font-bold">Description</span>
       <p class="shortened">{{curr_comp.description|truncatechars:1001}}</p>
     </article>
@@ -110,19 +140,20 @@
    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for obj in users %}
       <div
-          hx-get="{% url 'user' obj.id  %}"
+          hx-get="{% url 'user_alt' obj.id   %}"
           hx-target="#basic_dialog"
           hx-swap="innerHTML" 
-          class="cursor-pointer p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
+          class="relative cursor-pointer p-4  h-100  border hover:border-purple-700  hover:shadow-md rounded-md"
       >
-        <article>
-          <h3 class="font-bold text-black text-md">
-            {{obj.last_name}} {{obj.first_name}}
-          </h3>
-          <p class="font-bold text-purple-900 text-sm">@{{obj.username}}</p>
-          <p class="text-sm">{{e.email}}</p>
-          <p class="text-sm">{{obj.role}}</p>
-        </article>
+      <article>
+        <h3 class="font-bold text-black text-md">
+          {{obj.last_name}} {{obj.first_name}}
+        </h3>
+        <p class="font-bold text-purple-900 text-sm">@{{obj.username}}</p>
+      </article>
+      <div class="absolute bottom-3 right-2 text-xs">
+      {% include 'accounts/components/time_badge.html' %}
+      </div>
       </div>
       {% endfor %}
     </div>
@@ -149,23 +180,78 @@
           class="relative grid p-4 h-100 border group hover:border-purple-700 hover:shadow-md rounded-md transition duration-200 ease-in"
         >
           <i
-            class="absolute top-4 right-4 fa-solid fa-shield text-md text-gray-300 group-hover:text-purple-700 transition duration-200 ease-in"
+            class="fa-solid fa-shield absolute top-4 right-4 text-md text-gray-300 group-hover:text-purple-700 transition duration-200 ease-in"
           ></i>
           <p>
             Rôle |
             <span
               class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
-              >{{obj.name}}</span
-            >
+              >{{obj.name}}</span>
           </p>
           <p>
             Niveau de securité |
             <span
               class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
-              >{{obj.sec_level}}</span
-            >
+              >{{obj.sec_level}}</span>
           </p>
           <!-- <p>Description | {{obj.description}}</p> -->
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<!-- workdays params -->
+<section id="workdays" class="tabcontent hidden my-4 border border p-4 rounded-xl">
+  <div class="w-full">
+    {% if not workdays %}
+    <h3 class="mb-2 bg-gray-100 p-4 rounded-md text-center mx-auto">
+      Aucun jour enregistré
+    </h3>
+    {% else %}
+    <h3 class="mb-4 text-black text-lg font-bold">Jours de travail</h3>
+    <div class="flex gap-4 items-center">
+      <div class="w-full mb-4 grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {% for obj in workdays %}
+        <div
+          class="relative grid gap-1 p-4 h-100 border group hover:border-purple-700 hover:shadow-md rounded-md transition duration-200 ease-in"
+        >
+          <!-- admin actions -->
+          {% if user.role.sec_level >= 4 %}
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'edit_workday' obj.id %}"
+            class="absolute top-2 right-2 px-2 py-1 text-sm text-gray-300 hover:text-purple-700 rounded-md hover:text-black"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          {% endif %}
+          <p>
+            <i
+              class="fa-solid fa-calendar-days group-hover:text-purple-700 transition duration-200 ease-in"
+            ></i>
+            <span
+            class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
+            >{{obj.fr_name}}</span>
+          </p>
+          <p class="text-gray-400 text-sm">
+            <i
+              class="fa-solid fa-clock"
+            ></i>
+            {% if not obj.opening_time %}
+            <span>{{curr_comp.opening_time}}</span>
+            {% else %}
+            <span>{{obj.opening_time}}</span>
+            {% endif %}
+            -
+            {% if not obj.closing_time %}
+            <span>{{curr_comp.closing_time}}</span>
+            {% else %}
+            <span>{{obj.closing_time}}</span>
+            {% endif %}
+          </p>
         </div>
         {% endfor %}
       </div>

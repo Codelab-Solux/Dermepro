@@ -28,9 +28,11 @@ urlpatterns = [
 
 htmx_urls = [
     path('users/<hashid:pk>/', user, name='user'),
+    path('users/<hashid:pk>/alt/', user_alt, name='user_alt'),
     path('users/filter/<str:pk>/', filter_users, name='filter_users'),
     path('users/list/<str:pk>/', users_list, name='users_list'),
     path('times/records/new/', new_time_record, name='new_time_record'),
+    path('times/records/<hashid:pk>/', recent_moves, name='recent_moves'),
     path('times/records/<hashid:pk>/', time_records, name='time_records'),
     path('times/records/<hashid:pk>/',
          filter_time_records, name='filter_time_records'),

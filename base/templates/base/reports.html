@@ -38,7 +38,7 @@
         <h3 class="text-black text-xl font-bold">Rapport des visites</h3>
         {% if user.role.sec_level >= 5 %}
         <div class="flex gap-2 text-black">
-          <button
+          <!-- <button
             onclick="generatePDF('visits_table')"
             class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
           >
@@ -46,7 +46,7 @@
             <span class="hidden md:inline text-sm">
               Extraire en format PDF
             </span>
-          </button>
+          </button> -->
           <button
             id="export_visits"
             class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"
@@ -71,7 +71,7 @@
         <h3 class="text-black text-xl font-bold">Rapport des rendez-vous</h3>
         {% if user.role.sec_level >= 5 %}
         <div class="flex gap-2 text-black">
-          <button
+          <!-- <button
             onclick="generatePDF('appointments_table')"
             class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
           >
@@ -79,7 +79,7 @@
             <span class="hidden md:inline text-sm">
               Extraire en format PDF
             </span>
-          </button>
+          </button> -->
           <button
             id="export_appointments"
             class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"
@@ -104,7 +104,7 @@
         <h3 class="text-black text-xl font-bold">Rapport des utilisateurs</h3>
         {% if user.role.sec_level >= 5 %}
         <div class="flex gap-2 text-black">
-          <button
+          <!-- <button
             onclick="generatePDF('users_table')"
             class="w-fit px-3 py-2 bg-red-200 hover:bg-red-300 rounded-lg transition duration-200 ease-in"
           >
@@ -112,7 +112,7 @@
             <span class="hidden md:inline text-sm">
               Extraire en format PDF
             </span>
-          </button>
+          </button> -->
           <button
             id="export_users"
             class="w-fit px-3 py-2 bg-green-300 hover:bg-green-400 rounded-lg transition duration-200 ease-in"

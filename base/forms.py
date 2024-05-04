@@ -210,3 +210,23 @@ class CompanyForm(forms.ModelForm):
             'opening_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'closing_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
         }
+
+class WorkDayForm(forms.ModelForm):
+    class Meta:
+        model = WorkDay
+        fields = ('opening_time','closing_time')
+
+        labels = {
+            'manager': 'Gestionaire',
+            'name': 'Nom Anglais',
+            'fr_name': 'Nom Français',
+            'opening_time': "Heure d'ouverture",
+            'closing_time': "Heure de fermeture",
+        }
+        widgets = {
+
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'fr_name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'opening_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'closing_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+        }

@@ -24,6 +24,7 @@
   <td class="p-3">{{obj.last_name}}</td>
   <td class="p-3">{{obj.first_name}}</td>
   <td class="p-3">{{obj.phone}}</td>
+  <td class="p-3">{{obj.get_context_display}}</td>
   <!-- <td class="p-3">{{obj.email}}</td> -->
   <td class="p-3">{{obj.started_at}}</td>
   <td class="p-3">{{obj.ended_at}}</td>
@@ -37,7 +38,7 @@
 <!-- htmx load-more button ------------------------------------------------------------->
 {% if objects.has_next %}
 <tr id="more_appointments" class="load_more_appointments bg-white">
-  <td colspan="10" class="text-center">
+  <td colspan="11" class="text-center">
     <button
       hx-get="{% url 'appointments_table' %}?page={{objects.next_page_number}}"
       hx-target=".load_more_appointments"

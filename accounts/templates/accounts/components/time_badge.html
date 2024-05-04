@@ -1,6 +1,6 @@
 {% if curr_profile %}
 <div class="text-black text:xs" id="obj_status{{obj.id}}">
-  {% if obj.profile.is_onsite %}
+  {% if curr_profile.is_onsite %}
   <span class="px-3 py-1 bg-green-200 rounded-md group">
     <i class="text-sm fa-solid fa-eye lg:mr-2"></i>
     <small class="hidden lg:inline"> Present </small>

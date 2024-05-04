@@ -2,7 +2,7 @@
 <script src="{% static 'messenger.js' %}" defer="true"></script>
 <!--  -->
 <section
-  class="relative flex flex-col h-[calc(100vh-30px)] md:h-full w-full border md:border-none rounded-lg"
+  class="chat_thread relative flex flex-col h-[calc(100vh-30px)] md:h-full w-full rounded-lg"
 >
   <!------------------ responder info ------------------->
   <div
@@ -27,11 +27,9 @@
       </span>
     </div>
   </div>
-  <!-- <div class="mx-2 bg-white w-full">
-  </div> -->
 
   <!------------------ chat messages ------------------->
-  <div id="convo_box_{{curr_thread.id}}" class="py-14 h-full w-full overflow-auto">
+  <div id="convo_box" class="py-14 h-full w-full overflow-auto">
     <table class="h-full w-full">
       <tbody id="chat_box_{{curr_thread.id}}" class="text-sm mx-4 flex flex-col gap-4">
         {% for obj in messages %} {% if obj.sender == other_user %}
@@ -102,6 +100,18 @@
 <!--  -->
 {{ request.user.id|json_script:"curr_user_id" }}
 <script>
-  
+
   scrollToBottom();
+  removeOldChatThread();
+
+function removeOldChatThread() {
+var chatThreads = document.querySelectorAll('.chat_thread');
+var firstThread = chatThreads[0];
+// alert(chatThreads.length)
+if (chatThreads.length > 1) {
+  alert('threads > 1')
+    firstThread.remove();
+  }
+}
+
 </script>

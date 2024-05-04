@@ -95,7 +95,7 @@ class EditProfileForm(forms.ModelForm):
         # exclude = (
         #     'user', 'company', 'status', 'is_online', 'status_message')
         labels = {'reg_number': "Numero d'immatriculation", 'sex': 'Sexe', 'department': 'Departement',
-                  'nationality': 'Nationalité', 'job_position': 'Poste', 'phone_alt': 'Telephone'
+                  'nationality': 'Nationalité', 'job_position': 'Poste', 'phone_alt': 'Telephone', 'birthday': "Date d'anniversaire"
                   }
         widgets = {
             'reg_number': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),

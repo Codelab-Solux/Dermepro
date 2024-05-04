@@ -1,5 +1,5 @@
 /* scrollbar---------------------------------------------------------------------------------------------------- */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0.25em;
   height: 0.25em;
 }
@@ -14,7 +14,7 @@
   border: 0.2em solid #f3e8ff;
   border-radius: 100vw;
   margin-block: 0.2em;
-}
+} */
 
 .smoothen{
   transition-property: all;

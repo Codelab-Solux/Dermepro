@@ -1,7 +1,6 @@
 {% load static %}
 <div
-
-  class="hidden lg:inline lg:w-[80px] p-4 bg-purple-950 text-white xl:w-[300px] min-h-screen fixed"
+  class="bg-purple-950  text-white w-[60px] md:w-20 p-2 md:p-4 xl:w-[300px] h-screen fixed overflow-y-auto"
 >
   <a
     class="mb-4 flex items-end"
@@ -11,19 +10,19 @@
   <h1 class="hidden xl:inline text-xl font-black">Dermepro</h1>
   </a>
 
-  <ul class="h-[calc(100vh-70px)] w-full flex flex-col gap-2 mx-auto items-center xl:items-start overflow-y-auto">
+  <ul class="h-[calc(100vh-70px)] w-full flex flex-col gap-2 mx-auto items-center xl:items-start overflow-y-aut">
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home_page}}"
       href="{% url 'home' %}"
     >
-      <i class="text-sm fa-solid fa-house xl:mr-2"></i> 
+      <i class="fa-solid fa-house xl:mr-2"></i> 
       <span class="hidden xl:inline">
         Accueil
       </span>
     </a>
 
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{visits_page}}"
       href="{% url 'visits' %}"
     >
       <i class="fa-sharp fa-solid fa-user-tie xl:mr-2"></i> 
@@ -33,7 +32,7 @@
     </a>
     {% if user.role.sec_level > 1 %}
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{rdvs_page}}"
       href="{% url 'appointments' %}"
     >
       <i class="text-sm fa-solid fa-calendar-days xl:xl:mr-2"></i> 
@@ -43,7 +42,7 @@
     </a>
     {% endif %}
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{users_page}}"
       href="{% url 'users' %}"
     >
       <i class="text-sm fa-solid fa-users xl:mr-2"></i> 
@@ -52,7 +51,7 @@
       </span>
     </a>
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{chats_page}}"
       href="{% url 'chats' %}"
     >
       <i class="text-sm fa-solid fa-comments xl:mr-2"></i> 
@@ -63,7 +62,7 @@
     {% if user.role.sec_level >= 4 %}
   </a>
   <a
-  class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{report_page}}"
+  class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{report_page}}"
   href="{% url 'reports' %}"
   >
   <i class="fa-sharp fa-solid fa-file-lines xl:mr-2"></i> 
@@ -72,7 +71,7 @@
     </span>
   </a>
   <a
-    class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
+    class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{params_page}}"
     href="{% url 'parameters' %}"
     >
     <i class="fa-solid fa-sliders xl:mr-2"></i> 
@@ -81,7 +80,7 @@
     </span>
   </a>
   <a
-  class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
+  class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{dash_page}}"
   href="{% url 'dashboard' %}"
   >
   <i class="fa-sharp fa-solid fa-chart-pie xl:mr-2"></i> 
@@ -90,7 +89,7 @@
   </span>
 </a>
 <a
-class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{time_mgt_page}}"
+class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{time_mgt_page}}"
 href="{% url 'time_mgt' %}"
 >
 <i class="fa-sharp fa-solid fa-clock xl:mr-2"></i> 
@@ -100,7 +99,7 @@ href="{% url 'time_mgt' %}"
   </a>
 {% endif %}
     <a
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-white hover:text-black transition ease-in duration-200 w-full {{about_page}}"
       href="{% url 'about' %}"
     >
       <i class="text-sm fa-solid fa-circle-info xl:mr-2"></i> 
@@ -111,7 +110,7 @@ href="{% url 'time_mgt' %}"
     {% if user.is_superuser %}
     <a
      target="_blank"
-      class="px-1 md:px-3 py-2 text-center xl:text-left rounded-md hover:bg-red-900 hover:text-white transition ease-in duration-200 w-full"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-md hover:bg-red-900 hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
       ><i class="text-sm fa-solid fa-lock xl:mr-2"></i> <span class="hidden xl:inline ">
         Admin Dashboard</a

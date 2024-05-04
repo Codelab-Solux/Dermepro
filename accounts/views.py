@@ -28,7 +28,11 @@ def loginView(req):
 
         if user is not None:
             login(req, user)
-            return redirect('home')
+            if 'next' in req.POST:
+                return redirect(req.POST.get('next'))
+
+            else:
+                return redirect('home')
         else:
             messages.error(req, 'Email ou Mots de passe incorrect!!!')
     context = {
@@ -170,15 +174,33 @@ def user(req, pk):
     curr_obj = get_object_or_404(CustomUser, id=pk)
     visit_hours = get_total_visits_minutes(curr_obj)
     appt_hours = get_total_appointment_minutes(curr_obj)
+    if user == curr_obj:
+        is_self = True
+    else:
+        is_self = False
 
     context = {
         "user_detail_page": "active",
         'title': 'User Details',
+        'is_self': is_self,
         'curr_obj': curr_obj,
         'visit_hours': visit_hours,
         'appt_hours': appt_hours,
     }
-    return render(req, 'accounts/profile_alt.html', context)
+    return render(req, 'accounts/user.html', context)
+
+@login_required(login_url='login')
+def user_alt(req, pk):
+    curr_obj = get_object_or_404(CustomUser, id=pk)
+    visit_hours = get_total_visits_minutes(curr_obj)
+    appt_hours = get_total_appointment_minutes(curr_obj)
+
+    context = {
+        'curr_obj': curr_obj,
+        'visit_hours': visit_hours,
+        'appt_hours': appt_hours,
+    }
+    return render(req, 'accounts/user_alt.html', context)
 
 
 @login_required(login_url='login')
@@ -186,6 +208,9 @@ def profile(req, pk):
     user = req.user
     curr_obj = get_object_or_404(CustomUser, id=pk)
     curr_profile = get_object_or_404(Profile, user=curr_obj)
+    visit_hours = get_total_visits_minutes(curr_obj)
+    appt_hours = get_total_appointment_minutes(curr_obj)
+
     if user == curr_obj:
         is_self = True
     else:
@@ -197,6 +222,8 @@ def profile(req, pk):
         'is_self': is_self,
         'curr_obj': curr_obj,
         'curr_profile': curr_profile,
+        'visit_hours': visit_hours,
+        'appt_hours': appt_hours,
     }
     return render(req, 'accounts/profile.html', context)
 
@@ -357,6 +384,17 @@ def create_time_mgt(req):
         return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title': 'Gestion de temps'})
 
 
+
+@login_required(login_url='login')
+def recent_moves(req, pk):
+    user = get_object_or_404(CustomUser, id=pk)
+    moves = TimeManagement.objects.filter(
+        user=user).order_by('-date', '-time')[:5]
+    context = {
+        "moves": moves,
+        "curr_user": user,
+    }
+    return render(req, 'accounts/partials/recent_moves.html', context)
 
 @login_required(login_url='login')
 def time_records(req, pk):

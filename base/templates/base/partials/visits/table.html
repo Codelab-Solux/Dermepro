@@ -37,7 +37,7 @@
 
 <!-- htmx load-more button ------------------------------------------------------------->
 {% if objects.has_next %}
-<tr id="more_visits" class="load_more_visits bg-white">
+<tr class="load_more_visits bg-white">
   <td colspan="12" class="text-center">
     <button
       hx-get="{% url 'visits_table' %}?page={{objects.next_page_number}}"

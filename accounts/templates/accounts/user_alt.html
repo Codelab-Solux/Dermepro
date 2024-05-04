@@ -1,0 +1,102 @@
+{% load static %} {% with curr_profile=curr_obj.profile %}
+<section
+    class="w-full text-gray-200 text-md rounded-xl flex flex-col items-center gap-4"
+  >
+
+    <div class="mt-10 flex gap-2 text-xs">
+      {% include 'accounts/components/time_badge.html' %}
+    </div>
+
+
+    {% if not curr_profile.image %}
+    <img
+      class="h-80 w-80 bg-white rounded-full object-cover"
+      src="{% static 'imgs/anon.png' %}"
+      alt="image"
+    />
+    {% else %}
+    <img
+      class="h-80 w-80 bg-white rounded-full object-cover"
+      src="{{curr_profile.image.url}}"
+      alt="image"
+    />
+    {% endif %}
+
+
+    <article class="w-full bg-purple-950 border text-gray-200 rounded-lg p-4 grid gap-2">
+      <div>
+        <h4 class="text-white text-2xl font-bold">
+          {{curr_obj.last_name}} {{curr_obj.first_name}}
+        </h4>
+        <span class="text-amber-200">@{{curr_obj.username}}</span>
+      </div>
+
+      <p>
+        <i class="fa-solid fa-venus-mars text-purple-400 mr-3"></i> Sexe :
+        <span class="text-white">
+          {{curr_profile.get_sex_display|title}}
+        </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-flag text-purple-400 mr-3"></i> Nationalité :
+        <span class="text-white"> {{curr_profile.nationality}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-calendar-days text-purple-400 mr-3"></i> Jours
+        d'anniversaire :
+        <span class="text-white"> {{curr_profile.birthday}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-hashtag text-purple-400 mr-3"></i> Numero
+        d'immatriculation :
+        <span class="text-white"> {{curr_profile.reg_number|title}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-phone text-purple-400 mr-3"></i> Numero de
+        telephone :
+        <span class="text-white"> {{curr_profile.phone_alt}} </span>
+      </p>
+
+      {% if user != curr_profile.user %}
+      <div class="flex items-center gap-2">
+        <a
+          href="{% url 'chats' %}"
+          class="w-fit px-4 py-2 bg-purple-200 hover:text-black hover:shadow-md rounded-lg flex items-center text-black transition duration-300 ease-in-out"
+        >
+          Ecrire <i class="fa-solid fa-message ml-2"></i
+        ></a>
+        <a
+          href="tel:{{curr_obj.phone}}"
+          class="w-fit px-4 py-2 bg-amber-100 hover:text-black hover:shadow-md rounded-lg flex items-center text-black transition duration-300 ease-in-out"
+        >
+          Telephoner<i class="fa-solid fa-phone ml-2"></i
+        ></a>
+      </div>
+      {% endif %}
+    </article>
+
+</section>
+
+<script>
+  // // general overview char ----------------------------------------------------------------------------------------------------
+  // entries percentage by type --pie(doughnut) chart--------------------------------------
+  var ctx = document.getElementById("time_chart");
+  var time_chart = new Chart(ctx, {
+    type: "polarArea",
+    data: {
+      labels: ["Rendez-vous", "Visites"],
+      datasets: [
+        {
+          data: ["{{appt_hours}}", "{{visit_hours}}"],
+          backgroundColor: [
+            "rgb(253, 230, 138, 0.5)",
+            "rgb(192, 132, 252, 0.5)",
+          ],
+          borderColor: ["rgb(253, 230, 138)", "rgb(192, 132, 252)"],
+          borderWidth: 0,
+        },
+      ],
+    },
+  });
+</script>
+{% endwith %}

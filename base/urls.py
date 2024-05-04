@@ -39,6 +39,8 @@ urlpatterns = [
     path('parameters/', parameters, name='parameters'),
     path('settings/roles/<hashid:pk>/', role, name='role'),
     path('settings/delete_role/<hashid:pk>/', delete_role, name='delete_role'),
+    path('parameters/workdays/<hashid:pk>/edit',
+         edit_workday, name='edit_workday'),
     path('about/', about, name='about'),
     path('reports/', reports, name='reports'),
     path('settings/companies/<hashid:pk>/edit/', edit_company, name='edit_company'),

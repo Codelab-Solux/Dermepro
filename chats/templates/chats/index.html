@@ -1,6 +1,5 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<section id="chats_base" class="mt-16 md:mt-0">
-  <div class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-4em)]">
+<section id="chats_base" class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-8.5em)] ">
     <!--------------------------------------- thread/contacts/groups lists --------------------------------------->
     <div
       class="flex flex-col gap-2 w-full md:max-w-[260px] lg:max-w-[320px] xl:max-w-[380px] h-full"
@@ -55,7 +54,7 @@
             placeholder="Recherchez..."
             name="name_or_email"
             type="text"
-            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-700"
           />
         </form>
         <div
@@ -116,16 +115,18 @@
         </div>
       </section>
     </div>
+
     <!--------------------------------------- thread details --------------------------------------->
-    <section
-      class="thread_details relative hidden md:flex flex-col items-center justify-center w-full border rounded-xl md:overflow-y-auto"
+    <div
+      class="thread_page hidden md:flex flex-col gap-3 items-center justify-center w-full h-full border rounded-xl"
     >
       <i class="fa-solid fa-comments text-gray-300 text-9xl"></i>
-      <p class="m-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
+      <p class="px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
         Restez connecter en temps réel.
       </p>
-    </section>
-  </div>
+    </div>
+</section>
+
   <script>
     //  tabs control ----------------------------------------------------------------------------------------------------
     document.getElementById("defaultTab").click();
@@ -147,5 +148,4 @@
       }
     }
   </script>
-</section>
 {% endblock %}

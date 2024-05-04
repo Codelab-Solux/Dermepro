@@ -1,5 +1,5 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<section id="visits_base">
+<div id="visits_base">
   <div class="pb-4 flex flex-col md:flex-row gap-3 justify-between">
     <!--------------------------------------- filter form --------------------------------------->
     {% if user.role.sec_level >= 4 %}
@@ -38,7 +38,7 @@
   <!--------------------------------------- visits listview --------------------------------------->
   <section
     id="visits_listview"
-    class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
+    class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-210px)] w-full"
   >
     <button
       class="hidden visits_reloader"
@@ -147,11 +147,11 @@
       </div>
     </div>
   </section>
-  <!--------------------------------------- visits gridview --------------------------------------->
 
+  <!--------------------------------------- visits gridview --------------------------------------->
   <section
     id="visits_gridview"
-      class="tabcontent hidden h-[calc(100vh-85px)] md:h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full"
+    class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-200px)] w-full"
   >
     <button
       class="hidden visits_reloader"
@@ -249,6 +249,8 @@
     </div>
   </section>
 
+</div>
+
   <script>
     function clearForm() {
       var form = document.querySelector("form");
@@ -279,5 +281,4 @@
       form.reset();
     }
   </script>
-</section>
 {% endblock %}

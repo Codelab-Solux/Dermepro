@@ -1,35 +1,36 @@
-<div id="toast" class="fixed top-0 w-full bg-gray-900 text-white p-4 text-center transform -translate-y-full transition-transform duration-300 ease-in-out">
-  <span id="toastMessage"></span>
-</div>
+<div id="toastContainer" class="w-full max-w-[400px] fixed top-0 left-[49%] right-[50%] flex flex-row justify-center items-end p-4 transform -translate-y-full transition-transform duration-500">
+    <!-- Show Toast button -->
+    <div id="toast" class="w-full bg-gray-800 rounded-lg text-white p-4 rounded shadow-lg hidden flex justify-between items-center">
+      Hello, this is a toast notification!
+      <button onclick="closeToast()" class="py-1 px-3 rounded-md border-4 border-white  hover:bg-white hover:text-red-700">x</button>
+    </div>
+  </div>
+  
+  <button onclick="showToast()" class="px-2 py-1 bg-white bg-blue-200 hover:bg-blue-400 rounded-md">Show Toast</button>
+
+
+
+<style>
+  /* Initial hidden state for the toast */
+  #toastContainer {
+    top: 0px; /* Starting position */
+  }
+</style>
 
 <script>
-
-// htmx.on('toast_msg',(e) =>{
-//     showToast(e)
-
-// })
-
-  // Function to show the toast with a message
-  function showToast(message) {
-    var toast = document.getElementById('toast');
-    var toastMessage = document.getElementById('toastMessage');
-
-    // Update the toast message
-    toastMessage.textContent = message.message;
-
-    // Slide the toast into view
-    toast.classList.remove('-translate-y-full');
+  const toastContainer = document.getElementById("toastContainer");
+  const toast = document.getElementById("toast");
+  // Show toast function
+  function showToast() {
+    // alert('Toasting....')
+    toast.classList.remove("hidden"); // Show the toast
+    toastContainer.style.transform = "translateY(0)";
+    setTimeout(function(){ closeToast(); }, 3000); // Slide down the toast
   }
 
-  // Function to hide the toast
-  function hideToast() {
-    var toast = document.getElementById('toast');
-
-    // Slide the toast out of view
-    toast.classList.add('-translate-y-full');
+  // Close toast function
+  function closeToast() {
+    toastContainer.style.transform = "translateY(-100%)"; // Slide up the toast
+    // toast.classList.add("hidden"); // Hide the toast
   }
-
-  // Hide the toast after 3 seconds
-  setTimeout(hideToast, 3000);
 </script>
-

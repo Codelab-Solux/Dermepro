@@ -860,6 +860,8 @@ def parameters(req):
     user_roles = Role.objects.all()
     first_day = curr_comp.workdays.first()
     last_day = curr_comp.workdays.last()
+    workdays = WorkDay.objects.filter(company=curr_comp)
+    exceptional_days = WorkDay.objects.filter(company=curr_comp).exclude(opening_time=None, closing_time=None)
 
     form = RoleForm()
     if req.method == 'POST':
@@ -876,6 +878,8 @@ def parameters(req):
         'curr_comp': curr_comp,
         'first_day': first_day,
         'last_day': last_day,
+        'workdays': workdays,
+        'exceptional_days': exceptional_days,
         'form': form,
     }
     return render(req, 'base/parameters.html', context)
@@ -896,6 +900,24 @@ def edit_company(req, pk):
     else:
         return render(req, 'base/forms/company_form.html', context={'form': form, 'form_title': 'Modifier Cette Compagnie', 'curr_obj': curr_obj})
 
+
+@login_required(login_url='login')
+def edit_workday(req, pk):
+    user = req.user
+    if user.role.sec_level < 4:
+        return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
+    curr_obj = get_object_or_404(WorkDay, id=pk)
+
+    form = WorkDayForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = WorkDayForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success(req, 'Données modifiée avec success')
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'base/forms/basic_form.html', context={'form': form, 'form_title': 'Modifier les heures de travail de ce jour', 'curr_obj': curr_obj})
 
 @ login_required(login_url='login')
 def role(req, pk):
