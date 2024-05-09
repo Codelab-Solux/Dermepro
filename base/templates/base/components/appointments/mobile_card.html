@@ -35,6 +35,7 @@
       {% endif %}
       <!--  -->
     </h4>
+
     <div class="flex items-start justify-between">
       <span class="font-light text-xs text-gray-600"
         >{{obj.host.last_name}} {{obj.host.first_name}}</span
@@ -49,6 +50,7 @@
         <i id="hider{{obj.id}}" class="hidden fa-solid fa-caret-up"></i>
       </button>
     </div>
+    
     <small class="text:xs text-gray-400"
       ><i class="fa-solid fa-calendar-days text-xs"></i> {{obj.date}}</small
     >
@@ -65,11 +67,7 @@
 <div
   class="appointment_details{{obj.id}} accordion active_accordion{{obj.id}} hidden mx-2 p-3 sm:p-4 border bg-gray-50 rounded-xl md:overflow-y-auto"
 >
-  <img
-    class="h-60 lg:h-80 bg-gray-100 rounded-full mx-auto my-8"
-    src="{% static 'imgs/appointment.png' %}"
-    alt="welcome image"
-  />
+
 </div>
 
 <script>

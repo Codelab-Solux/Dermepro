@@ -163,8 +163,22 @@ def create_visit(req):
         form = VisitForm(req.POST)
         if form.is_valid():
             form.save()
-        messages.success(req, 'Nouvelle visit ajoutée!')
-        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+            # Add a success message
+            messages.success(req, 'Nouvelle visite ajoutée avec succès!')
+            return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+        #     response_data = {
+        #         'status': 'success',
+        #         'message': 'Nouvelle visite ajoutée avec succès!'
+        #     }
+        #     # Return a JsonResponse with the response data
+        #     return JsonResponse(response_data, status=204, headers={'HX-Trigger': 'db_changed'})
+        # else:
+        #     # If the form is not valid, return form errors
+        #     response_data = {
+        #         'status': 'error',
+        #         'errors': form.errors
+        #     }
+        #     return JsonResponse(response_data, status=400)
     else:
         return render(req, 'base/forms/visit_form.html', context={'form': form, 'form_title': 'Nouvelle Visite'})
 

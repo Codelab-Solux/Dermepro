@@ -4,9 +4,9 @@
 <div id="" class="relative flex flex-col gap-4 h-full w-full overflow-y-auto">
   <div class="flex flex-col xl:flex-row items-end gap-2">
     <div
-      class="h-full w-full flex items-center xl:flex-col xl:items-start rounded-lg gap-4"
+      class="h-full w-full flex flex-col items-center xl:flex-col xl:items-start rounded-xl gap-4"
     >    
-        {% if not curr_user.profile.image %}
+        {% if not curr_obj.profile.image %}
         <img
           class="h-40 w-40 xl:h-60 xl:w-60 bg-white rounded-full object-cover"
           src="{% static 'imgs/anon.png' %}"
@@ -15,32 +15,35 @@
         {% else %}
         <img
           class="h-40 w-40 xl:h-60 xl:w-60 bg-white rounded-full object-cover"
-          src="{{curr_user.profile.image.url}}"
+          src="{{curr_obj.profile.image.url}}"
           alt="image"
         />
         {% endif %}
       <!-- user details -->
-      <div class="p-4 border w-full rounded-lg flex flex-col gap-2">
+      <div class="p-4 bg-white border w-full rounded-lg flex flex-col gap-2">
         <h4 class="text-black text-2xl font-bold">
-          {{curr_user.last_name}} {{curr_user.first_name}}
+          {{curr_obj.last_name}} {{curr_obj.first_name}}
         </h4>
-        <span class="text-purple-600">@{{curr_user.username}}</span>
+        <span class="text-purple-600">@{{curr_obj.username}}</span>
         <p>
           <i class="fa-solid fa-venus-mars text-gray-800 mr-3"></i> Sexe :
           <span class="text-black">
-            {{curr_user.profile.get_sex_display|title}}
+            {{curr_obj.profile.get_sex_display|title}}
           </span>
         </p>
         <p>
           <i class="fa-solid fa-flag text-gray-800 mr-3"></i> Nationalité :
-          <span class="text-black"> {{curr_user.profile.nationality}} </span>
+          <span class="text-black"> {{curr_obj.profile.nationality}} </span>
         </p>
         <p>
           <i class="fa-solid fa-hashtag text-gray-800 mr-3"></i> N°
           d'immatriculation :
           <span class="text-black">
-            {{curr_user.profile.reg_number|title}}
+            {{curr_obj.profile.reg_number|title}}
           </span>
+        </p>
+        <p>
+          {% include 'accounts/components/time_badge.html' %}
         </p>
       </div>
     </div>
@@ -49,7 +52,7 @@
       <!-- movement records -->        
       <div
       class="recent_moves"
-      hx-get="{% url 'recent_moves' curr_user.id  %}"
+      hx-get="{% url 'recent_moves' curr_obj.id  %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
       ></div>
@@ -57,29 +60,29 @@
       <form
         id="time_mgt_form"
         action="{% url 'new_time_record' %}"
-        class="px-4 py-8 border hover:border-purple-400 bg-purple-100 w-full rounded-lg flex flex-col justify-center items-center gap-4 text-sm xl:text-sm"
+        class="px-4 py-8 border bg-purple-950 w-full rounded-xl flex flex-col justify-center items-center gap-4"
         method="post"
       >
-        <h3>Enregistrer un nouveau movement</h3>
-        <input required type="hidden" name="user_id" value="{{curr_user.id}}" />
+        <h3 class="text-white">Enregistrer un nouveau movement</h3>
+        <input required type="hidden" name="user_id" value="{{curr_obj.id}}" />
         <input
           required
           type="password"
           name="user_password"
           placeholder="Mots de pass"
           value=""
-          class="mb-2 px-4 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"
+          class="px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"
         />
 
-        <div class="w-full flex items-center gap-2 text-xs">
+        <div class="w-full flex items-center gap-2  text-sm">
           <a
             onclick="close_modal()"
-            class="px-4 py-2 bg-gray-100 hover:bg-red-300 text-black rounded-md transition duration-200 ease-in cursor-pointer"
+            class="px-4 py-2 bg-red-200 hover:bg-red-600 text-black hover:text-white rounded-md transition duration-200 ease-in cursor-pointer"
             >Annuler</a
           >
           <button
             type="submit"
-            class="px-4 py-2 w-full bg-purple-700 hover:bg-purple-950 text-white rounded-md transition duration-200 ease-in cursor-pointer"
+            class="px-4 py-2 w-full bg-amber-100 hover:bg-amber-200 text-black rounded-md transition duration-200 ease-in cursor-pointer"
           >
             Valider
           </button>

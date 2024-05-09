@@ -1,13 +1,10 @@
 <div id="toastContainer" class="w-full max-w-[400px] fixed top-0 left-[49%] right-[50%] flex flex-row justify-center items-end p-4 transform -translate-y-full transition-transform duration-500">
-    <!-- Show Toast button -->
-    <div id="toast" class="w-full bg-gray-800 rounded-lg text-white p-4 rounded shadow-lg hidden flex justify-between items-center">
-      Hello, this is a toast notification!
-      <button onclick="closeToast()" class="py-1 px-3 rounded-md border-4 border-white  hover:bg-white hover:text-red-700">x</button>
-    </div>
+  <!-- Show Toast button -->
+  <div id="toast" class="w-full bg-gray-800 rounded-lg text-white p-4 rounded shadow-lg hidde flex justify-between items-center">
+    <span id="toastMessage">Hello, this is a toast notification!</span>
+    <button onclick="closeToast()" class="py-1 px-3 rounded-md border-4 border-white  hover:bg-white hover:text-red-700">x</button>
   </div>
-  
-  <button onclick="showToast()" class="px-2 py-1 bg-white bg-blue-200 hover:bg-blue-400 rounded-md">Show Toast</button>
-
+</div>
 
 
 <style>
@@ -20,9 +17,11 @@
 <script>
   const toastContainer = document.getElementById("toastContainer");
   const toast = document.getElementById("toast");
-  // Show toast function
-  function showToast() {
-    // alert('Toasting....')
+
+  // Show toast function with message parameter
+  function showToast(message) {
+    const toastMessage = document.getElementById("toastMessage");
+    toastMessage.textContent = message; // Update toast content with the received message
     toast.classList.remove("hidden"); // Show the toast
     toastContainer.style.transform = "translateY(0)";
     setTimeout(function(){ closeToast(); }, 3000); // Slide down the toast
@@ -33,4 +32,18 @@
     toastContainer.style.transform = "translateY(-100%)"; // Slide up the toast
     // toast.classList.add("hidden"); // Hide the toast
   }
+
+  // Handle HTMX success event
+  document.addEventListener("htmx:success", function(event) {
+    const trigger = event.detail.trigger; // Get the trigger element
+    const hxTrigger = trigger.getAttribute("hx-trigger"); // Get hx-trigger attribute value
+    const dbChanged = hxTrigger.includes("db_changed"); // Check if db_changed is included in hx-trigger
+
+    if (dbChanged) {
+      const responseData = event.detail.response; // Get the response data
+      if (responseData && responseData.status === 'success' && responseData.message) {
+        showToast(responseData.message); // Display success message received from the server
+      }
+    }
+  });
 </script>

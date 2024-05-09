@@ -2,7 +2,7 @@
 <script src="{% static 'messenger.js' %}" defer="true"></script>
 <!--  -->
 <section
-  class="chat_thread relative flex flex-col h-[calc(100vh-30px)] md:h-full w-full rounded-lg"
+  class="chat_thread_{{curr_thread.id}} relative flex flex-col h-[calc(100vh-80px)] md:h-full w-full rounded-xl border border-purple-950 overflow-hidden"
 >
   <!------------------ responder info ------------------->
   <div
@@ -56,7 +56,6 @@
             </small>
           </td>
         </tr>
-
         {% endif %} {% endfor %}
       </tbody>
     </table>
@@ -73,9 +72,9 @@
       <input
         type="text"
         name="message"
-        id="chat_input"
+        id="chat_input_{{curr_thread.id}}"
         required
-        class="px-4 py-2 rounded-t-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
+        class="px-4 py-2 rounded-t-md bg-gray-100 text-sm text-black w-full focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-950"
         placeholder="Ecrivez votre message..."
       />
       <button
@@ -94,24 +93,12 @@
     <i class="fa-solid fa-arrow-down"></i>
   </button>
 </section>
+
 {{ curr_thread.id|json_script:"thread_id" }}
 <!--  -->
 {{ other_user.id|json_script:"other_user_id" }}
 <!--  -->
 {{ request.user.id|json_script:"curr_user_id" }}
 <script>
-
-  scrollToBottom();
-  removeOldChatThread();
-
-function removeOldChatThread() {
-var chatThreads = document.querySelectorAll('.chat_thread');
-var firstThread = chatThreads[0];
-// alert(chatThreads.length)
-if (chatThreads.length > 1) {
-  alert('threads > 1')
-    firstThread.remove();
-  }
-}
-
+scrollToBottom();
 </script>

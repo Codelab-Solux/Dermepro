@@ -165,11 +165,21 @@ class Company(models.Model):
         return reverse('Companies', kwargs={'pk': self.pk})
 
 
+notice_types = (
+    ('new_user', "new_user"),
+    ('new_visit', "new_visit"),
+    ('new_appt', "new_appt"),
+    ('new_chat', "new_chat"),
+    ('updated_visit', "updated_visit"),
+    ('updated_appt', "updated_appt"),
+    ('updated_user', "updated_user"),
+)
+
 class Notification(models.Model):
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     notice = models.CharField(
-        max_length=255, default='', blank=True, null=True)
+        max_length=50, choices=notice_types, null=True, blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()

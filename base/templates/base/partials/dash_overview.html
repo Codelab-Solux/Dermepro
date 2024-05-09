@@ -1,11 +1,11 @@
 <!--------------------------------------- overview --------------------------------------->
-<section class="mt-8 grid gap-8">
+<section class="mt-4 grid gap-8">
   <!-- day recap -->
-  <div class="w-full p-6 bg-purple-950 shadow-lg rounded-xl grid gap-2">
-    <h3 class="mt-4 text-white text-lg font-bold">Situation du jour</h3>
+  <div class="w-full p-4 bg-purple-950 shadow-lg text-xs rounded-xl grid gap-4">
+    <h3 class="text-white text-lg font-bold">Situation du jour</h3>
     <div class="w-full grid md:grid-cols-3 gap-4">
-      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
-        <p class="rounded-md text-black font-bold flex items-center gap-2">
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700 text-sm">
+        <p class="rounded-md text-md text-black font-bold flex items-center gap-2">
           <i class="fa-solid fa-spinner text-purple-600 text-xl"></i> En attente
         </p>
         <p class="bg-purple-100 rounded-lg px-4 py-2">
@@ -18,8 +18,8 @@
         </p>
       </div>
       <!--  -->
-      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
-        <p class="rounded-md text-black font-bold flex items-center gap-2">
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700 text-sm">
+        <p class="rounded-md text-md text-black font-bold flex items-center gap-2">
           <i class="fa-solid fa-stopwatch text-amber-400 text-xl"></i> En cours
         </p>
         <p class="bg-amber-100 rounded-lg px-4 py-2">
@@ -32,8 +32,8 @@
         </p>
       </div>
       <!--  -->
-      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700">
-        <p class="rounded-md text-black font-bold flex items-center gap-2">
+      <div class="p-4 grid gap-2 bg-white rounded-xl text-gray-700 text-sm">
+        <p class="rounded-md text-md text-black font-bold flex items-center gap-2">
           <i class="fa-solid fa-hourglass-end text-green-600 text-xl"></i> Terminé
         </p>
         <p class="bg-green-100 rounded-lg px-4 py-2">
@@ -60,13 +60,13 @@
         <p class="text-black">Total Enregistrés</p>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <div class="p-4 bg-purple-200 rounded-lg text-lg">
+        <div class="p-4 bg-purple-200 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">Visites</p>
-          <span class="text-black text-xl font-bold"> {{visits|length}} </span>
+          <span class="text-black xl:text-xl font-bold"> {{visits|length}} </span>
         </div>
-        <div class="p-4 bg-purple-300 rounded-lg text-lg">
+        <div class="p-4 bg-purple-300 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">RDV</p>
-          <span class="text-black text-xl font-bold">
+          <span class="text-black xl:text-xl font-bold">
             {{appointments|length}}
           </span>
         </div>
@@ -81,35 +81,14 @@
         <p class="text-black">Total Acceptés</p>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <div class="p-4 bg-green-200 rounded-lg text-lg">
+        <div class="p-4 bg-green-200 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">Visites</p>
-          <span class="text-black text-xl font-bold"> {{accp_visits}} </span>
+          <span class="text-black xl:text-xl font-bold"> {{accp_visits}} </span>
         </div>
-        <div class="p-4 bg-green-300 rounded-lg text-lg">
+        <div class="p-4 bg-green-300 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">RDV</p>
-          <span class="text-black text-xl font-bold">
+          <span class="text-black xl:text-xl font-bold">
             {{accp_appointments}}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="grid p-4 border border-red-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
-    >
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-ban text-red-600"></i>
-        <p class="text-black">Total Rejetés</p>
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <div class="p-4 bg-red-200 rounded-lg text-lg">
-          <p class="text-sm text-black">Visites</p>
-          <span class="text-black text-xl font-bold"> {{cncl_visits}} </span>
-        </div>
-        <div class="p-4 bg-red-300 rounded-lg text-lg">
-          <p class="text-sm text-black">RDV</p>
-          <span class="text-black text-xl font-bold">
-            {{cncl_appointments}}
           </span>
         </div>
       </div>
@@ -119,17 +98,38 @@
       class="grid p-4 border border-sky-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
     >
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-toggle-off text-sky-600"></i>
+        <i class="fa-solid fa-ban text-sky-600"></i>
+        <p class="text-black">Total Rejetés</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="p-4 bg-sky-200 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
+          <p class="text-sm text-black">Visites</p>
+          <span class="text-black xl:text-xl font-bold"> {{cncl_visits}} </span>
+        </div>
+        <div class="p-4 bg-sky-300 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
+          <p class="text-sm text-black">RDV</p>
+          <span class="text-black xl:text-xl font-bold">
+            {{cncl_appointments}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="grid p-4 border border-red-400 hover:shadow-lg rounded-xl text-lg flex gap-2"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-toggle-off text-red-600"></i>
         <p class="text-black">Total Manqués</p>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <div class="p-4 bg-sky-200 rounded-lg text-lg">
+        <div class="p-4 bg-red-200 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">Visites</p>
-          <span class="text-black text-xl font-bold"> {{misd_visits}} </span>
+          <span class="text-black xl:text-xl font-bold"> {{misd_visits}} </span>
         </div>
-        <div class="p-4 bg-sky-300 rounded-lg text-lg">
+        <div class="p-4 bg-red-300 rounded-lg text-lg flex flex-col justify-center items-center gap-2">
           <p class="text-sm text-black">RDV</p>
-          <span class="text-black text-xl font-bold">
+          <span class="text-black xl:text-xl font-bold">
             {{misd_appointments}}
           </span>
         </div>
@@ -137,8 +137,8 @@
     </div>
   </div>
 
-  <!-- graphs -->
-  <div class="grid gap-4">
+    <!-- graphs -->
+  <div class="w-full hidden md:grid gap-4">
     <h3 class="mt-4 text-black text-lg font-bold">Aperçu General</h3>
     <div class="p-6 border rounded-xl shadow-sm flex flex-col lg:flex-row items-center gap-4">
       <div class="h-80">
@@ -173,9 +173,8 @@
         <canvas id="appts_per_host_chart"></canvas>
       </div>
     </div>
-
-    
   </div>
+
 </section>
 
 <script>

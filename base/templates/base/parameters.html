@@ -9,7 +9,7 @@
       Gerer les parametres votre solution de gestion des visites et de rendez-vous ici.
     </p>
   </article>
-  <i class="fa-solid fa-sliders text-gray-400 text-9xl"></i>
+  <i class="fa-solid fa-sliders text-purple-950 text-9xl"></i>
 </div>
 <!--------------------------------------- menu tabs buttons --------------------------------------->
 <div
@@ -92,17 +92,7 @@
         <div
           class="grid gap-1 p-4 bg-amber-100 border border-amber-400 rounded-lg"
         >
-          <!-- admin actions -->
-          {% if user.role.sec_level >= 4 %}
-          <button
-            onclick="hide_dialogs()"
-            hx-target="#basic_dialog"
-            hx-get="{% url 'edit_workday' obj.id %}"
-            class="absolute top-2 right-2 px-2 py-1 text-sm text-gray-300 hover:text-purple-700 rounded-md hover:text-black"
-          >
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
-          {% endif %}
+
           <p>
             <i class="fa-solid fa-calendar-days group-hover:text-purple-700 transition duration-200 ease-in"></i>
             <span class="font-bold group-hover:text-purple-700 transition duration-200 ease-in">{{obj.fr_name}}</span>
@@ -194,7 +184,6 @@
               class="font-bold group-hover:text-purple-700 transition duration-200 ease-in"
               >{{obj.sec_level}}</span>
           </p>
-          <!-- <p>Description | {{obj.description}}</p> -->
         </div>
         {% endfor %}
       </div>

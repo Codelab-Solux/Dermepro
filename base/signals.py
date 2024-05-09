@@ -9,14 +9,12 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
-@receiver(post_save, sender=Visit)
-def set_missed_visit(sender, instance, created, **kwargs):
-    if created:
-        if instance.host.profile.status.id > 1:
-            new_status = get_object_or_404(Status, id=4)
-            instance.status = new_status
-            instance.is_missed = True
-            instance.save()
+@receiver(pre_save, sender=Visit)
+def set_missed_visit(sender, instance, **kwargs):
+    if instance.host.profile.status.id > 1:
+        new_status = get_object_or_404(Status, id=4)
+        instance.status = new_status
+        instance.is_missed = True
 
 
 @receiver(post_save, sender=Visit)
@@ -26,6 +24,7 @@ def send_visit_notification(sender, instance, created, **kwargs):
         Notification.objects.create(
             user=instance.host,
             content_object=instance,
+            notice='new_visit',
         )
         # Send the notification data to the WebSocket consumer
         print('New visit added')
@@ -48,8 +47,8 @@ def send_visit_notification(sender, instance, created, **kwargs):
 def send_visit_status_notification(sender, instance, **kwargs):
     if instance.pk:
         old_instance = Visit.objects.get(pk=instance.pk)
-        print(f'old status {old_instance.status}')
-        print(f'new status {instance.status}')
+        # print(f'old status {old_instance.status}')
+        # print(f'new status {instance.status}')
         if old_instance.status != instance.status:
             authorized_users = CustomUser.objects.filter(role__sec_level__gte=4)
             for user in authorized_users:
@@ -57,6 +56,7 @@ def send_visit_status_notification(sender, instance, **kwargs):
                 Notification.objects.create(
                     user=user,
                     content_object=instance,
+                    notice='updated_visit',
                     # message=f"{instance.last_name} {instance.first_name}'s status has changed."
                 )
                 # Send the notification data to the WebSocket consumer
@@ -82,6 +82,7 @@ def send_appointment_notification(sender, instance, created, **kwargs):
         Notification.objects.create(
             user=instance.host,
             content_object=instance,
+            notice='new_appt',
         )
         # Send the notification data to the WebSocket consumer
         channel_layer = get_channel_layer()
@@ -100,6 +101,40 @@ def send_appointment_notification(sender, instance, created, **kwargs):
         async_to_sync(channel_layer.group_send)(room_name, event)
 
 
+@receiver(pre_save, sender=Appointment)
+def send_app_status_notification(sender, instance, **kwargs):
+    if instance.pk:
+        old_instance = Appointment.objects.get(pk=instance.pk)
+        # print(f'old status {old_instance.status}')
+        # print(f'new status {instance.status}')
+        if old_instance.status != instance.status:
+            authorized_users = CustomUser.objects.filter(
+                role__sec_level__gte=4)
+            for user in authorized_users:
+                # Create a notification for each user
+                Notification.objects.create(
+                    user=user,
+                    content_object=instance,
+                    notice='updated_appt',
+                    # message=f"{instance.last_name} {instance.first_name}'s status has changed."
+                )
+                # Send the notification data to the WebSocket consumer
+                channel_layer = get_channel_layer()
+                room_name = f'user_{user.id}_notifications'
+                event = {
+                    'type': 'notify_appt_status',
+                    'data': {
+                        'id': instance.id,
+                        'type': 'appt_status',
+                        'sex': instance.sex,
+                        'person': f'{instance.last_name} {instance.first_name}',
+                        'schedule': f'{instance.date} à {instance.arrived_at}',
+                    }
+                }
+                async_to_sync(channel_layer.group_send)(room_name, event)
+
+
+
 @receiver(post_save, sender=Profile)
 def send_new_user_notification(sender, instance, created, **kwargs):
     if created:
@@ -109,6 +144,7 @@ def send_new_user_notification(sender, instance, created, **kwargs):
             Notification.objects.create(
                 user=user,
                 content_object=instance,
+                notice='new_user',
                 # message=f"{instance.last_name} {instance.first_name}'s status has changed."
             )
             # Send the notification data to the WebSocket consumer
@@ -129,8 +165,8 @@ def send_new_user_notification(sender, instance, created, **kwargs):
 def send_user_status_notification(sender, instance, **kwargs):
     if instance.pk:
         old_instance = Profile.objects.get(pk=instance.pk)
-        print(f'old status {old_instance.status}')
-        print(f'new status {instance.status}')
+        # print(f'old status {old_instance.status}')
+        # print(f'new status {instance.status}')
         if old_instance.status != instance.status:
             authorized_users = CustomUser.objects.filter(role__sec_level__gte=4)
             for user in authorized_users:
@@ -138,6 +174,7 @@ def send_user_status_notification(sender, instance, **kwargs):
                 # Notification.objects.create(
                 #     user=user,
                 #     content_object=instance,
+                #     notice='new_user',
                 #     # message=f"{instance.last_name} {instance.first_name}'s status has changed."
                 # )
                 # Send the notification data to the WebSocket consumer

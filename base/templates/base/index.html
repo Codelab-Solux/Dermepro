@@ -96,7 +96,7 @@
       <button
         hx-target="#basic_dialog"
         hx-get="{% url 'create_appointment' %}"
-        class="w-fit px-3 py-2 bg-purple-100 text-black text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+      class="w-fit px-3 py-2 border border-purple-400 bg-purple-100 text-sm text-black hover:bg-purple-200 flex items-center rounded-lg transition duration-200 ease-in"
       >
         <span class="hidden md:inline mr-2">Nouveau rendez-vous</span>
         <i class="fa-solid fa-plus"></i>
@@ -114,7 +114,7 @@
     ><div class="py-4 flex justify-center items-center rounded-lg">
 
     <i class="m-auto fas fa-spinner fa-spin text-3xl mx-auto animate-spin"></i>
-  </div></div>
+
   </div>
   {% endif %}
 </div>

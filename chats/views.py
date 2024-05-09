@@ -34,6 +34,13 @@ def threads(req):
     return render(req, 'chats/partials/threads.html', context)
 
 
+def filter_threads(req):
+    name = req.POST.get('name')
+    threads = ChatThread.objects.filter(initiator__first_name__icontains=name) | ChatThread.objects.filter(
+        initiator__last_name__icontains=name) | ChatThread.objects.filter(responder__first_name__icontains=name) | ChatThread.objects.filter(responder__last_name__icontains=name)
+    context = {"threads": threads}
+    return render(req, 'chats/partials/threads.html', context)
+
 @login_required(login_url='login')
 def thread(req, pk):
     curr_user = req.user
@@ -89,6 +96,13 @@ def contacts(req):
     user = req.user
     contacts = CustomUser.objects.all().exclude(id=user.id)
     context = {'contacts': contacts}
+    return render(req, 'chats/partials/contacts.html', context)
+
+
+def filter_contacts(req):
+    name = req.POST.get('name')
+    contacts = CustomUser.objects.filter(first_name__icontains=name) | CustomUser.objects.filter(last_name__icontains=name)
+    context = {"contacts": contacts}
     return render(req, 'chats/partials/contacts.html', context)
 
 

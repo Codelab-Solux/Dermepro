@@ -17,7 +17,16 @@ function getWebSocketURL() {
 
 // Establish WebSocket connection
 var endpoint = getWebSocketURL();
-var messengerSocket = new WebSocket(endpoint);
+
+var messengerSocket;
+
+if (messengerSocket) {
+  messengerSocket.close();
+  messengerSocket = new WebSocket(endpoint);
+} else{
+  messengerSocket = new WebSocket(endpoint);
+}
+
 
 // WebSocket event listeners
 messengerSocket.onopen = () => {
@@ -30,7 +39,7 @@ messengerSocket.onclose = () => {
   console.log("WebSocket disconnected from " + endpoint);
 };
 
-// Handle incoming messages
+// Handle messages exchange
 function handleMessage(event) {
   var currentdate = new Date();
   var curr_time = `${currentdate.getHours()}:${currentdate.getMinutes()}`;
@@ -64,7 +73,7 @@ function handleMessage(event) {
 // Handle form submission
 chat_form.addEventListener("submit", (event) => {
   event.preventDefault();
-  var chat_input = document.getElementById("chat_input");
+  var chat_input = document.getElementById(`chat_input_${thread_id}`);
   var message = chat_input.value.trim();
   if (message !== "") {
     var data = JSON.stringify({

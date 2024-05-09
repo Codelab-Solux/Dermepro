@@ -15,11 +15,11 @@
     </div>
     {% else %}
     <div
-      class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 cursor-pointer"
+      class="w-full mb-4 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
     >
       {% for obj in visits %}
       <!--  -->
-      {% include 'base/components/visits/missed_card.html' %}
+      {% include 'base/components/visits/grid_card.html' %}
       <!--  -->
       {% endfor %}
     </div>

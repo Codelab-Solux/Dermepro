@@ -1,8 +1,8 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<section id="chats_base" class="flex gap-3 h-[calc(100vh-3em)] lg:h-[calc(100vh-8.5em)] ">
+<section id="chats_base" class="flex gap-3 h-[calc(100vh-5em)] md:h-[calc(100vh-7em)]">
     <!--------------------------------------- thread/contacts/groups lists --------------------------------------->
     <div
-      class="flex flex-col gap-2 w-full md:max-w-[260px] lg:max-w-[320px] xl:max-w-[380px] h-full"
+      class="flex flex-col gap-2 h-full w-full md:max-w-[260px] lg:max-w-[320px] xl:max-w-[380px]"
     >
       <!--------------------------------------- menu tabs buttons --------------------------------------->
       <div
@@ -31,81 +31,84 @@
             <span class="hidden xl:inline lg:ml-2">Groupes</span>
           </button> -->
       </div>
+
       <!--------------------------------------- threads --------------------------------------->
-      <section id="threads" class="tabcontent">
+      <section id="threads" class="tabcontent  h-[calc(100vh-96px)] md:h-[calc(100vh-160px)]  w-full">
         <button
           class="hidden"
           id="chats_reloader"
           hx-target=".thread_list"
           hx-get="{% url 'threads' %}"
         ></button>
-        <!--------------------------------------- filter form --------------------------------------->
-        <form
-          class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
-          hx-post="{% url 'filter_users' 'users' %}"
-          hx-target=".thread_list"
-        >
-          {% csrf_token %}
-
-          <input
-            hx-post="{% url 'filter_users' 'users' %}"
+        <div class="h-full flex flex-col">
+          <!--------------------------------------- filter form --------------------------------------->
+          <form
+            class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
+            hx-post="{% url 'filter_threads' %}"
             hx-target=".thread_list"
-            hx-trigger="keyup changed delay:500ms"
-            placeholder="Recherchez..."
-            name="name_or_email"
-            type="text"
-            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-700"
-          />
-        </form>
-        <div
-          class="p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-        >
+          >
+            {% csrf_token %}
+  
+            <input
+              hx-post="{% url 'filter_threads' %}"
+              hx-target=".thread_list"
+              hx-trigger="keyup changed delay:500ms"
+              placeholder="Recherchez..."
+              name="name"
+              type="text"
+              class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-950"
+            />
+          </form>
           <div
-            class="thread_list"
-            hx-get="{% url 'threads' %}"
-            hx-trigger="load, db_changed from:body"
-            hx-target="this"
-          ></div>
+            class="p-2 border bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
+          >
+            <div
+              class="thread_list"
+              hx-get="{% url 'threads' %}"
+              hx-trigger="load, db_changed from:body"
+              hx-target="this"
+            ></div>
+          </div>
         </div>
       </section>
 
       <!--------------------------------------- contacts --------------------------------------->
-      <section id="contacts" class="tabcontent hidden">
-        <!--------------------------------------- filter form --------------------------------------->
-        <form
-          class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
-          hx-post="{% url 'filter_users' 'users' %}"
-          hx-target=".contact_list"
-        >
-          {% csrf_token %}
-
-          <input
-            hx-post="{% url 'filter_users' 'users' %}"
+      <section id="contacts" class="tabcontent  h-[calc(100vh-96px)] md:h-[calc(100vh-160px)]  w-full">
+        <div class="h-full flex flex-col">
+          <!--------------------------------------- filter form --------------------------------------->
+          <form
+            class="mb-2 flex items-center gap-1 w-full lg:max-w-[400px]"
+            hx-post="{% url 'filter_contacts' %}"
             hx-target=".contact_list"
-            hx-trigger="keyup changed delay:500ms"
-            placeholder="Recherchez..."
-            name="name_or_email"
-            type="text"
-            class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-400"
-          />
-        </form>
-        <div
-          class="p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-        >
+          >
+            {% csrf_token %}
+
+            <input
+              hx-post="{% url 'filter_contacts' %}"
+              hx-target=".contact_list"
+              hx-trigger="keyup changed delay:500ms"
+              placeholder="Recherchez..."
+              name="name"
+              type="text"
+              class="px-3 py-2 text-xs rounded-md focus:bg-gray-100 outilne-none w-full border focus:border-none focus:outline-none focus:bg-white focus:ring-1 focus:ring-purple-950"
+            />
+          </form>
           <div
-            class="contact_list"
-            hx-get="{% url 'contacts' %}"
-            hx-trigger="load, db_changed from:body"
-            hx-target="this"
-          ></div>
+            class="p-2 border bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto">
+            <div
+              class="contact_list"
+              hx-get="{% url 'contacts' %}"
+              hx-trigger="load, db_changed from:body"
+              hx-target="this"
+            ></div>
+          </div>
         </div>
       </section>
 
       <!--------------------------------------- groups --------------------------------------->
-      <section id="groups" class="tabcontent hidden">
+      <section id="groups" class="tabcontent h-[calc(100vh-96px)] md:h-[calc(100vh-160px)] w-full">
         <div
-          class="filtered_groups p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto"
-        >
+          class="filtered_groups p-2 bg-gray-100 rounded-xl h-full w-full flex flex-col gap-3 overflow-y-auto">
           <div
             class="group_list"
             hx-get="{% url 'groups' %}"
@@ -120,8 +123,8 @@
     <div
       class="thread_page hidden md:flex flex-col gap-3 items-center justify-center w-full h-full border rounded-xl"
     >
-      <i class="fa-solid fa-comments text-gray-300 text-9xl"></i>
-      <p class="px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
+      <i class="fa-solid fa-comments text-purple-950 text-9xl"></i>
+      <p class="mt-4 px-4 py-2 w-fit mx-auto bg-purple-950 text-white text-sm rounded-lg">
         Restez connecter en temps réel.
       </p>
     </div>

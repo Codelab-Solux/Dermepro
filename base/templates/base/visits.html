@@ -6,25 +6,25 @@
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_visit' %}"
-      class="w-fit px-3 py-2 bg-purple-200 text-sm hover:text-black hover:bg-purple-300 flex items-center rounded-lg transition duration-200 ease-in"
+      class="w-fit px-3 py-2 border border-purple-400 bg-purple-100 text-sm text-black hover:bg-purple-200 flex items-center rounded-lg transition duration-200 ease-in"
     >
       <span class="mr-2">Nouvelle visite</span>
-      <i class="fa-solid fa-user-tie"></i>
+      <i class="fa-solid fa-plus"></i>
     </button>
     {% endif %}
     <!--------------------------------------- menu tabs buttons --------------------------------------->
     <div
       class="flex justify-between gap-1 text-xs tabbar h-fit w-full max-w-80 lg:max-w-[500px] p-1 bg-purple-950 rounded-lg"
     >
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
-        onclick="openTab(event, 'visits_listview')"
-        id="defaultTab"
-      >
-        <i class="fa-solid fa-list"></i>
-        <span class="ml-2">Liste</span>
-      </button>
-
+    
+    <button
+      class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
+      onclick="openTab(event, 'visits_listview')"
+      id="defaultTab"
+    >
+      <i class="fa-solid fa-list"></i>
+      <span class="ml-2">Liste</span>
+    </button>
       <button
         class="tabBtn px-4 py-2 bg-white hover:bg-purple-950 hover:text-white rounded-md w-full"
         onclick="openTab(event, 'visits_gridview')"
@@ -41,11 +41,13 @@
     class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-210px)] w-full"
   >
     <button
-      class="hidden visits_reloader"
+      class="hidden"
+      id="visits_reloader"
       hx-target=".visits_list"
       hx-get="{% url 'visits_list' %}"
     ></button>
     <form
+      id="listform"
       hx-post="{% url 'filter_visits' 'list' %}"
       hx-target=".visits_list"
       class="mb-4 p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
@@ -115,7 +117,7 @@
       </button>
       <button
         class="px-3 py-2 bg-gray-300 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
-        hx-on:click="clearForm()"
+        hx-on:click="clearForm('listform')"
         type="submit"
       >
         <i class="fa-solid fa-rotate-right"></i>
@@ -125,13 +127,13 @@
     <div class="h-full flex gap-2">
       <!--------------------------------------- visits list --------------------------------------->
       <div
-        class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+        class="p-2 bg-gray-100 border rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
       >
         <div
           class="visits_list"
           hx-get="{% url 'visits_list' %}"
-          hx-trigger="load, db_changed from:body"
-          hx-target="this"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
         ></div>
       </div>
 
@@ -140,9 +142,9 @@
       <div
         class="visit_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
       >
-        <i class="fa-solid fa-user-tie text-gray-300 text-9xl"></i>
-        <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-lg">
-          Cliquez sur une visite pour voir ses detail ici
+        <i class="fa-solid fa-user-tie text-purple-950 text-9xl"></i>
+      <p class="mt-4 px-4 py-2 w-fit mx-auto bg-purple-950 text-white text-sm rounded-lg">
+          Cliquez sur une visite pour voir ses details ici.
         </p>
       </div>
     </div>
@@ -153,13 +155,14 @@
     id="visits_gridview"
     class="tabcontent h-[calc(100vh-96px)] lg:h-[calc(100vh-200px)] w-full"
   >
-    <button
+    <!-- <button
       class="hidden visits_reloader"
       hx-target=".visits_grid"
       hx-get="{% url 'visits_grid' %}"
-    ></button>
+    ></button> -->
     <div class="grid gap-4">
       <form
+      id="gridform"
         hx-post="{% url 'filter_visits' 'grid' %}"
         hx-target=".visits_grid"
         class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
@@ -229,7 +232,7 @@
         </button>
         <button
           class="px-3 py-2 bg-gray-300 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
-          hx-on:click="clearForm()"
+          hx-on:click="clearForm('gridform')"
           type="submit"
         >
           <i class="fa-solid fa-rotate-right"></i>
@@ -252,8 +255,8 @@
 </div>
 
   <script>
-    function clearForm() {
-      var form = document.querySelector("form");
+    function clearForm(div_id) {
+      var form = document.getElementById(div_id);
       form.reset();
     }
 
@@ -275,10 +278,6 @@
       if (minitabs.length != 0) {
         minitabs = tabcontent.children;
       }
-    }
-    function clearForm() {
-      var form = document.querySelector("form");
-      form.reset();
     }
   </script>
 {% endblock %}

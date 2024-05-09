@@ -1,0 +1,40 @@
+
+<div class="obj_status{{obj.id}} text-black text:xs lg:text-xs">
+  {% if obj.content_object.status.id == 1 %}
+  <span class="px-2 py-1 bg-white rounded-full group">
+    <small class="text-[0.7rem]">
+      En attente 
+    </small>
+    <i class="text-xs text-purple-500 fa-solid fa-spinner"></i>
+  </span>
+  {% elif obj.content_object.status.id == 2 %}
+  <span class="px-2 py-1 bg-white rounded-full group">
+    <small class="text-[0.7rem]">
+      En cours 
+    </small>
+    <i class="text-xs text-amber-500 fa-solid fa-stopwatch"></i>
+  </span>
+  {% elif obj.content_object.status.id == 3 %}
+  <span class="px-2 py-1 bg-white rounded-full group">
+    <small class="text-[0.7rem]">
+      Terminé(e) 
+    </small>
+    <i class="text-xs text-green-500 fa-solid fa-hourglass-end"></i>
+  </span>
+  {% elif obj.content_object.status.id == 4 %}
+  <span class="px-2 py-1 bg-white rounded-full group">
+    <small class="text-[0.7rem]">
+      En absence 
+    </small>
+    <i class="text-xs text-red-500 fa-solid fa-toggle-off"></i>
+  </span>
+  {% else %}
+  <span class="px-2 py-1 bg-white rounded-full group">
+    <small class="text-[0.7rem]">
+      Rejeté(e) 
+    </small>
+    <i class="text-xs text-sky-500 fa-solid fa-ban"></i>
+  </span>
+  {% endif %}
+</div>
+

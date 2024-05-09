@@ -13,7 +13,7 @@
   {% for obj in appointments %}
   <div
     hx-get="{% url 'appointment_alt' obj.id %}"
-    hx-target="#appointment_dialog"
+    hx-target="#basic_dialog"
     class="relative p-4 h-full border hover:border-purple-400 hover:shadow-md rounded-md group cursor-pointer"
   >
     <i

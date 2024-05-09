@@ -19,11 +19,6 @@
   </div>
   {% endif %}
 
-  <!-- visit status indicator -->
-  <div class="absolute bottom-2 right-1 text-xs">
-    {% include 'base/components/status_badge.html' %}
-  </div>
-
   <!-- card info -->
 
   <article 
@@ -37,9 +32,20 @@
       <!--  -->
       {{obj.last_name}} {{obj.first_name}}
     </h4>
-    <span class="italic font-light">@{{obj.host.username}}</span>
-    <small class="mb-4 lg:mb-0 text:xs lg:text-sm text-gray-400"
-      >{{obj.date}} à {{obj.arrived_at}}</small
+    <span class="font-light text-xs text-gray-600"
+      ><i class="fa-solid fa-user text-xs"></i> {{obj.host.last_name}}
+      {{obj.host.first_name}}</span
     >
+
+    <small class="text:xs text-gray-400"
+      ><i class="fa-solid fa-calendar-days text-xs"></i> {{obj.date}}</small
+    >
+    <div class="flex items-start justify-between">
+      <small class="text:xs text-gray-400"
+        ><i class="fa-solid fa-clock text-xs"></i> {{obj.arrived_at}}</small
+      >
+      <!-- appointment status indicator -->
+      {% include 'base/components/status_badge.html' %}
+    </div>
   </article>
 </div>

@@ -2,9 +2,9 @@
 
 <!-- tablet/ PC view -->
 <div
-onclick="openTab(event, 'threads')"
+  onclick="openTab(event, 'threads')"
   hx-get="{% url 'thread' obj.id %}"
-  hx-target=".thread_details"
+  hx-target=".thread_page"
   hx-swap="innerHTML"
   class="p-2 cursor-pointer relative flex items-center gap-2 bg-white border hover:border-purple-400 hover:shadow-md w-full rounded-xl transition duration-300 ease-in-out"
 >

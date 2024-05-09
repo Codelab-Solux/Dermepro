@@ -1,14 +1,15 @@
 {% load static %}
 
-<!--  mobile view -->
+<!-- tablet/ PC view -->
 
 <div
-  class="md:hidden relative md:flex flex-col border bg-white focus:border-purple-950 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out overflow-hidden"
+  class="cursor-pointer relative flex flex-col border bg-white focus:border-purple-950 hover:border-purple-400 hover:shadow-md w-full rounded-lg transition duration-300 ease-in-out"
 >
   <!-- admin functions update + delete -->
   {% if user.role.sec_level >= 4 and obj.status.id == 1 %}
   <div class="flex absolute top-0 right-0 text-gray-300 text-xs">
     <button
+      onclick="hide_dialogs()"
       hx-target="#basic_dialog"
       hx-get="{% url 'edit_visit' obj.id %}"
       class="px-2 py-1 hover:bg-purple-300 border border-t-0 rounded-md hover:text-black"
@@ -18,21 +19,23 @@
   </div>
   {% endif %}
 
-  <!-- visit status indicator -->
-  <div class="absolute bottom-2 right-4 text-xs underlayer">
-    {% include 'base/components/status_badge.html' %}
-  </div>
-
   <!-- card info -->
 
-  <article class="p-4 md:text-sm lg:text-md flex flex-col justify-between">
+  <article
+    class="p-4 md:text-sm lg:text-md flex flex-col gap-1 justify-between"
+  >
     <h4 class="text-black font-bold">
       {% if obj.sex == 'male' %} M. {% else %} Mme. {% endif %}
       <!--  -->
       {{obj.last_name}} {{obj.first_name}}
     </h4>
+
     <div class="flex items-start justify-between">
-      <span class="italic font-light">@{{obj.host.username}}</span>
+
+      <span class="font-light text-xs text-gray-600"
+        ><i class="fa-solid fa-user text-xs"></i> {{obj.host.last_name}}
+        {{obj.host.first_name}}
+      </span>
       <button
         onclick="toggleAccordion('{{obj.id}}')"
         hx-get="{% url 'visit' obj.id %}"
@@ -43,15 +46,28 @@
         <i id="hider{{obj.id}}" class="hidden fa-solid fa-caret-up"></i>
       </button>
     </div>
-    <small class="mb-4 lg:mb-0 text:xs lg:text-sm text-gray-400"
-      >{{obj.date}} à {{obj.arrived_at}}</small
+
+    <small class="text:xs text-gray-400"
+      ><i class="fa-solid fa-calendar-days text-xs"></i> {{obj.date}}</small
     >
+    <div class="flex items-start justify-between">
+      <small class="text:xs text-gray-400"
+        ><i class="fa-solid fa-clock text-xs"></i> {{obj.arrived_at}}</small
+      >
+      <!-- visit status indicator -->
+      {% include 'base/components/status_badge.html' %}
+    </div>
   </article>
 </div>
+
 <!-- htmx injects current object details into the accordion -->
 <div
   class="visit_details{{obj.id}} accordion active_accordion{{obj.id}} hidden mx-2 p-3 sm:p-4 border bg-gray-50 rounded-xl md:overflow-y-auto"
-></div>
+>
+
+</div>
+
+
 
 <script>
   function toggleAccordion(div_id) {

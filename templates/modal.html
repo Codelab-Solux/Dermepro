@@ -1,25 +1,11 @@
 {% load static %}
 <!-----------------------------------------------------  modal ------------------------------------------------------>
-<div id="modal" class="z-50 hidden lg:pl-[80px] xl:pl-[300px]">
+<div id="modal" class="z-50 hidden pl-[60px] lg:pl-[80px] xl:pl-[300px]">
   <div
     id="basic_dialog"
-    class="dialog max-w-[600px] rounded-xl"
+    class="m-auto dialog w-full max-w-[600px] rounded-xl"
     hx-target="this"
   >
-  </div>
-  <div
-    id="visit_dialog"
-    class="dialog max-w-[600px] rounded-xl"
-    hx-target="this"
-  >
-    {% include 'base/visit.html' %}
-  </div>
-  <div
-    id="appointment_dialog"
-    class="dialog max-w-[600px] rounded-xl"
-    hx-target="this"
-  >
-    {% include 'base/appointment.html' %}
   </div>
 </div>
 
@@ -42,7 +28,7 @@
     background-color: #fefefe; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    margin: 5% auto; /* 15% from the top and centered */
+    margin: 7% auto;
     width: 80%; /* Could be more or less, depending on screen size */
   }
 </style>

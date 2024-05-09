@@ -1,19 +1,24 @@
 /* scrollbar---------------------------------------------------------------------------------------------------- */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0.25em;
   height: 0.25em;
-}
+} */
 
 ::-webkit-scrollbar-track {
-  background: #f3e8ff;
   border-radius: 100vw;
   margin-block: 0.2em;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3b0764;
   border: 0.2em solid #f3e8ff;
   border-radius: 100vw;
   margin-block: 0.2em;
+}
+
+.smoothen{
+  transition-property: all;
+transition-duration: 200ms;
+transition-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
+
 }
 
 /* ul and li ---------------------------------------------------------------------------------------------------- */

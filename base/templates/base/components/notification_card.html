@@ -1,81 +1,165 @@
 {% load base_tags %}
 
-{% if obj.content_object|get_model_name == "chatmessage" %}
-<a hx-post="{% url 'read_notification' obj.id %}" onclick="navigateToUrl('{% url 'chats' %}')">
-<li
-  id="notif{{obj.content_object.id}}"
-  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer flex gap-2 items-center"
->
-  <img
-    class="w-6 h-6 rounded-full object-cover"
-    src="{{obj.content_object.sender.profile.image.url}}"
-    alt="Rounded avatar"
-  />
-  <article class="grid gap-1">
-    <b>{{obj.content_object.sender}}</b>
-    <p>{{obj.content_object.message|truncatechars:10}}</p>
-  </article>
-</li>
-</a>
-
-{% elif obj.content_object|get_model_name == "visit" %}
-<a hx-post="{% url 'read_notification' obj.id %}"   onclick="navigateToUrl('{% url 'visits' %}')">
-<li
-
-  id="notif{{obj.content_object.id}}"
-  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
->
-  <span><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Visite de </span
-  ><b
-    >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
-    {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b
+<div class="text-black">
+  {% if obj.notice == "chat" %}
+  <a
+    hx-post="{% url 'read_notification' obj.id %}"
+    onclick="navigateToUrl('{% url 'chats' %}')"
   >
-</li>
-</a>
-
-{% elif obj.content_object|get_model_name == "appointment" %}
-<a hx-post="{% url 'read_notification' obj.id %}" onclick="navigateToUrl('{% url 'appointments' %}')">
-<li
-  id="notif{{obj.content_object.id}}"
-  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
->
-  <span
-    ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Rendez-vous avec </span
-  ><b
-    >{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
-    {{obj.content_object.last_name}} {{obj.content_object.first_name}}</b
+    <li
+      id="notif{{obj.content_object.id}}"
+      class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer flex gap-2 items-center"
+    >
+      <img
+        class="w-6 h-6 rounded-full object-cover"
+        src="{{obj.content_object.sender.profile.image.url}}"
+        alt="Rounded avatar"
+      />
+      <article class="grid gap-1">
+        <b>{{obj.content_object.sender}}</b>
+        <p>{{obj.content_object.message|truncatechars:10}}</p>
+      </article>
+    </li>
+  </a>
+  {% elif obj.notice == "new_user" %}
+  <a
+    hx-post="{% url 'read_notification' obj.id %}"
+    onclick="navigateToUrl('{% url 'users' %}')"
   >
-</li>
-</a>
-{% elif obj.content_object|get_model_name == "user" %}
-<a hx-post="{% url 'read_notification' obj.id %}"  onclick="navigateToUrl('{% url 'users' %}')">
-<li
-  id="notif{{obj.content_object.id}}"
-  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
->
-<b
->{% if obj.content_object.sex == 'male' %} M. {% else %} Mme. {% endif %}
-{{obj.content_object.user.last_name}} {{obj.content_object.user.first_name}}</b
->
-<span
-  ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Vien d'etre ajouté; faites lui un coucou </span
->
-</li>
-</a>
+    <li
+      id="notif{{obj.content_object.id}}"
+      class="notif_card w-full px-3 py-2 bg-white rounded-lg border cursor-pointer grid gap-2 items-center"
+    >
+      <b
+        >{% if obj.content_object.sex == 'male' %} M. {% else %} 
+        <!--  -->
+        Mme. {% endif %} {{obj.content_object.user.last_name}}
+        <!--  -->
+        {{obj.content_object.user.first_name}}</b
+      >
+      <span
+        ><i class="mr-2 fa-solid fa-user-tie mr-2"></i>Vien d'etre ajouté;
+        faites lui un coucou
+      </span>
+    </li>
+  </a>
+  {% else %} 
+  <!--  -->
+  {% with obj_status=obj.content_object.status.id %}
+  <div>
+    {% if obj.notice == "new_visit" %}
+    <a
+      hx-post="{% url 'read_notification' obj.id %}"
+      onclick="navigateToUrl('{% url 'visits' %}')"
+    >
+      <li
+        id="notif{{obj.content_object.id}}"
+        class="notif_card w-full px-3 py-2 bg-white rounded-lg border cursor-pointer grid gap-2 items-center"
+      >
+        <div
+          class="flex justify-between {% if obj_status == 1 %} bg-purple-200 {% else %} bg-red-200 {% endif %} text-xs px-2 py-2 rounded-lg"
+        >
+          <span>
+            <i class="mr-2 fa-solid fa-user-tie mr-2"></i> Nouvelle visite
+          </span>
+          {% include 'base/components/status_badge_alt.html' %}
+        </div>
+        <b
+          >{% if obj.content_object.sex == 'male' %} M. 
+          <!--  -->
+          {% else %} Mme. {% endif%} {{obj.content_object.last_name}}
+          <!--  -->
+          {{obj.content_object.first_name}}</b
+        >
+      </li>
+    </a>
+    {% elif obj.notice == "updated_visit" %}
+    <a
+      hx-post="{% url 'read_notification' obj.id %}"
+      onclick="navigateToUrl('{% url 'visits' %}')"
+    >
+      <li
+        id="notif{{obj.content_object.id}}"
+        class="notif_card w-full px-3 py-2 bg-white rounded-lg border cursor-pointer grid gap-2 items-center"
+      >
+        <div
+          class="flex justify-between {% if obj_status == 2 %} bg-amber-200 {% elif obj_status == 3 %} bg-green-200 {% else %} bg-sky-200 {% endif %} text-xs px-2 py-2 rounded-lg"
+        >
+          <span> <i class="mr-2 fa-solid fa-user-tie mr-2"></i> Visite </span>
+          {% include 'base/components/status_badge_alt.html' %}
+        </div>
 
-{% else %}
-<li
-  id="notif{{obj.content_object.id}}"
-  class="notif_card w-full px-3 py-2 bg-white rounded-md border cursor-pointer grid gap-2 items-center"
->
-  <span
-    ><i class="mr-2 fa-solid fa-question mr-2"></i>Notification anonym</span
-  >
-</li>
-{% endif %}
+        <b
+          >{% if obj.content_object.sex == 'male' %} M. 
+          <!--  -->
+          {% else %} Mme. {% endif%} {{obj.content_object.last_name}}
+          <!--  -->
+          {{obj.content_object.first_name}}</b
+        >
+      </li>
+    </a>
+    {% elif obj.notice == "new_appt" %}
+    <a
+      hx-post="{% url 'read_notification' obj.id %}"
+      onclick="navigateToUrl('{% url 'appointments' %}')"
+    >
+      <li
+        id="notif{{obj.content_object.id}}"
+        class="notif_card w-full px-3 py-2 bg-white rounded-lg border cursor-pointer grid gap-2 items-center"
+      >
+        <div
+          class="flex justify-between {% if obj_status == 1 %} bg-purple-200 {% else %} bg-red-200 {% endif %} text-xs px-2 py-2 rounded-lg"
+        >
+          <span>
+            <i class="mr-2 fa-solid  fa-calendar-days mr-2"></i> Nouveau Rendez-vous
+          </span>
+          {% include 'base/components/status_badge_alt.html' %}
+        </div>
+        <b
+          >{% if obj.content_object.sex == 'male' %} M. 
+          <!--  -->
+          {% else %} Mme. {% endif%} {{obj.content_object.last_name}}
+          <!--  -->
+          {{obj.content_object.first_name}}</b
+        >
+      </li>
+    </a>
+    {% elif obj.notice == "updated_appt" %}
+    <a
+      hx-post="{% url 'read_notification' obj.id %}"
+      onclick="navigateToUrl('{% url 'visits' %}')"
+    >
+      <li
+        id="notif{{obj.content_object.id}}"
+        class="notif_card w-full px-3 py-2 bg-white rounded-lg border cursor-pointer grid gap-2 items-center"
+      >
+        <div
+          class="flex justify-between {% if obj_status == 2 %} bg-amber-200 {% elif obj_status == 3 %} bg-green-200 {% else %} bg-sky-200 {% endif %} text-xs px-2 py-2 rounded-lg"
+        >
+          <span>
+            <i class="mr-2 fa-solid fa-calendar-days mr-2"></i> Rendez-vous
+          </span>
+          {% include 'base/components/status_badge_alt.html' %}
+        </div>
+
+        <b
+          >{% if obj.content_object.sex == 'male' %} M. 
+          <!--  -->
+          {% else %} Mme. {% endif%} {{obj.content_object.last_name}}
+          <!--  -->
+          {{obj.content_object.first_name}}</b
+        >
+      </li>
+    </a>
+    {% endif %}
+  </div>
+  {% endwith %}
+  <!--  -->
+  {% endif %}
+</div>
 
 <script>
-function navigateToUrl(url) {
-  window.location.href = url;
-}
+  function navigateToUrl(url) {
+    window.location.href = url;
+  }
 </script>

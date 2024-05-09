@@ -42,7 +42,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'type': event['data']['type'],
             'sex': event['data']['sex'],
             'person': event['data']['person'],
-            'schedule': event['data']['schedule'],
         }))
 
     async def notify_visit_status(self, event):
@@ -51,7 +50,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'type': event['data']['type'],
             'sex': event['data']['sex'],
             'person': event['data']['person'],
-            'schedule': event['data']['schedule'],
         }))
     
     async def notify_appointment(self, event):
@@ -60,7 +58,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'type': event['data']['type'],
             'sex': event['data']['sex'],
             'person': event['data']['person'],
-            'schedule': event['data']['schedule'],
         }))
 
     async def notify_appointment_status(self, event):
@@ -69,7 +66,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'type': event['data']['type'],
             'sex': event['data']['sex'],
             'person': event['data']['person'],
-            'schedule': event['data']['schedule'],
         }))
     
     async def notify_message(self, event):

@@ -1,30 +1,30 @@
-{% if curr_profile %}
+{% if curr_obj %}
 <div class="text-black text:xs" id="obj_status{{obj.id}}">
-  {% if curr_profile.is_onsite %}
-  <span class="px-3 py-1 bg-green-200 rounded-md group">
-    <i class="text-sm fa-solid fa-eye lg:mr-2"></i>
-    <small class="hidden lg:inline"> Present </small>
-  </span>
+  {% if curr_obj.profile.is_onsite %}
+  <p class="px-3 py-1 text-cent(e)er bg-green-200 rounded-md w-full">
+    <i class="text-sm fa-solid fa-arrow-down mr-2"></i>
+    Présent(e)
+  </p>
   {% else %}
-  <span class="px-3 py-1 bg-red-200 rounded-md group">
-    <i class="text-sm fa-solid fa-eye-slash lg:mr-2"></i>
-    <small class="hidden lg:inline"> Absent </small>
-  </span>
+  <p class="px-3 py-1 text-cent(e)er bg-red-200 rounded-md w-full">
+    <i class="text-sm fa-solid fa-arrow-up mr-2"></i>
+    Absent(e)
+  </p>
   {% endif %}
 </div>
 {% else %}
 <div class="text-black text:xs" id="obj_status{{obj.id}}">
   {% if obj.profile.is_onsite %}
   <span class="px-3 py-1 bg-green-200 rounded-md group">
-    <i class="fa-solid fa-eye"></i>
+    <i class="fa-solid fa-arrow-down"></i>
     <small class="hidden group-hover:inline ml-2 text-[0.7rem]">
-      Present
+      Présent(e)
     </small>
   </span>
   {% else %}
   <span class="px-3 py-1 bg-red-200 rounded-md group">
-    <i class="fa-solid fa-eye-slash"></i>
-    <small class="hidden group-hover:inline ml-2 text-[0.7rem]"> Absent </small>
+    <i class="fa-solid fa-arrow-up"></i>
+    <small class="hidden group-hover:inline ml-2 text-[0.7rem]"> Absent(e) </small>
   </span>
   {% endif %}
 </div>

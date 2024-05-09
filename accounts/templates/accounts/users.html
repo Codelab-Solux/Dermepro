@@ -1,112 +1,115 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
-<div class="pb-4 flex flex-col gap-3">
-
-  <!--------------------------------------- filter form --------------------------------------->
-  <form
-    hx-post="{% url 'filter_users' 'users' %}"
-    hx-target=".users_list"
-    class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
-  >
-    {% csrf_token %}
-    <!--  -->
-    <div class="w-full flex justify-between items-center gap-1">
-      {% if user.role.sec_level >= 5 %}
-      <!-- user types -->
-      <select
-        name="user_type"
-        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
-      >
-        <option value="" selected disabled>Rôles</option>
-        {% for obj in user_roles %}
-        <option value="{{obj.id}}">{{obj.name}}</option>
-        {% endfor %}
-      </select>
-      {% endif %}
-      <input
-        hx-post="{% url 'filter_users' 'users' %}"
-        hx-target=".users_list"
-        hx-trigger="keyup changed delay:500ms"
-        placeholder="Nom"
-        name="last_name"
-        type="text"
-        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
-      />
-      <input
-        hx-post="{% url 'filter_users' 'users' %}"
-        hx-target=".users_list"
-        hx-trigger="keyup changed delay:500ms"
-        placeholder="Prénoms"
-        name="first_name"
-        type="text"
-        class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
-      />
-      <!-- sex -->
-      <select
-        name="user_sex"
-        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
-      >
-        <option value="" selected disabled>Sexe</option>
-        <option value="male">Masculin</option>
-        <option value="female">Feminin</option>
-      </select>
-      <!-- user statuses -->
-      <select
-        name="user_status"
-        class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
-      >
-        <option value="" selected disabled>Disponibilité</option>
-        {% for obj in user_statuses %}
-        <option value="{{obj.id}}">{{obj.title}}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <button
-      class="px-3 py-2 bg-gray-100 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
-      type="submit"
+<div class="grid h-[calc(100vh-5em)] md:h-[calc(100vh-7em)]">
+  
+  <div class="pb-4 flex flex-col gap-3">
+  
+    <!--------------------------------------- filter form --------------------------------------->
+    <form
+      hx-post="{% url 'filter_users' 'users' %}"
+      hx-target=".users_list"
+      class="p-1 w-full bg-gray-100 rounded-lg flex justify-between items-center gap-1 text-sm xl:text-sm"
     >
-      <i class="fa-solid fa-filter"></i>
-    </button>
-    <button
-      class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
-      hx-on:click="clearForm()"
-      type="submit"
-    >
-      <i class="fa-solid fa-rotate-right"></i>
-    </button>
-  </form>
-</div>
-<!--------------------------------------- filter tabs buttons --------------------------------------->
-
-<!--------------------------------------- users --------------------------------------->
-<section
-  id="users"
-  class="h-[calc(100vh-96px)] lg:h-[calc(100vh-116px)] w-full flex gap-2"
->
-  <!--------------------------------------- user list --------------------------------------->
-  <div
-    class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+      {% csrf_token %}
+      <!--  -->
+      <div class="w-full flex justify-between items-center gap-1">
+        {% if user.role.sec_level >= 5 %}
+        <!-- user types -->
+        <select
+          name="user_type"
+          class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+        >
+          <option value="" selected disabled>Rôles</option>
+          {% for obj in user_roles %}
+          <option value="{{obj.id}}">{{obj.name}}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
+        <input
+          hx-post="{% url 'filter_users' 'users' %}"
+          hx-target=".users_list"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Nom"
+          name="last_name"
+          type="text"
+          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+        />
+        <input
+          hx-post="{% url 'filter_users' 'users' %}"
+          hx-target=".users_list"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Prénoms"
+          name="first_name"
+          type="text"
+          class="px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-full max-w-[400px] border"
+        />
+        <!-- sex -->
+        <select
+          name="user_sex"
+          class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit"
+        >
+          <option value="" selected disabled>Sexe</option>
+          <option value="male">Masculin</option>
+          <option value="female">Feminin</option>
+        </select>
+        <!-- user statuses -->
+        <select
+          name="user_status"
+          class="hidden lg:inline px-3 py-2 rounded-md focus:bg-gray-100 outilne-none w-fit 2xl:w-full border"
+        >
+          <option value="" selected disabled>Disponibilité</option>
+          {% for obj in user_statuses %}
+          <option value="{{obj.id}}">{{obj.title}}</option>
+          {% endfor %}
+        </select>
+      </div>
+  
+      <button
+        class="px-3 py-2 bg-gray-100 hover:bg-purple-400 hover:text-black rounded-md transition duration-200 ease-in"
+        type="submit"
+      >
+        <i class="fa-solid fa-filter"></i>
+      </button>
+      <button
+        class="px-3 py-2 bg-red-200 hover:bg-red-400 hover:text-black rounded-md transition duration-200 ease-in"
+        hx-on:click="clearForm()"
+        type="submit"
+      >
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+    </form>
+  </div>
+  <!--------------------------------------- filter tabs buttons --------------------------------------->
+  
+  <!--------------------------------------- users --------------------------------------->
+  <section
+    id="users"
+    class="h-[calc(100vh-140px)] md:h-[calc(100vh-160px)] w-full flex gap-2"
   >
+    <!--------------------------------------- user list --------------------------------------->
     <div
-      class="users_list"
-      hx-get="{% url 'users_list' 'users' %}"
-      hx-trigger="load, db_changed from:body"
-      hx-target="this"
-    ></div>
-  </div>
-
-  <!--------------------------------------- user details --------------------------------------->
-
-  <div
-    class="user_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
-  >
-     <i class="fa-solid fa-user-alt text-gray-300 text-9xl"></i>
-    <p class="mt-4 px-4 py-2 w-fit mx-auto bg-gray-100 text-sm rounded-xl">
-      Cliquez sur un utilisateur pour voir ses detail ici.
-    </p>
-  </div>
-</section>
+      class="p-2 bg-gray-100 rounded-xl h-full w-full md:max-w-[230px] lg:max-w-[330px] flex flex-col gap-3 overflow-y-auto"
+    >
+      <div
+        class="users_list"
+        hx-get="{% url 'users_list' 'users' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+  
+    <!--------------------------------------- user details --------------------------------------->
+  
+    <div
+      class="user_details hidden md:flex flex-col items-center justify-center h-full w-full p-6 border rounded-xl md:overflow-y-auto"
+    >
+       <i class="fa-solid fa-user-alt text-purple-950 text-9xl"></i>
+      <p class="mt-4 px-4 py-2 w-fit mx-auto bg-purple-950 text-white text-sm rounded-lg">
+        Cliquez sur un utilisateur pour voir ses detail ici.
+      </p>
+    </div>
+  </section>
+</div>
 
 <script>
     function clearForm() {

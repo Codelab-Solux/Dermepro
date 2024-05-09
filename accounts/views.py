@@ -282,7 +282,7 @@ def time_mgt(req):
 
 
 def time_mgt_details(req, pk):
-    curr_user = get_object_or_404(CustomUser, id=pk)
+    curr_obj = get_object_or_404(CustomUser, id=pk)
     curr_date = datetime.today()
     day = get_day_number_from_date(curr_date)
 
@@ -290,7 +290,7 @@ def time_mgt_details(req, pk):
         "time_mgt_details_page": "active",
         'title': 'User Times',
         'day': day,
-        'curr_user': curr_user,
+        'curr_obj': curr_obj,
         'curr_date': curr_date,
     }
     return render(req, 'accounts/time_mgt_details.html', context)

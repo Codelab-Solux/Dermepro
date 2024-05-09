@@ -1,13 +1,15 @@
 {% load static %} {% with curr_profile=curr_obj.profile %}
-<section
-    class="w-full text-gray-200 text-md rounded-xl flex flex-col gap-4"
-  >
+<div class="flex flex-col w-full h-full gap-4">
 
+  <section
+    id="details"
+    class="h-fit w-full flex flex-col justify-between gap-8"
+  >
     <div class="mt-10 flex gap-2 text-xs">
       {% include 'accounts/components/time_badge.html' %}
     </div>
 
-    <div class="flex flex-col lg:flex-row justify-between">
+    <div class="flex flex-col xl:flex-row justify-between items-center">
       {% if not curr_profile.image %}
       <img
         class="h-80 w-80 bg-white rounded-full object-cover"
@@ -29,8 +31,8 @@
       </div>
     </div>
 
-    <div class="w-full grid xl:grid-cols-2 gap-2">
-      <article class="border text-gray-700 rounded-lg p-4 grid gap-2">
+    <div class="mt-4 w-full grid xl:grid-cols-2 gap-2">
+      <article class="border text-gray-700 rounded-xl p-4 grid gap-2">
         <div>
           <h4 class="text-black text-2xl font-bold">
             {{curr_obj.last_name}} {{curr_obj.first_name}}
@@ -49,17 +51,15 @@
           <span class="text-black"> {{curr_profile.nationality}} </span>
         </p>
         <p>
-          <i class="fa-solid fa-calendar-days text-gray-800 mr-3"></i> Jours
-          d'anniversaire :
+          <i class="fa-solid fa-calendar-days text-gray-800 mr-3"></i> Né le :
           <span class="text-black"> {{curr_profile.birthday}} </span>
         </p>
         <p>
-          <i class="fa-solid fa-hashtag text-gray-800 mr-3"></i> Numero
-          d'immatriculation :
+          <i class="fa-solid fa-hashtag text-gray-800 mr-3"></i> N° d'immatriculation :
           <span class="text-black"> {{curr_profile.reg_number|title}} </span>
         </p>
         <p>
-          <i class="fa-solid fa-phone text-gray-800 mr-3"></i> Numero de
+          <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de
           telephone :
           <span class="text-black"> {{curr_profile.phone_alt}} </span>
         </p>
@@ -83,43 +83,51 @@
       </article>
 
       <div
-        class="bg-purple-950 text-white rounded-lg p-6 flex flex-col justify-center gap-4 text-sm"
+        class="bg-purple-950 text-white rounded-xl p-6 flex flex-col justify-center gap-4 text-sm"
       >
-        <p>
-          <i class="fa-solid fa-user-tie"
-            ><i class="fa-solid fa-clock text-xs"></i
-          ></i>
-          Visites
+        <p class="grid grid-cols-2">
+          <span>
+            <i class="fa-solid fa-user-tie text-xl"></i>
+            <i class="fa-solid fa-clock text-xs"></i>
+              Visites
+          </span>
           <span class="text-md text-black bg-amber-200 rounded-md px-4 py-1">
             {{visit_hours}} minutes
           </span>
         </p>
-        <p>
-          <i class="fa-solid fa-calendar-days"
-            ><i class="fa-solid fa-clock text-xs"></i
-          ></i>
-          Rendez-vous
+        <p class="grid grid-cols-2">
+          <span>
+            <i class="fa-solid fa-calendar-days text-xl"></i>
+            <i class="fa-solid fa-clock text-xs"></i>
+              Rendez-vous
+            </span>
           <span class="text-md text-black bg-amber-200 rounded-md px-4 py-1">
             {{appt_hours}} minutes
           </span>
         </p>
-        <p>
-          <i class="fa-solid fa-building-user"></i> Departement
+        <p class="grid grid-cols-2">
+          <span>
+            <i class="fa-solid fa-building-user text-xl"></i> Departement
+          </span>
           <span class="text-md text-black bg-amber-200 rounded-md px-4 py-1">
             {{curr_profile.department}}
           </span>
         </p>
-        <p>
-          <i class="fa-solid fa-briefcase"></i> Position
+        <p class="grid grid-cols-2">
+          <span>
+            <i class="fa-solid fa-briefcase text-xl"></i> Position
+          </span>
           <span class="text-md text-black bg-amber-200 rounded-md px-4 py-1">
             {{curr_profile.job_position}}
           </span>
         </p>
-        <p class="text-sm">Bio : <span class=""> {{curr_profile.bio}}</span></p>
+        <p class="text-sm text-black bg-purple-200 rounded-lg p-3"> <b> Bio : </b> <i> {{curr_profile.bio}}</i></p>
       </div>
     </div>
 
-</section>
+  </section>
+
+</div>
 
 <script>
   // // general overview char ----------------------------------------------------------------------------------------------------

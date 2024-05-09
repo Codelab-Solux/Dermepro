@@ -5,7 +5,7 @@
     <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_visit' %}"
-      class="w-fit px-3 py-2 bg-purple-100 text-black text-sm hover:bg-purple-300 flex items-center rounded-md cursor-pointer transition duration-200 ease-in"
+      class="w-fit px-3 py-2 border border-purple-400 bg-purple-100 text-sm text-black hover:bg-purple-200 flex items-center rounded-lg transition duration-200 ease-in"
     >
       <span class="hidden md:inline mr-2">Nouvelle visite</span>
       <i class="fa-solid fa-plus"></i>
@@ -31,7 +31,7 @@
     <div class="grid md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-2">
       {% for obj in visits %}
       <!--  -->
-      {% include 'base/components/visits/alt_card.html' %}
+      {% include 'base/components/visits/grid_card.html' %}
       <!--  -->
       {% endfor %}
     </div>
