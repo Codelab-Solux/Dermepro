@@ -183,11 +183,6 @@ MEDIA_ROOT = BASE_DIR / 'uploads'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
-AUTH_USER_MODEL = "accounts.CustomUser"  # new
 
 
 # redis channel layer for render webservice
@@ -209,6 +204,7 @@ CHANNEL_LAYERS = {
             "hosts": [("localhost", 6379)],  # Adjust host and port as needed
         },
     },
+    
 }
 
 # windows in-memory channel layer
@@ -217,3 +213,12 @@ CHANNEL_LAYERS = {
 #         "BACKEND": "channels.layers.InMemoryChannelLayer"
 #     }
 # }
+
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# very important for the overiding of the default user model!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+AUTH_USER_MODEL = "accounts.CustomUser"  # new

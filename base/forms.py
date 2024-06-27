@@ -198,7 +198,6 @@ class CompanyForm(forms.ModelForm):
             'closing_time': "Heure de fermeture",
         }
         widgets = {
-
             'manager': forms.Select(attrs={'id': 'host_selector', 'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
             'slogan': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
