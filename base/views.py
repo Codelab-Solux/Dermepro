@@ -15,9 +15,6 @@ from accounts.forms import RoleForm
 from accounts.models import *
 from .models import *
 from .forms import *
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from io import BytesIO
 import csv
 import qrcode

@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.utils.timezone
-import phonenumber_field.modelfields
 
 
 class Migration(migrations.Migration):
@@ -79,7 +78,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='appointment',
             name='id_document',
-            field=models.CharField(blank=True, choices=[('id_card', "Carte Nationale d'Identité (CNI)"), ('consul_card', 'Carte Consulaire'), ('ecowas_card', 'Carte CEDEAO'), ('driver_license', 'Permit de conduire'), ('passport', 'Passport international')], default='', max_length=50, null=True),
+            field=models.CharField(blank=True, choices=[('id_card', "Carte Nationale d'Identité (CNI)"), ('consul_card', 'Carte Consulaire'), (
+                'ecowas_card', 'Carte CEDEAO'), ('driver_license', 'Permit de conduire'), ('passport', 'Passport international')], default='', max_length=50, null=True),
         ),
         migrations.AddField(
             model_name='appointment',
@@ -89,17 +89,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='appointment',
             name='phone',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None),
+            field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
             model_name='appointment',
             name='signature_in',
-            field=models.ImageField(blank=True, null=True, upload_to='signatures/in/'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='signatures/in/'),
         ),
         migrations.AddField(
             model_name='appointment',
             name='signature_out',
-            field=models.ImageField(blank=True, null=True, upload_to='signatures/out/'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='signatures/out/'),
         ),
         migrations.AddField(
             model_name='visit',
@@ -109,7 +111,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='visit',
             name='id_document',
-            field=models.CharField(blank=True, choices=[('id_card', "Carte Nationale d'Identité (CNI)"), ('consul_card', 'Carte Consulaire'), ('ecowas_card', 'Carte CEDEAO'), ('driver_license', 'Permit de conduire'), ('passport', 'Passport international')], default='', max_length=50, null=True),
+            field=models.CharField(blank=True, choices=[('id_card', "Carte Nationale d'Identité (CNI)"), ('consul_card', 'Carte Consulaire'), (
+                'ecowas_card', 'Carte CEDEAO'), ('driver_license', 'Permit de conduire'), ('passport', 'Passport international')], default='', max_length=50, null=True),
         ),
         migrations.AddField(
             model_name='visit',
@@ -130,17 +133,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='visit',
             name='phone',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None),
+            field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
             model_name='visit',
             name='signature_in',
-            field=models.ImageField(blank=True, null=True, upload_to='signatures/in/'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='signatures/in/'),
         ),
         migrations.AddField(
             model_name='visit',
             name='signature_out',
-            field=models.ImageField(blank=True, null=True, upload_to='signatures/out/'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='signatures/out/'),
         ),
         migrations.AlterField(
             model_name='visit',

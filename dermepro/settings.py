@@ -12,11 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from django.contrib import messages
 from pathlib import Path
-import dj_database_url
-import environ
-
-env = environ.Env()
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,12 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'phonenumber_field',
     'django_htmx',
     'base',
     'accounts',
     'chats',
-    'dj_database_url',
 ]
 
 HASHIDS_SALT = 'SOLASCRIPTORA'
@@ -114,7 +107,6 @@ WSGI_APPLICATION = 'dermepro.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': dj_database_url.parse('postgres://Codelab-Solux:CZRuAaG50cYp@ep-summer-surf-475106.us-east-2.aws.neon.tech/neondb')
     'default': {
 
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',

@@ -1,7 +1,7 @@
 from .models import *
 from django import forms
 from django.forms import ModelForm
-from phonenumber_field.formfields import PhoneNumberField
+
 
 
 class TimeInput(forms.TimeInput):
@@ -13,7 +13,7 @@ class DateInput(forms.DateInput):
 
 
 class VisitForm(forms.ModelForm):
-    # phone = PhoneNumberField()
+    
     class Meta:
         model = Visit
         fields = ('host',
@@ -54,7 +54,7 @@ class VisitForm(forms.ModelForm):
 
 
 class EditVisitForm(forms.ModelForm):
-    # phone = PhoneNumberField()
+    
     class Meta:
         model = Visit
         fields = '__all__'
@@ -93,7 +93,7 @@ class EditVisitForm(forms.ModelForm):
 
 
 class AppointmentCreateForm(forms.ModelForm):
-    # phone = PhoneNumberField()
+    
     class Meta:
         model = Appointment
         fields = ('host',
@@ -135,7 +135,7 @@ class AppointmentCreateForm(forms.ModelForm):
 
 
 class AppointmentEditForm(forms.ModelForm):
-    # phone = PhoneNumberField()
+    
     class Meta:
         model = Appointment
         fields = '__all__'

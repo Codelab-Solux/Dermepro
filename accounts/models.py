@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.urls import reverse
-from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from django.utils import timezone
 from base.utils import h_encode, h_decode
@@ -51,7 +50,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, blank=True, null=True)
-    phone = PhoneNumberField(unique=True, blank=True, null=True)
+    phone = models.CharField(max_length=20, unique=True, blank=True, null=True)
     role = models.ForeignKey(
         Role, on_delete=models.CASCADE, blank=True, null=True,)
     image = models.ImageField(blank=True, null=True, upload_to='users')
@@ -113,7 +112,7 @@ class Profile(models.Model):
     job_position = models.CharField(max_length=1000, null=True, blank=True)
     status_message = models.CharField(max_length=200, default='Je suis disponible.', null=True, blank=True)
     status = models.ForeignKey(UserStatus, default=1, on_delete=models.CASCADE)
-    phone_alt = PhoneNumberField(unique=True, blank=True, null=True)
+    phone_alt = models.CharField(max_length=20, unique=True, blank=True, null=True)
     image = models.ImageField(
         upload_to='media/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
     is_online = models.BooleanField(default=False)
